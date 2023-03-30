@@ -1,0 +1,14 @@
+{
+  "column_name": ["주문일", "주문번호", "출고기한", "주문자", "수령자", "상품명", "옵션", "수량", "예약출고", "브랜드", "주문상태", "결제완료일"],
+  "normal_a": {
+    "pay_name": "구매자명",
+    "order_name": "주문자명",
+    "order_email": "test@29cm.co.kr",
+    "order_phone": "010-3886-3148",
+    "receiver_name": "수령자명",
+    "receiver_phone": "010-1111-2222",
+    "item_name": "위탁 / 판매가 100원 / 무료배송 / 반품배송비 10원",
+    "order_count": 1,
+    "brand_name": "commission A"
+  }
+}
