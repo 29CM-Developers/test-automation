@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/Users/mpark/test-automation/')
+sys.path.append('/Users/mpark-macmini/test-automation/')
 
 from flask import Flask
 from flask_restx import Api
