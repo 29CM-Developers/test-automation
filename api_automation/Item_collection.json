@@ -67,6 +67,67 @@
 			"response": []
 		},
 		{
+			"name": "add_item_null_token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"if (pm.response.status === \"Internal Server Error\") {",
+							"    pm.test(\"expired token result check\", function () {",
+							"        pm.expect(jsonData.result).to.eql(\"FAIL\");",
+							"    });",
+							"    pm.test(\"null token error code check\", function () {",
+							"        pm.expect(jsonData.errorCode).to.eql(\"AUTHORIZATION_ERROR\");",
+							"    });",
+							"}",
+							"pm.test(\"add item null token is 500\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"smallCategoryCode\": \"245102101\",\n    \"genderAttributeType\": \"UNISEX\",\n    \"partnerBrandId\": 11101,\n    \"itemName\": \"기본정보 상품명\",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"itemFilterIdList\": [],\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 101103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101107,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101108,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101109,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": {\n        \"id\": \"\",\n        \"product\": \"\",\n        \"model\": \"\",\n        \"manufacturer\": \"\",\n        \"importer\": \"\"\n    },\n    \"consumerPrice\": \"20000\",\n    \"sellPrice\": \"2100\",\n    \"purchasePrice\": \"1680\",\n    \"marginRate\": \"20\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": \"NO_CHANGE\",\n    \"isRestrictPayMethod\": true,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": true,\n    \"limitedQty\": 1,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202303/11edb8b266729cf4b3fd9b8f941e705c.jpeg\",\n                \"fileSize\": 154757,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 0\n        }\n    ],\n    \"itemDescription\": \"<p style=\\\"font-size: 16px; line-height: 26px; color: #000000\\\">www</p>\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"beginDate\": \"\"\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/items",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add item carrier and bag",
 			"event": [
 				{
@@ -267,6 +328,10 @@
 						"exec": [
 							"pm.test(\"delete product 200\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"delete product result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -312,6 +377,85 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"itemIdList\": [\n        {{item_id}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/items/status-type:bulk-delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"items",
+						"status-type:bulk-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete product not include item id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"delete product 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"expired token result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+							"});",
+							"pm.test(\"expired token error code check\", function () {",
+							"    pm.expect(jsonData.errorCode).to.eql(\"COMMON_INVALID_PARAMETER\");",
+							"});",
+							"console.log(jsonData.message)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-item-admin.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemIdList\": [\n        \n    ]\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/items/status-type:bulk-delete",
@@ -1397,7 +1541,7 @@
 			"response": []
 		},
 		{
-			"name": "add item Tshirt woman not include enddat",
+			"name": "add item Tshirt woman not include enddate",
 			"event": [
 				{
 					"listen": "test",
@@ -1415,7 +1559,10 @@
 							"  pm.test(\"itemId value 1gte check\", function () {",
 							"    pm.expect(jsondata.data.itemId).gte(1);",
 							"});",
+							"} else {",
+							"    console.log(jsondata.data.errors[0].descriptions[0].message)",
 							"}",
+							"",
 							"",
 							"var requestjsondata = JSON.parse(request.data)",
 							"pm.environment.set(\"genderAttributeType\", requestjsondata.genderAttributeType)",
@@ -1482,6 +1629,63 @@
 						"inhouse-admin",
 						"v4",
 						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unable item id data check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"unable item id data check 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsondata = JSON.parse(responseBody)",
+							"",
+							"pm.test(\"NOT_FOUND_ROW_BY_ID result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+							"});",
+							"pm.test(\"NOT_FOUND_ROW_BY_ID error code check\", function () {",
+							"    pm.expect(jsonData.errorCode).to.eql(\"NOT_FOUND_ROW_BY_ID\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/items/000000",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"items",
+						"000000"
 					]
 				}
 			},
