@@ -1482,7 +1482,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"add item - Tshirt woman not include enddat 200\", function () {",
+							"pm.test(\"add item Tshirt woman not include enddat 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"var jsondata = JSON.parse(responseBody)",
