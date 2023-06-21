@@ -217,9 +217,123 @@
 			"value": "",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "sizeTypeText",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "shirtLength",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "shoulderWidth",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "chestWidth",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "sleeveLength",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "waistWidth",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "hipsWidth",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "crotchLength",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "thighWidth",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "hemWidth",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "genderType",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "fitType",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "height",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "weight",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "size",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "searchKeywordList",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "filter_lists",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "parent_lists",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "name",
+			"value": "",
+			"type": "any",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-06-13T07:22:06.201Z",
+	"_postman_exported_at": "2023-06-21T04:56:14.072Z",
 	"_postman_exported_using": "Postman/10.14.9"
 }
