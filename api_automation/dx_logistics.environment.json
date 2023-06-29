@@ -1,0 +1,165 @@
+{
+	"id": "3ffa5115-c363-4b9c-b68e-bdc68d3bf8e3",
+	"name": "QA - logistics - DX",
+	"values": [
+		{
+			"key": "host",
+			"value": "https://qa-logistics-api.29cm.co.kr",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "api_portal_host",
+			"value": "https://apiportal.29cm.co.kr",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "claim_host",
+			"value": "https://qa-claim-admin-api.29cm.co.kr",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "29_host",
+			"value": "https://qa-commerce-api.29cm.co.kr",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "apihub_host",
+			"value": "https://apihub.29cm.co.kr",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "commerce_host",
+			"value": "https://qa-commerce-admin-api.29cm.co.kr",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "partner_token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "mother_cookie",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "user_cookie",
+			"value": "_func_qa=67CV7ZiE7KSA;_ftwuid_qa=\"dIpt4DNVdnT4aggqLDXdXzMk6QVZsrMWneGHaH1PfuB+UICtzM1+fqSh9XxgAQOlBbjykIPJum1TkW+Gk0zZs9Q/5FIoC5RUdeZi3MLJMkSlwqlSNMm+MAriESRQ+TxGLqcpz8JQooJmKvHT874lB+uVMjpdfxAy2fDGSNfhu4RcJKIMHSDOGmqo7bsnWOl1RsOci8StqE2Bk2XVN+M9aKjU8a+hl8uzOGl9WoOXJGvexcJ77Az+a6t0nKC2YlmPITcBLugIX6bxSM5zCDvKkUCZ5sSeYBcovdhZ9WFbhuQ=\";",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "item_id",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "itemName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "itemType",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "partnerBrandId",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "consumerPrice",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "sellPrice",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "purchasePrice",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "order_serial",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "order_no",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "order_delivery_no",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "order_item_manage_no",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "delivery_num",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "option_id",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "currentDate",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "cs_serial",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "exchange_order_item_manage_no",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2023-06-29T00:50:18.122Z",
+	"_postman_exported_using": "Postman/10.15.4"
+}
