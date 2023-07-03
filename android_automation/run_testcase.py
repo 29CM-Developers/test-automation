@@ -4,7 +4,7 @@ import json
 
 from appium.webdriver.appium_service import AppiumService
 from selenium.common.exceptions import InvalidSessionIdException
-from android_setup import mpark_setup
+from android_setup import dajjeong_setup
 from android_automation.test_cases.sample_test import AutomationTesting
 
 
@@ -20,10 +20,10 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4723', '--chromedriver-executable', '{chromedriver path}'])
+        self.appium.start(args=['-p', '4723', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
-        self.wd, self.and_cap = mpark_setup()
+        self.wd, self.and_caps = dajjeong_setup()
         self.wd.implicitly_wait(5)
 
     def tearDown(self):
