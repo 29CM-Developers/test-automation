@@ -21,23 +21,31 @@ class IOSTestAutomation(unittest.TestCase):
 
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4724', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
+        self.appium.start(args=['-p', '4724', '--base-path', '/wd/hub'])
 
         # webdriver
         self.wd, self.iOS_cap = dajjeong_setup()
-        self.wd.implicitly_wait(5)
+        self.wd.implicitly_wait(3)
 
     def tearDown(self):
         try:
+            self.wd.terminate_app('kr.co.29cm.App29CM')
+            print("앱 종료 완료")
             self.wd.quit()
+            print("wd 종료 완료")
             self.appium.stop()
-            subprocess.run(['pkill', '-9', '-f', 'WebDriverAgentRunner'])
+            print("appium 종료 완료")
+
+            print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()
 
-    def test_sample(self):
-        AutomationTesting.default_test(self, self.wd)
-        AutomationTesting.scroll_test(self, self.wd)
+    def test_login(self):
+        AutomationTesting.login_test(self, self.wd)
+
+    def test_error_id_login(self):
+        AutomationTesting.id_error_test(self, self.wd)
+
 
 if __name__ == '__main__':
     unittest.main()
