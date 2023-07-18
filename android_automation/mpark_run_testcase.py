@@ -1,6 +1,9 @@
 import time
 import unittest
+import os
 import sys
+and_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(and_path)
 import requests
 import subprocess
 
