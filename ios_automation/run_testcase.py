@@ -1,7 +1,6 @@
 import logging
 import time
 import unittest
-import subprocess
 
 from appium.webdriver.appium_service import AppiumService
 from ios_setup import dajjeong_setup
@@ -21,7 +20,7 @@ class IOSTestAutomation(unittest.TestCase):
 
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4724', '--base-path', '/wd/hub'])
+        self.appium.start(args=['-p', '4724', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
         self.wd, self.iOS_cap = dajjeong_setup()

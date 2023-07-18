@@ -19,16 +19,7 @@ class AutomationTesting:
 
     def login_test(self, wd, error_text=''):
 
-
-        # 정합성 체크하는 코드도 만들기
-
         try:
-
-            try:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@name="Title"]/XCUIElementTypeButton[@name="닫기"]')
-            except:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
-
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
 
