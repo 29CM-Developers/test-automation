@@ -40,4 +40,6 @@ def hhj2008_setup():
     android_options.set_capability("unlockKey", "292929")
 
     wd = webdriver.Remote('http://0.0.0.0:4723/wd/hub', options=android_options)
+
+    #android_options.set_capability("platformName", "Android")
     return wd, android_options
