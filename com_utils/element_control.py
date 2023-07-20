@@ -38,8 +38,8 @@ def css_find(wd, css):
 def tag_find(wd, tag):
     wd.find_element(By.CSS_SELECTOR, f'{tag}')
 
-def 가scroll_to_element(wd, element_id):
-    logging.basicConfig(level=logging.INFO)
+def scroll_to_element(wd, element_id):
+
     while True:
         try:
             # 원하는 요소를 찾으면 스크롤 종료
@@ -53,4 +53,3 @@ def 가scroll_to_element(wd, element_id):
             end_y = size["height"] * 0.2
             duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
             wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
-            logging.info("스크롤햇도")
