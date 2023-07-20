@@ -28,7 +28,7 @@ class IOSTestAutomation(unittest.TestCase):
 
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4724', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
+        self.appium.start(args=['-p', '4924', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
         self.wd, self.iOS_cap = dajjeong_setup()
@@ -85,6 +85,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
 
 if __name__ == '__main__':
     unittest.main()

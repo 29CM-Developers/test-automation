@@ -15,7 +15,7 @@ def dajjeong_setup():
     android_options.set_capability('noReset', True)
     android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm",
                                                           "androidUseRunningApp": True, "w3c": False})
-    wd = webdriver.Remote('http://0.0.0.0:4723/wd/hub', options=android_options)
+    wd = webdriver.Remote('http://0.0.0.0:4923/wd/hub', options=android_options)
 
     return wd, android_options
 
@@ -56,7 +56,7 @@ def hhj2008_setup():
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
 
-    wd = webdriver.Remote('http://0.0.0.0:4723/wd/hub', options=android_options)
+    wd = webdriver.Remote('http://0.0.0.0:4823/wd/hub', options=android_options)
 
     #android_options.set_capability("platformName", "Android")
     return wd, android_options
