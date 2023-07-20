@@ -24,9 +24,9 @@ from appium.options.common import AppiumOptions
 def dajjeong_setup():
     iOS_options = AppiumOptions()
     iOS_options.set_capability('platformName', 'iOS')
-    iOS_options.set_capability('platformVersion', '16.2')
-    iOS_options.set_capability('deviceName', '14pro')
-    iOS_options.set_capability('udid', '00008120-001C25A83A9BC01E')
+    iOS_options.set_capability('platformVersion', '16.5.1')
+    iOS_options.set_capability('deviceName', '124')
+    iOS_options.set_capability('udid', '00008101-00191D4E3602001E')
     iOS_options.set_capability('automationName', 'XCUITest')
     iOS_options.set_capability('newCommandTimeout', 300)
     iOS_options.set_capability('bundleId', 'kr.co.29cm.App29CM')
