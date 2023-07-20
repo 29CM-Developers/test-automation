@@ -86,12 +86,5 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-    def test_test(self):
-        # NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)
-
-        test = self.wd.desired_capabilities.values()
-        print(test)
-
-
 if __name__ == '__main__':
     unittest.main()
