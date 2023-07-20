@@ -1,36 +1,39 @@
-import os.path
+import os
 import sys
 import traceback
+from time import time, sleep
 
-from time import sleep, time
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 
 from com_utils import values_control
 
 
-class AutomationTesting:
+class NotLoginUserTest:
 
-    id_29cm = 'dajjeong@29cm.co.kr'
-    password_29cm = '29CMdajjeong!'
-    error_id_29cm = 'dajeong@29cm.co.kr'
-    error_password_29cm = '30CMdajjeong@'
+    def check_login_page(self, wd):
 
+        sleep(2)
 
-    # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
-    def dajjeong_test(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        try:
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기')
+            print('Pass')
+        except NoSuchElementException:
+            print('Fail')
 
-        # 현재 함수명 저장 - slack noti에 사용
+    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = sys._getframe().f_code.co_name
-        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
 
         try:
             sleep(1)
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
+
+            NotLoginUserTest.check_login_page(self, wd)
+
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -57,17 +60,14 @@ class AutomationTesting:
                 'test_name': test_name, 'run_time': run_time}
             return result_data
 
-    def scroll_test(self, wd, test_result='PASS', error_texts=[], img_src=''):
-
-        # 현재 함수명 저장 - slack noti에 사용
+    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = sys._getframe().f_code.co_name
-        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
 
         try:
             sleep(1)
-            wd.execute_script('mobile:swipe', {'direction': 'up'})
-            wd.execute_script('mobile:swipe', {'direction': 'down'})
+
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -94,16 +94,28 @@ class AutomationTesting:
                 'test_name': test_name, 'run_time': run_time}
             return result_data
 
-    def error_test(self, wd, test_result='PASS', error_texts=[], img_src=''):
-
-        # 현재 함수명 저장 - slack noti에 사용
+    def full_test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = sys._getframe().f_code.co_name
-        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
 
         try:
             sleep(1)
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="TEST"]').click()
+
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
+            NotLoginUserTest.check_login_page(self, wd)
+
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarNotiWhite').click()
+            NotLoginUserTest.check_login_page(self, wd)
+
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LIKE"]').click()
+            NotLoginUserTest.check_login_page(self, wd)
+
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다

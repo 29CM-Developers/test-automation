@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/Users/mpark-macmini/test-automation/')
+sys.path.append('/Users/dajeong/PycharmProjects/test-automation/')
 
 from flask import Flask
 from flask_restx import Api
@@ -11,5 +11,7 @@ api = Api(app)
 # "/personal/{name}" 엔드포인트를 위한 네임스페이스 생성
 api.add_namespace(personal.personal_info, '/qa')
 
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=50)
+    app.run(debug=True, host='0.0.0.0', port=80)
