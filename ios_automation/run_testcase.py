@@ -1,14 +1,14 @@
-import logging
-import subprocess
+
+import os
 import sys
+iOS_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(iOS_path)
 import time
 import unittest
 
-import appium.options.ios
 import requests
 from appium.webdriver.appium_service import AppiumService
 
-import ios_automation.ios_setup
 from com_utils import slack_result_notifications
 from ios_setup import dajjeong_setup
 from ios_automation.test_cases.login_test import UserLoginTest
@@ -19,13 +19,6 @@ from selenium.common.exceptions import NoSuchElementException, InvalidSessionIdE
 class IOSTestAutomation(unittest.TestCase):
 
     def setUp(self):
-        # yaml을 사용할 경우
-        # with open('../../info.yaml') as ym:
-        #     self.conf = yaml.load(ym, Loader=yaml.FullLoader)
-        # self.account_id = self.conf['account_email']
-        # json을 사용할 경우
-        # self.conf = user_data.json()
-
         # Appium Service
         self.appium = AppiumService()
         self.appium.start(args=['-p', '4924', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
@@ -85,6 +78,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
 
 
 if __name__ == '__main__':
