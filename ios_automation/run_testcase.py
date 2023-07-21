@@ -1,14 +1,13 @@
-
+import re
+import unittest
+import requests
 import os
 import sys
+
 iOS_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(iOS_path)
-import time
-import unittest
 
-import requests
 from appium.webdriver.appium_service import AppiumService
-
 from com_utils import slack_result_notifications
 from ios_setup import dajjeong_setup
 from ios_automation.test_cases.login_test import UserLoginTest
@@ -21,7 +20,8 @@ class IOSTestAutomation(unittest.TestCase):
     def setUp(self):
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4924', '--base-path', '/wd/hub', '--default-capabilities', '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
+        self.appium.start(args=['-p', '4924', '--base-path', '/wd/hub', '--default-capabilities',
+                                '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
         self.wd, self.iOS_cap = dajjeong_setup()
@@ -53,6 +53,9 @@ class IOSTestAutomation(unittest.TestCase):
     def test_iOS_bvt(self):
 
         self.def_name = sys._getframe().f_code.co_name
+        # 테스트 수행 디바이스 정보(플랫폼, 디바이스명)
+        self.device_platform = self.iOS_cap.capabilities['platformName']
+        self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)
@@ -72,13 +75,14 @@ class IOSTestAutomation(unittest.TestCase):
 
     def test_iOS_full(self):
         self.def_name = sys._getframe().f_code.co_name
+        self.device_platform = self.iOS_cap.capabilities['platformName']
+        self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ class NotLoginUserTest:
 
     def check_login_page(self, wd):
 
-        sleep(2)
+        sleep(1)
 
         try:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기')
@@ -28,7 +28,6 @@ class NotLoginUserTest:
         try:
             sleep(1)
 
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
 
             NotLoginUserTest.check_login_page(self, wd)
