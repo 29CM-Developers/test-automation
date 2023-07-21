@@ -1,36 +1,37 @@
-
-import time
 import unittest
 import os
 import sys
+from selenium.common import InvalidSessionIdException
+
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 import requests
-import subprocess
+
 from appium.webdriver.appium_service import AppiumService
 
 from android_automation.test_cases.loginpage_test import LoginLogout
-from android_automation.test_cases.notlogin_test import NotLogin
+
 from android_setup import hhj2008_setup
-from android_automation.test_cases.sample_test import AutomationTesting
-from com_utils import values_control, slack_result_notifications, element_control
+
+from com_utils import slack_result_notifications
 
 
 class AndroidTestAutomation(unittest.TestCase):
 
     def setUp(self):
 
-        # Appium Service
-        self.appium = AppiumService()
-        self.appium.start(args=['-p', '4823', '--base-path', '/wd/hub', '--default-capabilities','{"appium:chromedriverExecutable": "/usr/local/bin"}'])
-        # webdriver
-        self.wd, self.android_options = hhj2008_setup()
-        self.wd.implicitly_wait(5)
-
         user_info = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008")
         self.pconf = user_info.json()
         public_info=requests.get(f"http://192.168.103.13:50/qa/personal/info")
         self.conf = public_info.json()
+
+        # Appium Service
+        self.appium = AppiumService()
+        self.appium.start(args=['-p', '4823', '--base-path', '/wd/hub', '--default-capabilities',
+                                '{"appium:chromedriverExecutable": "/usr/local/bin/chromedriver"}'])
+        # webdriver
+        self.wd, self.android_options = hhj2008_setup()
+        self.wd.implicitly_wait(5)
 
         # 필요 report data
         self.count = 0
