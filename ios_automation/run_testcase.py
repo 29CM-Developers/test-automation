@@ -36,6 +36,10 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time = ''
         self.slack_result = ''
 
+        # 테스트 수행 디바이스 정보(플랫폼, 디바이스명)
+        self.device_platform = self.iOS_cap.capabilities['platformName']
+        self.device_name = self.iOS_cap.capabilities['appium:deviceName']
+
     def tearDown(self):
         try:
             self.wd.terminate_app('kr.co.29cm.App29CM')
@@ -53,9 +57,6 @@ class IOSTestAutomation(unittest.TestCase):
     def test_iOS_bvt(self):
 
         self.def_name = sys._getframe().f_code.co_name
-        # 테스트 수행 디바이스 정보(플랫폼, 디바이스명)
-        self.device_platform = self.iOS_cap.capabilities['platformName']
-        self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)
@@ -75,8 +76,6 @@ class IOSTestAutomation(unittest.TestCase):
 
     def test_iOS_full(self):
         self.def_name = sys._getframe().f_code.co_name
-        self.device_platform = self.iOS_cap.capabilities['platformName']
-        self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)

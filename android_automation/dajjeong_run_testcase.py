@@ -32,6 +32,9 @@ class AndroidTestAutomation(unittest.TestCase):
         self.total_time = ''
         self.slack_result = ''
 
+        self.device_platform = self.and_cap.capabilities['platformName']
+        self.device_name = self.and_cap.capabilities['appium:deviceName']
+
     def tearDown(self):
         try:
             self.wd.close_app()
@@ -48,8 +51,6 @@ class AndroidTestAutomation(unittest.TestCase):
     def test_sample_def_name(self):
         # 테스트 자동화 실행 return값을 self.result_data에 넣으면 해당 값들을 가지고 slack noti를 보내게 됩니다
         self.def_name = sys._getframe().f_code.co_name
-        self.device_platform = self.and_cap.capabilities['platformName']
-        self.device_name = self.and_cap.capabilities['appium:deviceName']
 
         self.result_data = AutomationTesting.default_test(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
