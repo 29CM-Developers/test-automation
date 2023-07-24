@@ -27,7 +27,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.wd, self.iOS_cap = dajjeong_setup()
         self.wd.implicitly_wait(3)
 
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/mpark")
+        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong")
         self.pconf = user_info.json()
         public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
         self.conf = public_info.json()
@@ -49,7 +49,6 @@ class IOSTestAutomation(unittest.TestCase):
             self.appium.stop()
             print("appium 종료 완료")
             # subprocess.run(['pkill', '-9', '-f', 'WebDriverAgentRunner'])
-
             print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()
@@ -82,6 +81,9 @@ class IOSTestAutomation(unittest.TestCase):
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+    def test_test(self):
+        NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)
 
 
 if __name__ == '__main__':
