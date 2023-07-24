@@ -1,5 +1,8 @@
 import sys
 sys.path.append('/Users/dajeong/PycharmProjects/test-automation/')
+import os
+and_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(and_path)
 
 from flask import Flask
 from flask_restx import Api
