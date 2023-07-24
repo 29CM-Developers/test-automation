@@ -2,17 +2,17 @@ import re
 import unittest
 import requests
 import os
-import sys
-
-iOS_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(iOS_path)
 
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
 from ios_setup import dajjeong_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
-from selenium.common.exceptions import NoSuchElementException, InvalidSessionIdException
+from selenium.common.exceptions import InvalidSessionIdException
+
+import sys
+iOS_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(iOS_path)
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -36,7 +36,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time = ''
         self.slack_result = ''
 
-        # 테스트 수행 디바이스 정보(플랫폼, 디바이스명)
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
@@ -81,9 +80,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-    def test_test(self):
-        NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)
 
 
 if __name__ == '__main__':
