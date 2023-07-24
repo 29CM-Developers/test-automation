@@ -25,6 +25,10 @@ class Personal(Resource):
                 data = json.load(file)
             data[f'{name}'][f'{insert_key}'] = insert_value
             with open(json_path, 'w') as file:
+                try:
+                    file.update(data)
+                except:
+                    pass
                 json.dump(data, file)
             return data[f'{name}']
         except FileNotFoundError:
