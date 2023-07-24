@@ -56,9 +56,7 @@ class NotLoginUserTest:
                 pass
 
         finally:
-            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time}
@@ -149,24 +147,6 @@ class NotLoginUserTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time}
             return result_data
-
-    def test(self, wd):
-        wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상의').click()
-        wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]').click()
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '구매하기').click()
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '바로 구매하기').click()
-
-        try:
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="쿠폰"]')
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
-        except NoSuchElementException:
-            print("쿠폰 없음")
-
-        print(NotLoginUserTest.check_login_page(self, wd))
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
-
-
 
 
 
