@@ -3,7 +3,16 @@
 /web_automation/web_testcases/__pycache__
 /qa_server/__pycache__/
 /qa_server/json_control/__pycache__/
+/android_automation/__pycache__/
+/android_automation/test_cases/__pycache__/
+/ios_automation/__pycache__/
+/ios_automation/test_cases/__pycache__/
 
 
 # file
 /qa_server/json_control/personal.json
+/com_utils/__pycache__/*
+/api_automation/.DS_Store
+*.png
+.DS_Store
+.idea/.name
