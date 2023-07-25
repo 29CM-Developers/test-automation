@@ -38,6 +38,9 @@ class AndroidTestAutomation(unittest.TestCase):
         self.total_time = ''
         self.slack_result = ''
 
+        self.device_platform = self.android_options.capabilities['platformName']
+        self.device_name = self.android_options.capabilities['appium:deviceName']
+
     def tearDown(self):
         try:
             self.wd.terminate_app('com.the29cm.app29cm')
