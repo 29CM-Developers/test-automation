@@ -1,2 +1,9 @@
+# folder
 /web_automation/__pycache__
 /web_automation/web_testcases/__pycache__
+/qa_server/__pycache__/
+/qa_server/json_control/__pycache__/
+
+
+# file
+/qa_server/json_control/personal.json
