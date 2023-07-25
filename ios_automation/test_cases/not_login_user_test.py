@@ -123,11 +123,13 @@ class NotLoginUserTest:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '구매하기').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '바로 구매하기').click()
 
+            # 바로 구매하기 버튼 선택 시, 쿠폰 선택 바텀 시트 노출 여부 확인
+            # 바텀 시트 노출 시, 바텀 시트의 닫기 버튼 선택하여 로그인 페이지 진입
             try:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="쿠폰"]')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
             except NoSuchElementException:
                 print("쿠폰 없음")
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
             NotLoginUserTest.check_login_page(self, wd)
 
 
