@@ -4,7 +4,7 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 personal_info = Namespace('get_personal')
-json_path = '/Users/dajeong/PycharmProjects/test-automation/qa_server/json_control/personal.json'
+json_path = '/Users/mpark-macmini/test-automation/qa_server/json_control/personal.json'
 # "/personal/{name}" 엔드포인트
 @personal_info.route("/personal/<string:name>")
 class Personal(Resource):
