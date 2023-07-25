@@ -13,7 +13,7 @@ class AndroidTestAutomation(unittest.TestCase):
 
     def setUp(self):
         # user_info = requests.get(f"http://192.168.103.13:50/qa/personal/{os.environ.get('user')}")
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/mpark")
+        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong")
         self.pconf = user_info.json()
         public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
         self.conf = public_info.json()
@@ -49,7 +49,6 @@ class AndroidTestAutomation(unittest.TestCase):
             print('exception')
 
     def test_sample_def_name(self):
-        # 테스트 자동화 실행 return값을 self.result_data에 넣으면 해당 값들을 가지고 slack noti를 보내게 됩니다
         self.def_name = sys._getframe().f_code.co_name
 
         self.result_data = AutomationTesting.default_test(self, self.wd)

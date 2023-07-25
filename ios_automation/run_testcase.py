@@ -2,17 +2,17 @@ import re
 import unittest
 import requests
 import os
-import sys
-
-iOS_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(iOS_path)
 
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
 from ios_setup import dajjeong_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
-from selenium.common.exceptions import NoSuchElementException, InvalidSessionIdException
+from selenium.common.exceptions import InvalidSessionIdException
+
+import sys
+iOS_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(iOS_path)
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -27,7 +27,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.wd, self.iOS_cap = dajjeong_setup()
         self.wd.implicitly_wait(3)
 
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/mpark")
+        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong")
         self.pconf = user_info.json()
         public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
         self.conf = public_info.json()
@@ -36,7 +36,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time = ''
         self.slack_result = ''
 
-        # 테스트 수행 디바이스 정보(플랫폼, 디바이스명)
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
@@ -49,7 +48,6 @@ class IOSTestAutomation(unittest.TestCase):
             self.appium.stop()
             print("appium 종료 완료")
             # subprocess.run(['pkill', '-9', '-f', 'WebDriverAgentRunner'])
-
             print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()
