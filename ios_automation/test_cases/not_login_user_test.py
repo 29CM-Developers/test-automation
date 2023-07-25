@@ -11,6 +11,7 @@ from com_utils import values_control
 
 class NotLoginUserTest:
 
+    # 로그인 페이지 진입 확인 메소드. [로그인하기] 버튼의 노출 여부를 판단한다.
     def check_login_page(self, wd):
         test_name = sys._getframe().f_code.co_name
 
@@ -108,7 +109,7 @@ class NotLoginUserTest:
 
             # 상단 네비게이션 장바구니 버튼 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
-            print(NotLoginUserTest.check_login_page(self, wd))
+            NotLoginUserTest.check_login_page(self, wd)
 
             # LIKE 탭 선택
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LIKE"]').click()
@@ -124,10 +125,10 @@ class NotLoginUserTest:
 
             try:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="쿠폰"]')
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
             except NoSuchElementException:
                 print("쿠폰 없음")
-            print(NotLoginUserTest.check_login_page(self, wd))
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
+            NotLoginUserTest.check_login_page(self, wd)
 
 
         except Exception:
