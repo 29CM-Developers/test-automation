@@ -2,6 +2,8 @@ name: Slack Notification
 
 on:
   pull_request:
+    branches:
+      - master
     types: [opened, reopened]
 
 jobs:
@@ -16,5 +18,11 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          MESSAGE="New PR opened: ${{ github.event.pull_request.title }} by ${{ github.event.pull_request.user.login }}. \n\n${{ github.event.pull_request.html_url }}"
-          curl -X POST -H 'Content-type: application/json' --data '{"text": "'"$MESSAGE"'"}' $SLACK_WEBHOOK_URL
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          USER_LOGIN="${{ github.event.pull_request.user.login }}"
+          USER_AVATAR="${{ github.event.pull_request.user.avatar_url }}"
+          PR_CREATED_AT="${{ github.event.pull_request.created_at }}"
+          MESSAGE="New PR opened on master:\n\n*Title:* ${PR_TITLE}\n*URL:* ${PR_URL}\n*Branch Name:* ${BRANCH_NAME}\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\n*Opened At:* ${PR_CREATED_AT}"
+          curl -X POST -H 'Content-type: application/json' --data '{"blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": "'"$MESSAGE"'"}}]}' $SLACK_WEBHOOK_URL
