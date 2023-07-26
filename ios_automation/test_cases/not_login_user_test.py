@@ -28,8 +28,9 @@ class NotLoginUserTest:
         return result
 
     def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        def_name = sys._getframe().f_code.co_name
-        test_name = self.conf[f'{def_name}']
+        # 메소드명과 일치하는 정보 받아오기
+        test_def_name = sys._getframe().f_code.co_name
+        test_name = self.conf[f'{test_def_name}']
         start_time = time()
 
         try:
