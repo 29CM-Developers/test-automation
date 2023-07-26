@@ -59,7 +59,7 @@ class LoginLogout:
             logging.info("가이드 문구 : %s " % guide_text.text)
 
             # 비밀번호 입력 후 로그인 하기 버튼 선택
-            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys('Qatest2929!')
+            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys(self.pconf['LOGIN_SUCCESS_PW'])
             logging.info("패스워드 필드 입력")
             wd.find_element(By.XPATH, '//android.widget.Button').click()
             logging.info("로그인 버튼 선택")
@@ -74,7 +74,7 @@ class LoginLogout:
             logging.info("가이드 문구 : %s " % guide_text.text)
 
             # 아이디 입력 후 로그인 하기 버튼 선택
-            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys('test@test.co.kr')
+            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
             logging.info("아이디 필드 입력")
             wd.find_element(By.XPATH, '//android.widget.Button').click()
             logging.info("로그인 버튼 선택")
@@ -89,8 +89,8 @@ class LoginLogout:
             logging.info("가이드 문구 : %s " % guide_text.text)
 
             # 잘못된 비밀번호 입력 후 로그인 하기 버튼 선택
-            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys('test@test.co.kr')
-            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys('Qatest2929')
+            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
+            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys(self.pconf['LOGIN_FAILED_PW'])
             wd.find_element(By.XPATH, '//android.widget.Button').click()
             logging.info("로그인 버튼 선택")
             # 로그인 실패 문구 확인
@@ -135,9 +135,9 @@ class LoginLogout:
             sleep(5)
 
             # 올바른 비밀번로 입력 후 로그인 하기 버튼 선택
-            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys('test@test.co.kr')
-            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys('Qatest2929!')
-            #wd.find_element(By.XPATH, '//android.widget.Button').click()
+            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
+            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys(self.pconf['LOGIN_SUCCESS_PW'])
+            wd.find_element(By.XPATH, '//android.widget.Button').click()
             logging.info("로그인 버튼 선택")
             sleep(3)
 
@@ -151,7 +151,7 @@ class LoginLogout:
             logging.info("로그인 유저 이름 : %s " % login_name.text)
             # 최하단[LOGOUT] 버튼 선택
             # 스크롤하여 버튼 찾기
-            element_control.scroll_to_element(wd, 'com.the29cm.app29cm:id/btnLogout')
+            element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/btnLogout')
 
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/btnLogout').click()
             sleep(1)
