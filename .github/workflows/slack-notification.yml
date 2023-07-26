@@ -14,6 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Convert time to KST
+        id: convert_time
+        run: |
+          PR_CREATED_AT_UTC="${{ github.event.pull_request.created_at }}"
+          PR_CREATED_AT_KST=$(TZ=Asia/Seoul date -d "${PR_CREATED_AT_UTC}" +'%Y-%m-%d %H:%M:%S')
+          echo "::set-output name=PR_CREATED_AT_KST::${PR_CREATED_AT_KST}"
+
       - name: Send Slack notification
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -24,5 +31,5 @@ jobs:
           USER_LOGIN="${{ github.event.pull_request.user.login }}"
           USER_AVATAR="${{ github.event.pull_request.user.avatar_url }}"
           PR_CREATED_AT="${{ github.event.pull_request.created_at }}"
-          MESSAGE="New PR opened on master:\n\n*Title:* ${PR_TITLE}\n*URL:* ${PR_URL}\n*Branch Name:* ${BRANCH_NAME}\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\n*Opened At:* ${PR_CREATED_AT}"
+          MESSAGE="New PR opened on master:\n\n*Title:* ${PR_TITLE}\n*URL:* ${PR_URL}\n*Branch Name:* ${BRANCH_NAME}\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\n*Opened At:* ${PR_CREATED_AT_KST}"
           curl -X POST -H 'Content-type: application/json' --data '{"blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": "'"$MESSAGE"'"}}], "unfurl_links": false}' $SLACK_WEBHOOK_URL
