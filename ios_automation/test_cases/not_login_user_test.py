@@ -65,13 +65,58 @@ class NotLoginUserTest:
             return result_data
 
     def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
-            sleep(1)
+            # Category 탭으로 이동하여 추천 상품 PLP 진입
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'FOR YOU').click()
+            try:
+                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="당신을 위한 추천상품"]')
+                print('추천 카테고리 PLP 진입 성공')
+            except NoSuchElementException:
+                print('추천 카테고리 PLP 진입 실패')
 
+            # 추천 상품 PLP에서 첫번째 상품 선택
+            plp_product = wd.find_element(AppiumBy.XPATH,
+                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
+            plp_name = plp_product.text
+            plp_product.click()
+
+            # 선택한 상품의 PDP에서 상품 이름 비교
+            pdp_name = wd.find_element(AppiumBy.XPATH,
+                                       '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther').text
+            if plp_name in pdp_name:
+                print("PDP 페이지 진입 성공")
+            else:
+                print("PDP 페이지 진입 실패")
+
+            # 상단 검색 버튼 선택하여 인기 브랜드 10위 선택
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common search icon black').click()
+            search_brand = wd.find_element(AppiumBy.XPATH,
+                                           '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
+            search_brand_name = search_brand.text
+            search_brand.click()
+
+            search_input_field = wd.find_element(AppiumBy.CLASS_NAME, '//XCUIElementTypeTextField').text
+            if search_input_field == search_brand_name:
+                print("검색 결과 화면 진입 성공")
+            else:
+                print("검색 결과 화면 진입 실패")
+
+            # My 탭 진입하여 로그인,회원가입 문구 노출 확인
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            try:
+                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="로그인·회원가입"]')
+                print("My 탭 진입 성공")
+            except NoSuchElementException:
+                print("My 탭 진입 실패")
+
+            # Home 탭으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+
+            sleep(3)
 
         except Exception:
             test_result = 'FAIL'
@@ -149,7 +194,3 @@ class NotLoginUserTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time}
             return result_data
-
-
-
-

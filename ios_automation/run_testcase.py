@@ -64,6 +64,11 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 비로그인 유저 사용 가능
+        self.result_data = NotLoginUserTest.test_not_login_user_possible(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 로그인 테스트
         self.result_data = UserLoginTest.test_login(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -83,6 +88,9 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+    def test(self):
+        NotLoginUserTest.test_not_login_user_possible(self, self.wd)
+        UserLoginTest.test_login_error(self, self.wd)
 
 if __name__ == '__main__':
     unittest.main()
