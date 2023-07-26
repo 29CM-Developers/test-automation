@@ -24,11 +24,6 @@ class UserLoginTest:
         test_name = sys._getframe().f_code.co_name
         start_time = time()
 
-        id_29cm = self.pconf['id_29cm']
-        password_29cm = self.pconf['password_29cm']
-        error_id_29cm = self.pconf['error_id_29cm']
-        error_password_29cm = self.pconf['error_password_29cm']
-
         try:
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, "닫기").click()
@@ -39,7 +34,7 @@ class UserLoginTest:
 
             sleep(1)
 
-            UserLoginTest.input_id_password(self, wd, error_id_29cm, password_29cm)
+            UserLoginTest.input_id_password(self, wd, self.pconf['error_id_29cm'], self.pconf['password_29cm'])
 
             sleep(1)
 
@@ -82,9 +77,6 @@ class UserLoginTest:
         test_name = sys._getframe().f_code.co_name
         start_time = time()
 
-        id_29cm = self.pconf['id_29cm']
-        password_29cm = self.pconf['password_29cm']
-
         try:
             sleep(1)
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
@@ -92,7 +84,7 @@ class UserLoginTest:
 
             sleep(1)
 
-            UserLoginTest.input_id_password(self, wd, id_29cm, password_29cm)
+            UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
 
             sleep(1)
 
