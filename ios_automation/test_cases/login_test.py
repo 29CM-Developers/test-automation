@@ -1,6 +1,7 @@
 import os.path
 import sys
 import traceback
+import json
 
 from time import sleep, time
 from appium.webdriver.common.appiumby import AppiumBy
@@ -8,25 +9,25 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
-
 from com_utils import values_control
 
 
 class UserLoginTest:
-    id_29cm = 'dajjeong@29cm.co.kr'
-    password_29cm = '29CMdajjeong!'
-    error_id_29cm = 'dajeong@29cm.co.kr'
-    error_password_29cm = '30CMdajjeong@'
 
     def input_id_password(self, wd, id, password):
+
         wd.find_element(AppiumBy.IOS_PREDICATE, 'value=="아이디 (이메일)"').send_keys(id)
         wd.find_element(AppiumBy.IOS_PREDICATE, 'value=="비밀번호"').send_keys(password)
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기').click()
 
     def test_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
-
         test_name = sys._getframe().f_code.co_name
         start_time = time()
+
+        id_29cm = self.pconf['id_29cm']
+        password_29cm = self.pconf['password_29cm']
+        error_id_29cm = self.pconf['error_id_29cm']
+        error_password_29cm = self.pconf['error_password_29cm']
 
         try:
             try:
@@ -38,7 +39,7 @@ class UserLoginTest:
 
             sleep(1)
 
-            UserLoginTest.input_id_password(self, wd, UserLoginTest.error_id_29cm, UserLoginTest.password_29cm)
+            UserLoginTest.input_id_password(self, wd, error_id_29cm, password_29cm)
 
             sleep(1)
 
@@ -78,9 +79,11 @@ class UserLoginTest:
             return result_data
 
     def test_login(self, wd, test_result='PASS', error_texts=[], img_src=''):
-
         test_name = sys._getframe().f_code.co_name
         start_time = time()
+
+        id_29cm = self.pconf['id_29cm']
+        password_29cm = self.pconf['password_29cm']
 
         try:
             sleep(1)
@@ -89,7 +92,7 @@ class UserLoginTest:
 
             sleep(1)
 
-            UserLoginTest.input_id_password(self, wd, UserLoginTest.id_29cm, UserLoginTest.password_29cm)
+            UserLoginTest.input_id_password(self, wd, id_29cm, password_29cm)
 
             sleep(1)
 

@@ -54,7 +54,8 @@ class IOSTestAutomation(unittest.TestCase):
 
     def test_iOS_bvt(self):
 
-        self.def_name = sys._getframe().f_code.co_name
+        defname = sys._getframe().f_code.co_name
+        self.def_name = self.conf[f'{defname}']
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)

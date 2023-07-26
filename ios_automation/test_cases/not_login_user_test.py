@@ -28,7 +28,8 @@ class NotLoginUserTest:
         return result
 
     def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+        def_name = sys._getframe().f_code.co_name
+        test_name = self.conf[f'{def_name}']
         start_time = time()
 
         try:
