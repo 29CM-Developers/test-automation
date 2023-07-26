@@ -1,4 +1,4 @@
-name: Slack Notification
+name: Slack Notification for PR on master
 
 on:
   pull_request:
@@ -31,5 +31,22 @@ jobs:
           USER_LOGIN="${{ github.event.pull_request.user.login }}"
           USER_AVATAR="${{ github.event.pull_request.user.avatar_url }}"
           PR_CREATED_AT_KST="${{ steps.convert_time.outputs.PR_CREATED_AT_KST }}"
-          MESSAGE="New PR opened on master:\n\n*Title:* ${PR_TITLE}\n*URL:* ${PR_URL}\n*Branch Name:* ${BRANCH_NAME}\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\n*Opened At:* ${PR_CREATED_AT_KST}"
-          curl -X POST -H 'Content-type: application/json' --data '{"blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": "'"$MESSAGE"'"}}], "unfurl_links": false}' $SLACK_WEBHOOK_URL
+
+          PAYLOAD='{
+            "attachments": [
+              {
+                "color": "#36a64f",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "New PR opened on master:\n\n*Title:* '${PR_TITLE}'\n*URL:* '${PR_URL}'\n*Branch Name:* '${BRANCH_NAME}'\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\n*Opened At:* '${PR_CREATED_AT_KST}'"
+                    }
+                  }
+                ]
+              }
+            ]
+          }'
+
+          curl -X POST -H 'Content-type: application/json' --data "'$PAYLOAD'" $SLACK_WEBHOOK_URL
