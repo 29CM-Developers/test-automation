@@ -31,6 +31,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.pconf = user_info.json()
         public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
         self.conf = public_info.json()
+        def_info = requests.get(f"http://192.168.103.13:50/qa/personal/def_names")
+        self.dconf = def_info.json()
 
         self.count = 0
         self.total_time = ''
@@ -55,7 +57,7 @@ class IOSTestAutomation(unittest.TestCase):
     def test_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
         test_def_name = sys._getframe().f_code.co_name
-        self.def_name = self.conf[f'{test_def_name}']
+        self.def_name = self.dconf[f'{test_def_name}']
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)
