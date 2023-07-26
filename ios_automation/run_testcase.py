@@ -56,8 +56,7 @@ class IOSTestAutomation(unittest.TestCase):
 
     def test_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
-        test_def_name = sys._getframe().f_code.co_name
-        self.def_name = self.dconf[f'{test_def_name}']
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)
