@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 import requests
 import json
 
@@ -92,7 +93,8 @@ def slack_thread_notification(self):
         color = self.conf['pass_color']
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
-        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
+        attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
     else:
@@ -114,7 +116,8 @@ def slack_thread_notification(self):
         }
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"실패 쓰레드 테스트: *{self.result_data.get('test_name')}*"
-        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
+        attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
         attachment["attachments"][0]["blocks"].append(code_attachment)
         attachment["attachments"][0]["blocks"].append(reason_attachment)
         attachment = json.dumps(attachment)
@@ -179,6 +182,13 @@ def slack_thread_form(channel, ts):
             {
                 "color": '',
                 "blocks": [
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": ""
+                        }
+                    },
                     {
                         "type": "section",
                         "text": {
