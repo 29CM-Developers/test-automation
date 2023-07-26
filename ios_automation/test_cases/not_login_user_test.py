@@ -5,7 +5,6 @@ from time import time, sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException
-
 from com_utils import values_control
 
 
@@ -40,6 +39,7 @@ class NotLoginUserTest:
             sleep(2)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -92,7 +92,7 @@ class NotLoginUserTest:
             return result_data
 
     def full_test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
@@ -100,9 +100,6 @@ class NotLoginUserTest:
 
             # 주요 시나리오
             NotLoginUserTest.test_not_login_user_impossible(self, wd)
-
-            # 속도를 위해 MY 탭으로 시작 위치 변경
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
 
             # 상단 네비게이션 알림 버튼 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarNotiWhite').click()
@@ -132,6 +129,7 @@ class NotLoginUserTest:
             except NoSuchElementException:
                 print("쿠폰 없음")
             NotLoginUserTest.check_login_page(self, wd)
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
 
         except Exception:

@@ -75,7 +75,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
     def test_iOS_full(self):
-        self.def_name = sys._getframe().f_code.co_name
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)
