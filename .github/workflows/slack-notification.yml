@@ -25,4 +25,4 @@ jobs:
           USER_AVATAR="${{ github.event.pull_request.user.avatar_url }}"
           PR_CREATED_AT="${{ github.event.pull_request.created_at }}"
           MESSAGE="New PR opened on master:\n\n*Title:* ${PR_TITLE}\n*URL:* ${PR_URL}\n*Branch Name:* ${BRANCH_NAME}\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\n*Opened At:* ${PR_CREATED_AT}"
-          curl -X POST -H 'Content-type: application/json' --data '{"blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": "'"$MESSAGE"'"}}]}' $SLACK_WEBHOOK_URL
+          curl -X POST -H 'Content-type: application/json' --data '{"blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": "'"$MESSAGE"'"}}], "unfurl_links": false}' $SLACK_WEBHOOK_URL
