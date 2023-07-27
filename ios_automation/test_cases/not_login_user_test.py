@@ -48,9 +48,9 @@ class NotLoginUserTest:
 
             # 로그인 페이지 진입 및 확인
             NotLoginUserTest.check_login_page(self, wd)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
 
             # Home 탭으로 복귀
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
@@ -79,42 +79,53 @@ class NotLoginUserTest:
         start_time = time()
 
         try:
-            # Category 탭으로 이동하여 추천 상품 PLP 진입
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'FOR YOU').click()
-            try:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="당신을 위한 추천상품"]')
-                logger.info('추천 카테고리 PLP 진입 성공')
-            except NoSuchElementException:
-                logger.warning('추천 카테고리 PLP 진입 실패')
+            # Home > 베스트 탭 선택하여 베스트 PLP 진입
+            wd.execute_script('mobile:swipe', {'direction': 'up'})
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="전체보기"]').click()
 
-            # 추천 상품 PLP에서 첫번째 상품 선택
+            # 베스트 PLP에서 첫번째 상품명 저장하고 PDP 진입
             plp_product = wd.find_element(AppiumBy.XPATH,
-                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
+                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
             plp_name = plp_product.text
             plp_product.click()
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            pdp_name = wd.find_element(AppiumBy.XPATH,
+            pdp_name_text = wd.find_element(AppiumBy.XPATH,
                                        '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther').text
-            if plp_name in pdp_name:
+            pdp_name = pdp_name_text.strip(' - 감도 깊은 취향 셀렉트샵 29CM')
+            if pdp_name in plp_name:
                 logger.info('PDP 페이지 진입 성공')
-                pass
             else:
                 logger.warning(f'PDP 페이지 진입 실패 : {plp_name} / {pdp_name}')
 
+            # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
+
+            # Home > 추천 탭 상단의 타이틀 비교 (비로그인 유저 : 당신)
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '당신을 위한 추천 상품')
+                logger.info('비로그인 유저 추천 탭 진입 확인')
+            except NoSuchElementException:
+                logger.warning('비로그인 유저 추천 탭 진입 실패')
+
             # 상단 검색 버튼 선택하여 인기 브랜드 10위 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common search icon black').click()
+            # 상단 검색 버튼명(색상)이 스크롤 정도에 따라 다르게 노출되어 try-except문으로 확인(하얀색이 아니면 검정색으로)
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchWhite').click()
+            except:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchBlack').click()
             search_brand = wd.find_element(AppiumBy.XPATH,
                                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
             search_brand_name = search_brand.text
             search_brand.click()
 
+            # 검색 결과 화면 진입하여 선택한 브랜드명과 입력란의 문구 비교 확인
             sleep(3)
             search_input_field = wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').text
             if search_input_field == search_brand_name:
                 logger.info('검색 결과 화면 진입 성공')
-                pass
             else:
                 logger.warning(f'검색 결과 화면 진입 실패 : {search_brand_name} / {search_input_field}')
 
