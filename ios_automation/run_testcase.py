@@ -69,13 +69,18 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 로그인 테스트
-        self.result_data = UserLoginTest.test_login(self, self.wd)
+        # 이메일 로그인 실패
+        self.result_data = UserLoginTest.test_email_login_error(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 로그인 실패 테스트
-        self.result_data = UserLoginTest.test_login_error(self, self.wd)
+        # 이메일 로그인 성공
+        self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 로그아웃
+        self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
