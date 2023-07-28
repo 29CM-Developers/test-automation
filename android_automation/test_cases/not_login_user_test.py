@@ -47,7 +47,7 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
-            print("가이드 문구 : %s " % login_page_title.text)
+            print(f"가이드 문구 : {login_page_title.text} ")
 
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
@@ -63,7 +63,7 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
-            print("발견 문구 : %s " % home_title.text)
+            print(f"발견 문구 : {home_title.text} ")
 
             #full test 확장 시나리오
             # 홈 > 우상단 알림 아이콘 선택
@@ -75,7 +75,7 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
-            print("가이드 문구 : %s " % login_page_title.text)
+            print(f"가이드 문구 : {login_page_title.text} ")
 
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
@@ -86,7 +86,7 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
-            print("발견 문구 : %s " % home_title.text)
+            print(f"발견 문구 :{home_title.text} ")
 
             # 홈 > 우상단 장바구니 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgCart').click()
@@ -97,7 +97,7 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
-            print("가이드 문구 : %s " % login_page_title.text)
+            print(f"가이드 문구 : {login_page_title.text} ")
 
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
@@ -108,7 +108,7 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
-            print("발견 문구 : %s " % home_title.text)
+            print(f"발견 문구 : {home_title.text} ")
 
             # 하단 like 아이콘 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
@@ -131,7 +131,7 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
-            print("발견 문구 : %s " % home_title.text)
+            print(f"발견 문구 : {home_title.text} ")
             print("[사용 불가 기능 사용]CASE 완료")
 
         except Exception:
@@ -197,19 +197,19 @@ class NotLogin:
                 print("베스트 페이지 진입 확인")
             else:
                 print("베스트 페이지 진입 확인 실패")
-            print("타이틀 문구 : %s " % best_page_title.text)
+            print(f"타이틀 문구 : {best_page_title.text} ")
             best_product_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
             best_product_title = best_product_layer.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
-            print("베스트 상품명 : %s " % best_product_title)
+            print(f"베스트 상품명 : {best_product_title} ")
             wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
             PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
-            print("PDP_product_titile : %s " % PDP_product_titile)
+            print(f"PDP_product_titile : {PDP_product_titile} ")
             if best_product_title == PDP_product_titile:
                 print("베스트 상품 PDP 정상 확인")
             else:
                 print("베스트 상품 PDP 정상 확인 실패")
-            print("PDP 상품명 : %s " % PDP_product_titile)
+            print(f"PDP 상품명 : {PDP_product_titile} ")
 
             # 상단으로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
@@ -220,7 +220,7 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
-            print("발견 문구 : %s " % home_title.text)
+            print(f"발견 문구 : {home_title.text} ")
             # 8. 홈 > 피드 > 추천 탭선택
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
@@ -246,7 +246,7 @@ class NotLogin:
                     print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
                 else:
                     print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
-                print("가이드 문구 : %s " % guide_text.text)
+                print(f"가이드 문구 : {guide_text.text} ")
 
             else:
                 print("추천 탭을 찾지 못했습니다.")
@@ -277,7 +277,7 @@ class NotLogin:
                 print("택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
             else:
                 print("택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
-            print("검색어 : %s " % search_edit_text)
+            print(f"검색어 : {search_edit_text} ")
             # 8. MY 탭 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
             print("하단 마이페이지 화면 진입")
@@ -290,7 +290,7 @@ class NotLogin:
                 print("프로필 영역의 로그인.회원가입 문구 확인")
             else:
                 print("프로필 영역의 로그인.회원가입 문구 확인 실패")
-            print("프로필 영역의 문구 확인 : %s " % not_login)
+            print(f"프로필 영역의 문구 확인 : {not_login} ")
             print("[사용 가능 기능 사용]CASE 완료")
 
 

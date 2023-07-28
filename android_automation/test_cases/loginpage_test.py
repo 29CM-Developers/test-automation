@@ -47,7 +47,7 @@ class LoginLogout:
                 print("로그인 문구 확인")
             else:
                 print("로그인 문구 실패")
-            print("가이드 문구 : %s " % login_page_title.text)
+            print(f"가이드 문구 : {login_page_title.text} ")
 
             # 잘못된 비밀번호 입력 후 로그인 하기 버튼 선택
             wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
@@ -61,7 +61,7 @@ class LoginLogout:
                 print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 확인")
             else :
                 print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 실패")
-            print("가이드 문구 : %s " % guide_text.text)
+            print(f"가이드 문구 : {guide_text.text} ")
             sleep(1)
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
@@ -129,7 +129,7 @@ class LoginLogout:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 확인")
             else:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 실패")
-            print("가이드 문구 : %s " % guide_text.text)
+            print(f"가이드 문구 : {guide_text.text} ")
 
             # 비밀번호 입력 후 로그인 하기 버튼 선택
             wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys(self.pconf['LOGIN_SUCCESS_PW'])
@@ -144,7 +144,7 @@ class LoginLogout:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 확인")
             else:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 실패")
-            print("가이드 문구 : %s " % guide_text.text)
+            print(f"가이드 문구 : {guide_text.text} ")
 
             # 아이디 입력 후 로그인 하기 버튼 선택
             wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
@@ -159,7 +159,7 @@ class LoginLogout:
                 print("‘비밀번호를 입력하세요.’ 가이드 문구 노출 확인")
             else:
                 print("'비밀번호를 입력하세요.’ 가이드 문구 노출 실패")
-            print("가이드 문구 : %s " % guide_text.text)
+            print(f"가이드 문구 : {guide_text.text} ")
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -209,7 +209,7 @@ class LoginLogout:
                 print("로그인 문구 확인")
             else:
                 print("로그인 문구 실패")
-            print("가이드 문구 : %s " % login_page_title.text)
+            print(f"가이드 문구 : {login_page_title.text} ")
 
             # 올바른 비밀번로 입력 후 로그인 하기 버튼 선택
             wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
@@ -274,7 +274,7 @@ class LoginLogout:
             else:
                 print("로그인 문구 실패")
                 test_result = 'FAIL'
-            print("로그인 유저 이름 : %s " % login_name.text)
+            print(f"로그인 유저 이름 : {login_name.text} ")
             # 최하단[LOGOUT] 버튼 선택
             # 스크롤하여 버튼 찾기
             element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/btnLogout')
@@ -335,7 +335,7 @@ class LoginLogout:
             #가이드 문구 확인 - 아이디를 입력해주세요
             guide_text = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.view.View/android.widget.TextView')
 
-            print("가이드 문구 : %s " % guide_text.text)
+            print(f"가이드 문구 : {guide_text.text} ")
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
