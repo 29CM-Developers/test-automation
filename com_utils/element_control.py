@@ -1,7 +1,6 @@
 import logging
 
 from appium.webdriver.common.appiumby import AppiumBy
-from appium.webdriver.common.mobileby import MobileBy
 from selenium.webdriver.common.by import By
 
 
@@ -45,7 +44,7 @@ def scroll_to_element_id(wd, element_id):
     while True:
         try:
             # 원하는 요소를 찾으면 스크롤 종료
-            element = wd.find_element(MobileBy.ID, element_id)
+            element = wd.find_element(AppiumBy.ID, element_id)
             break
         except:
             # 요소를 찾지 못하면 아래로 스크롤
@@ -61,7 +60,7 @@ def scroll_to_element_xpath(wd, element_xpath):
     while True:
         try:
             # 원하는 요소를 찾으면 스크롤 종료
-            element = wd.find_element(MobileBy.XPATH, element_xpath)
+            element = wd.find_element(AppiumBy.XPATH, element_xpath)
             break
         except:
             # 요소를 찾지 못하면 아래로 스크롤
