@@ -64,18 +64,28 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 로그인 테스트
-        self.result_data = UserLoginTest.test_login(self, self.wd)
+        # 비로그인 유저 사용 가능
+        self.result_data = NotLoginUserTest.test_not_login_user_possible(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 로그인 실패 테스트
-        self.result_data = UserLoginTest.test_login_error(self, self.wd)
+        # 이메일 로그인 실패
+        self.result_data = UserLoginTest.test_email_login_error(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 이메일 로그인 성공
+        self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 로그아웃
+        self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
     def test_iOS_full(self):
-        self.def_name = sys._getframe().f_code.co_name
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)

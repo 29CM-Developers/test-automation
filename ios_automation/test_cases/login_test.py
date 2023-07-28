@@ -1,13 +1,9 @@
 import os.path
 import sys
 import traceback
-import json
 
 from time import sleep, time
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control
 
@@ -20,33 +16,31 @@ class UserLoginTest:
         wd.find_element(AppiumBy.IOS_PREDICATE, 'value=="비밀번호"').send_keys(password)
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기').click()
 
-    def test_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+    def test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, "닫기").click()
-            except NoSuchElementException:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
-
+            # 로그인 페이지 진입
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
+            sleep(3)
 
+            # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
+            UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['error_password_29cm'])
             sleep(1)
-
-            UserLoginTest.input_id_password(self, wd, self.pconf['error_id_29cm'], self.pconf['password_29cm'])
-
-            sleep(1)
-
             error = wd.find_element(AppiumBy.XPATH,
                                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
             error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
-            print(error)
 
             if error_login_text in error:
-                print(test_name + ": Pass")
+                print("이메일 로그인 실패 확인")
             else:
-                print(test_name + ": Fail")
+                print("이메일 로그인 실패 확인 불가")
+
+            # Home으로 복귀
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -63,6 +57,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            wd.get('app29cm://home')
 
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
@@ -73,22 +68,29 @@ class UserLoginTest:
                 'test_name': test_name, 'run_time': run_time}
             return result_data
 
-    def test_login(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
-            sleep(1)
+            # 로그인 페이지 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
+            sleep(3)
 
-            sleep(1)
-
+            # 올바른 아이디, 올바른 비밀번호 입력
             UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
-
             sleep(1)
 
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LOGOUT"]').click()
+            # 프로필 이름 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
+                print("로그인 성공")
+            except:
+                print("로그인 실패")
+
+            # Home 으로 복귀
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -100,6 +102,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            wd.get('app29cm://home')
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -108,12 +111,35 @@ class UserLoginTest:
                 'test_name': test_name, 'run_time': run_time}
             return result_data
 
-    def full_test_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
+            # My 탭 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
+                print("로그인 유저")
+            except:
+                print("비로그인 유저")
+
+            # 로그아웃 버튼 선택
+            wd.execute_script('mobile:swipe', {'direction': 'up'})
+            wd.execute_script('mobile:swipe', {'direction': 'up'})
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LOGOUT"]').click()
+
+            # 로그아웃 완료 후 문구 확인
+            wd.execute_script('mobile:swipe', {'direction': 'down'})
+            wd.execute_script('mobile:swipe', {'direction': 'down'})
+            try:
+                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="로그인·회원가입"]')
+                print('로그아웃 완료')
+            except NoSuchElementException:
+                print('로그아웃 실패')
+
+            # Home 으로 복귀
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -125,6 +151,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            wd.get('app29cm://home')
 
         finally:
             run_time = f"{time() - start_time:.2f}"
