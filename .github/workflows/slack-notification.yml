@@ -1,0 +1,56 @@
+name: Slack Notification for PR on master
+
+on:
+  pull_request:
+    branches:
+      - master
+      - feature
+    types: [opened, reopened]
+
+jobs:
+  notify_slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Convert time to KST
+        id: convert_time
+        run: |
+          PR_CREATED_AT_UTC="${{ github.event.pull_request.created_at }}"
+          PR_CREATED_AT_KST=$(TZ=Asia/Seoul date -d "${PR_CREATED_AT_UTC}" +'%Y-%m-%d %H:%M:%S')
+          echo "::set-output name=PR_CREATED_AT_KST::${PR_CREATED_AT_KST}"
+
+      - name: Send Slack notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          USER_LOGIN="${{ github.event.pull_request.user.login }}"
+          USER_AVATAR="${{ github.event.pull_request.user.avatar_url }}"
+          PR_CREATED_AT_KST="${{ steps.convert_time.outputs.PR_CREATED_AT_KST }}"
+
+          PAYLOAD=$(cat <<EOF
+          {
+            "attachments": [
+              {
+                "color": "#36a64f",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "New PR opened on master:\\n\\n*Title:* '${PR_TITLE}'\\n*URL:* '${PR_URL}'\\n*Branch Name:* '${BRANCH_NAME}'\\n*Opened By:* <${USER_AVATAR}|${USER_LOGIN}>\\n*Opened At:* '${PR_CREATED_AT_KST}'"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          )
+
+          curl -X POST -H 'Content-type: application/json' --data "$PAYLOAD" $SLACK_WEBHOOK_URL
