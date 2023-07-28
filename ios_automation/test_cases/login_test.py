@@ -84,7 +84,7 @@ class UserLoginTest:
 
             # 프로필 이름 확인
             try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '정다정')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
                 print("로그인 성공")
             except:
                 print("로그인 실패")
@@ -119,7 +119,7 @@ class UserLoginTest:
             # My 탭 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '정다정')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
                 print("로그인 유저")
             except:
                 print("비로그인 유저")
