@@ -2,6 +2,9 @@ import re
 import unittest
 import requests
 import os
+import sys
+iOS_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(iOS_path)
 
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
@@ -10,10 +13,6 @@ from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.home_test import Home
 from selenium.common.exceptions import InvalidSessionIdException
-
-import sys
-iOS_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(iOS_path)
 
 
 class IOSTestAutomation(unittest.TestCase):
