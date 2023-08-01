@@ -7,6 +7,54 @@
 	},
 	"item": [
 		{
+			"name": "get partner token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Response has a property called parther_token\", function () {",
+							"    pm.expect(jsonData).to.have.property('parther_token');",
+							"});",
+							"",
+							"pm.environment.set(\"partner_token\", jsonData.parther_token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{qa_host}}/qa/personal/test_environment",
+					"host": [
+						"{{qa_host}}"
+					],
+					"path": [
+						"qa",
+						"personal",
+						"test_environment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add item expired token",
 			"event": [
 				{
@@ -724,6 +772,80 @@
 			"response": []
 		},
 		{
+			"name": "delete product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"delete product 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"delete product result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-item-admin.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemIdList\": [\n        {{item_id}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v4/items/status-type:bulk-delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"items",
+						"status-type:bulk-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add item onepiece",
 			"event": [
 				{
@@ -922,6 +1044,80 @@
 			"response": []
 		},
 		{
+			"name": "delete product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"delete product 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"delete product result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-item-admin.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemIdList\": [\n        {{item_id}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v4/items/status-type:bulk-delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"items",
+						"status-type:bulk-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add item jumper",
 			"event": [
 				{
@@ -1114,6 +1310,80 @@
 			"response": []
 		},
 		{
+			"name": "delete product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"delete product 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"delete product result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-item-admin.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemIdList\": [\n        {{item_id}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v4/items/status-type:bulk-delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"items",
+						"status-type:bulk-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add item Tshirt Full",
 			"event": [
 				{
@@ -1186,7 +1456,14 @@
 							"    parent_lists.push(requestjsondata.itemSearch.itemFilterList[i].parentFilterId)",
 							"}",
 							"pm.environment.set(\"filter_lists\", filter_lists)",
-							"pm.environment.set(\"parent_lists\", parent_lists)"
+							"pm.environment.set(\"parent_lists\", parent_lists)",
+							"",
+							"var jsondata = JSON.parse(responseBody)",
+							"pm.environment.set(\"item_id\", jsondata.data.itemId);",
+							"",
+							"pm.test(\"itemId key check\", function () {",
+							"    pm.expect(jsondata.data).have.property(\"itemId\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1604,6 +1881,80 @@
 			"response": []
 		},
 		{
+			"name": "delete product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"delete product 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"delete product result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-item-admin.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemIdList\": [\n        {{item_id}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v4/items/status-type:bulk-delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"items",
+						"status-type:bulk-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add item Tshirt woman not include enddate",
 			"event": [
 				{
@@ -1644,7 +1995,14 @@
 							"pm.environment.set(\"isBadge\", requestjsondata.isBadge)",
 							"pm.environment.set(\"itemGift\", requestjsondata.itemGift)",
 							"pm.environment.set(\"itemShipping.isLocalGoods\", requestjsondata.itemShipping.isLocalGoods)",
-							"pm.environment.set(\"itemShipping.isPersonalClearanceCode\", requestjsondata.itemShipping.isPersonalClearanceCode)"
+							"pm.environment.set(\"itemShipping.isPersonalClearanceCode\", requestjsondata.itemShipping.isPersonalClearanceCode)",
+							"",
+							"var jsondata = JSON.parse(responseBody)",
+							"pm.environment.set(\"item_id\", jsondata.data.itemId);",
+							"",
+							"pm.test(\"itemId key check\", function () {",
+							"    pm.expect(jsondata.data).have.property(\"itemId\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1691,6 +2049,80 @@
 						"partner-admin",
 						"v4",
 						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"delete product 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"delete product result check\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-item-admin.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"itemIdList\": [\n        {{item_id}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v4/items/status-type:bulk-delete",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"items",
+						"status-type:bulk-delete"
 					]
 				}
 			},
