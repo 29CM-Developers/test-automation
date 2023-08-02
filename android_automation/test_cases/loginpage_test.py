@@ -67,6 +67,7 @@ class LoginLogout:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
             sleep(3)
+            print("[이메일 로그인 실패]CASE 종료")
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -160,6 +161,7 @@ class LoginLogout:
             else:
                 print("'비밀번호를 입력하세요.’ 가이드 문구 노출 실패")
             print(f"가이드 문구 : {guide_text.text} ")
+            print("[이메일 로그인 실패] CASE 종료")
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -229,6 +231,7 @@ class LoginLogout:
             # 하단 네비게이터에 홈 메뉴 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈화면 진입")
+            print("[이메일 로그인 성공]CASE 종료")
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
