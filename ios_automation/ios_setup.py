@@ -35,6 +35,8 @@ def dajjeong_setup():
     iOS_options.set_capability('xcodeOrgId', '323Z55V788')
     iOS_options.set_capability('simpleIsVisibleCheck', True)
     iOS_options.set_capability('useJSONSource', True)
+    iOS_options.set_capability('usePrebuiltWDA', True)
+    iOS_options.set_capability('skipServerInstallation', True)
     wd = webdriver.Remote('http://0.0.0.0:4924/wd/hub', options=iOS_options)
 
     return wd, iOS_options

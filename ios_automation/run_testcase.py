@@ -2,17 +2,17 @@ import re
 import unittest
 import requests
 import os
+import sys
+iOS_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(iOS_path)
 
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
 from ios_setup import dajjeong_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
+from ios_automation.test_cases.home_test import Home
 from selenium.common.exceptions import InvalidSessionIdException
-
-import sys
-iOS_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(iOS_path)
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -76,6 +76,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 홈화면 컨텐츠 확인
+        self.result_data = Home.test_home_contents(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
