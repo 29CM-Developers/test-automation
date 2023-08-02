@@ -1,6 +1,8 @@
 import unittest
 import os
 import sys
+and_path = os.path.join(os.path.dirname(__file__), '..')
+sys.path.append(and_path)
 import requests
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.loginpage_test import LoginLogout
@@ -9,8 +11,7 @@ from android_setup import hhj2008_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
 
-and_path = os.path.join(os.path.dirname(__file__), '..')
-sys.path.append(and_path)
+
 class AndroidTestAutomation(unittest.TestCase):
 
     def setUp(self):
