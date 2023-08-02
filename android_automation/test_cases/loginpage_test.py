@@ -222,7 +222,7 @@ class LoginLogout:
 
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == '홍해진' :
+가            if login_name.text == self.pconf['NAME'] :
                 pass
             else :
                 print("로그인 문구 실패")
@@ -272,7 +272,7 @@ class LoginLogout:
             sleep(2)
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == '홍해진':
+            if login_name.text == self.pconf['NAME']:
                 pass
             else:
                 print("로그인 문구 실패")
