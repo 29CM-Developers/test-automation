@@ -69,8 +69,16 @@ class Home:
             gift_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
             gift_title = gift_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
 
+            if gift_title == dynamic_button_title :
+                print(f"선물하기 타이틀 확인 : {gift_title}")
+            else :
+                print(f"선물하기 타이틀 확인 실패 : {gift_title}")
 
-
+            # 뒤로가기로 홈화면 진입 확인
+            gift_layer.find_element(AppiumBy.XPATH,'//android.view.View[1]/android.view.View/android.view.View/android.widget.Button').click()
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(3)
             print("[홈화면 배너 확인]CASE 종료")
 
             # 확인 실패 시, 테스트 종료되지는 않지만 테스트 종료 후 확인이 필요한 경우
