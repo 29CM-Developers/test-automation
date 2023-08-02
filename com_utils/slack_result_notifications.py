@@ -9,6 +9,9 @@ def slack_notification(self):
     if self.result_data['test_result'] == 'PASS':
         color = self.conf['pass_color']
         emoji = self.conf['pass_emoji']
+    elif self.result_data['test_result'] == 'WARN':
+        color = self.conf['warn_color']
+        emoji = self.conf['warn_emoji']
     else:
         color = self.conf['fail_color']
         emoji = self.conf['fail_emoji']
@@ -45,18 +48,39 @@ def slack_update_notification(self):
 
     headers = slack_headers_form(self.conf["slack_token"])
     if self.result_data['test_result'] == 'PASS':
-        test_result = 'PASS'
-        color = self.conf['pass_color']
-        emoji = self.conf['pass_emoji']
+        if self.slack_result == 'FAIL':
+            test_result = 'FAIL'
+            color = self.conf['fail_color']
+            emoji = self.conf['fail_emoji']
+        elif self.slack_result == 'WARN':
+            test_result = 'WARN'
+            color = self.conf['warn_color']
+            emoji = self.conf['warn_emoji']
+        else:
+            test_result = 'PASS'
+            color = self.conf['pass_color']
+            emoji = self.conf['pass_emoji']
+    elif self.result_data['test_result'] == 'WARN':
+        if self.slack_result == 'FAIL':
+            test_result = 'FAIL'
+            color = self.conf['fail_color']
+            emoji = self.conf['fail_emoji']
+        else:
+            test_result = 'WARN'
+            color = self.conf['warn_color']
+            emoji = self.conf['warn_emoji']
+            self.slack_result = self.result_data.get('test_result')
     else:
         color = self.conf['fail_color']
         emoji = self.conf['fail_emoji']
         self.slack_result = self.result_data.get('test_result')
 
     if self.slack_result == 'FAIL':
-            test_result = 'FAIL'
-            color = self.conf['fail_color']
-            emoji = self.conf['fail_emoji']
+        test_result = 'FAIL'
+        color = self.conf['fail_color']
+        emoji = self.conf['fail_emoji']
+    else:
+        pass
 
     if self.device_platform == 'iOS':
         device_emoji = ':ios:'
@@ -71,7 +95,6 @@ def slack_update_notification(self):
     text = ''.join(text)
     device_name = f'{text} {digit}'
 
-
     # slack noti 양식 가져오기
     attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
                                  test_result=test_result, def_name=self.def_name,
@@ -82,6 +105,7 @@ def slack_update_notification(self):
     payload = json.dumps(attachment)
     response = requests.post(url=self.conf['slack_update_message_url'], headers=headers, data=payload)
     return f"{total_time:.2f}", self.slack_result
+
 
 def slack_thread_notification(self):
     headers = slack_headers_form(self.conf["slack_token"])
@@ -95,6 +119,22 @@ def slack_thread_notification(self):
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
         attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
         attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment = json.dumps(attachment)
+        response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
+    elif self.result_data['test_result'] == 'WARN':
+        color = self.conf['warn_color']
+        warn_attachment = {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"*추가 확인 필요*: \n{self.result_data.get('warning_texts')}"
+            }
+        }
+        attachment["attachments"][0]["color"] = color
+        attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
+        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*"
+        attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment["attachments"][0]["blocks"].append(warn_attachment)
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
     else:
