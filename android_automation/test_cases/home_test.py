@@ -34,6 +34,40 @@ class Home:
         start_time = time()
         try:
             print("[홈화면 배너 확인]CASE 시작")
+            sleep(2)
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            print("홈 탭 선택")
+            txtFeedBannerTitle1 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedBannerTitle').text
+            print(f"현재 피드 타이틀 : {txtFeedBannerTitle1} ")
+            element_control.swipe_left_to_right(wd)
+            print("왼쪽에서 오른쪽으로 스와이프")
+            txtFeedBannerTitle2 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedBannerTitle').text
+            print(f"스와이프 후 피드 타이틀 : {txtFeedBannerTitle2} ")
+            if txtFeedBannerTitle1 != txtFeedBannerTitle2:
+                print("상단 배너 좌우 슬라이드 확인")
+            else:
+                print("상단 배너 좌우 슬라이드 확인 실패")
+            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll').text
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll').click()
+            next_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
+            print("모아보기 화면 진입")
+            next_layer_title = wd.find_element(AppiumBy.XPATH,'//*[@resource-id="__next"]/android.widget.TextView[@index=0]').text
+            if next_layer_title == home_title:
+                print(f"모아보기 진입 확인 : {next_layer_title} 노출 확인")
+                print("모아보기 버튼 선택하여 모아보기 페이지 진입 확인")
+            else:
+                print(f"모아보기 진입 확인 실패 : {next_layer_title} 노출")
+            # 뒤로가기로 홈화면 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(3)
+            # 4. 다이나믹 게이트 2번째 줄, 1번째 선택
+            dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
+            dynamic_button_title = dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[1]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').text
+            dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[1]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').click()
+            sleep(3)
+            gift_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
+            gift_title = gift_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
 
 
 
