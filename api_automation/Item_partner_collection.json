@@ -176,7 +176,7 @@
 			"response": []
 		},
 		{
-			"name": "add item carrier and bag",
+			"name": "add sports watch item",
 			"event": [
 				{
 					"listen": "test",
@@ -246,7 +246,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"smallCategoryCode\": \"245113102\",\n    \"genderAttributeType\": \"UNISEX\",\n    \"partnerBrandId\": 10175,\n    \"itemName\": \"기본정보 상품명\",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"searchKeyword\": null,\n    \"itemFilterIdList\": null,\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 119107,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119110,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119111,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119112,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": {\n        \"id\": \"\",\n        \"product\": \"\",\n        \"model\": \"\",\n        \"manufacturer\": \"\",\n        \"importer\": \"\"\n    },\n    \"consumerPrice\": \"59800\",\n    \"sellPrice\": \"49800\",\n    \"purchasePrice\": \"39840\",\n    \"marginRate\": \"21\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": \"NO_CHANGE\",\n    \"isRestrictPayMethod\": true,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": true,\n    \"limitedQty\": 1,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202303/11edbbfaa25438bab3fd1b79e35e0df8.jpeg\",\n                \"fileSize\": 154757,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 0\n        }\n    ],\n    \"itemDescription\": \"<p style=\\\"font-size: 16px; line-height: 26px; color: #000000\\\">에디터 사용한 상세페이지</p>\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"period\": null\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    }\n}",
+					"raw": "{\n    \"smallCategoryCode\": \"244103102\",\n    \"genderAttributeType\": \"UNISEX\",\n    \"partnerBrandId\": 10175,\n    \"itemName\": \"기본정보 상품명\",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"searchKeyword\": null,\n    \"itemFilterIdList\": null,\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 119107,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119110,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119111,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119112,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": {\n        \"id\": \"\",\n        \"product\": \"\",\n        \"model\": \"\",\n        \"manufacturer\": \"\",\n        \"importer\": \"\"\n    },\n    \"consumerPrice\": \"59800\",\n    \"sellPrice\": \"49800\",\n    \"purchasePrice\": \"39840\",\n    \"marginRate\": \"21\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": \"NO_CHANGE\",\n    \"isRestrictPayMethod\": true,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": true,\n    \"limitedQty\": 1,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202303/11edbbfaa25438bab3fd1b79e35e0df8.jpeg\",\n                \"fileSize\": 154757,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 0\n        }\n    ],\n    \"itemDescription\": \"<p style=\\\"font-size: 16px; line-height: 26px; color: #000000\\\">에디터 사용한 상세페이지</p>\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"period\": null\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -268,7 +268,7 @@
 			"response": []
 		},
 		{
-			"name": "carrier and bag data check",
+			"name": "sports watch data check",
 			"event": [
 				{
 					"listen": "test",
@@ -520,7 +520,7 @@
 			"response": []
 		},
 		{
-			"name": "delete carrier and bag check",
+			"name": "delete sports watch check",
 			"event": [
 				{
 					"listen": "test",
@@ -650,7 +650,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"smallCategoryCode\": \"245113102\",\n    \"genderAttributeType\": \"UNISEX\",\n    \"partnerBrandId\": 10175,\n    \"itemName\": \"기본정보 상품명\",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"searchKeyword\": null,\n    \"itemFilterIdList\": null,\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 119107,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119110,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119111,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119112,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": {\n        \"id\": \"\",\n        \"product\": \"\",\n        \"model\": \"\",\n        \"manufacturer\": \"\",\n        \"importer\": \"\"\n    },\n    \"consumerPrice\": \"59800\",\n    \"sellPrice\": \"49800\",\n    \"purchasePrice\": \"39840\",\n    \"marginRate\": \"21\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": \"NO_CHANGE\",\n    \"isRestrictPayMethod\": true,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": true,\n    \"limitedQty\": 1,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202303/11edbbfaa25438bab3fd1b79e35e0df8.jpeg\",\n                \"fileSize\": 154757,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 0\n        }\n    ],\n    \"itemDescription\": \"<p style=\\\"font-size: 16px; line-height: 26px; color: #000000\\\">에디터 사용한 상세페이지</p>\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"period\": null\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    }\n}",
+					"raw": "{\n    \"smallCategoryCode\": \"259105105\",\n    \"genderAttributeType\": null,\n    \"partnerBrandId\": 10175,\n    \"itemName\": \"기본정보 상품명 적는 곳입니다 \",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"itemSearch\": {\n        \"itemFilterList\": []\n    },\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 126101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 126102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 126103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 126104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 126105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 126106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 126107,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": null,\n    \"consumerPrice\": \"10000\",\n    \"sellPrice\": \"9000\",\n    \"purchasePrice\": \"7110\",\n    \"marginRate\": \"21\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": null,\n    \"isRestrictPayMethod\": false,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": null,\n    \"limitedQty\": 1000,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202308/11ee30da5cbe8ed19b7d1d5b87815e1c.jpeg\",\n                \"fileSize\": 144879,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 1\n        }\n    ],\n    \"itemDescription\": \"<p style=\\\"font-size: 16px; line-height: 26px; color: #000000\\\">에디터가 에딧에딧</p>\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"itemOption\": {\n        \"optionItemElementList\": [],\n        \"optionList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"period\": null\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    },\n    \"underThresholdCount\": 3,\n    \"isActiveRestockNotification\": false\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -692,7 +692,10 @@
 							"    pm.expect(jsondata.data.id).to.equal(pm.environment.get(\"item_id\"));",
 							"});",
 							"pm.test(\"genderAttributeType check\", function () {",
-							"    pm.expect(jsondata.data.genderAttributeType).to.equal(pm.environment.get(\"genderAttributeType\"));",
+							"    if (pm.environment.get(\"genderAttributeType\") === null){",
+							"        var genderAttributeType = \"NO_CLASSIFICATION\"",
+							"    }",
+							"    pm.expect(jsondata.data.genderAttributeType).to.equal(genderAttributeType);",
 							"});",
 							"pm.test(\"itemName check\", function () {",
 							"    pm.expect(jsondata.data.itemName).to.equal(pm.environment.get(\"itemName\"));",
@@ -719,7 +722,10 @@
 							"    pm.expect(jsondata.data.taxType).to.equal(pm.environment.get(\"taxType\"));",
 							"});",
 							"pm.test(\"orderStatusAfterPaidType check\", function () {",
-							"    pm.expect(jsondata.data.orderStatusAfterPaidType).to.equal(pm.environment.get(\"orderStatusAfterPaidType\"));",
+							"    if (pm.environment.get(\"orderStatusAfterPaidType\") === null){",
+							"        var orderStatusAfterPaidType = \"NO_CHANGE\"",
+							"    }",
+							"    pm.expect(jsondata.data.orderStatusAfterPaidType).to.equal(orderStatusAfterPaidType);",
 							"});",
 							"pm.test(\"isRestrictPayMethod check\", function () {",
 							"    pm.expect(jsondata.data.isRestrictPayMethod).to.equal(pm.environment.get(\"isRestrictPayMethod\"));",
@@ -728,7 +734,10 @@
 							"    pm.expect(jsondata.data.useAdultCheck).to.equal(pm.environment.get(\"useAdultCheck\"));",
 							"});",
 							"pm.test(\"isCouponAllowedInOrder check\", function () {",
-							"    pm.expect(jsondata.data.isCouponAllowedInOrder).to.equal(pm.environment.get(\"isCouponAllowedInOrder\"));",
+							"    if (pm.environment.get(\"isCouponAllowedInOrder\") === null){",
+							"        var isCouponAllowedInOrder = true",
+							"    }",
+							"    pm.expect(jsondata.data.isCouponAllowedInOrder).to.equal(isCouponAllowedInOrder);",
 							"});",
 							"pm.test(\"limitedQty check\", function () {",
 							"    pm.expect(jsondata.data.limitedQty).to.equal(pm.environment.get(\"limitedQty\"));",
@@ -1188,7 +1197,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"smallCategoryCode\": \"245113102\",\n    \"genderAttributeType\": \"UNISEX\",\n    \"partnerBrandId\": 10175,\n    \"itemName\": \"기본정보 상품명\",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"searchKeyword\": null,\n    \"itemFilterIdList\": null,\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 119107,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119110,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119111,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 119112,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": {\n        \"id\": \"\",\n        \"product\": \"\",\n        \"model\": \"\",\n        \"manufacturer\": \"\",\n        \"importer\": \"\"\n    },\n    \"consumerPrice\": \"59800\",\n    \"sellPrice\": \"49800\",\n    \"purchasePrice\": \"39840\",\n    \"marginRate\": \"21\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": \"NO_CHANGE\",\n    \"isRestrictPayMethod\": true,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": true,\n    \"limitedQty\": 1,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202303/11edbbfaa25438bab3fd1b79e35e0df8.jpeg\",\n                \"fileSize\": 154757,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 0\n        }\n    ],\n    \"itemDescription\": \"<p style=\\\"font-size: 16px; line-height: 26px; color: #000000\\\">에디터 사용한 상세페이지</p>\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"period\": null\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    }\n}",
+					"raw": "{\n    \"smallCategoryCode\": \"243101101\",\n    \"genderAttributeType\": \"UNISEX\",\n    \"partnerBrandId\": 10175,\n    \"itemName\": \"기본정보 상품명\",\n    \"itemType\": \"TANGIBLE\",\n    \"selfItemName\": \"\",\n    \"selfItemCode\": \"\",\n    \"subject\": null,\n    \"importantInformation\": {\n        \"itemImportantInformation\": \"\",\n        \"orderImportantInformation\": \"\",\n        \"deliveryImportantInformation\": \"\"\n    },\n    \"itemSize\": null,\n    \"itemSearch\": {\n        \"itemFilterList\": []\n    },\n    \"productNoticeDetailList\": [\n        {\n            \"code\": 101101,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101102,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101103,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101105,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101106,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101107,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101108,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101104,\n            \"value\": \"상세 페이지 참고\"\n        },\n        {\n            \"code\": 101109,\n            \"value\": \"상세 페이지 참고\"\n        }\n    ],\n    \"kcInformation\": null,\n    \"consumerPrice\": \"10000\",\n    \"sellPrice\": \"9500\",\n    \"purchasePrice\": \"7505\",\n    \"marginRate\": \"21\",\n    \"taxType\": \"TAXATION\",\n    \"maxOrder\": null,\n    \"orderStatusAfterPaidType\": null,\n    \"isRestrictPayMethod\": false,\n    \"useAdultCheck\": false,\n    \"isCouponAllowedInOrder\": null,\n    \"limitedQty\": 1100,\n    \"itemMainImageList\": [\n        {\n            \"image\": {\n                \"url\": \"/item/202308/11ee30ea103e90099b7d111ffc32be2c.jpeg\",\n                \"fileSize\": 154757,\n                \"height\": 1000,\n                \"width\": 1000\n            },\n            \"index\": 1\n        }\n    ],\n    \"itemDescription\": \"\",\n    \"itemDetailImage\": {\n        \"itemBasicImageList\": [\n            {\n                \"image\": {\n                    \"url\": \"/item/202308/11ee30ea1e2ed49b9b7dabeea8ed9daa.jpeg\",\n                    \"fileSize\": 154144,\n                    \"height\": 1000,\n                    \"width\": 1000\n                },\n                \"title\": \"템플릿 타이틀\",\n                \"content\": \"템플릿 내용 템플템플\",\n                \"index\": 0\n            }\n        ],\n        \"itemTitleImageList\": [],\n        \"itemVideoImageList\": [],\n        \"itemLinkImageList\": []\n    },\n    \"itemOption\": {\n        \"optionItemElementList\": [],\n        \"optionList\": []\n    },\n    \"isBadge\": false,\n    \"itemGift\": null,\n    \"itemShipping\": {\n        \"estimatedShipping\": {\n            \"period\": null\n        },\n        \"reasonForNotShipping\": \"\",\n        \"isLocalGoods\": true,\n        \"isPersonalClearanceCode\": false\n    },\n    \"underThresholdCount\": 3,\n    \"isActiveRestockNotification\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1257,7 +1266,10 @@
 							"    pm.expect(jsondata.data.taxType).to.equal(pm.environment.get(\"taxType\"));",
 							"});",
 							"pm.test(\"orderStatusAfterPaidType check\", function () {",
-							"    pm.expect(jsondata.data.orderStatusAfterPaidType).to.equal(pm.environment.get(\"orderStatusAfterPaidType\"));",
+							"    if (pm.environment.get(\"orderStatusAfterPaidType\") === null){",
+							"        var orderStatusAfterPaidType = \"NO_CHANGE\"",
+							"    }",
+							"    pm.expect(jsondata.data.orderStatusAfterPaidType).to.equal(orderStatusAfterPaidType);",
 							"});",
 							"pm.test(\"isRestrictPayMethod check\", function () {",
 							"    pm.expect(jsondata.data.isRestrictPayMethod).to.equal(pm.environment.get(\"isRestrictPayMethod\"));",
@@ -1266,7 +1278,10 @@
 							"    pm.expect(jsondata.data.useAdultCheck).to.equal(pm.environment.get(\"useAdultCheck\"));",
 							"});",
 							"pm.test(\"isCouponAllowedInOrder check\", function () {",
-							"    pm.expect(jsondata.data.isCouponAllowedInOrder).to.equal(pm.environment.get(\"isCouponAllowedInOrder\"));",
+							"    if (pm.environment.get(\"isCouponAllowedInOrder\") === null){",
+							"        var isCouponAllowedInOrder = true",
+							"    }",
+							"    pm.expect(jsondata.data.isCouponAllowedInOrder).to.equal(isCouponAllowedInOrder);",
 							"});",
 							"pm.test(\"limitedQty check\", function () {",
 							"    pm.expect(jsondata.data.limitedQty).to.equal(pm.environment.get(\"limitedQty\"));",
