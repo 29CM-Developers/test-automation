@@ -2,6 +2,7 @@ import logging
 
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.touch_action import TouchAction
+지from selenium.common import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
@@ -85,7 +86,7 @@ def scroll(wd):
         duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
 # 좌우로 스와이프 함수 정의
-def swipe_right_to_left(wd):
+def swipe_right_to_left1(wd):
     # 화면 크기 가져오기
     window_size = wd.get_window_size()
     width = window_size['width']
@@ -105,7 +106,7 @@ def swipe_right_to_left(wd):
     actions.w3c_actions.pointer_action.release()
     actions.perform()
 
-def swipe_left_to_right(wd):
+def swipe_left_to_right1(wd):
     # 화면 크기 가져오기
     window_size = wd.get_window_size()
     width = window_size['width']
@@ -123,4 +124,3 @@ def swipe_left_to_right(wd):
     actions.w3c_actions.pointer_action.move_to_location(end_x, y)
     actions.w3c_actions.pointer_action.release()
     actions.perform()
-
