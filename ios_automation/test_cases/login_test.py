@@ -16,11 +16,12 @@ class UserLoginTest:
         wd.find_element(AppiumBy.IOS_PREDICATE, 'value=="비밀번호"').send_keys(password)
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기').click()
 
-    def test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
+            test_scenario = '잘못된 패스워드 입력으로 로그인 실패 확인'
             # 로그인 페이지 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
@@ -36,6 +37,8 @@ class UserLoginTest:
             if error_login_text in error:
                 print("이메일 로그인 실패 확인")
             else:
+                test_result = 'WARN'
+                warning_texts.append(test_scenario)
                 print("이메일 로그인 실패 확인 불가")
 
             # Home으로 복귀
@@ -60,19 +63,20 @@ class UserLoginTest:
             wd.get('app29cm://home')
 
         finally:
-            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # 값 재사용 용이성을 위해 dict로 반환한다
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
 
-    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
+            test_scenario = '이메일 로그인 성공 확인'
             # 로그인 페이지 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
@@ -87,6 +91,8 @@ class UserLoginTest:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
                 print("로그인 성공")
             except:
+                test_result = 'WARN'
+                warning_texts.append(test_scenario)
                 print("로그인 실패")
 
             # Home 으로 복귀
@@ -106,16 +112,19 @@ class UserLoginTest:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
 
-    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
+            test_scenario = '로그아웃 성공 확인'
             # My 탭 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             try:
@@ -136,6 +145,8 @@ class UserLoginTest:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="로그인·회원가입"]')
                 print('로그아웃 완료')
             except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append(test_scenario)
                 print('로그아웃 실패')
 
             # Home 으로 복귀
@@ -155,9 +166,11 @@ class UserLoginTest:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
 
 
