@@ -274,17 +274,17 @@ class NotLogin:
             # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
             search_edit_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
             if search_edit_text == brand_10th_name:
-                print("택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
+                print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
             else:
-                print("택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
+                print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
             print(f"검색어 : {search_edit_text} ")
             # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
             brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
             search_brand = brand_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
             if search_brand == brand_10th_name:
-                print("택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
+                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
             else:
-                print("택택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
+                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
             print(f"브랜드 이름 : {search_brand} ")
             # 8. MY 탭 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
