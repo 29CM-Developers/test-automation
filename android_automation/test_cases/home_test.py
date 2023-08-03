@@ -50,22 +50,20 @@ class Home:
                 else:
                     print("데이터가 없습니다.")
 
-                count = 0
                 found_element = None
-                while count <= 10:
+                for _ in range(20):
                     try:
-                        # 두번째 피드 타이틀와 일치하는 요소 찾기
+                        # 다섯번째 배너 타이틀과 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedBannerTitle')
                         if element.text == fifth_banner_title:
                             found_element = element
-                            print(f"다섯번째 bannerTitle 발견 : {fifth_banner_title}")
-                            print(f"배너타이틀 노출 확인 : {fifth_banner_title}")
+                            print(f"다섯번째 bannerTitle 발견 : {element.text}")
+                            print(f"배너타이틀 노출 확인 : {element.text}")
                             break
                     except NoSuchElementException:
                         pass
                     # 스와이프 액션 수행
-                    element_control.swipe_right_to_left(wd)
-                    ++count
+                    element_control.swipe_right_to_left1(wd)
                 if found_element is None:
                     test_result = 'WARN'
                     warning_texts.append("홈화면 상단 배너 좌우 슬라이드 확인 실패")
@@ -226,9 +224,8 @@ class Home:
                 else:
                     print("데이터가 없습니다.")
 
-                count = 0
                 found_element = None
-                while count <= 10:
+                for _ in range(10):
                     try:
                         # 두번째 피드 타이틀와 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedTitle')
@@ -241,7 +238,7 @@ class Home:
                         pass
                     # 스크롤 액션 수행
                     element_control.scroll(wd)
-                    ++count
+
                 if found_element is None:
                     test_result = 'WARN'
                     warning_texts.append("피드 컨텐츠 추가 노출 확인 실패")
