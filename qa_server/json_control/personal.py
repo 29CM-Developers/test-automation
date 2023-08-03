@@ -4,7 +4,6 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 personal_info = Namespace('get_personal')
-json_list = Namespace('get_lists')
 json_path = '/Users/mpark-macmini/test-automation/qa_server/json_control/personal.json'
 # "/personal/{name}" 엔드포인트
 @personal_info.route("/personal/<string:name>")
@@ -45,13 +44,3 @@ class Personal(Resource):
             return {'error': 'Data not found'}, 404
         except KeyError:
             return {'error': '존재하지 않는 key 입니다.'}, 404
-
-@json_list.route("/lists")
-class JsonLists(Resource):
-    def get(self, name):
-        try:
-            with open(json_path, 'r') as file:
-                data = json.load(file)
-            return list(data.keys())
-        except FileNotFoundError:
-            return {'error': 'Data not found'}, 404
