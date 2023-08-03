@@ -357,8 +357,11 @@ class NotLogin:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
