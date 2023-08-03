@@ -14,7 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
-from time import sleep, time
+from time import sleep, time, strftime, localtime
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -32,6 +32,7 @@ class Home:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[홈화면 배너 확인]CASE 시작")
             sleep(2)
@@ -129,10 +130,13 @@ class Home:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
 
     def test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -141,6 +145,7 @@ class Home:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[홈화면 컨텐츠 확인]CASE 시작")
             sleep(5)
@@ -267,8 +272,11 @@ class Home:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data

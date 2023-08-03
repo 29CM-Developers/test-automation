@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
-from time import sleep, time
+from time import sleep, time, strftime, localtime
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -23,12 +23,13 @@ logger.addHandler(stream_handler)  ## 핸들러 등록
 
 class NotLogin:
 
-    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[사용 불가 기능 사용]CASE 시작")
             sleep(2)
@@ -47,6 +48,8 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 진입 확인 실패")
             print(f"가이드 문구 : {login_page_title.text} ")
 
             # 뒤로가기로 카테고리 진입 확인
@@ -63,6 +66,8 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("홈 진입 확인 실패")
             print(f"발견 문구 : {home_title.text} ")
 
             #full test 확장 시나리오
@@ -75,6 +80,8 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 진입 확인 실패")
             print(f"가이드 문구 : {login_page_title.text} ")
 
             # 뒤로가기로 홈화면 진입 확인
@@ -86,6 +93,8 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("홈 진입 확인 실패")
             print(f"발견 문구 :{home_title.text} ")
 
             # 홈 > 우상단 장바구니 아이콘 선택
@@ -97,6 +106,8 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 진입 확인 실패")
             print(f"가이드 문구 : {login_page_title.text} ")
 
             # 뒤로가기로 홈화면 진입 확인
@@ -108,6 +119,8 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("홈 진입 확인 실패")
             print(f"발견 문구 : {home_title.text} ")
 
             # 하단 like 아이콘 선택
@@ -119,6 +132,8 @@ class NotLogin:
                 print("로그인 진입 확인 : 로그인 문구 확인")
             else:
                 print("로그인 진입 확인 : 로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 진입 확인 실패")
             print("가이드 문구 : %s " % login_page_title.text)
 
             # 뒤로가기로 홈화면 진입 확인
@@ -131,6 +146,8 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("홈 진입 확인 실패")
             print(f"발견 문구 : {home_title.text} ")
             print("[사용 불가 기능 사용]CASE 종료")
 
@@ -154,18 +171,22 @@ class NotLogin:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
 
-    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
 
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[사용 가능 기능 사용]CASE 시작")
             sleep(5)
@@ -197,6 +218,8 @@ class NotLogin:
                 print("베스트 페이지 진입 확인")
             else:
                 print("베스트 페이지 진입 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("베스트 페이지 진입 확인 실패")
             print(f"타이틀 문구 : {best_page_title.text} ")
             best_product_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
             best_product_title = best_product_layer.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
@@ -209,6 +232,8 @@ class NotLogin:
                 print("베스트 상품 PDP 정상 확인")
             else:
                 print("베스트 상품 PDP 정상 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("베스트 상품 PDP 정상 확인 실패")
             print(f"PDP 상품명 : {PDP_product_titile} ")
 
             # 상단으로 홈화면 진입 확인
@@ -220,6 +245,8 @@ class NotLogin:
                 print("홈 진입 확인 : 모아보기 문구 확인")
             else:
                 print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("홈 진입 확인 실패")
             print(f"발견 문구 : {home_title.text} ")
             # 8. 홈 > 피드 > 추천 탭선택
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
@@ -246,6 +273,8 @@ class NotLogin:
                     print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
                 else:
                     print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("추천 가이드 문구 확인 실패")
                 print(f"가이드 문구 : {guide_text.text} ")
 
             else:
@@ -277,6 +306,8 @@ class NotLogin:
                 print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
             else:
                 print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
+                test_result = 'WARN'
+                warning_texts.append("브랜드명 비교 실패")
             print(f"검색어 : {search_edit_text} ")
             # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
             brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
@@ -285,6 +316,8 @@ class NotLogin:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
             else:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
             print(f"브랜드 이름 : {search_brand} ")
             # 8. MY 탭 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
@@ -298,6 +331,8 @@ class NotLogin:
                 print("프로필 영역의 로그인.회원가입 문구 확인")
             else:
                 print("프로필 영역의 로그인.회원가입 문구 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("프로필 영역의 로그인.회원가입 문구 확인 실패")
             print(f"프로필 영역의 문구 확인 : {not_login} ")
             print("[사용 가능 기능 사용]CASE 종료")
 

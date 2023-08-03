@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec, wait
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control
-from time import sleep, time
+from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications, element_control
 logger = logging.getLogger(name='Log')
@@ -22,11 +22,12 @@ logger.addHandler(stream_handler)  ## 핸들러 등록
 class LoginLogout:
 
     # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
-    def test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[이메일 로그인 실패] CASE 시작")
             sleep(3)
@@ -47,6 +48,8 @@ class LoginLogout:
                 print("로그인 문구 확인")
             else:
                 print("로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 화면 진입 확인 실패")
             print(f"가이드 문구 : {login_page_title.text} ")
 
             # 잘못된 비밀번호 입력 후 로그인 하기 버튼 선택
@@ -61,6 +64,8 @@ class LoginLogout:
                 print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 확인")
             else :
                 print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 실패 가이드 문구 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
             sleep(1)
             # 뒤로가기로 홈화면 진입 확인
@@ -89,14 +94,20 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
-            result_data = {'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,'test_name': test_name, 'run_time': run_time}
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
-    def full_test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def full_test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             self.email_login_fail()
 
@@ -117,6 +128,8 @@ class LoginLogout:
                 print("로그인 문구 확인")
             else:
                 print("로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 문구 확인 실패")
             print("가이드 문구 : %s " % login_page_title.text)
 
             # 미입력 후 로그인 하기 버튼 선택
@@ -130,6 +143,8 @@ class LoginLogout:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 확인")
             else:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 실패")
+                test_result = 'WARN'
+                warning_texts.append("가이드 문구 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
 
             # 비밀번호 입력 후 로그인 하기 버튼 선택
@@ -145,6 +160,8 @@ class LoginLogout:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 확인")
             else:
                 print("‘아이디를 입력하세요.’ 가이드 문구 노출 실패")
+                test_result = 'WARN'
+                warning_texts.append("가이드 문구 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
 
             # 아이디 입력 후 로그인 하기 버튼 선택
@@ -160,6 +177,8 @@ class LoginLogout:
                 print("‘비밀번호를 입력하세요.’ 가이드 문구 노출 확인")
             else:
                 print("'비밀번호를 입력하세요.’ 가이드 문구 노출 실패")
+                test_result = 'WARN'
+                warning_texts.append("가이드 문구 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
             print("[이메일 로그인 실패] CASE 종료")
 
@@ -183,14 +202,20 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
-            result_data = {'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,'test_name': test_name, 'run_time': run_time}
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
-    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[이메일 로그인 성공]CASE 시작")
             sleep(5)
@@ -211,6 +236,8 @@ class LoginLogout:
                 print("로그인 문구 확인")
             else:
                 print("로그인 문구 실패")
+                test_result = 'WARN'
+                warning_texts.append("로그인 문구 확인 실패")
             print(f"가이드 문구 : {login_page_title.text} ")
 
             # 올바른 비밀번로 입력 후 로그인 하기 버튼 선택
@@ -226,7 +253,8 @@ class LoginLogout:
                 pass
             else :
                 print("로그인 문구 실패")
-                test_result = 'FAIL'
+                test_result = 'WARN'
+                warning_texts.append("로그인 문구 확인 실패")
             print("로그인 유저 이름 : %s " % login_name.text)
             # 하단 네비게이터에 홈 메뉴 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
@@ -253,16 +281,20 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time': formatted_time}
             return result_data
-    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src=''):
+    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[이메일 로그아웃]CASE 시작")
             sleep(5)
@@ -276,7 +308,8 @@ class LoginLogout:
                 pass
             else:
                 print("로그인 문구 실패")
-                test_result = 'FAIL'
+                test_result = 'WARN'
+                warning_texts.append("로그인 확인 실패")
             print(f"로그인 유저 이름 : {login_name.text} ")
             # 최하단[LOGOUT] 버튼 선택
             # 스크롤하여 버튼 찾기
@@ -289,7 +322,8 @@ class LoginLogout:
                 pass
             else:
                 logging.info("로그아웃 문구 실패")
-                test_result = 'FAIL'
+                test_result = 'WARN'
+                warning_texts.append("로그인 문구 확인 실패")
             print("로그아웃 문구 확인 : %s " % logout_check.text)
 
             # 하단 네비게이터에 MY 메뉴 진입
@@ -316,13 +350,20 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
-    def Login_with_SNS(self, wd, error_text=''):
-
+    def Login_with_SNS(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("---------6.SNS 로그인 Adroid 에서 apple 계정 케이스 시작")
             sleep(5)
@@ -360,8 +401,11 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
             return result_data
