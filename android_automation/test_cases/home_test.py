@@ -63,7 +63,7 @@ class Home:
                     except NoSuchElementException:
                         pass
                     # 스와이프 액션 수행
-                    element_control.swipe_right_to_left1(wd)
+                    element_control.swipe_right_to_left(wd,element)
                 if found_element is None:
                     test_result = 'WARN'
                     warning_texts.append("홈화면 상단 배너 좌우 슬라이드 확인 실패")
