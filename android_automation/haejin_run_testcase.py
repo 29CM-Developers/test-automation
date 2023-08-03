@@ -7,6 +7,7 @@ import requests
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.loginpage_test import LoginLogout
 from android_automation.test_cases.not_login_user_test import NotLogin
+from android_automation.test_cases.home_test import Home
 from android_setup import hhj2008_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -77,6 +78,18 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 - 이메일 로그인 성공
         self.result_data = LoginLogout.test_email_login_success(self, self.wd)
+        # slack 스레드 추가
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        # slack noti 업데이트
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # 실제 실행 - 홈 배너 성공
+        self.result_data = Home.test_home_banner(self, self.wd)
+        # slack 스레드 추가
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        # slack noti 업데이트
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # 실제 실행 - 홈 컨텐츠 성공
+        self.result_data = Home.test_home_contents(self, self.wd)
         # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
         # slack noti 업데이트
