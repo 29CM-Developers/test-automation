@@ -13,7 +13,7 @@ api = Api(app)
 
 # "/personal/{name}" 엔드포인트를 위한 네임스페이스 생성
 api.add_namespace(personal.personal_info, '/qa')
-api.add_namespace(personal.json_path, '/qa')
+api.add_namespace(personal.json_list, '/qa')
 
 
 if __name__ == '__main__':
