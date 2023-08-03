@@ -8,10 +8,11 @@ json_path = '/Users/mpark-macmini/test-automation/qa_server/json_control/persona
 # "/personal/{name}" 엔드포인트
 @json_list.route("/lists")
 class JsonLists(Resource):
-    def get(self, name):
+    def get(self):
         try:
             with open(json_path, 'r') as file:
                 data = json.load(file)
-            return list(data.keys())
+                list_data = list(data.keys())
+            return list_data
         except FileNotFoundError:
             return {'error': 'Data not found'}, 404
