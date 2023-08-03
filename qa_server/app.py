@@ -6,15 +6,14 @@ sys.path.append(and_path)
 
 from flask import Flask
 from flask_restx import Api
-from qa_server.json_control import personal
+from qa_server.json_control import personal, json_list
 
 app = Flask(__name__)
 api = Api(app)
 
 # "/personal/{name}" 엔드포인트를 위한 네임스페이스 생성
 api.add_namespace(personal.personal_info, '/qa')
-api.add_namespace(personal.json_list, '/qa')
-
+api.add_namespace(json_list.json_list, '/qa')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=50)
