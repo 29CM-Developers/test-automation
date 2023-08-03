@@ -94,11 +94,17 @@ def slack_update_notification(self):
     text = list(filter(str.isalpha, device_name))
     text = ''.join(text)
     device_name = f'{text} {digit}'
+    minutes = total_time // 60
+    seconds = total_time % 60
+    if minutes > 0:
+        str_total_time = f"{int(minutes)} 분 {seconds:.2f} 초"
+    else:
+        str_total_time = f"{total_time:.2f} 초"
 
     # slack noti 양식 가져오기
     attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
                                  test_result=test_result, def_name=self.def_name,
-                                 count=self.count, total_time=f"{total_time:.2f}",
+                                 count=self.count, total_time=str_total_time,
                                  device_platform=device_emoji, device_name=device_name)
 
     attachment['ts'] = self.response['ts']
@@ -205,7 +211,7 @@ def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_t
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": f"테스트 진행률: *{count} 개 / 총 {total_time} 초*"
+                            "text": f"테스트 진행률: *{count} 개 / 총 {total_time}*"
                         }
                     }
                 ]
