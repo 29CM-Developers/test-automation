@@ -54,59 +54,39 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # testcases 실행 - 비로그인 사용 불가 기능 사용
         self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
-        # slack noti 작성 - 1회만 필요. ts값이 필요하여 self.response에 반환값 저장
         self.response = slack_result_notifications.slack_notification(self)
-        # slack 스레드 추가 -
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result  = slack_result_notifications.slack_update_notification(self)
 
-        # 복수 testcases 실행 시 slack 스레드 추가 와 slack noti 업데이트 만 계속 추가
         # 실제 실행 - 비로그인 사용 가능 기능 사용
         self.result_data = NotLogin.test_not_login_user_possible(self, self.wd)
-        # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 이메일 로그인 실패
         self.result_data = LoginLogout.test_email_login_error(self, self.wd)
-        # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 이메일 로그인 성공
         self.result_data = LoginLogout.test_email_login_success(self, self.wd)
-        # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 - 홈 배너 성공
         self.result_data = Home.test_home_banner(self, self.wd)
-        # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 - 홈 컨텐츠 성공
         self.result_data = Home.test_home_contents(self, self.wd)
-        # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
-        # slack 스레드 추가
         self.count = slack_result_notifications.slack_thread_notification(self)
-        # slack noti 업데이트
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-        # # 실제 실행
-        # self.result_data = AutomationTesting.def_name_fail(self, self.wd)
-        # # slack 스레드 추가
-        # self.count = slack_result_notifications.slack_thread_notification(self)
-        # # slack noti 업데이트
-        # self.total_time, self.slack_result  = slack_result_notifications.slack_update_notification(self)
-
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main()ㅅ
