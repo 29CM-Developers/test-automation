@@ -84,43 +84,49 @@ def scroll(wd):
         end_y = size["height"] * 0.2
         duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+
 # 좌우로 스와이프 함수 정의
-def swipe_right_to_left(wd):
-    # 화면 크기 가져오기
+def swipe_right_to_left(wd, element):
+    # 특정 요소의 위치와 사이즈 값
+    location = element.location
+    size = element.size
+
+    # 특정 요소의 중앙을 시작점으로 지정
+    start_x = location['x'] + (size['width'] / 2)
+    start_y = location['y'] + (size['height'] / 2)
+
+    # 디바이스 사이즈
     window_size = wd.get_window_size()
-    width = window_size['width']
-    height = window_size['height']
 
-    # 시작점과 끝점 계산
-    start_x = int(width * 0.6)
-    end_x = int(width * 0.4)
-    y = int(height * 0.3)
+    # 움직을 x값을 디바이스 사이즈의 30%로 지정
+    move_x = window_size['width'] * 0.3
 
-    # Swipe 동작 설정
+    # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 좌측으로 이동
     actions = ActionChains(wd)
     actions.w3c_actions = ActionBuilder(wd, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-    actions.w3c_actions.pointer_action.move_to_location(start_x, y)
+    actions.w3c_actions.pointer_action.move_to_location(start_x, start_y)
     actions.w3c_actions.pointer_action.pointer_down()
-    actions.w3c_actions.pointer_action.move_to_location(end_x, y)
+    actions.w3c_actions.pointer_action.move_to_location((start_x - move_x), start_y)
     actions.w3c_actions.pointer_action.release()
     actions.perform()
 
-def swipe_left_to_right(wd):
-    # 화면 크기 가져오기
-    window_size = wd.get_window_size()
-    width = window_size['width']
-    height = window_size['height']
 
-    # 시작점과 끝점 계산
-    start_x = int(width * 0.4)
-    end_x = int(width * 0.6)
-    y = int(height * 0.3)
-    # Swipe 동작 설정
+def swipe_left_to_right(wd, element):
+    location = element.location
+    size = element.size
+
+    start_x = location['x'] + (size['width'] / 2)
+    start_y = location['y'] + (size['height'] / 2)
+
+    window_size = wd.get_window_size()
+
+    move_x = window_size['width'] * 0.3
+
+    # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 우측으로 이동
     actions = ActionChains(wd)
     actions.w3c_actions = ActionBuilder(wd, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-    actions.w3c_actions.pointer_action.move_to_location(start_x, y)
+    actions.w3c_actions.pointer_action.move_to_location(start_x, start_y)
     actions.w3c_actions.pointer_action.pointer_down()
-    actions.w3c_actions.pointer_action.move_to_location(end_x, y)
+    actions.w3c_actions.pointer_action.move_to_location((start_x + move_x), start_y)
     actions.w3c_actions.pointer_action.release()
     actions.perform()
-
