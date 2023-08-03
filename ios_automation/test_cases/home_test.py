@@ -6,12 +6,7 @@ from time import time, sleep
 
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
-from appium.webdriver.common.touch_action import TouchAction
 from selenium.common import NoSuchElementException
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.actions import interaction
-from selenium.webdriver.common.actions.action_builder import ActionBuilder
-from selenium.webdriver.common.actions.pointer_input import PointerInput
 
 import com_utils.element_control
 from com_utils import values_control
@@ -22,6 +17,7 @@ class Home:
     def test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
+        print(f'{test_name} 테스트 시작')
 
         try:
             # 홈 배너 API 호출하여 5번째 배너 타이틀 저장
@@ -29,10 +25,9 @@ class Home:
             if response.status_code == 200:
                 banner_api_data = response.json()
                 banner_title_api = banner_api_data['data']['bannerList'][4]['bannerTitle']
-                print(banner_title_api)
 
                 # 스와이프하여 동일한 배너 타이틀 탐색
-                for i in range(0, 10):
+                for i in range(1, 20):
                     try:
                         wd.find_element(AppiumBy.ACCESSIBILITY_ID, banner_title_api)
                         print('홈화면 상단 배너 좌우 슬라이드 확인')
@@ -41,13 +36,20 @@ class Home:
                         banner = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView')
                         com_utils.element_control.swipe_right_to_left(wd, banner)
                         print('피드 텍스트 확인 안되어 스와이프')
+                        i += 1
+            else:
                 test_result = 'WARN'
-                warning_texts.append('홈화면 상단 배너 좌우 슬라이드 확인 실패')
+                warning_texts.append('피드 컨텐츠 API 불러오기 실패')
+                print('피드 컨텐츠 API 불러오기 실패')
 
+            # 다이나믹 게이트 -> 센스있는 선물하기 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
 
             # 웹뷰 요소가 잡히지 않아 비교할 요소값 확인 불가
+            # 아래 뒤로가기 동작 안함
+            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
+            wd.get('app29cm://home')
 
         except Exception:
             test_result = 'FAIL'
@@ -138,13 +140,10 @@ class Home:
                         wd.execute_script('mobile:swipe', {'direction': 'up'})
                         print('피드 텍스트 확인 안되어 스크롤')
                         i += 1
-                test_result = 'WARN'
-                warning_texts.append('피드 컨텐츠 추가 노출 확인 실패')
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
                 print('피드 컨텐츠 API 불러오기 실패')
-                pass
 
         except Exception:
             test_result = 'FAIL'
@@ -166,18 +165,6 @@ class Home:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
-
-    def test(self, wd):
-        response = requests.get('https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE')
-        if response.status_code == 200:
-            banner_api_data = response.json()
-            banner_title = banner_api_data['data']['bannerList'][4]['bannerTitle']
-            print(banner_title)
-        else:
-            pass
-
-
-
 
 
 
