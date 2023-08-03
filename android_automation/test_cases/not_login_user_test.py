@@ -327,7 +327,7 @@ class NotLogin:
 
             # 확인4 : 프로필 영역의 로그인.회원가입 문구 확인
             not_login = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').text
-            if wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').text == '로그인.회원가입':
+            if not_login == '로그인·회원가입':
                 print("프로필 영역의 로그인.회원가입 문구 확인")
             else:
                 print("프로필 영역의 로그인.회원가입 문구 확인 실패")
