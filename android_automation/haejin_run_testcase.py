@@ -89,4 +89,4 @@ class AndroidTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
 if __name__ == '__main__':
-    unittest.main()ㅅ
+    unittest.main()
