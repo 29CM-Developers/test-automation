@@ -1,4 +1,4 @@
-import re
+
 import unittest
 import requests
 import os
@@ -49,7 +49,6 @@ class IOSTestAutomation(unittest.TestCase):
             print("wd 종료 완료")
             self.appium.stop()
             print("appium 종료 완료")
-            # subprocess.run(['pkill', '-9', '-f', 'WebDriverAgentRunner'])
             print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()

@@ -21,7 +21,8 @@ class UserLoginTest:
         start_time = time()
 
         try:
-            test_scenario = '잘못된 패스워드 입력으로 로그인 실패 확인'
+            print(f'[{test_name}] 테스트 시작')
+
             # 로그인 페이지 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
@@ -38,8 +39,8 @@ class UserLoginTest:
                 print("이메일 로그인 실패 확인")
             else:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                print("이메일 로그인 실패 확인 불가")
+                warning_texts.append('이메일 로그인 실패 확인 실패')
+                print("이메일 로그인 실패 확인 실패")
 
             # Home으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
@@ -76,7 +77,8 @@ class UserLoginTest:
         start_time = time()
 
         try:
-            test_scenario = '이메일 로그인 성공 확인'
+            print(f'[{test_name}] 테스트 시작')
+
             # 로그인 페이지 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
@@ -89,11 +91,11 @@ class UserLoginTest:
             # 프로필 이름 확인
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
-                print("로그인 성공")
+                print("이메일 로그인 성공 확인")
             except:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                print("로그인 실패")
+                warning_texts.append('이메일 로그인 성공 확인 실패')
+                print("이메일 로그인 성공 확인 실패")
 
             # Home 으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
@@ -124,13 +126,15 @@ class UserLoginTest:
         start_time = time()
 
         try:
-            test_scenario = '로그아웃 성공 확인'
+            print(f'[{test_name}] 테스트 시작')
+
             # My 탭 진입
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
                 print("로그인 유저")
             except:
+                pass
                 print("비로그인 유저")
 
             # 로그아웃 버튼 선택
@@ -143,11 +147,11 @@ class UserLoginTest:
             wd.execute_script('mobile:swipe', {'direction': 'down'})
             try:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="로그인·회원가입"]')
-                print('로그아웃 완료')
+                print('로그아웃 성공 확인')
             except NoSuchElementException:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                print('로그아웃 실패')
+                warning_texts.append('로그아웃 성공 확인 실패')
+                print('로그아웃 성공 확인')
 
             # Home 으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()

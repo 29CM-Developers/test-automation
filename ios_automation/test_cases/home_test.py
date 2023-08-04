@@ -17,14 +17,16 @@ class Home:
     def test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
-        print(f'{test_name} 테스트 시작')
+        print(f'[{test_name}] 테스트 시작')
 
         try:
             # 홈 배너 API 호출하여 5번째 배너 타이틀 저장
-            response = requests.get('https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE')
+            response = requests.get(
+                f'https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf["gender"]}')
             if response.status_code == 200:
                 banner_api_data = response.json()
                 banner_title_api = banner_api_data['data']['bannerList'][4]['bannerTitle']
+                print(f'확인할 배너명 : {banner_title_api}')
 
                 # 스와이프하여 동일한 배너 타이틀 탐색
                 for i in range(1, 20):
@@ -34,7 +36,7 @@ class Home:
                         break
                     except NoSuchElementException:
                         banner = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView')
-                        com_utils.element_control.swipe_right_to_left(wd, banner)
+                        com_utils.element_control.swipe_left_to_right(wd, banner)
                         print('피드 텍스트 확인 안되어 스와이프')
                         i += 1
             else:
@@ -45,10 +47,14 @@ class Home:
             # 다이나믹 게이트 -> 센스있는 선물하기 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
 
+            sleep(3)
+            print("!! 상단 타이틀 비교 진행 필요")
+
             # 웹뷰 요소가 잡히지 않아 비교할 요소값 확인 불가
             # 아래 뒤로가기 동작 안함
             # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
+            # 뒤로가기 버튼 동작하지 않아 딥링크 사용하여 Home으로 이동
             wd.get('app29cm://home')
 
         except Exception:
@@ -75,7 +81,7 @@ class Home:
     def test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
-        print(f'{test_name} 테스트 시작')
+        print(f'[{test_name}] 테스트 시작')
 
         try:
             wd.execute_script('mobile:swipe', {'direction': 'up'})
@@ -123,23 +129,38 @@ class Home:
                 warning_texts.append('피드 아이템 좋아요 개수 차감 확인 실패')
                 print('피드 아이템 좋아요 개수 차감 확인 실패')
 
-            # 홈화면 우먼 탭 컨텐츠 API 호출하여 7번째 피드 정보 저장
+            # 홈화면 우먼 탭 컨텐츠 API 호출하여 2번째 contents 피드 정보 저장
             response = requests.get(
                 'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0')
             if response.status_code == 200:
                 contents_api_data = response.json()
                 feed_item_contents = contents_api_data['data']['results']
-                feed_item_contents_text = feed_item_contents[7]['feedContents']
-                # 7번째 피드 노출 될 때까지 스크롤
+
+                # feedType이 contents인 두번째 피드 정보 저장
+                global feed_contents_api
+                for i in range(1, 10):
+                    feed_contents_type = feed_item_contents[i]['feedType']
+                    if feed_contents_type == 'contents':
+                        feed_contents_api = feed_item_contents[i]['feedContents']
+                        break
+                    else:
+                        pass
+                print(f'확인할 컨텐츠 : {feed_contents_api}')
+
+                # 저장한 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
                 for i in range(0, 10):
                     try:
-                        wd.find_element(AppiumBy.ACCESSIBILITY_ID, feed_item_contents_text)
-                        print('피드 컨텐츠 추가 노출 확인')
-                        break
+                        feed_contents = wd.find_element(AppiumBy.XPATH,
+                                               '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText').text
+                        if feed_contents_api == feed_contents:
+                            print('피드 컨텐츠 추가 노출 확인')
+                            break
+                        else:
+                            wd.execute_script('mobile:swipe', {'direction': 'up'})
+                            print('피드 텍스트 확인 안되어 스크롤')
+                            i += 1
                     except NoSuchElementException:
                         wd.execute_script('mobile:swipe', {'direction': 'up'})
-                        print('피드 텍스트 확인 안되어 스크롤')
-                        i += 1
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
@@ -165,6 +186,14 @@ class Home:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
+
+
+
+
+
+
+
+
 
 
 

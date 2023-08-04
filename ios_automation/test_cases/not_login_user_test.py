@@ -23,25 +23,25 @@ class NotLoginUserTest:
     def check_login_page(self, wd, warning_texts=[], warning_tests=[]):
 
         sleep(2)
-        test_scenario = '로그인 페이지 진입 확인'
         try:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기')
-            logger.info('로그인 페이지 진입 성공')
+            logger.info('로그인 페이지 진입 확인')
         except NoSuchElementException:
             test_result = 'WARN'
-            warning_texts.append(test_scenario)
-            logger.warning('로그인 페이지 진입 실패')
+            warning_texts.append('로그인 페이지 진입 확인 실패')
+            logger.warning('로그인 페이지 진입 확인 실패')
 
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
         return ''
 
     def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
-        # 메소드명과 일치하는 정보 받아오기
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
+            logger.info(f'[{test_name}] 테스트 시작')
+
             # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상의').click()
@@ -83,7 +83,8 @@ class NotLoginUserTest:
         start_time = time()
 
         try:
-            test_scenario = '상품 PDP 진입'
+            logger.info(f'[{test_name}] 테스트 시작')
+
             # Home > 베스트 탭 선택하여 베스트 PLP 진입
             wd.execute_script('mobile:swipe', {'direction': 'up'})
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
@@ -100,29 +101,27 @@ class NotLoginUserTest:
                                        '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther').text
             pdp_name = pdp_name_text.strip(' - 감도 깊은 취향 셀렉트샵 29CM')
             if pdp_name in plp_name:
-                logger.info('PDP 진입 성공')
+                logger.info('PDP 진입 확인')
             else:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                logger.warning(f'PDP 진입 실패 : {plp_name} / {pdp_name}')
+                warning_texts.append('PDP 진입 확인 실패')
+                logger.warning(f'PDP 진입 확인 실패 : {plp_name} / {pdp_name}')
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
 
-            test_scenario = '비로그인 유저 홈화면 추천 카테고리 탭 확인'
             # Home > 추천 탭 상단의 타이틀 비교 (비로그인 유저 : 당신)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천').click()
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '당신을 위한 추천 상품')
-                logger.info('비로그인 유저 추천 탭 진입 확인')
+                logger.info('비로그인 유저 홈화면 추천 탭 타이틀 확인')
             except NoSuchElementException:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                logger.warning('비로그인 유저 추천 탭 진입 실패')
+                warning_texts.append('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
+                logger.warning('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
 
             # 상단 검색 버튼 선택하여 인기 브랜드 10위 선택
             # 상단 검색 버튼명(색상)이 스크롤 정도에 따라 다르게 노출되어 try-except문으로 확인(하얀색이 아니면 검정색으로)
-            test_scenario = '인기 브랜드 검색 결과 확인'
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchWhite').click()
             except:
@@ -136,13 +135,22 @@ class NotLoginUserTest:
             sleep(3)
             search_input_field = wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').text
             if search_input_field == search_brand_name:
-                logger.info('검색 결과 화면 진입 성공')
+                logger.info('인기 브랜드 검색 결과 확인 - 입력란')
             else:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                logger.warning(f'검색 결과 화면 진입 실패 : {search_brand_name} / {search_input_field}')
+                warning_texts.append('인기 브랜드 검색 결과 확인 실패')
+                logger.warning(f'인기 브랜드 검색 결과 확인 실패 : {search_brand_name} / {search_input_field}')
 
-            test_scenario = 'My 탭의 로그인 문구 확인'
+            # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
+            search_result_brand = wd.find_element(AppiumBy.XPATH,
+                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
+            if search_brand_name in search_result_brand.text:
+                logger.info('인기 브랜드 검색 결과 확인 - 브랜드명')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 검색 결과 확인 실패')
+                logger.warning(f'인기 브랜드 검색 결과 확인 실패 : {search_brand_name} / {search_result_brand.text}')
+
             # My 탭 진입하여 로그인,회원가입 문구 노출 확인
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
             try:
@@ -150,8 +158,8 @@ class NotLoginUserTest:
                 logger.info('My 탭 로그인 문구 확인')
             except NoSuchElementException:
                 test_result = 'WARN'
-                warning_texts.append(test_scenario)
-                logger.warning('My 탭 로그인 문구 확인 불가')
+                warning_texts.append('My 탭 로그인 문구 확인 실패')
+                logger.warning('My 탭 로그인 문구 확인 실패')
 
             # Home 탭으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
@@ -241,4 +249,3 @@ class NotLoginUserTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
-
