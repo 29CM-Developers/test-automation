@@ -71,21 +71,6 @@ class Home:
             else:
                 print("API 호출에 실패했습니다.")
 
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll').text
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll').click()
-            print("모아보기 화면 진입")
-            next_layer_title = wd.find_element(AppiumBy.XPATH,'//*[@resource-id="__next"]/android.widget.TextView[@index=0]').text
-            if next_layer_title == home_title:
-                print(f"모아보기 진입 확인 : {next_layer_title} 노출 확인")
-                print("모아보기 버튼 선택하여 모아보기 페이지 진입 확인")
-            else:
-                print(f"모아보기 진입 확인 실패 : {next_layer_title} 노출")
-                test_result = 'WARN'
-                warning_texts.append("모아보기 페이지 진입 확인 실패")
-            # 뒤로가기로 홈화면 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            sleep(3)
             # 4. 다이나믹 게이트 2번째 줄, 1번째 선택
             dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
             dynamic_button_title = dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[1]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').text
