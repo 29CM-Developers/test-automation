@@ -53,7 +53,7 @@ class Home:
                 else:
                     test_result = 'WARN'
                     error_texts = '홈 배너 확인 실패'
-                    print(F'홈 배너 확인 실패: {set(banner_api).difference(set(banner_home))} / {set(banner_home).difference(set(banner_api))}')
+                    print(f'홈 배너 확인 실패: {set(banner_api).difference(set(banner_home))} / {set(banner_home).difference(set(banner_api))}')
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
