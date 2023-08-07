@@ -39,13 +39,20 @@ class Home:
                 # 홈화면 배너 타이틀 모두 저장
                 banner_home = []
                 for i in range(0, banner_count):
+                    sleep(1.5)
                     try:
-                        banner_title_text = wd.find_element(AppiumBy.XPATH,
-                                                            '//XCUIElementTypeCollectionView[@index="4"]/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]').text
+                        banner_title = wd.find_element(AppiumBy.XPATH,
+                                                            '//XCUIElementTypeCollectionView[@index="4"]/XCUIElementTypeCell[1]/XCUIElementTypeOther')
+                        banner_title_text = banner_title.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').text
                         banner_home.append(banner_title_text)
-                        sleep(2.5)
-                    except NoSuchElementException:
-                        print("배너 타이틀 확인 실패")
+                    except Exception:
+                        print('타이틀 확인 실패하여 이전 배너로 스와이프')
+                        # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
+                        banner = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView')
+                        com_utils.element_control.swipe_left_to_right(wd, banner)
+                        banner_title_text = wd.find_element(AppiumBy.XPATH,
+                                                        '//XCUIElementTypeCollectionView[@index="4"]/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]').text
+                        banner_home.append(banner_title_text)
 
                 # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
                 if set(banner_api).issubset(set(banner_home)):
