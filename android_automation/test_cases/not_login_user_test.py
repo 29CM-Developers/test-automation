@@ -29,7 +29,6 @@ class NotLogin:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[사용 불가 기능 사용]CASE 시작")
             sleep(2)
@@ -177,7 +176,7 @@ class NotLogin:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
 
     def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -186,7 +185,6 @@ class NotLogin:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[사용 가능 기능 사용]CASE 시작")
             sleep(5)
@@ -225,7 +223,7 @@ class NotLogin:
             best_product_title = best_product_layer.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             print(f"베스트 상품명 : {best_product_title} ")
             wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
             PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
             print(f"PDP_product_titile : {PDP_product_titile} ")
             if best_product_title == PDP_product_titile:
@@ -363,5 +361,5 @@ class NotLogin:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data

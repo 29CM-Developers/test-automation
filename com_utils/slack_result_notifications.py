@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+import datetime
 import requests
 import json
 
@@ -123,8 +123,7 @@ def slack_thread_notification(self):
         color = self.conf['pass_color']
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
-        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{self.result_data.get('start_time')}*"
-        attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
     elif self.result_data['test_result'] == 'WARN':
@@ -138,8 +137,7 @@ def slack_thread_notification(self):
         }
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
-        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{self.result_data.get('start_time')}*"
-        attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
         attachment["attachments"][0]["blocks"].append(warn_attachment)
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
@@ -162,16 +160,20 @@ def slack_thread_notification(self):
         }
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"실패 쓰레드 테스트: *{self.result_data.get('test_name')}*"
-        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 시간: *{self.result_data.get('start_time')}*"
-        attachment["attachments"][0]["blocks"][2]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
+        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
         attachment["attachments"][0]["blocks"].append(code_attachment)
         attachment["attachments"][0]["blocks"].append(reason_attachment)
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
+
+        # 현재 날짜와 시간을 가져오기
+        current_datetime = datetime.datetime.now()
+        # 날짜와 시간을 원하는 형식으로 문자열로 변환
+        formatted_datetime = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
         # 이미지 업로드
         with open(self.result_data['img_src'], 'rb') as f:
             content = f.read()
-        attachment = {"channels": self.conf['slack_channel'], "thread_ts": self.response['ts'], "title": 'pass result',
+        attachment = {"channels": self.conf['slack_channel'], "thread_ts": self.response['ts'], "title": formatted_datetime,
                       "content": content}
         headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
         requests.post(url=self.conf['slack_file_upload_url'], headers=headers, data=attachment)
@@ -228,13 +230,6 @@ def slack_thread_form(channel, ts):
             {
                 "color": '',
                 "blocks": [
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": ""
-                        }
-                    },
                     {
                         "type": "section",
                         "text": {

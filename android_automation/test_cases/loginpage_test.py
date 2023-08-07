@@ -27,7 +27,6 @@ class LoginLogout:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[이메일 로그인 실패] CASE 시작")
             sleep(3)
@@ -100,14 +99,13 @@ class LoginLogout:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
     def full_test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             self.email_login_fail()
 
@@ -208,14 +206,13 @@ class LoginLogout:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
     def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[이메일 로그인 성공]CASE 시작")
             sleep(5)
@@ -287,14 +284,13 @@ class LoginLogout:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time': formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
     def test_logout(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[이메일 로그아웃]CASE 시작")
             sleep(5)
@@ -356,14 +352,13 @@ class LoginLogout:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
     def Login_with_SNS(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("---------6.SNS 로그인 Adroid 에서 apple 계정 케이스 시작")
             sleep(5)
@@ -407,5 +402,5 @@ class LoginLogout:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data

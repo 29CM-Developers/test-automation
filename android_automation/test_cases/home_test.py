@@ -1,3 +1,4 @@
+import json
 import logging
 import os.path
 import subprocess
@@ -32,7 +33,6 @@ class Home:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[홈화면 배너 확인]CASE 시작")
             sleep(2)
@@ -134,7 +134,7 @@ class Home:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
 
     def test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -143,7 +143,6 @@ class Home:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        formatted_time = strftime("%Y-%m-%d %H:%M:%S", localtime(start_time))
         try:
             print("[홈화면 컨텐츠 확인]CASE 시작")
             sleep(5)
@@ -275,5 +274,5 @@ class Home:
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points, 'start_time':formatted_time}
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
