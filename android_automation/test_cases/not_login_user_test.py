@@ -31,7 +31,7 @@ class NotLogin:
         start_time = time()
         try:
             print("[사용 불가 기능 사용]CASE 시작")
-            sleep(2)
+            sleep(3)
             # 홈 > 카테고리 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
@@ -58,16 +58,14 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
-
-            sleep(2)
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll')
-            if home_title.text == '모아보기':
-                print("홈 진입 확인 : 모아보기 문구 확인")
+            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+            # Element가 화면에 표시되는지 확인
+            if home_title.is_displayed():
+                print("홈화면 진입 확인")
             else:
-                print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                print("홈화면 진입 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈 진입 확인 실패")
-            print(f"발견 문구 : {home_title.text} ")
 
             #full test 확장 시나리오
             # 홈 > 우상단 알림 아이콘 선택
@@ -86,15 +84,14 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            sleep(2)
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll')
-            if home_title.text == '모아보기':
-                print("홈 진입 확인 : 모아보기 문구 확인")
+            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+            # Element가 화면에 표시되는지 확인
+            if home_title.is_displayed():
+                print("홈화면 진입 확인")
             else:
-                print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                print("홈화면 진입 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈 진입 확인 실패")
-            print(f"발견 문구 :{home_title.text} ")
 
             # 홈 > 우상단 장바구니 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgCart').click()
@@ -112,15 +109,14 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            sleep(3)
-
-            if home_title.text == '모아보기':
-                print("홈 진입 확인 : 모아보기 문구 확인")
+            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+            # Element가 화면에 표시되는지 확인
+            if home_title.is_displayed():
+                print("홈화면 진입 확인")
             else:
-                print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                print("홈화면 진입 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈 진입 확인 실패")
-            print(f"발견 문구 : {home_title.text} ")
 
             # 하단 like 아이콘 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
@@ -138,16 +134,14 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            sleep(3)
-
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll')
-            if home_title.text == '모아보기':
-                print("홈 진입 확인 : 모아보기 문구 확인")
+            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+            # Element가 화면에 표시되는지 확인
+            if home_title.is_displayed():
+                print("홈화면 진입 확인")
             else:
-                print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                print("홈화면 진입 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈 진입 확인 실패")
-            print(f"발견 문구 : {home_title.text} ")
             print("[사용 불가 기능 사용]CASE 종료")
 
         except Exception:
@@ -237,15 +231,14 @@ class NotLogin:
             # 상단으로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
-            sleep(2)
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtShowAll')
-            if home_title.text == '모아보기':
-                print("홈 진입 확인 : 모아보기 문구 확인")
+            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+            # Element가 화면에 표시되는지 확인
+            if home_title.is_displayed():
+                print("홈화면 진입 확인")
             else:
-                print("홈 진입 확인 : 모아보기 문구 확인 실패")
+                print("홈화면 진입 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈 진입 확인 실패")
-            print(f"발견 문구 : {home_title.text} ")
             # 8. 홈 > 피드 > 추천 탭선택
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
