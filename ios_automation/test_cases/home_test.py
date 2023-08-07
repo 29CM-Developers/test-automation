@@ -20,25 +20,40 @@ class Home:
         print(f'[{test_name}] 테스트 시작')
 
         try:
-            # 홈 배너 API 호출하여 5번째 배너 타이틀 저장
+            # 홈화면 배너 API 호출
             response = requests.get(
                 f'https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf["gender"]}')
             if response.status_code == 200:
+                # 호출한 API의 모든 배너 타이틀 저장
                 banner_api_data = response.json()
-                banner_title_api = banner_api_data['data']['bannerList'][4]['bannerTitle']
-                print(f'확인할 배너명 : {banner_title_api}')
+                banner_count = int(banner_api_data['data']['count'])
 
-                # 스와이프하여 동일한 배너 타이틀 탐색
-                for i in range(1, 20):
+                banner_api = []
+                for i in range(0, banner_count):
+                    banner_title_api = banner_api_data['data']['bannerList'][i]['bannerTitle']
+                    if banner_title_api == 'ㅤ':
+                        pass
+                    else:
+                        banner_api.append(banner_title_api)
+
+                # 홈화면 배너 타이틀 모두 저장
+                banner_home = []
+                for i in range(0, banner_count):
                     try:
-                        wd.find_element(AppiumBy.ACCESSIBILITY_ID, banner_title_api)
-                        print('홈화면 상단 배너 좌우 슬라이드 확인')
-                        break
+                        banner_title_text = wd.find_element(AppiumBy.XPATH,
+                                                            '//XCUIElementTypeCollectionView[@index="4"]/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]').text
+                        banner_home.append(banner_title_text)
+                        sleep(2.5)
                     except NoSuchElementException:
-                        banner = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView')
-                        com_utils.element_control.swipe_left_to_right(wd, banner)
-                        print('피드 텍스트 확인 안되어 스와이프')
-                        i += 1
+                        print("배너 타이틀 확인 실패")
+
+                # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
+                if set(banner_api).issubset(set(banner_home)):
+                    print('홈 배너 확인')
+                else:
+                    test_result = 'WARN'
+                    error_texts = '홈 배너 확인 실패'
+                    print(F'홈 배너 확인 실패: {set(banner_api).difference(set(banner_home))} / {set(banner_home).difference(set(banner_api))}')
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
@@ -145,7 +160,6 @@ class Home:
                         break
                     else:
                         pass
-                print(f'확인할 컨텐츠 : {feed_contents_api}')
 
                 # 저장한 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
                 for i in range(0, 10):
