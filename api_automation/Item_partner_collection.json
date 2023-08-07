@@ -15,11 +15,11 @@
 						"exec": [
 							"var jsonData = pm.response.json();",
 							"",
-							"pm.test(\"Response has a property called parther_token\", function () {",
-							"    pm.expect(jsonData).to.have.property('parther_token');",
+							"pm.test(\"Response has a property called partner_token\", function () {",
+							"    pm.expect(jsonData).to.have.property('partner_token');",
 							"});",
 							"",
-							"pm.environment.set(\"partner_token\", jsonData.parther_token)"
+							"pm.environment.set(\"partner_token\", jsonData.partner_token)"
 						],
 						"type": "text/javascript"
 					}
