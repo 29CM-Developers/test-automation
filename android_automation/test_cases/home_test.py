@@ -39,7 +39,7 @@ class Home:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈 탭 선택")
 
-            response = requests.get("https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE")
+            response = requests.get("https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender="+self.pconf['GENDER'])
             if response.status_code == 200:
                 api_data = response.json()
                 sleep(3)
@@ -103,7 +103,6 @@ class Home:
 
             # 뒤로가기로 홈화면 진입 확인
             gift_layer.find_element(AppiumBy.XPATH,'//android.view.View[1]/android.view.View/android.view.View/android.widget.Button').click()
-            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
             sleep(3)
             print("[홈화면 배너 확인]CASE 종료")
@@ -216,13 +215,25 @@ class Home:
             if response.status_code == 200:
                 api_data = response.json()
                 sleep(3)
-                # 첫 번째 "feedTitle" 데이터 가져오기
-                if api_data["data"]["results"]:
-                    second_feed_title = api_data["data"]["results"][7]["feedTitle"]
-                    print(f"우먼탭 api 호출 하여 두번째 feedTitle 저장: {second_feed_title}")
-                else:
-                    print("데이터가 없습니다.")
+                # "results" 배열을 가져옵니다.
 
+                index = None
+                count = 0
+                for i, result in enumerate(api_data['data']['results']):
+                    if result['feedType'] == 'contents':
+                        if index is None :
+                            print(f'{result["feedTitle"]}, {i}')
+                            count += 1
+                            if count == 2:
+                                print(f" count : {count}, {result['feedTitle']}, {i}, {index}")
+                                second_feed_title = api_data['data']['results'][i]['feedTitle']
+                                break
+                        else:
+                            index == i
+                            break
+
+                second_feed_title = api_data['data']['results'][i]['feedTitle']
+                print(f"second_feed_title : {second_feed_title}")
                 found_element = None
                 for _ in range(10):
                     try:
