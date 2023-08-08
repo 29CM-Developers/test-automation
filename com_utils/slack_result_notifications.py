@@ -90,10 +90,17 @@ def slack_update_notification(self):
         device_emoji = self.device_platform
 
     device_name = self.device_name
-    digit = re.sub(r'[^0-9]', '', device_name)
-    text = list(filter(str.isalpha, device_name))
-    text = ''.join(text)
-    device_name = f'{text} {digit}'
+    device_list = list(device_name)
+
+    device = []
+    for i in range(len(device_list)):
+        device.append(device_list[i])
+        if i < len(device_list) - 1 and device_list[i].isalpha() != device_list[i + 1].isnumeric():
+            pass
+        else:
+            device.append(' ')
+    device_name = ''.join(device)
+
     minutes = total_time // 60
     seconds = total_time % 60
     if minutes > 0:
