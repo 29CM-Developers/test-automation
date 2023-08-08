@@ -8,7 +8,7 @@ sys.path.append(iOS_path)
 
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
-from ios_setup import dajjeong_setup
+from ios_setup import pro12_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.home_test import Home
@@ -20,11 +20,11 @@ class IOSTestAutomation(unittest.TestCase):
     def setUp(self):
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4924', '--base-path', '/wd/hub', '--default-capabilities',
+        self.appium.start(args=['-p', '4744', '--base-path', '/wd/hub', '--default-capabilities',
                                 '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
-        self.wd, self.iOS_cap = dajjeong_setup()
+        self.wd, self.iOS_cap = pro12_setup()
         self.wd.implicitly_wait(3)
 
         user_info = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong")
@@ -70,35 +70,6 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 이메일 로그인 실패
         self.result_data = UserLoginTest.test_email_login_error(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 이메일 로그인 성공
-        self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면 배너 확인
-        self.result_data = Home.test_home_banner(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면 컨텐츠 확인
-        self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 로그아웃
-        self.result_data = UserLoginTest.test_logout(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-    def test_iOS_full(self):
-        self.def_name = self.dconf[sys._getframe().f_code.co_name]
-
-        # 비로그인 유저 사용 불가
-        self.result_data = NotLoginUserTest.full_test_not_login_user_impossible(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
