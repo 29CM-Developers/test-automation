@@ -58,14 +58,7 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-            # Element가 화면에 표시되는지 확인
-            if home_title.is_displayed():
-                print("홈화면 진입 확인")
-            else:
-                print("홈화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈 진입 확인 실패")
+            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
 
             #full test 확장 시나리오
             # 홈 > 우상단 알림 아이콘 선택
@@ -84,14 +77,7 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-            # Element가 화면에 표시되는지 확인
-            if home_title.is_displayed():
-                print("홈화면 진입 확인")
-            else:
-                print("홈화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈 진입 확인 실패")
+            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
 
             # 홈 > 우상단 장바구니 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgCart').click()
@@ -109,14 +95,7 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-            # Element가 화면에 표시되는지 확인
-            if home_title.is_displayed():
-                print("홈화면 진입 확인")
-            else:
-                print("홈화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈 진입 확인 실패")
+            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
 
             # 하단 like 아이콘 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
@@ -134,15 +113,7 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-            # Element가 화면에 표시되는지 확인
-            if home_title.is_displayed():
-                print("홈화면 진입 확인")
-            else:
-                print("홈화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈 진입 확인 실패")
-            print("[사용 불가 기능 사용]CASE 종료")
+            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -232,13 +203,7 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
             home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-            # Element가 화면에 표시되는지 확인
-            if home_title.is_displayed():
-                print("홈화면 진입 확인")
-            else:
-                print("홈화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈 진입 확인 실패")
+
             # 8. 홈 > 피드 > 추천 탭선택
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
@@ -274,10 +239,9 @@ class NotLogin:
             # 6. Home 상단 네비게이션 검색 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
             print("상단 검색 아이콘 선택")
-            sleep(5)
             search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
             element_xpath = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]'
-            element = WebDriverWait(wd, 10).until(EC.presence_of_element_located((MobileBy.XPATH, element_xpath)))
+            element = WebDriverWait(wd, 5).until(EC.presence_of_element_located((MobileBy.XPATH, element_xpath)))
 
             # 요소가 보이는지 확인하기
             if element.is_displayed():
