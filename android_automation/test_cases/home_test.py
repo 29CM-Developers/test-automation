@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
-from time import sleep, time, strftime, localtime
+from time import sleep, time
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -51,7 +51,7 @@ class Home:
                     print("데이터가 없습니다.")
 
                 found_element = None
-                for _ in range(20):
+                for _ in range(api_data["data"]["count"]+1):
                     try:
                         # 다섯번째 배너 타이틀과 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedBannerTitle')
