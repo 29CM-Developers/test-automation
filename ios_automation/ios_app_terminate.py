@@ -20,8 +20,6 @@ class IOSAppTerminate(unittest.TestCase):
         self.appium.stop()
 
     def test_pro14_app_terminate(self):
-        # 포트번호와 셋업은 세팅에 맞게 변경해주세요
-
         self.appium = AppiumService()
         self.appium.start(args=['-p', '4943', '--base-path', '/wd/hub', '--default-capabilities',
                                 '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
