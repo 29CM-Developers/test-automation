@@ -7,7 +7,7 @@ from ios_automation.ios_setup import pro12_setup, pro14_setup
 class IOSAppTerminate(unittest.TestCase):
     def test_pro12_app_terminate(self):
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4944', '--base-path', '/wd/hub', '--default-capabilities',
+        self.appium.start(args=['-p', '4744', '--base-path', '/wd/hub', '--default-capabilities',
                                 '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
@@ -21,7 +21,7 @@ class IOSAppTerminate(unittest.TestCase):
 
     def test_pro14_app_terminate(self):
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4943', '--base-path', '/wd/hub', '--default-capabilities',
+        self.appium.start(args=['-p', '4743', '--base-path', '/wd/hub', '--default-capabilities',
                                 '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
