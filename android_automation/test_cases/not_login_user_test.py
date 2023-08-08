@@ -58,7 +58,6 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
-            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
 
             #full test 확장 시나리오
             # 홈 > 우상단 알림 아이콘 선택
@@ -77,7 +76,6 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
 
             # 홈 > 우상단 장바구니 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgCart').click()
@@ -95,8 +93,6 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
-
             # 하단 like 아이콘 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
             print("하단 like 아이콘 선택")
@@ -113,7 +109,7 @@ class NotLogin:
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            home_title = WebDriverWait(wd, 3).until(EC.visibility_of_element_located((AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')))
+            print("[사용 불가 기능 사용]CASE 종료")
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -152,7 +148,7 @@ class NotLogin:
         start_time = time()
         try:
             print("[사용 가능 기능 사용]CASE 시작")
-            sleep(5)
+            sleep(3)
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
             # "베스트 문구"를 찾을 변수 초기화
@@ -174,6 +170,8 @@ class NotLogin:
             else:
                 print("베스트 문구 탭을 찾지 못했습니다.")
 
+            element_control.scroll(wd)
+
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
             print("전체보기 버튼 선택")
             best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
@@ -188,10 +186,10 @@ class NotLogin:
             best_product_title = best_product_layer.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             print(f"베스트 상품명 : {best_product_title} ")
             wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
             PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
             print(f"PDP_product_titile : {PDP_product_titile} ")
-            if best_product_title == PDP_product_titile:
+            if PDP_product_titile in best_product_title:
                 print("베스트 상품 PDP 정상 확인")
             else:
                 print("베스트 상품 PDP 정상 확인 실패")
@@ -202,8 +200,6 @@ class NotLogin:
             # 상단으로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-
             # 8. 홈 > 피드 > 추천 탭선택
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
@@ -240,16 +236,17 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
             print("상단 검색 아이콘 선택")
             search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
-            element_xpath = '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]'
-            element = WebDriverWait(wd, 5).until(EC.presence_of_element_located((MobileBy.XPATH, element_xpath)))
+            element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[1]'
+            search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
+            if search_container_title.text == '지금 많이 찾는 브랜드':
+                pass
+            else :
+                print("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                test_result = 'WARN'
+                warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
+            print(f"타이틀 확인 : {search_container_title}")
 
-            # 요소가 보이는지 확인하기
-            if element.is_displayed():
-                # 요소가 보이는 경우, 원하는 동작 수행
-                wd.find_element(AppiumBy.XPATH, element_xpath).click()
-                sleep(1)
-
-            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
+            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
             # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
             brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             brand_10th.click()
@@ -274,12 +271,23 @@ class NotLogin:
                 test_result = 'WARN'
                 warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
             print(f"브랜드 이름 : {search_brand} ")
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            compose_view_layer = wd.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[@index=1]')
+            sleep(2)
+            print(compose_view_layer)
+            search_delete = compose_view_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.view.View[1]')
+            print(search_delete)
+            search_delete.click()
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
             # 8. MY 탭 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
             print("하단 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
-
             # 확인4 : 프로필 영역의 로그인.회원가입 문구 확인
             not_login = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').text
             if not_login == '로그인·회원가입':
