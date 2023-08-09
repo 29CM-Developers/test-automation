@@ -59,6 +59,7 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
