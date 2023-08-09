@@ -138,13 +138,21 @@ class UserLoginTest:
                 print("비로그인 유저")
 
             # 로그아웃 버튼 선택
-            wd.execute_script('mobile:swipe', {'direction': 'up'})
-            wd.execute_script('mobile:swipe', {'direction': 'up'})
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LOGOUT"]').click()
+            for i in range(0, 5):
+                try:
+                    logout_btn = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LOGOUT"]')
+                    logout_btn.click()
+                    break
+                except NoSuchElementException:
+                    wd.execute_script('mobile:swipe', {'direction': 'up'})
 
             # 로그아웃 완료 후 문구 확인
-            wd.execute_script('mobile:swipe', {'direction': 'down'})
-            wd.execute_script('mobile:swipe', {'direction': 'down'})
+            for i in range(0, 5):
+                try:
+                    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="로그인·회원가입"]')
+                    break
+                except NoSuchElementException:
+                    wd.execute_script('mobile:swipe', {'direction': 'down'})
             try:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="로그인·회원가입"]')
                 print('로그아웃 성공 확인')
