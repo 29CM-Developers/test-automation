@@ -3,6 +3,7 @@ import sys
 import traceback
 from time import time, sleep
 
+import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 
@@ -16,8 +17,6 @@ class Plp:
         print(f'[{test_name}] 테스트 시작')
 
         try:
-            wd.execute_script('mobile:swipe', {'direction': 'up'})
-
             # 홈 카테고리의 BEST 탭 > 전체 보기 통해서 베스트 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="전체보기"]').click()
@@ -31,18 +30,18 @@ class Plp:
                 print('베스트 PLP 진입 확인 실패')
 
             # 베스트 PLP의 두번째 상품 좋아요 버튼과 개수 element 확인
-            product_2nd = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="2"]')
-            product_2nd_heart_btn = product_2nd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="3"]/XCUIElementTypeButton')
-            product_2nd_heart_text = product_2nd_heart_btn.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText')
+            product_1nd = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="1"]')
+            product_1nd_heart_btn = product_1nd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="3"]/XCUIElementTypeButton')
+            product_1nd_heart_text = product_1nd_heart_btn.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText')
 
             # 좋아요 버튼 선택 전, 좋아요 수 저장
-            heart_count = product_2nd_heart_text.text
+            heart_count = product_1nd_heart_text.text
             heart_count = int(heart_count.replace(',', ''))
 
             # 좋아요 버튼 선택 -> 찜하기 등록
-            product_2nd_heart_btn.click()
+            product_1nd_heart_btn.click()
             sleep(1)
-            heart_select = product_2nd_heart_text.text
+            heart_select = product_1nd_heart_text.text
             heart_select = int(heart_select.replace(',', ''))
             if heart_select == heart_count + 1:
                 print('아이템 좋아요 개수 증가 확인')
@@ -53,9 +52,9 @@ class Plp:
                 print(f'아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
 
             # 좋아요 버튼 선택 -> 찜하기 해제
-            product_2nd_heart_btn.click()
+            product_1nd_heart_btn.click()
             sleep(1)
-            heart_select = product_2nd_heart_text.text
+            heart_select = product_1nd_heart_text.text
             heart_select = int(heart_select.replace(',', ''))
             if heart_select == heart_count:
                 print('아이템 좋아요 개수 차감 확인')
@@ -65,26 +64,49 @@ class Plp:
                 warning_texts.append('아이템 좋아요 개수 차감 확인 실패')
                 print(f'아이템 좋아요 개수 차감 확인 실패: {heart_count} / {heart_select}')
 
-            # 베스트 PLP의 첫번째 상품명 저장 후 선택
-            product_1st = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="1"]')
-            product_1st_name = product_1st.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText[@index="1"]')
-            product_1st_name_text = product_1st_name.text
-            product_1st_name.click()
-            sleep(3)
+            # 여성의류 실시간 베스트 API 호출
+            response = requests.get('https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
+            if response.status_code == 200:
+                best_product_data = response.json()
 
-            # 선택한 상품의 PDP에서 상품 이름 비교
-            pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
-            pdp_name = pdp_web.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute('name')
+                # 10번째 상품의 상품명 저장
+                best_product_10th_name = best_product_data['data']['content'][9]['itemName']
 
-            if pdp_name in product_1st_name_text:
-                print('PDP 진입 확인')
+                # 10번째 상품 선택 (화면에 미노출 시, 노출 될때까지 스크롤)
+                for i in range(0, 10):
+                    try:
+                        best_product_10th = wd.find_element(AppiumBy.ACCESSIBILITY_ID, best_product_10th_name)
+                        best_product_10th.click()
+                        break
+                    except NoSuchElementException:
+                        wd.execute_script('mobile:swipe', {'direction': 'up'})
+
+                # PDP 상품 이름 저장 -> 이미지 1개일 경우와 2개 이상일 경우, XPATH index 변경되어 아래와 같이 작성
+                pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
+                try:
+                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'Select a slide to show')
+                    pdp_name = pdp_web.find_element(AppiumBy.XPATH,
+                                                    '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute('name')
+                except NoSuchElementException:
+                    pdp_name = pdp_web.find_element(AppiumBy.XPATH,
+                                                    '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
+
+                # 선택한 상품의 PDP에서 상품 이름 비교
+                if pdp_name in best_product_10th_name:
+                    print('PDP 진입 확인')
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('PDP 진입 확인 실패')
+                    print(f'PDP 진입 확인 실패 : {best_product_10th_name} / {pdp_name}')
+
+                # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
+
             else:
                 test_result = 'WARN'
-                warning_texts.append('PDP 진입 확인 실패')
-                print(f'PDP 진입 확인 실패 : {product_1st_name_text} / {pdp_name}')
+                warning_texts.append('베스트 PLP API 불러오기 실패')
+                print('베스트 PLP API 불러오기 실패')
 
-            # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -106,3 +128,19 @@ class Plp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
+
+
+    def test(self, wd):
+        response = requests.get(
+            'https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
+        print('호출 완료')
+        if response.status_code == 200:
+            best_product_data = response.json()
+
+            # 10번째 상품의 상품명 저장
+            best_product_10th_name = best_product_data['data']['content'][9]['itemName']
+            print(best_product_10th_name)
+
+
+        else:
+            print("fail")
