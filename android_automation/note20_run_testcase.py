@@ -49,7 +49,7 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
 
 
-    def test_android_bvt(self):
+    def test_automation_android_bvt(self):
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
