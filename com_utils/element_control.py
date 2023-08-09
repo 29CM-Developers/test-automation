@@ -2,6 +2,7 @@ import logging
 
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.touch_action import TouchAction
+from selenium.common import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
@@ -130,3 +131,4 @@ def swipe_left_to_right(wd, element):
     actions.w3c_actions.pointer_action.move_to_location((start_x + move_x), start_y)
     actions.w3c_actions.pointer_action.release()
     actions.perform()
+
