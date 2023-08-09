@@ -128,19 +128,3 @@ class Plp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
-
-
-    def test(self, wd):
-        response = requests.get(
-            'https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
-        print('호출 완료')
-        if response.status_code == 200:
-            best_product_data = response.json()
-
-            # 10번째 상품의 상품명 저장
-            best_product_10th_name = best_product_data['data']['content'][9]['itemName']
-            print(best_product_10th_name)
-
-
-        else:
-            print("fail")
