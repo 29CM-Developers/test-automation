@@ -25,7 +25,7 @@ def dajjeong_setup():
     iOS_options = AppiumOptions()
     iOS_options.set_capability('platformName', 'iOS')
     iOS_options.set_capability('platformVersion', '16.5.1')
-    iOS_options.set_capability('deviceName', 'iphone12')
+    iOS_options.set_capability('deviceName', 'iphone 12')
     iOS_options.set_capability('udid', '00008101-001C59593C80001E')
     iOS_options.set_capability('automationName', 'XCUITest')
     iOS_options.set_capability('newCommandTimeout', 300)
