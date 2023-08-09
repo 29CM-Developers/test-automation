@@ -38,38 +38,78 @@ class Home:
             sleep(2)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈 탭 선택")
-
-            response = requests.get("https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender="+self.pconf['GENDER'])
-            if response.status_code == 200:
-                api_data = response.json()
-                sleep(3)
-                # 첫 번째 "feedTitle" 데이터 가져오기
-                if api_data["data"]["bannerList"]:
-                    fifth_banner_title = api_data["data"]["bannerList"][4]["bannerTitle"]
-                    print(f"홈 상단 배너 api 호출 하여 다섯번째 bannerTitle 저장: {fifth_banner_title}")
-                else:
-                    print("데이터가 없습니다.")
-
-                found_element = None
-                for _ in range(api_data["data"]["count"]+1):
-                    try:
-                        # 다섯번째 배너 타이틀과 일치하는 요소 찾기
-                        element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedBannerTitle')
-                        if element.text == fifth_banner_title:
-                            found_element = element
-                            print(f"다섯번째 bannerTitle 발견 : {element.text}")
-                            print(f"배너타이틀 노출 확인 : {element.text}")
-                            break
-                    except NoSuchElementException:
-                        pass
-                    # 스와이프 액션 수행
-                    element_control.swipe_right_to_left(wd,element)
-                if found_element is None:
-                    test_result = 'WARN'
-                    warning_texts.append("홈화면 상단 배너 좌우 슬라이드 확인 실패")
-
-            else:
-                print("API 호출에 실패했습니다.")
+            # api_banner_title = []
+            # banner_title_set = []
+            # response = requests.get("https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender="+self.pconf['GENDER'])
+            # if response.status_code == 200:
+            #
+            #     api_data = response.json()
+            #     count = int(api_data["data"]["count"])
+            #     for i in range(count):
+            #         api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
+            #     print(api_banner_title)
+            #
+            #     for i in range(0,count):
+            #         sleep(2.5)
+            #         try:
+            #             print(5)
+            #             # 대기 설정
+            #             wait = WebDriverWait(wd, 5)  # 최대 10초까지 대기
+            #
+            #             element_layer_1 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerViewContainer')
+            #             print(1)
+            #             element_layer_2 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/homeBannerViewPager')
+            #             print(2)
+            #             element_layer_3 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/viewPager')
+            #             print(3)
+            #             # 모든 요소를 선택하는 XPath 쿼리
+            #             all_elements = element_layer_3.find_elements(By.XPATH, "//*")
+            #             print("all_elements 요소의 개수:", len(all_elements))
+            #             # class 속성이 'android.widget.TextView'인 요소를 찾습니다.
+            #             text_view_elements = []
+            #             for element in all_elements :
+            #                 print(f"element:{element}")
+            #                 if "android.widget.TextView" in element.get_attribute("class"):
+            #                     print(2)
+            #                     text_view_elements.append(element.text)
+            #                     print(3)
+            #
+            #             print("android.widget.TextView 요소의 개수:", len(text_view_elements))
+            #
+            #             # 찾은 요소들에 대한 추가 동작을 수행할 수 있습니다.
+            #             for element in text_view_elements:
+            #                 print("요소 텍스트:", element.text)
+            #                 banner_title_set.append(element.text)
+            #             # element_control.mini_swipe(wd, element_layer_3)
+            #             # print(4)
+            #             # banner_title_text = wd.find_element(AppiumBy.XPATH,
+            #             #                                     '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/androidx.recyclerview.widget.RecyclerView/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.widget.TextView[1]').text
+            #             # print(element_layer_4.text)
+            #
+            #         except NoSuchElementException:
+            #             print("못찾음")
+            #             pass
+            #         except Exception:
+            #             # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
+            #             print("에러")
+            #             element_layer_3 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/viewPager')
+            #             print(3)
+            #             element_layer_4 = element_layer_3.find_element(By.XPATH, '//*android.widget.TextView[1]')
+            #             print(4)
+            #
+            #             # element_control.mini_swipe(wd, element_layer_3)
+            #             # print(4)
+            #             # banner_title_text = wd.find_element(AppiumBy.XPATH,
+            #             #                                     '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/androidx.recyclerview.widget.RecyclerView/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.widget.TextView[1]').text
+            #             # print(element_layer_4.text)
+            #             banner_title_set.append(element_layer_4.text)
+            #         # 스와이프 액션 수행
+            #         element_control.swipe_left_to_right(wd, element_layer_4)
+            #         print("스와이프해")
+            #
+            #
+            # else:
+            #     print("API 호출에 실패했습니다.")
 
             # 4. 다이나믹 게이트 2번째 줄, 1번째 선택
             dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
