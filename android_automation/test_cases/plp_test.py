@@ -93,23 +93,43 @@ class Plp:
                 warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
             sleep(3)
 
+            # API 호출
+            response = requests.get("https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&limit=100&offset=0&periodSort=NOW")
+            if response.status_code == 200:
+                api_data = response.json()
+                sleep(2)
+                api_data = api_data['data']['content'][9]['itemName']
+                print(f"api_data:{api_data}")
 
-            best_product_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
-            best_product_title = best_product_layer.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
-            print(f"베스트 상품명 : {best_product_title} ")
-            wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-            PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
-            print(f"PDP_product_titile : {PDP_product_titile} ")
-            if PDP_product_titile in best_product_title:
-                print("베스트 상품 PDP 정상 확인")
+                best_item_10th = element_control.scroll_to_element_with_text(wd,api_data)
+                if best_item_10th.text in api_data:
+                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인")
+                else :
+                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
+                print(f"api호출 10번째 아이템명 : {api_data} , 베스트 10위 아이템명 : {best_item_10th.text}")
+
+                best_product_title = best_item_10th.text
+                print(f"베스트 상품명 : {best_product_title} ")
+                best_item_10th.click()
+
+                PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data}')]")
+                for PDP_title in PDP_title_elements:
+                    print(PDP_title.text)
+                    if PDP_title.text in api_data :
+                        break
+                PDP_product_titile = PDP_title.text
+                print(f"PDP_product_titile : {PDP_product_titile} ")
+                if PDP_product_titile in api_data:
+                    print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인")
+                else:
+                    print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
+                print(f"PDP 상품명 : {PDP_product_titile} ")
             else:
-                print("베스트 상품 PDP 정상 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-            print(f"PDP 상품명 : {PDP_product_titile} ")
-
-
+                print("API 호출에 실패했습니다.")
             print("[PLP 확인]CASE 종료")
 
         except Exception:
