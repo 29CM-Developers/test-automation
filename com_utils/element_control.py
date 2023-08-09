@@ -132,3 +132,23 @@ def swipe_left_to_right(wd, element):
     actions.w3c_actions.pointer_action.release()
     actions.perform()
 
+def scroll_to_element_with_text(wd,text):
+    for _ in range(10):
+        try:
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{text}')]")
+            print(f"element : {element.text}")
+            if element.is_displayed():
+                print("아이템 발견")
+                return element
+        except:
+            pass
+
+        # 요소를 찾지 못하면 아래로 스크롤
+        size = wd.get_window_size()
+        start_x = size["width"] / 2
+        start_y = size["height"] * 0.8
+        end_y = size["height"] * 0.2
+        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+
+    return element
