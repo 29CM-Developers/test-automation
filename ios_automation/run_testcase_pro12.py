@@ -53,7 +53,7 @@ class IOSTestAutomation(unittest.TestCase):
         except InvalidSessionIdException:
             self.appium.stop()
 
-    def test_iOS_bvt(self):
+    def test_automation_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
