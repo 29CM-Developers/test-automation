@@ -22,16 +22,10 @@ def slack_notification(self):
         device_emoji = ':android:'
     else: device_emoji = self.device_platform
 
-    device_name = self.device_name
-    digit = re.sub(r'[^0-9]', '', device_name)
-    text = list(filter(str.isalpha, device_name))
-    text = ''.join(text)
-    device_name = f'{text} {digit}'
-
     # slack noti 양식 가져오기
     attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
                                  test_result=self.result_data.get('test_result'), def_name=self.def_name,
-                                 count='-', total_time='-', device_platform=device_emoji, device_name=device_name)
+                                 count='-', total_time='-', device_platform=device_emoji, device_name=self.device_name)
 
     payload = json.dumps(attachment)
     response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=payload)
@@ -89,11 +83,6 @@ def slack_update_notification(self):
     else:
         device_emoji = self.device_platform
 
-    device_name = self.device_name
-    digit = re.sub(r'[^0-9]', '', device_name)
-    text = list(filter(str.isalpha, device_name))
-    text = ''.join(text)
-    device_name = f'{text} {digit}'
     minutes = total_time // 60
     seconds = total_time % 60
     if minutes > 0:
@@ -105,7 +94,7 @@ def slack_update_notification(self):
     attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
                                  test_result=test_result, def_name=self.def_name,
                                  count=self.count, total_time=str_total_time,
-                                 device_platform=device_emoji, device_name=device_name)
+                                 device_platform=device_emoji, device_name=self.device_name)
 
     attachment['ts'] = self.response['ts']
     payload = json.dumps(attachment)
