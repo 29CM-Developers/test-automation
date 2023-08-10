@@ -187,87 +187,104 @@ class Home:
             tab_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView').click()
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
-            # 스크롤
-            element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
-            products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
-            before_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
-            # 쉼표를 제거한 문자열 생성
-            before_like_count = before_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            before_like_count = int(before_like_count)
-            products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
-            sleep(1)
-            #좋아요 선택
-            after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
-            # 좋아요 누른  좋아요 갯수 확인
-            # 쉼표를 제거한 문자열 생성
-            after_like_count = after_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            after_like_count = int(after_like_count)
-            sleep(3)
-            if after_like_count == before_like_count+1 :
-                print(f"갯수 확인 성공 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
-            else :
-                print(f"갯수 확인 실패 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
-                test_result = 'WARN'
-                warning_texts.append("피드 아이템 좋아요 개수 증가 확인 실패")
 
-            before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
-
-            # 좋아요 취소 누르기 전 좋아요 갯수 확인
-            # 쉼표를 제거한 문자열 생성
-            before_like_count = before_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            before_like_count = int(before_like_count)
-            products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
-            # 좋아요 선택
-            after_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
-            # 좋아요 취소 누른  좋아요 갯수 확인
-            # 쉼표를 제거한 문자열 생성
-            after_like_count = after_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            after_like_count = int(after_like_count)
-            sleep(3)
-            if after_like_count == before_like_count - 1:
-                print(f"갯수 확인 성공 : 좋아요 취소 누르기 전 갯수 -  {before_like_count}, 좋아요 취소 누른 후 갯수 - {after_like_count}")
-            else:
-                print(f"갯수 확인 실패 : 좋아요 취소 누르기 전 갯수 -  {before_like_count}, 좋아요 취소 누른 후 갯수 - {after_like_count}")
-                test_result = 'WARN'
-                warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
-            sleep(5)
             # API 호출
             response = requests.get("https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=10&offset=0")
             if response.status_code == 200:
                 api_data = response.json()
-                sleep(3)
-                # "results" 배열을 가져옵니다.
+                # feedType이 contents인 첫번째, 두번째 텍스트 저장
 
-                index = None
-                count = 0
-                for i, result in enumerate(api_data['data']['results']):
-                    if result['feedType'] == 'contents':
-                        if index is None :
-                            print(f'{result["feedTitle"]}, {i}')
-                            count += 1
-                            if count == 2:
-                                print(f" count : {count}, {result['feedTitle']}, {i}, {index}")
-                                second_feed_title = api_data['data']['results'][i]['feedTitle']
-                                break
-                        else:
-                            index == i
+                saved_result = None
+                saved_results =[]
+                results = api_data["data"]["results"]
+                for result in results:
+                    if not saved_result and "relatedFeedItemList" in result:
+                        print(f"첫번째 저장 result : {result['feedTitle']}")
+                        saved_result = result['feedTitle']
+                        saved_results.append(result['feedTitle'])
+                    elif saved_result and "feedType" in result and result["feedType"] == "contents":
+                        print(f"두번째 저장 result : {result['feedTitle']}")
+                        saved_result = result['feedTitle']
+                        saved_results.append(result['feedTitle'])
+                        break
+                print(f"saved_result : {saved_result}, saved_results.append(result['feedTitle']) : {saved_results}")
+
+                found_element = None
+                for _ in range(10):
+                    try:
+                        # 첫번째 피드 타이틀와 일치하는 요소 찾기
+                        element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedTitle')
+                        if element.text == saved_results[0]:
+                            found_element = element
+                            print(f"첫번째 feedTitle 발견 : {saved_results[0]}")
+                            print(f"피드 컨텐츠 추가 노출 확인 : {element.text}")
                             break
+                    except NoSuchElementException:
+                        pass
+                    # 스크롤 액션 수행
+                    element_control.scroll(wd)
 
-                second_feed_title = api_data['data']['results'][i]['feedTitle']
-                print(f"second_feed_title : {second_feed_title}")
+                if found_element is None:
+                    test_result = 'WARN'
+                    warning_texts.append("첫번째 feedTitle 발견 실패")
+
+                # 스크롤
+                element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
+                products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
+                before_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                # 쉼표를 제거한 문자열 생성
+                before_like_count = before_like_count.replace(',', '')
+                # 문자열을 정수로 변환
+                before_like_count = int(before_like_count)
+                products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
+                sleep(1)
+                #좋아요 선택
+                after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                # 좋아요 누른  좋아요 갯수 확인
+                # 쉼표를 제거한 문자열 생성
+                after_like_count = after_like_count.replace(',', '')
+                # 문자열을 정수로 변환
+                after_like_count = int(after_like_count)
+                sleep(3)
+                if after_like_count == before_like_count+1 :
+                    print(f"갯수 확인 성공 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
+                else :
+                    print(f"갯수 확인 실패 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
+                    test_result = 'WARN'
+                    warning_texts.append("피드 아이템 좋아요 개수 증가 확인 실패")
+
+                before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+
+                # 좋아요 취소 누르기 전 좋아요 갯수 확인
+                # 쉼표를 제거한 문자열 생성
+                before_like_count = before_like_count.replace(',', '')
+                # 문자열을 정수로 변환
+                before_like_count = int(before_like_count)
+                products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
+                # 좋아요 선택
+                after_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                # 좋아요 취소 누른  좋아요 갯수 확인
+                # 쉼표를 제거한 문자열 생성
+                after_like_count = after_like_count.replace(',', '')
+                # 문자열을 정수로 변환
+                after_like_count = int(after_like_count)
+                sleep(3)
+                if after_like_count == before_like_count - 1:
+                    print(f"갯수 확인 성공 : 좋아요 취소 누르기 전 갯수 -  {before_like_count}, 좋아요 취소 누른 후 갯수 - {after_like_count}")
+                else:
+                    print(f"갯수 확인 실패 : 좋아요 취소 누르기 전 갯수 -  {before_like_count}, 좋아요 취소 누른 후 갯수 - {after_like_count}")
+                    test_result = 'WARN'
+                    warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
+                sleep(2)
                 found_element = None
                 for _ in range(10):
                     try:
                         # 두번째 피드 타이틀와 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedTitle')
-                        if element.text == second_feed_title:
+                        if element.text == saved_results[1]:
                             found_element = element
-                            print(f"두번째 feedTitle 발견 : {second_feed_title}")
-                            print(f"피드 컨텐츠 추가 노출 확인 : {second_feed_title}")
+                            print(f"두번째 feedTitle 발견 : {saved_results[1]}")
+                            print(f"피드 컨텐츠 추가 노출 확인 : {element.text}")
                             break
                     except NoSuchElementException:
                         pass
