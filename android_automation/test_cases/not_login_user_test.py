@@ -171,9 +171,9 @@ class NotLogin:
                 print("베스트 문구 탭을 찾지 못했습니다.")
 
             element_control.scroll(wd)
-
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
             print("전체보기 버튼 선택")
+            sleep(1)
             best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
             if best_page_title.text == '베스트':
                 print("베스트 페이지 진입 확인")
@@ -195,7 +195,7 @@ class NotLogin:
                 print("베스트 상품 PDP 정상 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-            print(f"PDP 상품명 : {PDP_product_titile} ")
+            print(f"베스트 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_titile}  ")
 
             # 상단으로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
@@ -236,6 +236,16 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
             print("상단 검색 아이콘 선택")
             search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            print(delete_all)
+            if len(delete_all)==0 :
+                pass
+            else :
+                delete_all[0].click()
+
+            # 지금 많이 찾는 브랜드 찾기
             element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[1]'
             search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
             if search_container_title.text == '지금 많이 찾는 브랜드':
@@ -244,7 +254,7 @@ class NotLogin:
                 print("지금 많이 찾는 브랜드 타이틀 노출 실패")
                 test_result = 'WARN'
                 warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
-            print(f"타이틀 확인 : {search_container_title}")
+            print(f"타이틀 확인 : {search_container_title.text}")
 
             brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
             # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
@@ -274,12 +284,15 @@ class NotLogin:
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
-            compose_view_layer = wd.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[@index=1]')
             sleep(2)
-            print(compose_view_layer)
-            search_delete = compose_view_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.view.View[1]')
-            print(search_delete)
-            search_delete.click()
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            print(delete_all)
+            if len(delete_all) == 0:
+                pass
+            else:
+                delete_all[0].click()
+            sleep(1)
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
@@ -316,6 +329,7 @@ class NotLogin:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            wd.get('//app29cm.29cm.co.kr/home')
 
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
