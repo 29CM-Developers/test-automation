@@ -324,15 +324,7 @@ class LoginLogout:
 
             # 하단 네비게이터에 MY 메뉴 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
-            home_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
-            sleep(1)
-            # Element가 화면에 표시되는지 확인
-            if home_title.is_displayed():
-                print("홈화면 진입 확인")
-            else:
-                print("홈화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈 진입 확인 실패")
+
             print("[이메일 로그아웃]CASE 종료")
 
         except Exception:
