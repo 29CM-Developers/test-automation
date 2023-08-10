@@ -238,7 +238,7 @@ class NotLogin:
             search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
 
             # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, f"//*[contains(@text, '모두 지우기')]")
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
             print(delete_all)
             if len(delete_all)==0 :
                 pass
@@ -286,7 +286,7 @@ class NotLogin:
             print("뒤로가기 선택")
             sleep(2)
             # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, f"//*[contains(@text, '모두 지우기')]")
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
             print(delete_all)
             if len(delete_all) == 0:
                 pass

@@ -198,7 +198,7 @@ class Home:
                 saved_results =[]
                 results = api_data["data"]["results"]
                 for result in results:
-                    if not saved_result and "relatedFeedItemList" in result:
+                    if not saved_result and "feedType" in result and result["feedType"] == "contents" and "relatedFeedItemList" in result:
                         print(f"첫번째 저장 result : {result['feedTitle']}")
                         saved_result = result['feedTitle']
                         saved_results.append(result['feedTitle'])

@@ -97,7 +97,6 @@ class Plp:
             response = requests.get("https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&limit=100&offset=0&periodSort=NOW")
             if response.status_code == 200:
                 api_data = response.json()
-                sleep(2)
                 api_data = api_data['data']['content'][9]['itemName']
                 print(f"api_data :{api_data}")
 
