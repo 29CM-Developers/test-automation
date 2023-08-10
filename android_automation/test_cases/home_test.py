@@ -174,6 +174,7 @@ class Home:
             # 2. 홈 > 피드 > 추천 탭선택
             tab_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView').click()
             print('홈 > 피드 > 추천 탭선택 ')
+            element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/textRecommend')
             guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
 
             if guide_text.text == self.pconf['NAME']+'님을 위한 추천 상품':
