@@ -128,6 +128,14 @@ class Plp:
                     test_result = 'WARN'
                     warning_texts.append("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
                 print(f"PDP 상품명 : {PDP_product_titile} ")
+                # 뒤로가기로 베스트 PLP 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+                print("뒤로가기 선택")
+                sleep(2)
+                # 뒤로가기로 카테고리 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+                print("뒤로가기 선택")
+                sleep(2)
             else:
                 print("API 호출에 실패했습니다.")
             print("[PLP 확인]CASE 종료")
