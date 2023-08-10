@@ -99,10 +99,10 @@ class Plp:
                 api_data = response.json()
                 sleep(2)
                 api_data = api_data['data']['content'][9]['itemName']
-                print(f"api_data:{api_data}")
+                print(f"api_data :{api_data}")
 
                 best_item_10th = element_control.scroll_to_element_with_text(wd,api_data)
-                if best_item_10th.text in api_data:
+                if api_data in best_item_10th.text :
                     print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인")
                 else :
                     print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
@@ -121,7 +121,7 @@ class Plp:
                         break
                 PDP_product_titile = PDP_title.text
                 print(f"PDP_product_titile : {PDP_product_titile} ")
-                if PDP_product_titile in api_data:
+                if api_data in PDP_product_titile:
                     print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인")
                 else:
                     print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
