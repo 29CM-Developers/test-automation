@@ -256,7 +256,7 @@ class NotLogin:
                 warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
             print(f"타이틀 확인 : {search_container_title.text}")
 
-            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
+            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[10]')
             # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
             brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             brand_10th.click()
