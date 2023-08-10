@@ -154,7 +154,7 @@ class Plp:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('//app29cm.29cm.co.kr/home')
+            wd.get('app29cm://home')
 
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환

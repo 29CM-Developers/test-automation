@@ -126,7 +126,7 @@ class NotLogin:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('//app29cm.29cm.co.kr/home')
+            wd.get('app29cm://home')
 
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
@@ -170,7 +170,8 @@ class NotLogin:
             else:
                 print("베스트 문구 탭을 찾지 못했습니다.")
 
-            element_control.scroll(wd)
+            # 일부 기기 단말기 사이즈에 따라 스크롤 필요하여 추가 주석처리
+            # element_control.scroll(wd)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
             print("전체보기 버튼 선택")
             sleep(1)
@@ -329,7 +330,7 @@ class NotLogin:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('//app29cm.29cm.co.kr/home')
+            wd.get('app29cm://home')
 
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
