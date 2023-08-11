@@ -17,6 +17,8 @@ class Plp:
         print(f'[{test_name}] 테스트 시작')
 
         try:
+            wd.execute_script('mobile:swipe', {'direction': 'up'})
+
             # 홈 카테고리의 BEST 탭 > 전체 보기 통해서 베스트 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="전체보기"]').click()
@@ -70,7 +72,13 @@ class Plp:
                 best_product_data = response.json()
 
                 # 10번째 상품의 상품명 저장
-                best_product_10th_name = best_product_data['data']['content'][9]['itemName']
+                best_product_10th_prefix = best_product_data['data']['content'][9]['subjectDescriptions']
+                best_product_10th_itemname = best_product_data['data']['content'][9]['itemName']
+                if not best_product_10th_prefix:
+                    best_product_10th_name = f'{best_product_10th_itemname}'
+                else:
+                    best_product_10th_name = f'{best_product_10th_prefix[0]} {best_product_10th_itemname}'
+                print(best_product_10th_name)
 
                 # 10번째 상품 선택 (화면에 미노출 시, 노출 될때까지 스크롤)
                 for i in range(0, 10):
@@ -92,12 +100,12 @@ class Plp:
                                                     '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
 
                 # 선택한 상품의 PDP에서 상품 이름 비교
-                if pdp_name in best_product_10th_name:
+                if best_product_10th_itemname in pdp_name:
                     print('PDP 진입 확인')
                 else:
                     test_result = 'WARN'
                     warning_texts.append('PDP 진입 확인 실패')
-                    print(f'PDP 진입 확인 실패 : {best_product_10th_name} / {pdp_name}')
+                    print(f'PDP 진입 확인 실패 : {best_product_10th_itemname} / {pdp_name}')
 
                 # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
@@ -106,7 +114,6 @@ class Plp:
                 test_result = 'WARN'
                 warning_texts.append('베스트 PLP API 불러오기 실패')
                 print('베스트 PLP API 불러오기 실패')
-
 
         except Exception:
             test_result = 'FAIL'
@@ -128,3 +135,4 @@ class Plp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
+
