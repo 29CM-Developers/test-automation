@@ -8,7 +8,7 @@ from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.by import By
-
+from time import sleep
 
 def class_find_click(wd, class_name):
     wd.find_element(By.CLASS_NAME, f'{class_name}').click()
@@ -56,10 +56,11 @@ def scroll_to_element_id(wd, element_id):
             # 요소를 찾지 못하면 아래로 스크롤
             size = wd.get_window_size()
             start_x = size["width"] / 2
-            start_y = size["height"] * 0.8
+            start_y = size["height"] * 0.5
             end_y = size["height"] * 0.2
             duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
             wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+            sleep(2)
 
 def scroll_to_element_xpath(wd, element_xpath):
 
@@ -72,19 +73,21 @@ def scroll_to_element_xpath(wd, element_xpath):
             # 요소를 찾지 못하면 아래로 스크롤
             size = wd.get_window_size()
             start_x = size["width"] / 2
-            start_y = size["height"] * 0.8
+            start_y = size["height"] * 0.5
             end_y = size["height"] * 0.2
             duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
             wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+            sleep(2)
 
 def scroll(wd):
         # 요소를 찾지 못하면 아래로 스크롤
         size = wd.get_window_size()
         start_x = size["width"] / 2
-        start_y = size["height"] * 0.8
+        start_y = size["height"] * 0.5
         end_y = size["height"] * 0.2
         duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+        sleep(2)
 
 # 좌우로 스와이프 함수 정의
 def swipe_right_to_left(wd, element):
@@ -146,9 +149,10 @@ def scroll_to_element_with_text(wd,text):
         # 요소를 찾지 못하면 아래로 스크롤
         size = wd.get_window_size()
         start_x = size["width"] / 2
-        start_y = size["height"] * 0.8
+        start_y = size["height"] * 0.5
         end_y = size["height"] * 0.2
         duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+        sleep(2)
 
     return element
