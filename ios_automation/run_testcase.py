@@ -87,6 +87,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
     def test_iOS_BVT(self):
+        self.def_name = sys._getframe().f_code.co_name
+
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
