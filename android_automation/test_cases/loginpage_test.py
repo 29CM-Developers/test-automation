@@ -310,6 +310,8 @@ class LoginLogout:
             # 최하단[LOGOUT] 버튼 선택
             # 스크롤하여 버튼 찾기
             element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/btnLogout')
+            element_control.scroll(wd)
+            sleep(1)
 
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/btnLogout').click()
             sleep(1)
