@@ -70,7 +70,13 @@ class Home:
                 print('피드 컨텐츠 API 불러오기 실패')
 
             # 다이나믹 게이트 -> 센스있는 선물하기 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
+            for i in range(0, 3):
+                try:
+                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
+                    break
+                except NoSuchElementException:
+                    dynamic_gate = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="0"]/XCUIElementTypeOther[@index="1"]/XCUIElementTypeScrollView')
+                    com_utils.element_control.swipe_right_to_left(wd, dynamic_gate)
 
             sleep(3)
             print("!! 상단 타이틀 비교 진행 필요")
