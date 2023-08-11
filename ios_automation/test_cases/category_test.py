@@ -1,7 +1,9 @@
+
 import os
 import sys
 import traceback
 import requests
+import com_utils.api_control
 
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
@@ -24,10 +26,11 @@ class Category:
             medium_category = '샌들'
 
             # 대 카테고리, 중 카테고리 코드 번호 저장
-            large_category_list = Category.large_category_list(self, category_group, large_category)
-            large_category_code = large_category_list[0]
-            large_category_name = large_category_list[1]
-            medium_category_code = Category.medium_category_code(self, large_category_code, medium_category)
+            large_category_info = com_utils.api_control.large_category_info(self, category_group, large_category)
+            large_category_code = large_category_info[0]
+            large_category_name = large_category_info[1]
+            medium_category_code = com_utils.api_control.medium_category_code(self, large_category_code, medium_category)
+            print(f'{large_category_code}/{large_category_name}/{medium_category_code}')
 
             # 신발 > 여성 > 전체 순으로 카테고리 선택
             wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{large_category}"]').click()
@@ -35,14 +38,14 @@ class Category:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '전체').click()
 
             # 타이틀명으로 카테고리 전체 페이지 진입 확인
-            # API (large_category_list)에서 받아온 카테고리명으로 확인
+            # API (large_category_info)에서 받아온 카테고리명으로 확인
             try:
                 wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{large_category_name}"]')
                 print('카테고리 전체 페이지 진입 확인')
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('카테고리 전체 페이지 진입 확인 실패')
-                print('카테고리 전체 페이지 진입 확인 실패')
+                print('WARN : 카테고리 전체 페이지 진입 확인 실패')
 
             # 카테고리 전체 리스트의 첫번째 상품 확인
             # 해당 영역 WEBVIEW Element 잡히지 않아 추후 업데이트 필요
@@ -60,7 +63,7 @@ class Category:
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('중 카테고리 페이지 진입 확인 실패')
-                print('중 카테고리 페이지 진입 확인 실패')
+                print('WARN :중 카테고리 페이지 진입 확인 실패')
 
             # 선택한 대 -> 중 카테고리에 해당하는 PLP API 호출
             response = requests.get(
@@ -78,11 +81,11 @@ class Category:
                         break
                     except NoSuchElementException:
                         wd.execute_script('mobile:swipe', {'direction': 'up'})
-                        print('카테고리 페이지의 상품 확인 안되어 스크롤')
+                        print('WARN :카테고리 페이지의 상품 확인 안되어 스크롤')
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
-                print('피드 컨텐츠 API 불러오기 실패')
+                print('WARN :피드 컨텐츠 API 불러오기 실패')
 
             # 카테고리 페이지의 첫번째 아이템 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, category_1st_item).click()
@@ -104,7 +107,7 @@ class Category:
             else:
                 test_result = 'WARN'
                 warning_texts.append('PDP 진입 확인 실패')
-                print(f'PDP 진입 확인 실패 : {category_1st_item} / {pdp_name}')
+                print(f'WARN :PDP 진입 확인 실패 : {category_1st_item} / {pdp_name}')
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
@@ -130,55 +133,4 @@ class Category:
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
 
-    def large_category_list(self, category, large_category_text):
-        large_category_code = ''
-        large_category_name = ''
 
-        # 카테고리 그룹 API 호출
-        response = requests.get('https://recommend-api.29cm.co.kr/api/v4/best/category-groups')
-        if response.status_code == 200:
-            category_group_data = response.json()
-            category_group = category_group_data['data']
-
-            # 찾고자 하는 카테고리 그룹의 아이템 리스트 확인
-            for i in range(0, 2):
-                category_group_name = category_group[i]['categoryGroupName']
-                if category_group_name == category:
-                    category_group_item_list = category_group[i]['categoryGroupItemList']
-                    # 찾고자 하는 이름의 대 카테고리 코드 번호 저장
-                    for v in range(0, 10):
-                        category_item_group_name = category_group_item_list[v]['categoryGroupItemName']
-                        if category_item_group_name == large_category_text:
-                            large_category_code = category_group_item_list[v]['categoryCode']
-                            large_category_name = category_group_item_list[v]['categoryName']
-                            break
-                        else:
-                            pass
-                else:
-                    pass
-        else:
-            print('카테고리 그룹 API 호출 실패')
-
-        return large_category_code, large_category_name
-
-    def medium_category_code(self, large_category_code, medium_category_name):
-        medium_category_code = ''
-
-        # 대 카테고리의 하위 카테고리 API 호출
-        response = requests.get(
-            f'https://recommend-api.29cm.co.kr/api/v4/best/categories?categoryList={large_category_code}')
-        if response.status_code == 200:
-            medium_category_data = response.json()
-
-            # 찾고자 하는 이름의 중 카테고리 코드 번호 저장
-            for i in range(0, 10):
-                category_name = medium_category_data['data'][i]['categoryName']
-                if category_name == medium_category_name:
-                    medium_category_code = medium_category_data['data'][i]['categoryCode']
-                    break
-                else:
-                    pass
-        else:
-            print('중 카테고리 리스트 API 호출 실패')
-
-        return medium_category_code
