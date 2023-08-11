@@ -65,13 +65,18 @@ class Category:
                 warning_texts.append('중 카테고리 페이지 진입 확인 실패')
                 print('WARN :중 카테고리 페이지 진입 확인 실패')
 
+            # 정렬 신상품 순으로 변경
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView/XCUIElementTypeCell[3]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]').click()
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "신상품순"`]').click()
+
             # 선택한 대 -> 중 카테고리에 해당하는 PLP API 호출
             response = requests.get(
-                f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50')
+                f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort=new')
             category_1st_item = ''
             if response.status_code == 200:
                 category_list_data = response.json()
                 category_1st_item = category_list_data['data']['products'][0]['itemName']
+                print(category_1st_item)
 
                 # 카테고리 페이지에 첫번째 아이템 노출 확인
                 for i in range(0, 5):
@@ -132,5 +137,4 @@ class Category:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
-
 

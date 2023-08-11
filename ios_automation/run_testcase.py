@@ -71,13 +71,27 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 이메일 로그인 실패
-        self.result_data = UserLoginTest.test_email_login_error(self, self.wd)
+        # 이메일 로그인 실패 및 성공
+        self.result_data = UserLoginTest.test_email_login_error_success(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # PLP 기능 확인
+        self.result_data = Plp.test_product_listing_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 로그아웃
+        self.result_data = UserLoginTest.test_logout(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+    def test_iOS_BVT(self):
+        self.def_name = sys._getframe().f_code.co_name
+
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
@@ -88,11 +102,6 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 홈화면 컨텐츠 확인
         self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # PLP 기능 확인
-        self.result_data = Plp.test_product_listing_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
