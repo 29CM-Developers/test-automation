@@ -4,8 +4,6 @@ import requests
 import os
 import sys
 
-from ios_automation.test_cases.sample_test import AutomationTesting
-
 iOS_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(iOS_path)
 
