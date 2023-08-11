@@ -12,8 +12,8 @@ class UserLoginTest:
 
     def input_id_password(self, wd, id, password):
 
-        wd.find_element(AppiumBy.IOS_PREDICATE, 'value=="아이디 (이메일)"').send_keys(id)
-        wd.find_element(AppiumBy.IOS_PREDICATE, 'value=="비밀번호"').send_keys(password)
+        wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeTextField[@index="0"]').send_keys(id)
+        wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeSecureTextField[@index="1"]').send_keys(password)
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기').click()
 
     def test_email_login_error(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -184,5 +184,76 @@ class UserLoginTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
+
+    def test_email_login_error_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # 로그인 페이지 진입
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
+            sleep(3)
+
+            # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
+            UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['error_password_29cm'])
+            sleep(1)
+            error = wd.find_element(AppiumBy.XPATH,
+                                    '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
+            error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
+
+            if error_login_text in error:
+                print("이메일 로그인 실패 확인")
+            else:
+                test_result = 'WARN'
+                warning_texts.append('이메일 로그인 실패 확인 실패')
+                print("이메일 로그인 실패 확인 실패")
+
+            # 이메일, 비밀번호 입력값 제거
+            wd.find_element(AppiumBy.XPATH,
+                            '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeTextField[@index="0"]').clear()
+            wd.find_element(AppiumBy.XPATH,
+                            '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeSecureTextField[@index="1"]').clear()
+
+            # 올바른 아이디, 올바른 비밀번호 입력
+            UserLoginTest.input_id_password(self, wd, self.pconf['id2_29cm'], self.pconf['password_29cm'])
+            sleep(1)
+
+            # 프로필 이름 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
+                print("이메일 로그인 성공 확인")
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('이메일 로그인 성공 확인 실패')
+                print("이메일 로그인 성공 확인 실패")
+
+            # Home 으로 복귀
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+
+        except Exception:
+            test_result = 'FAIL'
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            error_text = traceback.format_exc().split('\n')
+            try:
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+
+        finally:
+            run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
+
+
 
 
