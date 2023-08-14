@@ -178,3 +178,19 @@ def scroll_up_to_element_id(wd, element_id):
         sleep(2)
 
     return element
+def scroll_control(wd, direction, percent):
+
+    size = wd.get_window_size()
+    start_x = size["width"] / 2
+    duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+
+    # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 좌측으로 이동
+    if direction == 'U':
+        start_y = (size["height"] * 0.1) + (size["height"] * 0.01 * percent)
+        end_y = size["height"] * 0.1
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+    elif direction == 'D':
+        start_y = size["height"] * 0.1
+        end_y = (size["height"] * 0.1) + (size["height"] * 0.01 * percent)
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+    sleep(2)
