@@ -38,7 +38,7 @@ class Home:
 
                 # 홈화면 배너 타이틀 모두 저장
                 banner_home = []
-                for i in range(0, banner_count):
+                for i in range(0, banner_count+1):
                     sleep(2)
                     try:
                         banner_title_text = wd.find_element(AppiumBy.XPATH,
@@ -62,7 +62,7 @@ class Home:
                     print('홈 배너 확인')
                 else:
                     test_result = 'WARN'
-                    error_texts = '홈 배너 확인 실패'
+                    error_texts.append('홈 배너 확인 실패')
                     print(f'홈 배너 확인 실패: {set(banner_api).difference(set(banner_home))} / {set(banner_home).difference(set(banner_api))}')
             else:
                 test_result = 'WARN'
