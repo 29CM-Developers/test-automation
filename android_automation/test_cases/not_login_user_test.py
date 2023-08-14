@@ -54,6 +54,7 @@ class NotLogin:
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
+            sleep(1)
             # 뒤로가기로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
@@ -61,6 +62,7 @@ class NotLogin:
 
             #full test 확장 시나리오
             # 홈 > 우상단 알림 아이콘 선택
+            sleep(2)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgInboxNotification').click()
             print("홈 > 우상단 알림 아이콘 선택")
             # 로그인 화면 진입 확인
@@ -148,7 +150,8 @@ class NotLogin:
         start_time = time()
         try:
             print("[사용 가능 기능 사용]CASE 시작")
-            sleep(3)
+            sleep(2)
+            element_control.scroll(wd)
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
             # "베스트 문구"를 찾을 변수 초기화
@@ -170,8 +173,6 @@ class NotLogin:
             else:
                 print("베스트 문구 탭을 찾지 못했습니다.")
 
-            # 일부 기기 단말기 사이즈에 따라 스크롤 필요하여 추가 주석처리
-            # element_control.scroll(wd)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
             print("전체보기 버튼 선택")
             sleep(1)
@@ -202,6 +203,9 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
             # 8. 홈 > 피드 > 추천 탭선택
+            sleep(1)
+            element_control.scroll(wd)
+            sleep(1)
             tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
 
             # "추천 문구"를 찾을 변수 초기화
@@ -215,8 +219,12 @@ class NotLogin:
                     rec_tab_title = tab_title_element
                     break
 
+            if rec_tab_title is None:
+                print("recommend not found swipe")
+                element_control.swipe_right_to_left(wd, tab_title_element)
             # "추천"탭 있는지 확인하고 결과 출력
-            if rec_tab_title is not None:
+            # if rec_tab_title is not None:
+            else :
                 print("추천탭을 찾았습니다.")
                 tab_title_element.click()
                 print("추천 탭 선택")
@@ -229,9 +237,6 @@ class NotLogin:
                     test_result = 'WARN'
                     warning_texts.append("추천 가이드 문구 확인 실패")
                 print(f"가이드 문구 : {guide_text.text} ")
-
-            else:
-                print("추천 탭을 찾지 못했습니다.")
 
             # 6. Home 상단 네비게이션 검색 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()

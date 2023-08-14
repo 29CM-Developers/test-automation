@@ -231,6 +231,7 @@ class Home:
 
                 # 스크롤
                 element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
+                element_control.scroll(wd)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
                 before_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
                 # 쉼표를 제거한 문자열 생성
@@ -278,7 +279,7 @@ class Home:
                     warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
                 sleep(2)
                 found_element = None
-                for _ in range(10):
+                for _ in range(20):
                     try:
                         # 두번째 피드 타이틀와 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedTitle')
@@ -293,6 +294,7 @@ class Home:
                     element_control.scroll(wd)
 
                 if found_element is None:
+                    print("피드 컨텐츠 추가 노출 확인 실패")
                     test_result = 'WARN'
                     warning_texts.append("피드 컨텐츠 추가 노출 확인 실패")
 
