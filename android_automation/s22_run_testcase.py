@@ -64,13 +64,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 실제 실행 - 이메일 로그인 실패
-        self.result_data = LoginLogout.test_email_login_error(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 - 이메일 로그인 성공
-        self.result_data = LoginLogout.test_email_login_success(self, self.wd)
+        # 실제 실행 - 이메일 로그인 실패 & 성공
+        self.result_data = LoginLogout.test_email_login_error_success(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
