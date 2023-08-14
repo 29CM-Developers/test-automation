@@ -89,6 +89,35 @@ def scroll(wd):
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
         sleep(2)
 
+# 특정 영역 스와이프 동작 -> 좌우, 중앙으로부터 몇 % 스와이프 지정
+def swipe_control(wd, element, direction, percent):
+    # 특정 요소의 위치와 사이즈 값
+    location = element.location
+    size = element.size
+
+    # 특정 요소의 중앙을 시작점으로 지정
+    start_x = location['x'] + (size['width'] / 2)
+    start_y = location['y'] + (size['height'] / 2)
+
+    # 디바이스 사이즈
+    window_size = wd.get_window_size()
+
+    # 움직을 x값을 디바이스 사이즈의 30%로 지정
+    move_x = window_size['width'] * (percent / 100)
+
+    # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 좌측으로 이동
+    actions = ActionChains(wd)
+    actions.w3c_actions = ActionBuilder(wd, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+    actions.w3c_actions.pointer_action.move_to_location(start_x, start_y)
+    actions.w3c_actions.pointer_action.pointer_down()
+    if direction == 'left':
+        actions.w3c_actions.pointer_action.move_to_location((start_x - move_x), start_y)
+    elif direction == 'right':
+        actions.w3c_actions.pointer_action.move_to_location((start_x + move_x), start_y)
+    actions.w3c_actions.pointer_action.release()
+    actions.perform()
+
+
 # 좌우로 스와이프 함수 정의
 def swipe_right_to_left(wd, element):
     # 특정 요소의 위치와 사이즈 값
