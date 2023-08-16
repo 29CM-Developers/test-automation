@@ -81,9 +81,9 @@ class Search:
                                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="0"]/XCUIElementTypeButton')
             brand_filter.click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"][1]}"`]').click()
+                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"]["WOMEN"]}"`]').click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"][1]}"`]').click()
+                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"]["30to34"]}"`]').click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
 
             # 변경된 필터 기준
@@ -115,9 +115,9 @@ class Search:
             # 필터를 전체 기준으로 재변경
             brand_filter.click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"][0]}"`][1]').click()
+                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"]["ALL"]}"`][1]').click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"][0]}"`][2]').click()
+                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"]["ALL"]}"`][2]').click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
 
             # 뒤로가기
