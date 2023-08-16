@@ -32,18 +32,26 @@ class Plp:
                 print('베스트 PLP 진입 확인 실패')
 
             # 베스트 PLP의 두번째 상품 좋아요 버튼과 개수 element 확인
-            product_1nd = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="1"]')
-            product_1nd_heart_btn = product_1nd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="3"]/XCUIElementTypeButton')
-            product_1nd_heart_text = product_1nd_heart_btn.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText')
+            product_1st = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="1"]')
+            try:
+                product_1st_heart_btn = product_1st.find_element(AppiumBy.XPATH,
+                                                                 '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeButton')
+                product_1st_heart_text = product_1st_heart_btn.find_element(AppiumBy.XPATH,
+                                                                            '//XCUIElementTypeStaticText')
+            except NoSuchElementException:
+                product_1st_heart_btn = product_1st.find_element(AppiumBy.XPATH,
+                                                                 '//XCUIElementTypeOther[@index="3"]/XCUIElementTypeButton')
+                product_1st_heart_text = product_1st_heart_btn.find_element(AppiumBy.XPATH,
+                                                                            '//XCUIElementTypeStaticText')
 
             # 좋아요 버튼 선택 전, 좋아요 수 저장
-            heart_count = product_1nd_heart_text.text
+            heart_count = product_1st_heart_text.text
             heart_count = int(heart_count.replace(',', ''))
 
             # 좋아요 버튼 선택 -> 찜하기 등록
-            product_1nd_heart_btn.click()
+            product_1st_heart_btn.click()
             sleep(1)
-            heart_select = product_1nd_heart_text.text
+            heart_select = product_1st_heart_text.text
             heart_select = int(heart_select.replace(',', ''))
             if heart_select == heart_count + 1:
                 print('아이템 좋아요 개수 증가 확인')
@@ -54,9 +62,9 @@ class Plp:
                 print(f'아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
 
             # 좋아요 버튼 선택 -> 찜하기 해제
-            product_1nd_heart_btn.click()
+            product_1st_heart_btn.click()
             sleep(1)
-            heart_select = product_1nd_heart_text.text
+            heart_select = product_1st_heart_text.text
             heart_select = int(heart_select.replace(',', ''))
             if heart_select == heart_count:
                 print('아이템 좋아요 개수 차감 확인')

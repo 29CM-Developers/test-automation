@@ -38,7 +38,7 @@ class Home:
 
                 # 홈화면 배너 타이틀 모두 저장
                 banner_home = []
-                for i in range(0, banner_count):
+                for i in range(0, banner_count+1):
                     sleep(2)
                     try:
                         banner_title_text = wd.find_element(AppiumBy.XPATH,
@@ -51,7 +51,7 @@ class Home:
                     except Exception:
                         # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
                         banner = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView')
-                        com_utils.element_control.swipe_left_to_right(wd, banner)
+                        com_utils.element_control.swipe_control(wd, banner, 'right', 30)
                         banner_title_text = wd.find_element(AppiumBy.XPATH,
                                                             '//XCUIElementTypeCollectionView[@index="4"]/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]').text
                         banner_home.append(banner_title_text)
@@ -62,7 +62,7 @@ class Home:
                     print('홈 배너 확인')
                 else:
                     test_result = 'WARN'
-                    error_texts = '홈 배너 확인 실패'
+                    error_texts.append('홈 배너 확인 실패')
                     print(f'홈 배너 확인 실패: {set(banner_api).difference(set(banner_home))} / {set(banner_home).difference(set(banner_api))}')
             else:
                 test_result = 'WARN'
@@ -76,7 +76,7 @@ class Home:
                     break
                 except NoSuchElementException:
                     dynamic_gate = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="0"]/XCUIElementTypeOther[@index="1"]/XCUIElementTypeScrollView')
-                    com_utils.element_control.swipe_right_to_left(wd, dynamic_gate)
+                    com_utils.element_control.swipe_control(wd, dynamic_gate, 'left', 30)
 
             sleep(3)
             print("!! 상단 타이틀 비교 진행 필요")
