@@ -15,6 +15,7 @@ from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.plp_test import Plp
 from ios_automation.test_cases.category_test import Category
+from ios_automation.test_cases.search_test import Search
 from selenium.common.exceptions import InvalidSessionIdException
 
 
@@ -78,6 +79,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # PLP 기능 확인
         self.result_data = Plp.test_product_listing_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # SEARCH -> 인기브랜드 확인
+        self.result_data = Search.test_search_popular_brand(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
