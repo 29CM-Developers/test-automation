@@ -185,3 +185,41 @@ def scroll_to_element_with_text(wd,text):
         sleep(2)
 
     return element
+
+def scroll_up_to_element_id(wd, element_id):
+    for _ in range(10):
+        try:
+            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, element_id)
+            print(f"element : {element.get_attribute('content-desc')}")
+            if element.is_displayed():
+                print("아이템 발견")
+                return element
+        except:
+            pass
+
+        # 요소를 찾지 못하면 아래로 스크롤
+        size = wd.get_window_size()
+        start_x = size["width"] / 2
+        start_y = size["height"] * 0.2
+        end_y = size["height"] * 0.5
+        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+        sleep(2)
+
+    return element
+def scroll_control(wd, direction, percent):
+
+    size = wd.get_window_size()
+    start_x = size["width"] / 2
+    duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+
+    # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 좌측으로 이동
+    if direction == 'U':
+        start_y = size["height"] * 0.5
+        end_y = (size["height"] * 0.5) + (size["height"] * 0.01 * percent)
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+    elif direction == 'D':
+        start_y = size["height"] * 0.5
+        end_y = (size["height"] * 0.5) - (size["height"] * 0.01 * percent)
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+    sleep(2)
