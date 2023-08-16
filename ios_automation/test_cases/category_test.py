@@ -22,15 +22,15 @@ class Category:
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
 
             # 대 카테고리, 중 카테고리 코드 번호 저장
-            large_category_info = com_utils.api_control.large_category_info(self, self.pconf["category_group"][0], self.pconf["large_category"][0])
+            large_category_info = com_utils.api_control.large_category_info(self, self.conf["category_group"][0], self.conf["large_category"][0])
             large_category_code = large_category_info[0]
             large_category_name = large_category_info[1]
-            medium_category_code = com_utils.api_control.medium_category_code(self, large_category_code, self.pconf["medium_category"][0])
+            medium_category_code = com_utils.api_control.medium_category_code(self, large_category_code, self.conf["medium_category"][0])
             print(f'{large_category_code}/{large_category_name}/{medium_category_code}')
 
             # 신발 > 여성 > 전체 순으로 카테고리 선택
-            wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.pconf["large_category"][0]}"]').click()
-            wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.pconf["category_group"][0]}"]').click()
+            wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.conf["large_category"][0]}"]').click()
+            wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.conf["category_group"][0]}"]').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '전체').click()
 
             # 타이틀명으로 카테고리 전체 페이지 진입 확인
@@ -48,13 +48,13 @@ class Category:
 
             # 중 카테고리 : 샌들 선택
             wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{large_category_name}"]').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf["medium_category"][0]).click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.conf["medium_category"][0]).click()
 
             sleep(3)
 
             # 타이틀명으로 중 카테고리 페이지 진입 확인
             try:
-                wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.pconf["medium_category"][0]}"]')
+                wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.conf["medium_category"][0]}"]')
                 print('중 카테고리 페이지 진입 확인')
             except NoSuchElementException:
                 test_result = 'WARN'
