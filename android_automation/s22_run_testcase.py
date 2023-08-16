@@ -9,6 +9,7 @@ from android_automation.test_cases.loginpage_test import LoginLogout
 from android_automation.test_cases.not_login_user_test import NotLogin
 from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.plp_test import Plp
+from android_automation.test_cases.search_test import Search
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -71,6 +72,11 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 - PLP 기능 확인 성공
         self.result_data = Plp.test_product_listing_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   검색 화면 인기브랜드 확인 성공
+        self.result_data = Search.test_search_popular_brand(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 

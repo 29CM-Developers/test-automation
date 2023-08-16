@@ -10,6 +10,7 @@ from android_automation.test_cases.not_login_user_test import NotLogin
 from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.plp_test import Plp
 from android_automation.test_cases.category_test import Category
+from android_automation.test_cases.search_test import Search
 from android_setup import hhj2008_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
