@@ -186,11 +186,11 @@ def scroll_control(wd, direction, percent):
 
     # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 좌측으로 이동
     if direction == 'U':
-        start_y = (size["height"] * 0.1) + (size["height"] * 0.01 * percent)
-        end_y = size["height"] * 0.1
+        start_y = size["height"] * 0.5
+        end_y = (size["height"] * 0.5) + (size["height"] * 0.01 * percent)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
     elif direction == 'D':
-        start_y = size["height"] * 0.1
-        end_y = (size["height"] * 0.1) + (size["height"] * 0.01 * percent)
+        start_y = size["height"] * 0.5
+        end_y = (size["height"] * 0.5) - (size["height"] * 0.01 * percent)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
     sleep(2)
