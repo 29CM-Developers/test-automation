@@ -3,6 +3,7 @@ import unittest
 import requests
 import os
 import sys
+
 iOS_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(iOS_path)
 
@@ -12,6 +13,7 @@ from ios_setup import pro14_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.home_test import Home
+from ios_automation.test_cases.category_test import Category
 from selenium.common.exceptions import InvalidSessionIdException
 
 
@@ -70,6 +72,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 홈화면 컨텐츠 확인
         self.result_data = Home.test_home_contents(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 카테고리 화면 확인
+        self.result_data = Category.test_category_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
