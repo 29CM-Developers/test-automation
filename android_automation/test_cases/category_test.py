@@ -28,10 +28,10 @@ class Category:
             # 카테고리 탭 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
             # 대 카테고리, 중 카테고리 코드 번호 저장
-            large_category_info = api_control.large_category_info(self, self.pconf['CATEGORY_GROUP'], self.pconf['LARGE_CATEGORY'])
+            large_category_info = api_control.large_category_info(self, self.conf['category_group'][0], self.conf['large_category'][0])
             large_category_code = large_category_info[0]
             large_category_name = large_category_info[1]
-            medium_category_code = api_control.medium_category_code(self, large_category_code,self.pconf['MEDIUM_CATEGORY'])
+            medium_category_code = api_control.medium_category_code(self, large_category_code,self.conf['medium_category'][0])
             print(f'{large_category_code}/{large_category_name}/{medium_category_code}')
 
             # 신발 > 여성 > 전체 순으로 카테고리 선택
