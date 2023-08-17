@@ -3,6 +3,7 @@ import unittest
 import requests
 import os
 import sys
+
 iOS_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(iOS_path)
 
@@ -12,6 +13,8 @@ from ios_setup import pro12_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.home_test import Home
+from ios_automation.test_cases.plp_test import Plp
+from ios_automation.test_cases.search_test import Search
 from selenium.common.exceptions import InvalidSessionIdException
 
 
@@ -68,8 +71,28 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 이메일 로그인 실패
-        self.result_data = UserLoginTest.test_email_login_error(self, self.wd)
+        # 이메일 로그인 실패 및 성공
+        self.result_data = UserLoginTest.test_email_login_error_success(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # PLP 기능 확인
+        self.result_data = Plp.test_product_listing_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # SEARCH -> 인기브랜드 확인
+        self.result_data = Search.test_search_popular_brand(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # SEARCH -> 인기검색어 확인
+        self.result_data = Search.test_search_popular_keyword(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 로그아웃
+        self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
