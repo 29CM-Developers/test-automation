@@ -21,52 +21,97 @@ class Search:
             # SEARCH 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
 
+            all_popular_brand_1st = ''
+            all_popular_brand_30th = ''
             # 전체 기준 인기검색어 리스트 호출
             response = requests.get('https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30')
             if response.status_code == 200:
                 all_popular_data = response.json()
+                all_popular_brand_1st = all_popular_data['data']['popularBrandKeywords'][0]
                 all_popular_brand_30th = all_popular_data['data']['popularBrandKeywords'][29]
-
-                # 인기 브랜드 타이틀 확인
-                try:
-                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 브랜드')
-                    print('인기 브랜드 타이틀 확인')
-                except NoSuchElementException:
-                    test_result = 'WARN'
-                    warning_texts.append('인기 브랜드 타이틀 확인 실패')
-                    print('인기 브랜드 타이틀 확인 실패')
-
-                # 인기 브랜드 30위 확인
-                popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
-                com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
-                com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
-
-                popular_brand_30th = popular_brand.find_element(AppiumBy.XPATH,
-                                                                '//XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
-                popular_brand_30th_name = popular_brand_30th.text
-
-                # API 호출한 인기브랜드 30위와 실제 30위가 동일한지 확인
-                if all_popular_brand_30th == popular_brand_30th_name:
-                    print('인기 브랜드 순위 확인')
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('인기 브랜드 순위 확인 실패')
-                    print('인기 브랜드 순위 확인 실패')
-
-                # 인기 브랜드 30위 검색
-                popular_brand_30th.click()
-
-                # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-                search_result_brand = wd.find_element(AppiumBy.XPATH,
-                                                      '//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
-                if popular_brand_30th_name in search_result_brand.text:
-                    print('인기 브랜드 검색 확인')
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('인기 브랜드 검색 확인 실패')
-                    print('인기 브랜드 검색 확인 실패')
+                print(f'1위: {all_popular_brand_1st} / 30위: {all_popular_brand_30th}')
             else:
                 print('인기 검색어 API 호출 실패')
+
+            # 인기 브랜드 타이틀 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 브랜드')
+                print('인기 브랜드 타이틀 확인')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 타이틀 확인 실패')
+                print('인기 브랜드 타이틀 확인 실패')
+
+            # 인기 브랜드 1위 확인
+            popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
+            popular_brand_1st = popular_brand.find_element(AppiumBy.XPATH,
+                                                            '//XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
+            popular_brand_1st_name = popular_brand_1st.text
+
+            # API 호출한 인기 브랜드 1위와 실제 1위가 동일한 지 확인 후 선택
+            if all_popular_brand_1st == popular_brand_1st_name:
+                popular_brand_1st.click()
+                print('인기 브랜드 1위 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 1위 확인 실패')
+                print('인기 브랜드 1위 확인 실패')
+
+            # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
+            relate_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
+            relate_brand_name = relate_brand.find_element(AppiumBy.XPATH,
+                                                          '//XCUIElementTypeStaticText[@index="0"]').text
+            if popular_brand_1st_name in relate_brand_name:
+                print('인기 브랜드 검색 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 검색 확인 실패')
+                print('인기 브랜드 검색 확인 실패')
+
+            # 검색 결과 첫번째 상품의 브랜드명과 1위 브랜드명 비교
+            product_1st = wd.find_element(AppiumBy.XPATH,
+                                          '//XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell[@index="3"]')
+            product_brand = product_1st.find_element(AppiumBy.XPATH,
+                                                     '//XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]').text
+
+            if popular_brand_1st_name == product_brand:
+                print('인기 브랜드 검색 상품 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 검색 상품 확인 실패')
+                print(f'인기 브랜드 검색 상품 확인 실패: {popular_brand_1st_name } / {product_brand}')
+
+            # 검색 화면으로 복귀
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+
+            # 인기 브랜드 30위 확인
+            popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
+            com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
+            com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
+
+            popular_brand_30th = popular_brand.find_element(AppiumBy.XPATH,
+                                                            '//XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
+            popular_brand_30th_name = popular_brand_30th.text
+
+            # API 호출한 인기브랜드 30위와 실제 30위가 동일한지 확인 후 선택
+            if all_popular_brand_30th == popular_brand_30th_name:
+                popular_brand_30th.click()
+                print('인기 브랜드 30위 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 30위 확인 실패')
+                print('인기 브랜드 30위 확인 실패')
+
+            # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
+            relate_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
+            relate_brand_name = relate_brand.find_element(AppiumBy.XPATH,
+                                                          '//XCUIElementTypeStaticText[@index="0"]').text
+            if popular_brand_30th_name in relate_brand_name:
+                print('인기 브랜드 검색 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 검색 확인 실패')
+                print('인기 브랜드 검색 확인 실패')
 
             # 검색 화면으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
