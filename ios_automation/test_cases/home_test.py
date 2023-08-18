@@ -62,7 +62,7 @@ class Home:
                     print('홈 배너 확인')
                 else:
                     test_result = 'WARN'
-                    error_texts.append('홈 배너 확인 실패')
+                    warning_texts.append('홈 배너 확인 실패')
                     print(f'홈 배너 확인 실패: {set(banner_api).difference(set(banner_home))} / {set(banner_home).difference(set(banner_api))}')
             else:
                 test_result = 'WARN'
