@@ -362,3 +362,157 @@ class Search:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             return result_data
+    def test_search_results_page(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        try:
+            print("[검색 결과 화면 확인]CASE 시작")
+            sleep(2)
+            #  SEARCH 탭 진입
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
+            print("하단 SEARCH탭 선택")
+            # 검색 필드에 [니트] 입력 후 검색
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').send_keys('니트')
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchImg').click()
+            relatedKeyword_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/relatedKeywordComposeView')
+            relatedKeyword = relatedKeyword_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.widget.TextView[1]').text
+            if '니트' in relatedKeyword:
+                print("검색어 검색 확인 - 확인1. 검색 셀렉트박스에 카테고리 태그 노출 확인")
+            else:
+                print("검색 셀렉트박스에 카테고리 태그 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("검색어 검색 확인 실패")
+            print(f"검색어 검색 확인 : {relatedKeyword}")
+
+            # 확인: 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
+            brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
+            search_brand = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
+            if '니트' in search_brand:
+                print("확인2. 브랜드 영역에 해당 브랜드 이름 노출 확인")
+            else:
+                print("확인2. 브랜드 영역에 해당 브랜드 이름 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("검색어 검색 확인 실패")
+            print(f"브랜드 이름 : {search_brand} ")
+
+            selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+            selector = selector_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.view.View[1]/android.widget.TextView')
+            selector.click()
+            bottom_sheet_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
+            filter_by_sales = bottom_sheet_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[8]/android.widget.TextView')
+            filter_by_sales_name = filter_by_sales.text
+            filter_by_sales.click()
+            sleep(1)
+            if selector.text in filter_by_sales_name :
+                print("판매순 정렬 변경 확인")
+            else :
+                print("판매순 정렬 변경 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("필터 적용 확인 실패")
+            print(f"selector.text : {selector.text}, filter_by_sales_name : {filter_by_sales_name} , {self.conf['search_filter']['color']}")
+            sleep(1)
+            element = selector_layer.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['color']}')]")
+            element.click()
+            sleep(1)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['black']}')]")
+            element.click()
+            sleep(1)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['category']}')]")
+            element.click()
+            sleep(1)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['woman_close']}')]")
+            element.click()
+            sleep(1)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['cost']}')]")
+            element.click()
+            sleep(1)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['5to10']}')]")
+            element.click()
+            sleep(1)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['item_info']}')]")
+            element.click()
+            sleep(0.5)
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['excludingout_of_stock_products']}')]")
+            element.click()
+            sleep(0.5)
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/confirm').click()
+            selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+            element = selector_layer.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['black']}')]")
+            if '블랙' in element.text :
+                print("블랙 필터링 노출 확인")
+            else:
+                print("블랙 필터링 노출 확인 불가")
+                test_result = 'WARN'
+                warning_texts.append("필터 적용 확인 실패")
+            element = selector_layer.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['woman_close']}')]")
+            if '여성의류' in element.text:
+                print("여성의류 필터링 노출 확인")
+            else:
+                print("여성의류 필터링 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("필터 적용 확인 실패")
+            element_control.swipe_control(wd, selector_layer, 'left', 30)
+            element = selector_layer.find_element(By.XPATH, "//*[contains(@text, '50,000원 ~ 100,000원')]")
+            if '50,000원 ~ 100,000원' in element.text:
+                print("50,000원 ~ 100,000원 필터링 노출 확인")
+            else:
+                print("50,000원 ~ 100,000원 필터링 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("필터 적용 확인 실패")
+            element_control.swipe_control(wd, selector_layer, 'left', 40)
+            element_control.swipe_control(wd, selector_layer, 'left', 40)
+            element = wd.find_elements(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['excludingout_of_stock_products']}')]")
+            if '품절상품 제외' in element[0].text:
+                print("품절상품 제외 필터링 노출 확인")
+                element_control.swipe_control(wd, selector_layer, 'left', 30)
+            else:
+                print("품절상품 제외 필터링 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("필터 적용 확인 실패")
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(2)
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            if len(delete_all) == 0:
+                pass
+            else:
+                delete_all[0].click()
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(2)
+            print("[검색 결과 화면 확인]CASE 종료")
+
+        except Exception:
+            # 오류 발생 시 테스트 결과를 실패로 한다
+            test_result = 'FAIL'
+            # 스크린샷
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            # 스크린샷 경로 추출
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            # 에러 메시지 추출
+            error_text = traceback.format_exc().split('\n')
+            try:
+                # 에러메시지 분류 시 예외처리
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+
+        finally:
+            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
+            run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            # 값 재사용 용이성을 위해 dict로 반환한다
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
