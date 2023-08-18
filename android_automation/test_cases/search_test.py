@@ -52,8 +52,9 @@ class Search:
             if response.status_code == 200:
                 api_data = response.json()
                 brands = api_data['data']['popularBrandKeywords']
+                api_1st_brand_name = brands[0]
                 api_30th_brand_name = brands[29]
-                print(f"api 30th_brand_name : {api_30th_brand_name}")
+                print(f"api_1st_brand_name : {api_1st_brand_name}, api 30th_brand_name : {api_30th_brand_name}")
                 # 지금 많이 찾는 브랜드 영역 스와이프 3회
                 brand_layer = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]')
                 for _ in range(0, 2):
@@ -61,6 +62,10 @@ class Search:
                     print("스와이프")
                     sleep(1)
                 sleep(1)
+                brand_1st = brand_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[1]')
+                # 검색 화면 > 인기 브랜드 검색어 30위 선택
+                brand_1st_name = brand_1st.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
+                print(f"1st 브랜드 : {brand_1st_name}")
                 brand_30th = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[10]')
                 # 검색 화면 > 인기 브랜드 검색어 30위 선택
                 brand_30th_name = brand_30th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
@@ -80,6 +85,55 @@ class Search:
             brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
             search_brand = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
             if search_brand == brand_30th_name:
+                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
+            else:
+                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
+            print(f"브랜드 이름 : {search_brand} ")
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(2)
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            print(delete_all)
+            if len(delete_all) == 0:
+                pass
+            else:
+                delete_all[0].click()
+            sleep(2)
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(2)
+            #  SEARCH 탭 진입
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
+            print("하단 SEARCH탭 선택")
+            search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+            sleep(2)
+            brand_layer = search_container.find_element(AppiumBy.XPATH,'//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]')
+
+            #1위선택
+            brand_1st = brand_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[1]')
+            # 검색 화면 > 인기 브랜드 검색어 1위 선택
+            brand_1st_name_element = brand_1st.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]')
+            brand_1st_name = brand_1st.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
+            print(f"1st 브랜드 : {brand_1st_name}")
+            if brand_1st_name == api_1st_brand_name:
+                print('api 인기 브랜드 1위와 노출되는 1위 동일 여부 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('api 인기 브랜드 1위와 노출되는 1위 동일 여부 확인 실패')
+                print('api 인기 브랜드 1위와 노출되는 1위 동일 여부 확인 실패')
+
+            brand_1st_name_element.click()
+            print('브랜드 1위 선택')
+            sleep(2)
+            # 확인: 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
+            brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
+            search_brand = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
+            if search_brand == brand_1st_name:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
             else:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
@@ -230,41 +284,13 @@ class Search:
                 api_data = response.json()
                 keywords = api_data['data']['popularKeyword']
                 api_1st_keyword_name = keywords[0]
-                api_100th_keyword_name = keywords[99]
-                print(f"api_1st_keyword_name : {api_1st_keyword_name}, api_100th_keyword_name : {api_100th_keyword_name}")
-                # 100위 검색어 발견 스크롤
-                for _ in range(20):
-                    try:
-                        element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_100th_keyword_name}')]")
-                        print(f"element : {element.text}")
-                        if element.is_displayed():
-                            print("아이템 발견")
-                            keyword_100th_name = element.text
-                            print(f"keyword_100th_name : {keyword_100th_name}")
-                            break
-                    except:
-                        pass
-                    # 요소를 찾지 못하면 위로 스크롤
-                    element_control.scroll_control(wd, "D", 40)
-                if keyword_100th_name == api_100th_keyword_name :
-                    print('api 인기 검색어 100위와 노출되는 100위 동일 여부 확인')
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('api 인기 검색어 100위와 노출되는 100위 동일 여부 확인 실패')
-                    print('api 인기 검색어 100위와 노출되는 100위 동일 여부 확인 실패')
-                for _ in range(20):
-                    try:
-                        element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_1st_keyword_name}')]")
-                        print(f"element : {element.text}")
-                        if element.is_displayed():
-                            print("아이템 발견")
-                            keyword_1st_name = element.text
-                            print(f"keyword_1st_name : {keyword_1st_name}")
-                            break
-                    except:
-                        pass
-                    # 요소를 찾지 못하면 위로 스크롤
-                    element_control.scroll_control(wd, "U", 40)
+                api_25th_keyword_name = keywords[24]
+                print(f"api_1st_keyword_name : {api_1st_keyword_name}, api_20th_keyword_name : {api_25th_keyword_name}")
+                element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_1st_keyword_name}')]")
+                print(f"element : {element.text}")
+                keyword_1st_name = element.text
+                print(f"keyword_1st_name : {keyword_1st_name}")
+
                 if keyword_1st_name == api_1st_keyword_name :
                     print('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인')
                     element.click()
@@ -277,7 +303,6 @@ class Search:
 
                             if len(related_keywords) == 0:
                                 print("relatedKeywords 배열에 값이 없습니다.")
-                                # 배열이 비어있을 때 실행할 작업을 넣으세요.
                             else:
                                 print("relatedKeywords 배열에 값이 있습니다.")
                                 related_1st_keyword = related_keywords[0]
@@ -321,17 +346,34 @@ class Search:
                             print("최근 검색어 노출 확인")
                         delete_all[0].click()
                     sleep(1)
-                    # 뒤로가기로 카테고리 진입 확인
-                    wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-                    print("뒤로가기 선택")
-
                 else:
                     test_result = 'WARN'
                     warning_texts.append('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인 실패')
-                    print('api 인기 검색어 1위와 노출되는 100위 동일 여부 확인 실패')
+                    print('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인 실패')
+                # 100위 검색어 발견 스크롤
+                for _ in range(20):
+                    try:
+                        element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_25th_keyword_name}')]")
+                        print(f"element : {element.text}")
+                        if element.is_displayed():
+                            print("아이템 발견")
+                            keyword_25th_name = element.text
+                            print(f"keyword_25th_name : {keyword_25th_name}")
+                            break
+                    except:
+                        pass
+                    # 요소를 찾지 못하면 위로 스크롤
+                    element_control.scroll_control(wd, "D", 40)
+                if keyword_25th_name == api_25th_keyword_name :
+                    print('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인')
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인 실패')
+                    print('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인 실패')
 
-            else:
-                print('카테고리 그룹 API 호출 실패')
+                # 뒤로가기로 카테고리 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
             print("[검색 화면 인기 검색어 확인]CASE 종료")
 
         except Exception:
