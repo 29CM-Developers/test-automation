@@ -1,14 +1,13 @@
 import os
 import sys
 import traceback
-from time import time, sleep
-
 import requests
+import com_utils.element_control
+
+from com_utils import values_control
+from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
-import com_utils.element_control
-from com_utils import values_control
 
 
 class Search:
@@ -342,14 +341,16 @@ class Search:
                 print(f'인기 브랜드 검색 결과 확인 실패 : {search_input_field}')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            search_result_brand = wd.find_element(AppiumBy.XPATH,
-                                                  '//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
-            if self.conf["keyword"]['knit'] in search_result_brand.text:
-                print('인기 브랜드 검색 확인 - 브랜드명')
+            relate_brand = wd.find_element(AppiumBy.XPATH,
+                                           '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeCollectionView')
+            relate_brand_name = relate_brand.find_element(AppiumBy.XPATH,
+                                                          '//XCUIElementTypeStaticText[@index="0"]').text
+            if self.conf["keyword"]['knit'] in relate_brand_name:
+                print(f'인기 브랜드 검색 확인 - 브랜드명: {relate_brand_name}')
             else:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 검색 확인 실패')
-                print('인기 브랜드 검색 확인 실패 - 브랜드명')
+                print(f'인기 브랜드 검색 확인 실패 - 브랜드명: {relate_brand_name}')
 
             # 정렬 판매순으로 변경
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천순').click()
@@ -386,7 +387,7 @@ class Search:
             bottom_sheet = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWindow/XCUIElementTypeOther[@index="1"]')
             bottom_sheet.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@index="5"]').click()
 
-            sleep(3)
+            sleep(2)
 
             # 필터 element 확인
             plp_view = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="1"]')
@@ -394,22 +395,22 @@ class Search:
                                                 '//XCUIElementTypeOther/XCUIElementTypeCollectionView[@index="2"]')
 
             # 적용된 필터 확인
-            filter = []
+            filter_list = []
             for i in range(0, 2):
                 filters = filter_view.find_elements(AppiumBy.XPATH,
                                                     '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText')
                 for filter_text in filters:
                     filter_name = filter_text.text
-                    filter.append(filter_name)
+                    filter_list.append(filter_name)
                 com_utils.element_control.swipe_control(wd, filter_view, "left", 30)
 
-            filter_items = [self.conf["search_filter"]["black"], self.conf["search_filter"]["woman_clothes"],
+            filter_check = [self.conf["search_filter"]["black"], self.conf["search_filter"]["woman_clothes"],
                             self.conf["search_filter"]["excludingout_of_stock_products"]]
-            for item in filter_items:
-                if item in set(filter):
-                    print(f'{item} 필터 적용 확인')
+            for filter in filter_check:
+                if filter in set(filter_list):
+                    print(f'{filter} 필터 적용 확인')
                 else:
-                    print(f'{item} 필터 적용 확인 실패: {set(filter)}')
+                    print(f'{filter} 필터 적용 확인 실패: {set(filter_list)}')
 
             sleep(2)
 
