@@ -1,13 +1,14 @@
 import os
 import sys
 import traceback
-import requests
-
 from time import time, sleep
+
+import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils import values_control
+
 import com_utils.element_control
+from com_utils import values_control
 
 
 class Search:
@@ -288,6 +289,140 @@ class Search:
                         print('인기 검색어 순위 확인 실패')
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, "D", 60)
+
+            # 뒤로가기
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+
+        except Exception:
+            test_result = 'FAIL'
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            error_text = traceback.format_exc().split('\n')
+            try:
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+
+        finally:
+            run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
+
+    def test_search_results_page(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # SEARCH 탭 진입
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
+
+            # 니트 검색
+            wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').send_keys(self.conf["keyword"]["knit"])
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchBlack').click()
+
+            search_input_field = wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').text
+            if search_input_field == self.conf["keyword"]['knit']:
+                print('인기 검색어 검색 확인 - 입력란')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 검색 결과 확인 실패')
+                print(f'인기 브랜드 검색 결과 확인 실패 : {search_input_field}')
+
+            # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
+            search_result_brand = wd.find_element(AppiumBy.XPATH,
+                                                  '//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
+            if self.conf["keyword"]['knit'] in search_result_brand.text:
+                print('인기 브랜드 검색 확인 - 브랜드명')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('인기 브랜드 검색 확인 실패')
+                print('인기 브랜드 검색 확인 실패 - 브랜드명')
+
+            # 필터 element 확인
+            plp_view = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="1"]')
+            filter_view = plp_view.find_element(AppiumBy.XPATH,
+                                                '//XCUIElementTypeOther/XCUIElementTypeCollectionView[@index="1"]')
+
+            # 정렬 판매순으로 변경
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천순').click()
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
+                            f'**/XCUIElementTypeButton[`label == "{self.conf["sort"]["order"]}"`]').click()
+
+            # 색상 필터 선택
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '색상').click()
+
+            # 색상 블랙 선택
+            bottom_sheet = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWindow/XCUIElementTypeOther[@index="1"]')
+            color_sheet = bottom_sheet.find_element(AppiumBy.IOS_PREDICATE, 'type == "XCUIElementTypeScrollView"')
+            for i in range(0, 3):
+                try:
+                    wd.find_element(AppiumBy.IOS_CLASS_CHAIN, f'**/XCUIElementTypeButton[`label == "블랙"`]').click()
+                    print('필터 - 색상 : 블랙 선택')
+                    break
+                except NoSuchElementException:
+                    com_utils.element_control.element_scroll_control(wd, color_sheet, "D", 25)
+
+            # 카테고리 여성의류 선택
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "카테고리"`]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '여성의류').click()
+            print('필터 - 카테고리 : 여성의류 선택')
+
+            # 상품정보 품절상품 제외 선택
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "상품정보"`]').click()
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "품절상품 제외"`]').click()
+            print('필터 - 상품정보 : 품절상품 제외 선택')
+
+            # 필터 적용
+            bottom_sheet.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@index="5"]').click()
+
+            # 적용된 필터 확인
+            filter = []
+            for i in range(0, 2):
+                filters = filter_view.find_elements(AppiumBy.XPATH,
+                                                    '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText')
+                for filter_text in filters:
+                    filter_name = filter_text.text
+                    filter.append(filter_name)
+                com_utils.element_control.swipe_control(wd, filter_view, "left", 30)
+
+            if set(filter).intersection({'블랙', '여성의류', '품절상품 제외'}) == {'블랙', '여성의류', '품절상품 제외'}:
+                print('필터 적용 확인')
+            else:
+                print(f'필터 적용 확인 실패: {set(filter)}')
+
+            response = requests.get(
+                'https://search-api.29cm.co.kr/api/v4/products/search?keyword=니트&sort=order&colors=%23000000&categoryLargeCode=268100100&excludeSoldOut=false')
+            keyword_filter_data = response.json()
+            keyword_filter_1st = keyword_filter_data['data']['products'][0]['itemName']
+            print(keyword_filter_1st)
+
+            sleep(3)
+
+            # 검색 화면으로 복귀
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+
+            # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
+            recent_keyword = wd.find_element(AppiumBy.XPATH,
+                                             '//XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
+            if '니트' == recent_keyword.text:
+                print('최근 검색어 노출 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('최근 검색어 노출 확인 실패')
+                print('최근 검색어 노출 확인 실패')
+
+            # 최근 검색어 모두 지우기
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
+                            '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
+            print('최근 검색어 모두 지우기')
 
             # 뒤로가기
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
