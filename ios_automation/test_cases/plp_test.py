@@ -108,7 +108,7 @@ class Plp:
                                                     '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
 
                 # 선택한 상품의 PDP에서 상품 이름 비교
-                if best_product_10th_itemname in pdp_name:
+                if best_product_10th_itemname.strip() in pdp_name:
                     print('PDP 진입 확인')
                 else:
                     test_result = 'WARN'
