@@ -9,6 +9,7 @@ from android_automation.test_cases.loginpage_test import LoginLogout
 from android_automation.test_cases.not_login_user_test import NotLogin
 from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.category_test import Category
+from android_automation.test_cases.like_test import Like
 from android_setup import note20_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -75,7 +76,15 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 실제 실행 -   like 기능 확인 성공
+        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        self.result_data = Like.test_no_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        self.result_data = Like.test_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
