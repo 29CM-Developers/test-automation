@@ -30,7 +30,7 @@ class UserLoginTest:
 
             # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
             UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['error_password_29cm'])
-            sleep(1)
+            sleep(3)
             error = wd.find_element(AppiumBy.XPATH,
                                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
             error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
@@ -86,7 +86,7 @@ class UserLoginTest:
 
             # 올바른 아이디, 올바른 비밀번호 입력
             UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
-            sleep(1)
+            sleep(3)
 
             # 프로필 이름 확인
             try:
@@ -199,7 +199,7 @@ class UserLoginTest:
 
             # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
             UserLoginTest.input_id_password(self, wd, self.pconf['id_29cm'], self.pconf['error_password_29cm'])
-            sleep(1)
+            sleep(3)
             error = wd.find_element(AppiumBy.XPATH,
                                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
             error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
@@ -219,7 +219,7 @@ class UserLoginTest:
 
             # 올바른 아이디, 올바른 비밀번호 입력
             UserLoginTest.input_id_password(self, wd, self.pconf['id2_29cm'], self.pconf['password_29cm'])
-            sleep(1)
+            sleep(3)
 
             # 프로필 이름 확인
             try:
