@@ -417,11 +417,11 @@ class Search:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
             print("하단 SEARCH탭 선택")
             # 검색 필드에 [니트] 입력 후 검색
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').send_keys('니트')
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').send_keys(self.conf['keyword']['knit'])
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchImg').click()
             relatedKeyword_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/relatedKeywordComposeView')
             relatedKeyword = relatedKeyword_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.widget.TextView[1]').text
-            if '니트' in relatedKeyword:
+            if self.conf['keyword']['knit'] in relatedKeyword:
                 print("검색어 검색 확인 - 확인1. 검색 셀렉트박스에 카테고리 태그 노출 확인")
             else:
                 print("검색 셀렉트박스에 카테고리 태그 노출 확인 실패")
@@ -465,7 +465,7 @@ class Search:
             element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['category']}')]")
             element.click()
             sleep(1)
-            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['woman_close']}')]")
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['woman_clothes']}')]")
             element.click()
             sleep(1)
             element = wd.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['cost']}')]")
