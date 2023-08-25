@@ -143,6 +143,7 @@ class Like:
             like_button.click()
 
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            sleep(1)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
 
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
