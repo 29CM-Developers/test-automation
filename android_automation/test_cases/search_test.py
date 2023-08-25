@@ -489,7 +489,7 @@ class Search:
                 print("블랙 필터링 노출 확인 불가")
                 test_result = 'WARN'
                 warning_texts.append("필터 적용 확인 실패")
-            element = selector_layer.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['woman_close']}')]")
+            element = selector_layer.find_element(By.XPATH, f"//*[contains(@text, '{self.conf['search_filter']['woman_clothes']}')]")
             if '여성의류' in element.text:
                 print("여성의류 필터링 노출 확인")
             else:
