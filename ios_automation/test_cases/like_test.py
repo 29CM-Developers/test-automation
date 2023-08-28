@@ -34,15 +34,14 @@ class Like:
             else:
                 print('총 LIKE 개수 확인 실패')
 
-            # Product 탭 선택
-            # wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="PRODUCT (0)"]').click()
+            # Product 탭 확인
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
                 print('PRODUCT 좋아요 없음 문구 노출 확인')
             except NoSuchElementException:
                 print('PRODUCT 좋아요 없음 문구 노출 확인 실패')
 
-            # Brand 탭 선택
+            # Brand 탭 선택 및 확인
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="BRAND (0)"]').click()
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 브랜드가 없어요.')
@@ -50,7 +49,7 @@ class Like:
             except NoSuchElementException:
                 print('BRAND 좋아요 없음 문구 노출 확인 실패')
 
-            # POST 탭 선택
+            # POST 탭 선택 및 확인
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="POST (0)"]').click()
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 게시물이 없습니다. 다시 보고 싶은 게시물에 하트를 눌러보세요.')
