@@ -10,12 +10,12 @@ sys.path.append(iOS_path)
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
 from ios_setup import pro12_setup
+from selenium.common.exceptions import InvalidSessionIdException
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
-from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.plp_test import Plp
 from ios_automation.test_cases.search_test import Search
-from selenium.common.exceptions import InvalidSessionIdException
+from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -60,6 +60,9 @@ class IOSTestAutomation(unittest.TestCase):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
+        # 앱 실행 후, 바텀 시트 노출 여부 확인
+        test_bottom_sheet(self.wd)
+
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
@@ -88,6 +91,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # SEARCH -> 인기검색어 확인
         self.result_data = Search.test_search_popular_keyword(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # SEARCH -> 검색 결과 화면 확인
+        self.result_data = Search.test_search_results_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
