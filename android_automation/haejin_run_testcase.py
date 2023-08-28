@@ -11,6 +11,7 @@ from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.plp_test import Plp
 from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.search_test import Search
+from android_automation.test_cases.like_test import Like
 from android_setup import hhj2008_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -52,6 +53,8 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
 
     def test_android_bvt(self):
+        self.result_data = Like.test_like_item(self, self.wd)
+
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
@@ -108,6 +111,16 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 -   검색 결과 화면 확인 성공
         self.result_data = Search.test_search_results_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        self.result_data = Like.test_no_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        self.result_data = Like.test_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
