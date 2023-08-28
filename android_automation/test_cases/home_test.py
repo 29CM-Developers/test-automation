@@ -104,7 +104,7 @@ class Home:
             #             # print(element_layer_4.text)
             #             banner_title_set.append(element_layer_4.text)
             #         # 스와이프 액션 수행
-            #         element_control.swipe_left_to_right(wd, element_layer_4)
+            #         element_control.control(wd, element_layer_4,'right',30)
             #         print("스와이프해")
             #
             #
