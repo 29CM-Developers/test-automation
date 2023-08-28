@@ -7,12 +7,6 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
 from time import sleep, time
-logger = logging.getLogger(name='Log')
-logger.setLevel(logging.INFO)  ## 경고 수준 설정
-formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-stream_handler = logging.StreamHandler()  ## 스트림 핸들러 생성
-stream_handler.setFormatter(formatter)  ## 텍스트 포맷 설정
-logger.addHandler(stream_handler)  ## 핸들러 등록
 class Like:
 
     def test_no_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
