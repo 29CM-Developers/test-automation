@@ -221,7 +221,8 @@ class NotLogin:
 
             if rec_tab_title is None:
                 print("recommend not found swipe")
-                element_control.swipe_right_to_left(wd, tab_title_element)
+                element_control.swipe_control(wd, tab_title_element,'left',30)
+                # element_control.swipe_right_to_left(wd, tab_title_element)
             # "추천"탭 있는지 확인하고 결과 출력
             # if rec_tab_title is not None:
             else :
