@@ -110,14 +110,14 @@ class Like:
             like_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]').click()
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutShowProduct').click()
             like_productItem = like_layer.find_element(AppiumBy.ID,'com.the29cm.app29cm:id/txtBody').text
-            print(f"productItem : {like_productItem}")
-            if productItem in like_productItem:
+            print(f"like_productItem : {like_productItem}")
+            if like_productItem in productItem:
                 print('좋아요 상품 노출 확인')
             else:
                 test_result = 'WARN'
                 warning_texts.append('좋아요 상품 노출 확인 실패')
                 print('WARN : 좋아요 상품 노출 확인 실패')
-
+            print(f"productItem : {productItem}, like_productItem : {like_productItem}")
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
             like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
             BrandName = like_layer.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandName').text
