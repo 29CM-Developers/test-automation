@@ -17,7 +17,6 @@ def mpark_setup():
     iOS_options.set_capability("simpleIsVisibleCheck", True)
     iOS_options.set_capability("useJSONSource", True)
     iOS_options.set_capability('autoAcceptAlerts', True)
-    iOS_options.set_capability('autoDismissAlerts', True)
 
     wd = webdriver.Remote('http://0.0.0.0:4724/wd/hub', options=iOS_options)
 
@@ -40,7 +39,6 @@ def dajjeong_setup():
     iOS_options.set_capability('usePrebuiltWDA', True)
     iOS_options.set_capability('skipServerInstallation', True)
     iOS_options.set_capability('autoAcceptAlerts', True)
-    iOS_options.set_capability('autoDismissAlerts', True)
 
     wd = webdriver.Remote('http://0.0.0.0:4924/wd/hub', options=iOS_options)
 
@@ -62,7 +60,6 @@ def hhj2008_setup():
     iOS_options.set_capability("simpleIsVisibleCheck", True)
     iOS_options.set_capability("useJSONSource", True)
     iOS_options.set_capability('autoAcceptAlerts', True)
-    iOS_options.set_capability('autoDismissAlerts', True)
 
     wd = webdriver.Remote('http://0.0.0.0:4824/wd/hub', options=iOS_options)
 
@@ -84,7 +81,6 @@ def pro14_setup():
     iOS_options.set_capability("simpleIsVisibleCheck", True)
     iOS_options.set_capability("useJSONSource", True)
     iOS_options.set_capability('autoAcceptAlerts', True)
-    iOS_options.set_capability('autoDismissAlerts', True)
 
     wd = webdriver.Remote('http://0.0.0.0:4743/wd/hub', options=iOS_options)
 
@@ -106,7 +102,6 @@ def pro12_setup():
     iOS_options.set_capability("simpleIsVisibleCheck", True)
     iOS_options.set_capability("useJSONSource", True)
     iOS_options.set_capability('autoAcceptAlerts', True)
-    iOS_options.set_capability('autoDismissAlerts', True)
 
     wd = webdriver.Remote('http://0.0.0.0:4744/wd/hub', options=iOS_options)
 
