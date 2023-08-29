@@ -11,9 +11,9 @@ from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
 from ios_setup import pro14_setup
 from ios_automation.test_cases.login_test import UserLoginTest
-from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.category_test import Category
+from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 from selenium.common.exceptions import InvalidSessionIdException
 
 
@@ -58,6 +58,9 @@ class IOSTestAutomation(unittest.TestCase):
     def test_automation_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
+
+        # 앱 실행 후, 바텀 시트 노출 여부 확인
+        test_bottom_sheet(self.wd)
 
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
