@@ -41,7 +41,7 @@ def download_ipa_from_appcenter(api_token, owner_name, app_name, release_id):
             ipa_file.write(chunk)
             downloaded += len(chunk)
             percentage = 100.0 * downloaded / total_length
-            sys.stdout.write(f"\r{percentage:.1f}% downloaded")
+            sys.stdout.write(f"\r{int(percentage)}% downloaded")
             sys.stdout.flush()
     print("\nDownload complete!")
 
