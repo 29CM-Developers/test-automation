@@ -75,7 +75,7 @@ class Category:
                 print('카테고리 그룹 API 호출 실패')
             element = element_control.scroll_up_to_element_id(wd, '샌들')
             element.click()
-            sleep(1)
+            sleep(2)
             try:
                 page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/mediumCategory')
                 print(f'메뉴 트리 노출 확인 : {page_title.text}')

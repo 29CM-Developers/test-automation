@@ -285,7 +285,7 @@ class Search:
                 keywords = api_data['data']['popularKeyword']
                 api_1st_keyword_name = keywords[0]
                 api_25th_keyword_name = keywords[24]
-                print(f"api_1st_keyword_name : {api_1st_keyword_name}, api_20th_keyword_name : {api_25th_keyword_name}")
+                print(f"api_1st_keyword_name : {api_1st_keyword_name}, api_25th_keyword_name : {api_25th_keyword_name}")
                 element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_1st_keyword_name}')]")
                 print(f"element : {element.text}")
                 keyword_1st_name = element.text
@@ -333,7 +333,7 @@ class Search:
                     wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
                     print("뒤로가기 선택")
                     sleep(2)
-                    element_control.scroll_control(wd,'U',40)
+                    # element_control.scroll_control(wd,'U',40)
                     delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
                     print(delete_all)
                     if len(delete_all) == 0:
@@ -350,21 +350,10 @@ class Search:
                     test_result = 'WARN'
                     warning_texts.append('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인 실패')
                     print('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인 실패')
-                # 100위 검색어 발견 스크롤
-                for _ in range(20):
-                    try:
-                        element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_25th_keyword_name}')]")
-                        print(f"element : {element.text}")
-                        if element.is_displayed():
-                            print("아이템 발견")
-                            keyword_25th_name = element.text
-                            print(f"keyword_25th_name : {keyword_25th_name}")
-                            break
-                    except:
-                        pass
-                    # 요소를 찾지 못하면 위로 스크롤
-                    element_control.scroll_control(wd, "D", 40)
-                if keyword_25th_name == api_25th_keyword_name :
+                # 25위 검색어 발견 스크롤
+                keyword_25th_name = element_control.scroll_to_element_with_text(wd, api_25th_keyword_name)
+
+                if keyword_25th_name.text == api_25th_keyword_name :
                     print('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인')
                 else:
                     test_result = 'WARN'
