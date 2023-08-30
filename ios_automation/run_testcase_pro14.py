@@ -14,6 +14,7 @@ from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.category_test import Category
 from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
+from ios_automation.test_cases.like_test import Like
 from selenium.common.exceptions import InvalidSessionIdException
 
 
@@ -80,6 +81,16 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 카테고리 화면 확인
         self.result_data = Category.test_category_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # Like 존재하지 않을 경우
+        self.result_data = Like.test_no_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # Like 존재하는 경우
+        self.result_data = Like.test_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
