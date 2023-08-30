@@ -153,7 +153,7 @@ class NotLogin:
             sleep(2)
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[4]').click()
-
+            sleep(2)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
             print("전체보기 버튼 선택")
             sleep(1)
