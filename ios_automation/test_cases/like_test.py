@@ -135,7 +135,7 @@ class Like:
                     'name')
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            if pdp_name in like_product_name:
+            if like_product_name in pdp_name:
                 print('좋아요 상품 PDP 진입 확인 - 상품명')
             else:
                 test_result = 'WARN'
