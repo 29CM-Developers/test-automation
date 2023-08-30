@@ -119,7 +119,7 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        # 실제 실행 -   LIKE 존재하는 경우 화면 확인 성공
         self.result_data = Like.test_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
