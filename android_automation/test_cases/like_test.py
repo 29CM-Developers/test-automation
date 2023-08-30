@@ -152,7 +152,7 @@ class Like:
                 # 상품 탭 선택
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutProduct').click()
                 product_like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
-                product_like_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView').click()
+                product_like_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView[2]').click()
                 txtProductCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProductCount').text
                 print(txtProductCount)
                 if txtProductCount == '(0)' :
