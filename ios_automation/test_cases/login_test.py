@@ -34,8 +34,11 @@ class UserLoginTest:
             error = wd.find_element(AppiumBy.XPATH,
                                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
             error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
+            error_five_time_text = '로그인 시도 가능 횟수를 초과했습니다.'
 
             if error_login_text in error:
+                print("이메일 로그인 실패 확인")
+            elif error_five_time_text in error:
                 print("이메일 로그인 실패 확인")
             else:
                 test_result = 'WARN'
@@ -207,7 +210,7 @@ class UserLoginTest:
 
             if error_login_text in error:
                 print("이메일 로그인 실패 확인")
-            if error_five_time_text in error:
+            elif error_five_time_text in error:
                 print("이메일 로그인 실패 확인")
             else:
                 test_result = 'WARN'
