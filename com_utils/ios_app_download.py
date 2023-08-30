@@ -37,7 +37,7 @@ def download_ipa_from_appcenter(api_token, owner_name, app_name, release_id):
     print(f"Start downloading 29CM - iOS {release_id} build from App Center...")
 
     with open(f"{app_name}.ipa", 'wb') as ipa_file:
-        for chunk in response.iter_content(chunk_size=8192):
+        for chunk in response.iter_content(chunk_size=163840):
             ipa_file.write(chunk)
             downloaded += len(chunk)
             percentage = 100.0 * downloaded / total_length
