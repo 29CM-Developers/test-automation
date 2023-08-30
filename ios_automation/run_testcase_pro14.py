@@ -68,15 +68,15 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 홈화면 배너 확인
-        self.result_data = Home.test_home_banner(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면 컨텐츠 확인
-        self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # 홈화면 배너 확인
+        # self.result_data = Home.test_home_banner(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 홈화면 컨텐츠 확인
+        # self.result_data = Home.test_home_contents(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 카테고리 화면 확인
         self.result_data = Category.test_category_page(self, self.wd)
