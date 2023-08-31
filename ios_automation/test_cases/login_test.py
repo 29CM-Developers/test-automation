@@ -33,9 +33,10 @@ class UserLoginTest:
             sleep(3)
             error = wd.find_element(AppiumBy.XPATH,
                                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
-            error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
 
-            if error_login_text in error:
+            if self.conf['login_error_text'] in error:
+                print("이메일 로그인 실패 확인")
+            elif self.conf['login_exceeded_text'] in error:
                 print("이메일 로그인 실패 확인")
             else:
                 test_result = 'WARN'
@@ -128,8 +129,8 @@ class UserLoginTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            # My 탭 진입
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            # My 탭 딥링크로 진입
+            wd.get('app29cm://mypage')
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
                 print("로그인 유저")
@@ -202,9 +203,10 @@ class UserLoginTest:
             sleep(3)
             error = wd.find_element(AppiumBy.XPATH,
                                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
-            error_login_text = "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다."
 
-            if error_login_text in error:
+            if self.conf['login_error_text'] in error:
+                print("이메일 로그인 실패 확인")
+            elif self.conf['login_exceeded_text'] in error:
                 print("이메일 로그인 실패 확인")
             else:
                 test_result = 'WARN'
