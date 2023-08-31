@@ -242,13 +242,7 @@ class Home:
                 products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
                 sleep(1)
                 #좋아요 선택
-                # 앱설치 후 최초 좋아요 선택 시 앱평가 팝업 발생
-                app_appraisal_pop_up = wd.find_elements(AppiumBy.ID, "android:id/content")
-                print(app_appraisal_pop_up)
-                if len(app_appraisal_pop_up) == 0:
-                    pass
-                else:
-                    wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtCancel').click()
+                # 앱설치 후 최초 좋아요 선택 시 앱평가 팝업 발생 처리 필요
 
                 after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
                 # 좋아요 누른  좋아요 갯수 확인
