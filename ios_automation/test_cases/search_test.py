@@ -42,6 +42,22 @@ class Search:
                 warning_texts.append('인기 브랜드 타이틀 확인 실패')
                 print('인기 브랜드 타이틀 확인 실패')
 
+            # 필터가 전체 기준인지 확인
+            filter_area = wd.find_element(AppiumBy.XPATH,
+                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="2"]')
+            filter_btn = filter_area.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton')
+            if filter_btn.text == '전체 기준':
+                print('필터 : 전체 기준')
+                pass
+            else:
+                print(f'필터 : 전체 기준이 아님 / {filter_btn.text}')
+                filter_btn.click()
+                wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
+                                f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"]["ALL"]}"`][1]').click()
+                wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
+                                f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"]["ALL"]}"`][2]').click()
+                wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
+
             # 인기 브랜드 1위 확인
             popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
             popular_brand_1st = popular_brand.find_element(AppiumBy.XPATH,
