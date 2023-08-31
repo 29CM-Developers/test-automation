@@ -30,16 +30,14 @@ class IOSTestAutomation(unittest.TestCase):
         self.wd, self.iOS_cap = pro12_setup()
         self.wd.implicitly_wait(3)
 
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong")
-        self.pconf = user_info.json()
-        public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
-        self.conf = public_info.json()
-        def_info = requests.get(f"http://192.168.103.13:50/qa/personal/def_names")
-        self.dconf = def_info.json()
+        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
+        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         self.count = 0
         self.total_time = ''
         self.slack_result = ''
+        self.result_lists = []
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
