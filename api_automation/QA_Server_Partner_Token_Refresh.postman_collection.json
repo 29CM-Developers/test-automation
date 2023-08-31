@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "c07e5544-9808-4e18-b78f-1a9e158c78b6",
+		"name": "QA_Server_Partner_Token_Refresh",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25986573"
+	},
+	"item": [
+		{
+			"name": "token refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"토큰 갱신 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"partner_token\", jsonData.data.accessToken)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://qa-partner-item.29cm.co.kr",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://qa-partner-item.29cm.co.kr/",
+						"type": "text"
+					},
+					{
+						"key": "host",
+						"value": "qa-authentication-api.29cm.co.kr",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiI3N2QwMmZlNC00MDNiLTRmYTQtYThhMi1mZjAxMmM2M2E3OTMiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1SRUZSRVNILVRPS0VOIiwiYXVkIjoic2VsbGVyIiwibmJmIjoxNjkzNDU1OTkyLCJpYXQiOjE2OTM0NTU5OTIsImV4cCI6MTY5MzQ3Mzk5Mn0.pn4XuuqUQBqXXpdH-oL55_uiqe1Nc86N_rdjetJHtCX6UROCH1zN2NYLUyJGeHHhNcRY3T-4CLZB4GvptWY1vA\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://qa-authentication-api.29cm.co.kr/partner-admin/v4/token/refresh",
+					"protocol": "https",
+					"host": [
+						"qa-authentication-api",
+						"29cm",
+						"co",
+						"kr"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"token",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post personal",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"add_key\": \"partner_token\",\n    \"add_value\": \"{{partner_token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/qa/personal/test_environment",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"qa",
+						"personal",
+						"test_environment"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
