@@ -19,7 +19,6 @@ from ios_automation.test_cases.category_test import Category
 from ios_automation.test_cases.search_test import Search
 from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 from ios_automation.test_cases.like_test import Like
-from ios_automation.test_cases.cart_test import Cart
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -155,9 +154,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-    def test(self):
-        Cart.test_cart_list(self, self.wd)
 
 
 if __name__ == '__main__':
