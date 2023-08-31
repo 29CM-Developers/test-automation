@@ -16,11 +16,9 @@ from com_utils import values_control, slack_result_notifications
 class AndroidTestAutomation(unittest.TestCase):
 
     def setUp(self):
-        # user_info = requests.get(f"http://192.168.103.13:50/qa/personal/{os.environ.get('user')}")
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/mpark")
-        self.pconf = user_info.json()
-        public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
-        self.conf = public_info.json()
+        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/mpark").json()
+        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         # Appium Service
         self.appium = AppiumService()
@@ -33,12 +31,14 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # report data
         self.count = 0
+        self.result_lists = []
         self.total_time = ''
         self.slack_result = ''
+        self.device_platform = self.and_cap.capabilities['platformName']
+        self.device_name = self.and_cap.capabilities['appium:deviceName']
 
     def tearDown(self):
         try:
-            self.wd.close_app()
             self.wd.quit()
             self.appium.stop()
         except Exception:
@@ -46,7 +46,7 @@ class AndroidTestAutomation(unittest.TestCase):
 
     def test_sample_def_name(self):
         # 테스트 자동화 실행 return값을 self.result_data에 넣으면 해당 값들을 가지고 slack noti를 보내게 됩니다
-        self.def_name = sys._getframe().f_code.co_name
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         self.result_data = AutomationTesting.default_test(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
