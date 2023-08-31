@@ -90,11 +90,17 @@ def slack_update_notification(self):
     else:
         str_total_time = f"{total_time:.2f} 초"
 
+    self.result_lists.append(self.result_data['test_result'])
+    pass_count = self.result_lists.count("PASS")
+    fail_count = self.result_lists.count("FAIL")
+    warn_count = self.result_lists.count("WARN")
+
     # slack noti 양식 가져오기
     attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
                                  test_result=test_result, def_name=self.def_name,
                                  count=self.count, total_time=str_total_time,
-                                 device_platform=device_emoji, device_name=self.device_name)
+                                 device_platform=device_emoji, device_name=self.device_name, pass_count=pass_count,
+                                 fail_count=fail_count, warn_count=warn_count)
 
     attachment['ts'] = self.response['ts']
     payload = json.dumps(attachment)
@@ -171,7 +177,7 @@ def slack_thread_notification(self):
     return self.count
 
 
-def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_time, device_platform, device_name):
+def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_time, device_platform, device_name, pass_count=0, fail_count=0, warn_count=0):
     attachment = {
         "channel": channel,
         "attachments": [
@@ -203,7 +209,7 @@ def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_t
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": f"테스트 진행률: *{count} 개 / 총 {total_time}*"
+                            "text": f"테스트 진행률: *총 {count} 개 / PASS {pass_count} 개 - FAIL {fail_count} 개 - WARN {warn_count}개 / 총 {total_time}*"
                         }
                     }
                 ]
