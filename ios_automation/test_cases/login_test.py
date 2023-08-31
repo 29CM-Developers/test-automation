@@ -208,6 +208,11 @@ class UserLoginTest:
                 print("이메일 로그인 실패 확인")
             elif self.conf['login_exceeded_text'] in error:
                 print("이메일 로그인 실패 확인")
+            else:
+                test_result = 'WARN'
+                warning_texts.append('이메일 로그인 실패 확인 실패')
+                print("이메일 로그인 실패 확인 실패")
+
             # 이메일, 비밀번호 입력값 제거
             wd.find_element(AppiumBy.XPATH,
                             '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeTextField[@index="0"]').clear()
