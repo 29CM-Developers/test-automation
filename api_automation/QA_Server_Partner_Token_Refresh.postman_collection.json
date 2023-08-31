@@ -91,10 +91,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{host}}/qa/personal/test_environment",
+					"raw": "http://192.168.103.13:50/qa/personal/test_environment",
+					"protocol": "http",
 					"host": [
-						"{{host}}"
+						"192",
+						"168",
+						"103",
+						"13"
 					],
+					"port": "50",
 					"path": [
 						"qa",
 						"personal",
