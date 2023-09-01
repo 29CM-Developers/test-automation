@@ -371,7 +371,7 @@ class Search:
                 # 25위 검색어 발견 스크롤
                 keyword_25th_name = element_control.scroll_to_element_with_text(wd, api_25th_keyword_name)
 
-                if keyword_25th_name.text == api_25th_keyword_name :
+                if keyword_25th_name.text == api_25th_keyword_name:
                     print('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인')
                 else:
                     test_result = 'WARN'
