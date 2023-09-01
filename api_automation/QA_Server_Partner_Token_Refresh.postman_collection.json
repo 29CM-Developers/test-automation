@@ -7,6 +7,60 @@
 	},
 	"item": [
 		{
+			"name": "get personal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Response has a property called partner_token\", function () {",
+							"    pm.expect(jsonData).to.have.property('partner_token');",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"coll_partner_token\", jsonData.partner_token)",
+							"pm.collectionVariables.set(\"coll_refresh_token\", jsonData.refresh_token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.103.13:50/qa/personal/test_environment",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"103",
+						"13"
+					],
+					"port": "50",
+					"path": [
+						"qa",
+						"personal",
+						"test_environment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "token refresh",
 			"event": [
 				{
@@ -18,7 +72,8 @@
 							"});",
 							"",
 							"var jsonData = pm.response.json();",
-							"pm.environment.set(\"partner_token\", jsonData.data.accessToken)"
+							"pm.collectionVariables.set(\"coll_partner_token\", jsonData.data.accessToken)",
+							"pm.collectionVariables.set(\"coll_refresh_token\", jsonData.data.refreshToken)"
 						],
 						"type": "text/javascript"
 					}
@@ -50,7 +105,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"refreshToken\": \"eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiI3N2QwMmZlNC00MDNiLTRmYTQtYThhMi1mZjAxMmM2M2E3OTMiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1SRUZSRVNILVRPS0VOIiwiYXVkIjoic2VsbGVyIiwibmJmIjoxNjkzNDU1OTkyLCJpYXQiOjE2OTM0NTU5OTIsImV4cCI6MTY5MzQ3Mzk5Mn0.pn4XuuqUQBqXXpdH-oL55_uiqe1Nc86N_rdjetJHtCX6UROCH1zN2NYLUyJGeHHhNcRY3T-4CLZB4GvptWY1vA\"\n}",
+					"raw": "{\n    \"refreshToken\": \"{{coll_refresh_token}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,13 +132,26 @@
 			"response": []
 		},
 		{
-			"name": "post personal",
+			"name": "post partner token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"파트너 토큰 갱신 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"add_key\": \"partner_token\",\n    \"add_value\": \"{{partner_token}}\"\n}",
+					"raw": "{\n    \"add_key\": \"partner_token\",\n    \"add_value\": \"{{coll_partner_token}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -108,6 +176,84 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "post refresh token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"리프래시 토큰 갱신 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"add_key\": \"refresh_token\",\n    \"add_value\": \"{{coll_refresh_token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.103.13:50/qa/personal/test_environment",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"103",
+						"13"
+					],
+					"port": "50",
+					"path": [
+						"qa",
+						"personal",
+						"test_environment"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "coll_refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "coll_partner_token",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
