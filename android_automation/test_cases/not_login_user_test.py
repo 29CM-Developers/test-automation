@@ -152,31 +152,9 @@ class NotLogin:
             print("[사용 가능 기능 사용]CASE 시작")
             sleep(2)
 
-            element_control.scroll(wd)
-            tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
-
-            # "베스트 문구"를 찾을 변수 초기화
-            best_tab_title = None
-
-            # tab_title_elements를 반복하면서 "베스트 문구"를 찾기
-            for tab_title_element in tab_title_elements:
-                # 각 요소의 텍스트를 가져와서 비교
-                tab_title_text = tab_title_element.text
-                if tab_title_text == "베스트":
-                    best_tab_title = tab_title_element
-                    break
-
-            # "베스트 문구"가 있는지 확인하고 결과 출력
-            if best_tab_title is not None:
-                print("베스트탭을 찾았습니다.")
-                tab_title_element.click()
-                print("베스트 탭 선택")
-            else:
-                print("베스트 문구 탭을 찾지 못했습니다.")
-
-            # # 홈화면 변경 ui 로 진행 시
-            # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-            # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[4]').click()
+            # 홈화면 변경 ui 로 진행 시
+            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+            tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[4]').click()
             sleep(2)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
             print("전체보기 버튼 선택")
@@ -209,37 +187,12 @@ class NotLogin:
             print("상단 홈아이콘 선택")
             # 8. 홈 > 피드 > 추천 탭선택
             sleep(1)
-            element_control.scroll(wd)
-            sleep(1)
-            tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
-            # "추천 문구"를 찾을 변수 초기화
-            rec_tab_title = None
-
-            # tab_title_elements를 반복하면서 "추천 문구"를 찾기
-            for tab_title_element in tab_title_elements:
-                # 각 요소의 텍스트를 가져와서 비교
-                tab_title_text = tab_title_element.text
-                if tab_title_text == "추천":
-                    rec_tab_title = tab_title_element
-                    break
-
-            if rec_tab_title is None:
-                print("recommend not found swipe")
-                element_control.swipe_control(wd, tab_title_element, 'left', 30)
-                # element_control.swipe_right_to_left(wd, tab_title_element)
-            # "추천"탭 있는지 확인하고 결과 출력
-            # if rec_tab_title is not None:
-            else:
-                print("추천탭을 찾았습니다.")
-                tab_title_element.click()
-                print("추천 탭 선택")
-                guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
 
             # 홈화면 변경 ui 시나리오
-            # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-            # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
-            # print("추천 탭 선택")
-            # guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
+            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+            tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
+            print("추천 탭 선택")
+            guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
 
             if guide_text.text == '당신을 위한 추천 상품':
                 print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
@@ -250,31 +203,9 @@ class NotLogin:
             print(f"가이드 문구 : {guide_text.text} ")
 
             sleep(1)
-            tab_title_elements = wd.find_elements(AppiumBy.XPATH, '//*[@resource-id="com.the29cm.app29cm:id/tabTitle"]')
-            # "추천 문구"를 찾을 변수 초기화
-            rec_tab_title = None
-
-            # tab_title_elements를 반복하면서 "추천 문구"를 찾기
-            for tab_title_element in tab_title_elements:
-                # 각 요소의 텍스트를 가져와서 비교
-                tab_title_text = tab_title_element.text
-                if tab_title_text == "추천":
-                    rec_tab_title = tab_title_element
-                    break
-
-            if rec_tab_title is None:
-                print("women not found swipe")
-                element_control.swipe_control(wd, tab_title_element, 'left', 30)
-
-            else:
-                print("우먼탭을 찾았습니다.")
-                tab_title_element.click()
-                print("우먼 탭 선택")
-                guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
-
             # 우먼탭으로 선택 ui 변경
-            # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-            # tab_layer.find_element(AppiumBy.XPATH, '//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[1]').click()
+            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+            tab_layer.find_element(AppiumBy.XPATH, '//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[1]').click()
 
             # 6. Home 상단 네비게이션 검색 아이콘 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
@@ -300,7 +231,7 @@ class NotLogin:
                 warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
             print(f"타이틀 확인 : {search_container_title.text}")
 
-            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[10]')
+            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
             # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
             brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             brand_10th.click()
@@ -308,7 +239,7 @@ class NotLogin:
             print(brand_10th_name)
             # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
             search_edit_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
-            if brand_10th_name in search_edit_text :
+            if brand_10th_name in search_edit_text:
                 print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
             else:
                 print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
@@ -318,7 +249,7 @@ class NotLogin:
             # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
             brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
             search_brand = brand_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
-            if brand_10th_name in search_brand :
+            if brand_10th_name in search_brand:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
             else:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
