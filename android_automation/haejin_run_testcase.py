@@ -96,10 +96,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        ##########################
         # 노트20 시나리오
-        # 현재 함수명 저장 - slack noti에 사용
-        self.def_name = self.dconf[sys._getframe().f_code.co_name]
-
         # 실제 실행 - 이메일 로그인 성공
         self.result_data = LoginLogout.test_email_login_success(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
