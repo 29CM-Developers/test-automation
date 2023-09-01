@@ -19,28 +19,26 @@ class AndroidTestAutomation(unittest.TestCase):
 
     def setUp(self):
 
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008")
-        self.pconf = user_info.json()
-        public_info=requests.get(f"http://192.168.103.13:50/qa/personal/info")
-        self.conf = public_info.json()
-        def_info = requests.get(f"http://192.168.103.13:50/qa/personal/def_names")
-        self.dconf = def_info.json()
+        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
+        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         # Appium Service
         self.appium = AppiumService()
         self.appium.start(args=['-p', '4733', '--base-path', '/wd/hub', '--default-capabilities',
                                 '{"appium:chromedriverExecutable": "/usr/local/bin/chromedriver"}'])
+
         # webdriver
-        self.wd, self.android_options = note20_setup()
+        self.wd, self.and_cap = note20_setup()
         self.wd.implicitly_wait(5)
 
-        # 필요 report data
+        # report data
         self.count = 0
+        self.result_lists = []
         self.total_time = ''
         self.slack_result = ''
-
-        self.device_platform = self.android_options.capabilities['platformName']
-        self.device_name = self.android_options.capabilities['appium:deviceName']
+        self.device_platform = self.and_cap.capabilities['platformName']
+        self.device_name = self.and_cap.capabilities['appium:deviceName']
 
     def tearDown(self):
         try:
@@ -81,7 +79,7 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        # 실제 실행 -   LIKE 존재하는 경우 화면 확인 성공
         self.result_data = Like.test_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)

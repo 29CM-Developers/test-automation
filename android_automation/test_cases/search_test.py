@@ -55,8 +55,15 @@ class Search:
                 api_1st_brand_name = brands[0]
                 api_30th_brand_name = brands[29]
                 print(f"api_1st_brand_name : {api_1st_brand_name}, api 30th_brand_name : {api_30th_brand_name}")
-                # 지금 많이 찾는 브랜드 영역 스와이프 3회
-                brand_layer = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]')
+                filter_name = wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+                print(filter_name)
+                if len(filter_name) == 0:
+                    filter_name = element_control.scroll_to_element_with_text(wd, '전체 기준')
+                    # 지금 많이 찾는 브랜드 영역 스와이프 3회
+                    brand_layer = search_container.find_element(AppiumBy.XPATH,'//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]')
+                else:
+                    # 지금 많이 찾는 브랜드 영역 스와이프 3회
+                    brand_layer = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]')
                 for _ in range(0, 2):
                     element_control.swipe_control(wd, brand_layer, 'left', 60)
                     print("스와이프")
@@ -66,7 +73,7 @@ class Search:
                 # 검색 화면 > 인기 브랜드 검색어 30위 선택
                 brand_1st_name = brand_1st.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
                 print(f"1st 브랜드 : {brand_1st_name}")
-                brand_30th = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[10]')
+                brand_30th = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View[10]')
                 # 검색 화면 > 인기 브랜드 검색어 30위 선택
                 brand_30th_name = brand_30th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
                 print(f"30위 브랜드 : {brand_30th_name}")
@@ -112,8 +119,13 @@ class Search:
             print("하단 SEARCH탭 선택")
             search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
             sleep(2)
-            brand_layer = search_container.find_element(AppiumBy.XPATH,'//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]')
-
+            filter_name = wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+            print(filter_name)
+            if len(filter_name) == 0:
+                filter_name = element_control.scroll_to_element_with_text(wd, '전체 기준')
+                brand_layer = search_container.find_element(AppiumBy.XPATH,'//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]')
+            else:
+                brand_layer = search_container.find_element(AppiumBy.XPATH,'//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]')
             #1위선택
             brand_1st = brand_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[1]')
             # 검색 화면 > 인기 브랜드 검색어 1위 선택
@@ -152,11 +164,16 @@ class Search:
             else:
                 delete_all[0].click()
             sleep(2)
-            filter_name = element_control.scroll_to_element_with_text(wd, '전체 기준')
-            print(3)
-            filter_name.click()
+            # 앱최초 실행 시에 문구 다름
+            filter_name = wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+            print(filter_name)
+            if len(filter_name) == 0:
+                filter_name = element_control.scroll_to_element_with_text(wd, '전체 기준')
+                sleep(2)
+                filter_name.click()
+            else:
+                filter_name[0].click()
             sleep(2)
-            # print(f"필터네임 클릭 : {filter_name.text}")
             bottom_sheet_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
             gender_filter = bottom_sheet_layer.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]/android.widget.TextView')
             gender_filter.click()
@@ -168,6 +185,7 @@ class Search:
             print("적용하기 버튼 선택")
             filter_name_tag = f"{self.conf['search_filter_gender']['WOMEN']} {self.conf['search_filter_age']['30to34']} 기준"
             print(filter_name_tag)
+            filter_name = element_control.scroll_to_element_with_text(wd, filter_name_tag)
             if filter_name.text in filter_name_tag :
                 print("필터 적용 - 필터링에 여성 30~34세 기준 문구 노출 확인 확인")
                 response = requests.get('https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30&group=female&ageGroup=30to34')
@@ -285,7 +303,7 @@ class Search:
                 keywords = api_data['data']['popularKeyword']
                 api_1st_keyword_name = keywords[0]
                 api_25th_keyword_name = keywords[24]
-                print(f"api_1st_keyword_name : {api_1st_keyword_name}, api_20th_keyword_name : {api_25th_keyword_name}")
+                print(f"api_1st_keyword_name : {api_1st_keyword_name}, api_25th_keyword_name : {api_25th_keyword_name}")
                 element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_1st_keyword_name}')]")
                 print(f"element : {element.text}")
                 keyword_1st_name = element.text
@@ -333,7 +351,7 @@ class Search:
                     wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
                     print("뒤로가기 선택")
                     sleep(2)
-                    element_control.scroll_control(wd,'U',40)
+                    # element_control.scroll_control(wd,'U',40)
                     delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
                     print(delete_all)
                     if len(delete_all) == 0:
@@ -350,21 +368,10 @@ class Search:
                     test_result = 'WARN'
                     warning_texts.append('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인 실패')
                     print('api 인기 검색어 1위와 노출되는 1위 동일 여부 확인 실패')
-                # 100위 검색어 발견 스크롤
-                for _ in range(20):
-                    try:
-                        element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_25th_keyword_name}')]")
-                        print(f"element : {element.text}")
-                        if element.is_displayed():
-                            print("아이템 발견")
-                            keyword_25th_name = element.text
-                            print(f"keyword_25th_name : {keyword_25th_name}")
-                            break
-                    except:
-                        pass
-                    # 요소를 찾지 못하면 위로 스크롤
-                    element_control.scroll_control(wd, "D", 40)
-                if keyword_25th_name == api_25th_keyword_name :
+                # 25위 검색어 발견 스크롤
+                keyword_25th_name = element_control.scroll_to_element_with_text(wd, api_25th_keyword_name)
+
+                if keyword_25th_name.text == api_25th_keyword_name :
                     print('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인')
                 else:
                     test_result = 'WARN'

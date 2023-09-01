@@ -111,13 +111,14 @@ class Home:
             # else:
             #     print("API 호출에 실패했습니다.")
 
-            # 4. 다이나믹 게이트 2번째 줄, 1번째 선택
+            # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
+            sleep(1)
             dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
-            dynamic_button_title = dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[1]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').text
-            dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[1]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').click()
-            sleep(3)
+            dynamic_button_title = dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[2]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').text
+            dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[2]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').click()
+            sleep(2)
             gift_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
-            gift_title = gift_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
+            gift_title = gift_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
 
             if gift_title == dynamic_button_title :
                 print(f"선물하기 타이틀 확인 : {gift_title}")
@@ -127,7 +128,7 @@ class Home:
                 warning_texts.append("다이나믹 게이트 타이틀 확인 실패")
 
             # 뒤로가기로 홈화면 진입 확인
-            gift_layer.find_element(AppiumBy.XPATH,'//android.view.View[1]/android.view.View/android.view.View/android.widget.Button').click()
+            gift_layer.find_element(AppiumBy.XPATH,'//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button').click()
             print("뒤로가기 선택")
             sleep(3)
             print("[홈화면 배너 확인]CASE 종료")
@@ -170,11 +171,10 @@ class Home:
         try:
             print("[홈화면 컨텐츠 확인]CASE 시작")
             sleep(5)
-            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabLayout')
+            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             # 2. 홈 > 피드 > 추천 탭선택
-            tab_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[4]/android.view.ViewGroup/android.widget.TextView').click()
+            tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
             print('홈 > 피드 > 추천 탭선택 ')
-            element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/textRecommend')
             guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
 
             if guide_text.text == self.pconf['NAME']+'님을 위한 추천 상품':
@@ -185,7 +185,7 @@ class Home:
                 warning_texts.append("홈화면 추천 탭 타이틀 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
 
-            tab_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView').click()
+            tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[1]').click()
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
 
@@ -200,9 +200,10 @@ class Home:
                 results = api_data["data"]["results"]
                 for result in results:
                     if not saved_result and "feedTitle" in result and "feedType" in result and result["feedType"] == "contents" and "relatedFeedItemList" in result:
-                        print(f"첫번째 저장 result : {result['feedTitle']}")
-                        saved_result = result['feedTitle']
-                        saved_results.append(result['feedTitle'])
+                        if any("feedItemNo" in item for item in result["relatedFeedItemList"]):
+                            print(f"첫번째 저장 result : {result['feedTitle']}")
+                            saved_result = result['feedTitle']
+                            saved_results.append(result['feedTitle'])
                     elif saved_result and "feedTitle" in result and "feedType" in result and result["feedType"] == "contents":
                         print(f"두번째 저장 result : {result['feedTitle']}")
                         saved_result = result['feedTitle']
@@ -241,6 +242,8 @@ class Home:
                 products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
                 sleep(1)
                 #좋아요 선택
+                # 앱설치 후 최초 좋아요 선택 시 앱평가 팝업 발생 처리 필요
+
                 after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
                 # 좋아요 누른  좋아요 갯수 확인
                 # 쉼표를 제거한 문자열 생성

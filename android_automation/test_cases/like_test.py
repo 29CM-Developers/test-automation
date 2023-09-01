@@ -126,25 +126,66 @@ class Like:
                 test_result = 'WARN'
                 warning_texts.append('좋아요 브랜드 노출 확인 실패')
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtGuide').click()
-            PostTitle = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPostTitle').text
-            print(f"PostTitle : {PostTitle}")
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPostTitle').click()
-            sleep(1)
-            rootView = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
-            like_button = rootView.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View/android.widget.Button')
-            like_button.click()
-
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            sleep(1)
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
-            like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
-            like_post_title = like_layer.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{PostTitle}')]").text
-            print(f"like_post_title : {like_post_title}")
+            # post 버그 확인 후 제거 예정
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtGuide').click()
+            # PostTitle = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPostTitle').text
+            # print(f"PostTitle : {PostTitle}")
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPostTitle').click()
+            # sleep(3)
+            # rootView = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
+            # like_button = rootView.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View/android.widget.Button')
+            # like_button.click()
+            # sleep(1)
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            # sleep(1)
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
+            # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
+            # like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
+            # like_post_title = like_layer.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{PostTitle}')]").text
+            # print(f"like_post_title : {like_post_title}")
+            # like 갯수 3개 확인
+            txtHeartCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHeartCount').text
+            if txtHeartCount == '2':
+                print(f'상단 LIKE 개수 {txtHeartCount}개 확인')
+                # 상품 탭 선택
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutProduct').click()
+                product_like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
+                product_like_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView[2]').click()
+                txtProductCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProductCount').text
+                print(txtProductCount)
+                if txtProductCount == '(0)' :
+                    print('Product Count 감소 확인')
+                else :
+                    test_result = 'WARN'
+                    warning_texts.append('Product Count 감소 확인 실패')
+                    print(f'Product Count : {txtHeartCount} ')
+                # 브랜드 탭 선택
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutHeart').click()
+                txtBrandCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandCount').text
+                if txtBrandCount == '(0)':
+                    print('Brand Count 감소 확인')
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('Brand Count 감소 확인 실패')
+                    print(f'Brand Count : {txtBrandCount} ')
+                # 포스트 탭 선택 -> 현재 기존 버그 이슈 있어 처리 후 주석 제거 예정
+                # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
+                # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutHeart').click()
+                # txtPostCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPostCount').text
+                # if txtPostCount == '(0)':
+                #     print('Post Count 감소 확인')
+                # else:
+                #     test_result = 'WARN'
+                #     warning_texts.append('Post Count 감소 확인 실패')
+                #     print(f'Post Count : {txtPostCount} ')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('상단 LIKE 개수 확인 실패')
+                print(f'WARN : 상단 LIKE 개수 {txtHeartCount} 개로 3개 확인 실패')
+            # like 해제
 
             # home 탭 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
