@@ -150,7 +150,7 @@ class NotLogin:
         start_time = time()
         try:
             print("[사용 가능 기능 사용]CASE 시작")
-            sleep(2)
+            sleep(3)
 
             # 홈화면 변경 ui 로 진행 시
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
@@ -171,8 +171,11 @@ class NotLogin:
             best_product_title = best_product_layer.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             print(f"베스트 상품명 : {best_product_title} ")
             wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
+            sleep(1)
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
             PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
+            PDP_product_titile = PDP_product_titile.replace("_", " ")
+            best_product_title = best_product_title.replace("_", " ")
             print(f"PDP_product_titile : {PDP_product_titile} ")
             if PDP_product_titile in best_product_title:
                 print("베스트 상품 PDP 정상 확인")
@@ -231,7 +234,14 @@ class NotLogin:
                 warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
             print(f"타이틀 확인 : {search_container_title.text}")
 
-            brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
+            # 최초 접속 시 가이드 존재
+            guide_text = wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+            print(guide_text)
+            if len(guide_text) == 0:
+                brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[10]')
+            else:
+                brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
+
             # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
             brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
             brand_10th.click()

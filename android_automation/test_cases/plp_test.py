@@ -122,11 +122,11 @@ class Plp:
                 best_product_title = best_item_10th.text
                 print(f"베스트 상품명 : {best_product_title} ")
                 best_item_10th.click()
-
+                sleep(2)
                 PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data}')]")
                 for PDP_title in PDP_title_elements:
                     print(PDP_title.text)
-                    if PDP_title.text in api_data :
+                    if PDP_title.text in api_data:
                         break
                 PDP_product_titile = PDP_title.text
                 print(f"PDP_product_titile : {PDP_product_titile} ")
