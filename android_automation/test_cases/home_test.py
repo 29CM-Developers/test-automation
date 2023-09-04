@@ -251,7 +251,15 @@ class Home:
                 products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
                 sleep(1)
                 #좋아요 선택
-                # 앱설치 후 최초 좋아요 선택 시 앱평가 팝업 발생 처리 필요
+                # 앱평가 발생 시 팝업 제거
+                app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
+                print(app_evaluation)
+                if len(app_evaluation) == 0:
+                    pass
+                else:
+                    wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
+                    sleep(1)
+                    wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
 
                 after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
                 # 좋아요 누른  좋아요 갯수 확인
