@@ -29,9 +29,10 @@ class LoginLogout:
         start_time = time()
         try:
             print("[이메일 로그인 실패] CASE 시작")
-            sleep(3)
             # 하단 네비게이터에 MY 메뉴 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
+            sleep(1)
+            wd.get('app29cm://mypage')
+            sleep(1)
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
@@ -110,7 +111,9 @@ class LoginLogout:
             self.email_login_fail()
 
             # 하단 네비게이터에 MY 메뉴 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
+            sleep(1)
+            wd.get('app29cm://mypage')
+            sleep(1)
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
@@ -217,6 +220,7 @@ class LoginLogout:
             print("[이메일 로그인 성공]CASE 시작")
             sleep(1)
             wd.get('app29cm://mypage')
+            sleep(1)
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
@@ -413,9 +417,10 @@ class LoginLogout:
         start_time = time()
         try:
             print("[이메일 로그인 실패 및 성공]CASE 시작")
-            sleep(3)
+            sleep(1)
+            wd.get('app29cm://mypage')
+            sleep(1)
             # 하단 네비게이터에 MY 메뉴 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
