@@ -21,7 +21,7 @@ class Like:
 
             # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
             try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '관심 브랜드를 선택하세요. 놀라운 추천 경험을 제공할게요.')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
                 print('브랜드 추천 페이지 노출')
             except NoSuchElementException:
@@ -32,6 +32,8 @@ class Like:
             if like_total_count == '0':
                 print('총 LIKE 개수 확인')
             else:
+                test_result = 'WARN'
+                warning_texts.append('총 LIKE 개수 확인 실패')
                 print('총 LIKE 개수 확인 실패')
 
             # Product 탭 확인
@@ -39,6 +41,8 @@ class Like:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
                 print('PRODUCT 좋아요 없음 문구 노출 확인')
             except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('PRODUCT 좋아요 없음 문구 노출 확인 실패')
                 print('PRODUCT 좋아요 없음 문구 노출 확인 실패')
 
             # Brand 탭 선택 및 확인
@@ -55,6 +59,8 @@ class Like:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 게시물이 없습니다. 다시 보고 싶은 게시물에 하트를 눌러보세요.')
                 print('POST 좋아요 없음 문구 노출 확인')
             except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('POST 좋아요 없음 문구 노출 확인')
                 print('POST 좋아요 없음 문구 노출 확인')
 
         except Exception:
@@ -108,6 +114,8 @@ class Like:
             if like_product_name == liked_product_name:
                 print('좋아요 상품 노출 확인')
             else:
+                test_result = 'WARN'
+                warning_texts.append('좋아요 상품 노출 확인 실패')
                 print(f'좋아요 상품 노출 확인 실패: {like_product_name} / {liked_product_name}')
 
             # 좋아요 상품의 [장바구니 담기] 버튼 선택
@@ -118,6 +126,8 @@ class Like:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기')
                 print('좋아요 상품 PDP 진입 확인 - 바텀시트')
             except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('좋아요 상품 PDP 진입 확인 실패')
                 print('좋아요 상품 PDP 진입 확인 실패 - 바텀시트')
 
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView').click()
@@ -164,7 +174,9 @@ class Like:
             if like_brand_name == liked_brand_name:
                 print('좋아요 브랜드 노출 확인')
             else:
-                print(f'좋아요 브랜드 노출 확인 : {like_brand_name} / {liked_brand_name}')
+                test_result = 'WARN'
+                warning_texts.append('좋아요 브랜드 노출 확인 실패')
+                print(f'좋아요 브랜드 노출 확인 실패: {like_brand_name} / {liked_brand_name}')
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_tab').click()
 
@@ -173,13 +185,16 @@ class Like:
 
             # 첫번째 추천 게시물명 확인 및 선택
             recommended_post = wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                               '**/XCUIElementTypeCell[`name == "recommended_post"`][2]')
-            like_post_name = recommended_post.find_element(AppiumBy.XPATH, 'XCUIElementTypeStaticText[@index="4"]').text
+                                               '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
+            like_post_name = recommended_post.find_element(AppiumBy.XPATH, 'XCUIElementTypeStaticText[2]').text
             print(like_post_name)
             recommended_post.click()
 
-            # 웹뷰 내 좋아요 버튼 선택 스크립트 추가 필요
-            print('웹뷰 내 좋아요 버튼 선택 스크립트 추가 필요')
+            # post 내 좋아요 버튼 선택
+            post_view = wd.find_elements(AppiumBy.XPATH,
+                                         '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther')
+            post_view_len = len(post_view) - 1
+            wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeOther[{post_view_len}]/XCUIElementTypeButton[1]').click()
 
             # LIKE 탭으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
@@ -193,22 +208,26 @@ class Like:
             com_utils.element_control.element_scroll_control(wd, post_list, 'U', 30)
 
             # 좋아요 한 게시물명 확인
-            # liked_post = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_item')
-            # liked_post_name = liked_post.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
-            #
-            # if like_post_name == liked_post_name:
-            #     print('좋아요 게시물 노출 확인')
-            # else:
-            #     print(f'좋아요 게시물 노출 확인 실패 : {like_post_name} / {liked_post_name}')
-            #
-            # # 상단 Like 개수 확인
-            # like_total_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count').text
-            # if like_total_count == '3':
-            #     print('총 LIKE 개수 확인')
-            # else:
-            #     print('총 LIKE 개수 확인 실패')
-            #
-            # liked_post.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton').click()
+            liked_post = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_item')
+            liked_post_name = liked_post.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
+
+            if like_post_name == liked_post_name:
+                print('좋아요 게시물 노출 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('좋아요 게시물 노출 확인 실패')
+                print(f'좋아요 게시물 노출 확인 실패 : {like_post_name} / {liked_post_name}')
+
+            # 상단 Like 개수 확인
+            like_total_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count').text
+            if like_total_count == '3':
+                print('총 LIKE 개수 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('총 LIKE 개수 확인 실패')
+                print('총 LIKE 개수 확인 실패')
+
+            liked_post.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton').click()
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_tab').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'ic heart line').click()
