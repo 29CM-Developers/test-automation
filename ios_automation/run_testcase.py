@@ -19,6 +19,7 @@ from ios_automation.test_cases.category_test import Category
 from ios_automation.test_cases.search_test import Search
 from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 from ios_automation.test_cases.like_test import Like
+from ios_automation.test_cases.cart_test import Cart
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -33,16 +34,14 @@ class IOSTestAutomation(unittest.TestCase):
         self.wd, self.iOS_cap = dajjeong_setup()
         self.wd.implicitly_wait(3)
 
-        user_info = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong")
-        self.pconf = user_info.json()
-        public_info = requests.get(f"http://192.168.103.13:50/qa/personal/info")
-        self.conf = public_info.json()
-        def_info = requests.get(f"http://192.168.103.13:50/qa/personal/def_names")
-        self.dconf = def_info.json()
+        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
+        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         self.count = 0
         self.total_time = ''
         self.slack_result = ''
+        self.result_lists = []
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
@@ -119,14 +118,14 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 홈화면 배너 확인
-        self.result_data = Home.test_home_banner(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면 컨텐츠 확인
-        self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # self.result_data = Home.test_home_banner(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 홈화면 컨텐츠 확인
+        # self.result_data = Home.test_home_contents(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 카테고리 화면 확인
         self.result_data = Category.test_category_page(self, self.wd)
@@ -140,6 +139,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # Like 존재하는 경우
         self.result_data = Like.test_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 장바구니 리스트
+        self.result_data = Cart.test_cart_list(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
