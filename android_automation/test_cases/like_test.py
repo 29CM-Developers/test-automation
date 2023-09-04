@@ -102,6 +102,17 @@ class Like:
             productItem = like_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[2]/android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
             print(f"productItem : {productItem}")
             like_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]').click()
+
+            # 앱평가 발생 시 팝업 제거
+            app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
+            print(app_evaluation)
+            if len(app_evaluation) == 0:
+                pass
+            else:
+                wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
+                sleep(1)
+                wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
+
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutShowProduct').click()
             like_productItem = like_layer.find_element(AppiumBy.ID,'com.the29cm.app29cm:id/txtBody').text
             print(f"like_productItem : {like_productItem}")
@@ -112,6 +123,18 @@ class Like:
                 warning_texts.append('좋아요 상품 노출 확인 실패')
                 print('WARN : 좋아요 상품 노출 확인 실패')
             print(f"productItem : {productItem}, like_productItem : {like_productItem}")
+            # 장바구니 버튼 선택하여 PDP 진입 확인 (바텀시트 확인, 상품명 확인)
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtCart').click()
+            ItemName = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtItemName').text
+            if ItemName in like_productItem:
+                print('좋아요 상품 PDP 진입 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('좋아요 상품 PDP 진입 확인 실패')
+                print('WARN : 좋아요 상품 PDP 진입 확인 실패')
+            wd.find_element(AppiumBy.ID, 'android:id/content').click()
+
+
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
             like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
             BrandName = like_layer.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandName').text
@@ -126,6 +149,18 @@ class Like:
                 test_result = 'WARN'
                 warning_texts.append('좋아요 브랜드 노출 확인 실패')
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
+            like_BrandName.click()
+            sleep(3)
+            brand_web_view_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
+            brand_name = brand_web_view_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
+            print(brand_name)
+            if BrandName in brand_name:
+                print('좋아요 브랜드 노출 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('좋아요 브랜드 노출 확인 실패')
+                print('WARN : 좋아요 브랜드 노출 확인 실패')
+
             # post 버그 확인 후 제거 예정
             # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
             # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtGuide').click()
