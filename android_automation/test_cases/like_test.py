@@ -20,6 +20,15 @@ class Like:
             sleep(2)
             # like 탭 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
+            sleep(2)
+            # 관심 브랜드 선택 화면 발생
+            brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
+            print(brands_of_interest)
+            if len(brands_of_interest) == 0:
+                pass
+            else:
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
+
             txtHeartCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHeartCount').text
             if txtHeartCount == '0':
                 print('상단 LIKE 개수 0개 확인')
