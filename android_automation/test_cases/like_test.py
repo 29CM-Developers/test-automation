@@ -17,10 +17,9 @@ class Like:
         start_time = time()
         try:
             print("[좋아요 존재하지 않는 LIKE 화면 확인]CASE 시작")
-            sleep(2)
+            wd.get('app29cm://like')
             # like 탭 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
-            sleep(2)
+            sleep(1)
             # 관심 브랜드 선택 화면 발생
             brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
             print(brands_of_interest)
@@ -104,9 +103,9 @@ class Like:
         start_time = time()
         try:
             print("[좋아요 존재하는 LIKE 화면 확인]CASE 시작")
-            sleep(2)
+            wd.get('app29cm://like')
             # like 탭 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
+            sleep(1)
             like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
             productItem = like_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[2]/android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
             print(f"productItem : {productItem}")

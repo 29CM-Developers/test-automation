@@ -35,7 +35,7 @@ class Home:
         start_time = time()
         try:
             print("[홈화면 배너 확인]CASE 시작")
-            sleep(2)
+            sleep(1)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈 탭 선택")
             # api_banner_title = []
