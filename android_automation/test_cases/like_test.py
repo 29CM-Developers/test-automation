@@ -150,9 +150,9 @@ class Like:
             print(f"BrandName : {BrandName}")
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutHeart').click()
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutShowBrand').click()
-            like_BrandName = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandName').text
-            print(f"like_BrandName : {like_BrandName}")
-            if BrandName in like_BrandName:
+            like_BrandName = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandName')
+            print(f"like_BrandName : {like_BrandName.text}")
+            if BrandName in like_BrandName.text:
                 print('좋아요 브랜드 노출 확인')
             else:
                 test_result = 'WARN'
@@ -163,12 +163,18 @@ class Like:
             brand_web_view_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
             brand_name = brand_web_view_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
             print(brand_name)
-            if BrandName in brand_name:
+            original_string = BrandName
+            uppercase_string = original_string.upper()
+            if uppercase_string in brand_name:
                 print('좋아요 브랜드 노출 확인')
             else:
                 test_result = 'WARN'
                 warning_texts.append('좋아요 브랜드 노출 확인 실패')
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
+
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print("뒤로가기 선택")
+            sleep(2)
 
             # post 버그 확인 후 제거 예정
             # wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutPost').click()
