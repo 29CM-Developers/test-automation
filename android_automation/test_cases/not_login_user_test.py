@@ -6,6 +6,7 @@ import traceback
 import logging
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.mobileby import MobileBy
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -236,12 +237,14 @@ class NotLogin:
             print(f"타이틀 확인 : {search_container_title.text}")
 
             # 최초 접속 시 가이드 존재
-            guide_text = wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
-            print(guide_text)
-            if len(guide_text) == 0:
+            try:
+                wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+                print('가이드 노출 확인')
+                brand_10th = search_container.find_element(AppiumBy.XPATH,'//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
+
+            except NoSuchElementException:
                 brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.view.View[10]')
-            else:
-                brand_10th = search_container.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[10]')
+                pass
 
             # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
             brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
