@@ -55,6 +55,16 @@ class Plp:
             products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
             sleep(1)
             # 좋아요 선택
+            # 앱평가 발생 시 팝업 제거
+            app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
+            print(app_evaluation)
+            if len(app_evaluation) == 0:
+                pass
+            else:
+                wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
+                sleep(1)
+                wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
+
             after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
             # 좋아요 누른  좋아요 갯수 확인
             # 쉼표를 제거한 문자열 생성
@@ -112,11 +122,11 @@ class Plp:
                 best_product_title = best_item_10th.text
                 print(f"베스트 상품명 : {best_product_title} ")
                 best_item_10th.click()
-
+                sleep(2)
                 PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data}')]")
                 for PDP_title in PDP_title_elements:
                     print(PDP_title.text)
-                    if PDP_title.text in api_data :
+                    if PDP_title.text in api_data:
                         break
                 PDP_product_titile = PDP_title.text
                 print(f"PDP_product_titile : {PDP_product_titile} ")

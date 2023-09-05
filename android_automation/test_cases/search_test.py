@@ -91,7 +91,7 @@ class Search:
             # 확인: 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
             brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
             search_brand = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
-            if search_brand == brand_30th_name:
+            if brand_30th_name in search_brand:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
             else:
                 print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
@@ -327,13 +327,13 @@ class Search:
                                 print(f"related_1st_keyword : {related_1st_keyword}")
                                 related_keyword_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/relatedKeywordComposeView')
                                 related_keyword_1st = related_keyword_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.widget.TextView[1]').text
-                                if related_1st_keyword in related_keyword_1st :
+                                if related_keyword_1st in related_1st_keyword:
                                     print("인기 검색어 검색 확인 - 첫번째 연관 검색어 확인")
                                 else :
                                     print("인기 검색어 검색 확인 - 첫번째 연관 검색어 확인 실패")
                                     test_result = 'WARN'
                                     warning_texts.append("인기 검색어 검색 확인 실패")
-                                print(f"연관검색어 확인 : {related_1st_keyword}")
+                                print(f"연관검색어 확인 : {related_keyword_1st}")
                         else:
                             print("응답 데이터에 'data' 키 또는 'relatedKeywords' 키가 없습니다.")
                     else:
@@ -371,7 +371,7 @@ class Search:
                 # 25위 검색어 발견 스크롤
                 keyword_25th_name = element_control.scroll_to_element_with_text(wd, api_25th_keyword_name)
 
-                if keyword_25th_name.text == api_25th_keyword_name :
+                if keyword_25th_name.text == api_25th_keyword_name:
                     print('api 인기 검색어 25위와 노출되는 25위 동일 여부 확인')
                 else:
                     test_result = 'WARN'

@@ -35,7 +35,7 @@ class Home:
         start_time = time()
         try:
             print("[홈화면 배너 확인]CASE 시작")
-            sleep(2)
+            sleep(1)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈 탭 선택")
             # api_banner_title = []
@@ -114,13 +114,22 @@ class Home:
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
             dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
-            dynamic_button_title = dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[2]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').text
-            dynamic_layer.find_element(AppiumBy.XPATH, '//android.widget.LinearLayout[2]/androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView').click()
+            dynamic_button_title = wd.find_elements(By.XPATH, "//*[contains(@text, '센스있는 선물하기')]")
+            print(dynamic_button_title)
+            if len(dynamic_button_title) == 0:
+                element_control.swipe_control(wd, dynamic_layer, 'left', 50)
+                dynamic_button_title = wd.find_elements(By.XPATH, "//*[contains(@text, '센스있는 선물하기')]")
+                print(dynamic_button_title)
+            print(dynamic_button_title[0].text)
+            button_title = dynamic_button_title[0].text
+            dynamic_button_title[0].click()
+
             sleep(2)
             gift_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
             gift_title = gift_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
+            print(gift_title)
 
-            if gift_title == dynamic_button_title :
+            if gift_title == button_title:
                 print(f"선물하기 타이틀 확인 : {gift_title}")
             else :
                 print(f"선물하기 타이틀 확인 실패 : {gift_title}")
@@ -242,7 +251,15 @@ class Home:
                 products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
                 sleep(1)
                 #좋아요 선택
-                # 앱설치 후 최초 좋아요 선택 시 앱평가 팝업 발생 처리 필요
+                # 앱평가 발생 시 팝업 제거
+                app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
+                print(app_evaluation)
+                if len(app_evaluation) == 0:
+                    pass
+                else:
+                    wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
+                    sleep(1)
+                    wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
 
                 after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
                 # 좋아요 누른  좋아요 갯수 확인
