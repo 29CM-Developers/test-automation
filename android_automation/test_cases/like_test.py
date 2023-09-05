@@ -133,8 +133,8 @@ class Like:
             print(f"productItem : {productItem}, like_productItem : {like_productItem}")
             # 장바구니 버튼 선택하여 PDP 진입 확인 (바텀시트 확인, 상품명 확인)
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtCart').click()
-            ItemName = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtItemName').text
-            if ItemName in like_productItem:
+            item_name = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtItemName').text
+            if item_name in like_productItem:
                 print('좋아요 상품 PDP 진입 확인')
             else:
                 test_result = 'WARN'
