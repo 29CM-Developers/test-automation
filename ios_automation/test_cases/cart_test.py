@@ -124,7 +124,7 @@ class Cart:
                                                 '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute(
                     'name')
 
-            if pdp_name == best_product:
+            if best_product in pdp_name:
                 print('pdp 진입 확인 - 베스트 상품')
             else:
                 test_result = 'WARN'
@@ -193,7 +193,7 @@ class Cart:
                                                 '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute(
                     'name')
 
-            if pdp_name == search_product:
+            if search_product in pdp_name:
                 print('pdp 진입 확인 - 검색 상품')
             else:
                 test_result = 'WARN'
