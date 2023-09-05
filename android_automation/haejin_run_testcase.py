@@ -5,6 +5,7 @@ and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 import requests
 from appium.webdriver.appium_service import AppiumService
+from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 from android_automation.test_cases.loginpage_test import LoginLogout
 from android_automation.test_cases.not_login_user_test import NotLogin
 from android_automation.test_cases.home_test import Home
@@ -51,10 +52,12 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
 
     def test_android_bvt(self):
-        # s22 시나리오
+        # 앱 실행 후, 바텀 시트 노출 여부 확인
+        test_bottom_sheet(self.wd)
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
+        # s22 시나리오
         # testcases 실행 - 비로그인 사용 불가 기능 사용
         self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
