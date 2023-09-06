@@ -242,78 +242,53 @@ class Home:
             sleep(1)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈 탭 선택")
-            # api_banner_title = []
-            # banner_title_set = []
-            # response = requests.get("https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender="+self.pconf['GENDER'])
-            # if response.status_code == 200:
-            #
-            #     api_data = response.json()
-            #     count = int(api_data["data"]["count"])
-            #     for i in range(count):
-            #         api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
-            #     print(api_banner_title)
-            #
-            #     for i in range(0,count):
-            #         sleep(2.5)
-            #         try:
-            #             print(5)
-            #             # 대기 설정
-            #             wait = WebDriverWait(wd, 5)  # 최대 10초까지 대기
-            #
-            #             element_layer_1 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerViewContainer')
-            #             print(1)
-            #             element_layer_2 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/homeBannerViewPager')
-            #             print(2)
-            #             element_layer_3 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/viewPager')
-            #             print(3)
-            #             # 모든 요소를 선택하는 XPath 쿼리
-            #             all_elements = element_layer_3.find_elements(By.XPATH, "//*")
-            #             print("all_elements 요소의 개수:", len(all_elements))
-            #             # class 속성이 'android.widget.TextView'인 요소를 찾습니다.
-            #             text_view_elements = []
-            #             for element in all_elements :
-            #                 print(f"element:{element}")
-            #                 if "android.widget.TextView" in element.get_attribute("class"):
-            #                     print(2)
-            #                     text_view_elements.append(element.text)
-            #                     print(3)
-            #
-            #             print("android.widget.TextView 요소의 개수:", len(text_view_elements))
-            #
-            #             # 찾은 요소들에 대한 추가 동작을 수행할 수 있습니다.
-            #             for element in text_view_elements:
-            #                 print("요소 텍스트:", element.text)
-            #                 banner_title_set.append(element.text)
-            #             # element_control.mini_swipe(wd, element_layer_3)
-            #             # print(4)
-            #             # banner_title_text = wd.find_element(AppiumBy.XPATH,
-            #             #                                     '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/androidx.recyclerview.widget.RecyclerView/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.widget.TextView[1]').text
-            #             # print(element_layer_4.text)
-            #
-            #         except NoSuchElementException:
-            #             print("못찾음")
-            #             pass
-            #         except Exception:
-            #             # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
-            #             print("에러")
-            #             element_layer_3 = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/viewPager')
-            #             print(3)
-            #             element_layer_4 = element_layer_3.find_element(By.XPATH, '//*android.widget.TextView[1]')
-            #             print(4)
-            #
-            #             # element_control.mini_swipe(wd, element_layer_3)
-            #             # print(4)
-            #             # banner_title_text = wd.find_element(AppiumBy.XPATH,
-            #             #                                     '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/androidx.viewpager.widget.ViewPager/androidx.recyclerview.widget.RecyclerView/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.widget.TextView[1]').text
-            #             # print(element_layer_4.text)
-            #             banner_title_set.append(element_layer_4.text)
-            #         # 스와이프 액션 수행
-            #         element_control.swipe_control(wd, element_layer_4,'right',30)
-            #         print("스와이프해")
-            #
-            #
-            # else:
-            #     print("API 호출에 실패했습니다.")
+            api_banner_title = []
+            banner_title_set = []
+            response = requests.get(
+                "https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender=" + self.pconf[
+                    'GENDER'])
+            if response.status_code == 200:
+
+                api_data = response.json()
+                count = int(api_data["data"]["count"])
+                for i in range(0, count):
+                    api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
+                print(api_banner_title)
+                home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
+                for i in range(0, count):
+                    sleep(2.5)
+                    home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
+                    print(f"home_banner_title : {home_banner_title}")
+                    banner_title_set.append(home_banner_title)
+                print(f"banner_title_set : {banner_title_set}")
+                banner_title_set = set(banner_title_set)
+                api_banner_title = set(api_banner_title)
+
+                # # set1에만 있는 요소를 찾기
+                # unique_elements_in_api_banner_title = api_banner_title.difference(banner_title_set)
+                #
+                # # set2에만 있는 요소를 찾기
+                # unique_elements_in_banner_title_set = banner_title_set.difference(api_banner_title)
+                #
+                # print(f"api_banner_title에만 있는 요소: {unique_elements_in_api_banner_title}, 갯수 : {len(unique_elements_in_api_banner_title)}")
+                # print(f"banner_title_set에만 있는 요소: {unique_elements_in_banner_title_set}, 갯수 : {len(unique_elements_in_banner_title_set)}")
+
+                intersection_set = banner_title_set.intersection(api_banner_title)
+
+                # if banner_title_set.issubset(api_banner_title):
+                if len(intersection_set) > 0:
+                    print("교집합 확인")
+                    print("홈 배너 확인 성공")
+                else:
+                    print("교집합 확인")
+                    print("홈 배너 확인 실패")
+                    print(f"api_banner_title : {len(api_banner_title)}, banner_title_set : {len(banner_title_set)}")
+                    print(f"{api_banner_title}")
+                    print(f"{banner_title_set}")
+                    test_result = 'WARN'
+                    warning_texts.append("홈 배너 확인 실패")
+            else:
+                print("API 호출에 실패했습니다.")
 
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
