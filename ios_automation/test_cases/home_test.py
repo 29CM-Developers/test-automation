@@ -1,15 +1,13 @@
-
 import os
 import sys
 import traceback
-from time import time, sleep
-
 import requests
+import com_utils.element_control
+
+from com_utils import values_control
+from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
-import com_utils.element_control
-from com_utils import values_control
 
 
 class Home:
@@ -213,6 +211,124 @@ class Home:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
                 print('피드 컨텐츠 API 불러오기 실패')
+
+        except Exception:
+            test_result = 'FAIL'
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            error_text = traceback.format_exc().split('\n')
+            try:
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+
+        finally:
+            run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
+
+    def test_move_tab_from_home(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # CATEGORY 탭 진입
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "CATEGORY"`]').click()
+
+            wd.find_element(AppiumBy.XPATH,
+                            '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="0"]').click()
+
+            # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
+            medium_category_list = wd.find_elements(AppiumBy.XPATH,
+                                                    '//XCUIElementTypeCollectionView[2]/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeStaticText')
+            medium_category_list = medium_category_list[0:4]
+
+            category_list = []
+            for medium_category in medium_category_list:
+                category_list.append(medium_category.text)
+            category_list = ', '.join(category_list)
+
+            if self.conf['compare_category_list'] == category_list:
+                print('HOME 탭에서 CATEGORY 탭 이동 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 CATEGORY 탭 이동 확인 실패')
+                print(f'HOME 탭에서 CATEGORY 탭 이동 확인 실패 : {category_list}')
+
+            # HOME 탭으로 이동
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarLogoWhite')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+
+            # SEARCH 탭 진입
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
+
+            # 인기 브랜드 타이틀 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 브랜드')
+                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
+                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
+
+            # 인기 브랜드 타이틀 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 검색어')
+                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 검색어 타이틀')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
+                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
+
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarLogoWhite')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+
+            # LIKE 탭 진입
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "LIKE"`]').click()
+            try:
+                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="LIKE"]')
+                print('HOME 탭에서 LIKE 탭 이동 확인')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 LIKE 탭 이동 확인 실패')
+                print('HOME 탭에서 LIKE 탭 이동 확인 실패')
+
+            # HOME 탭으로 이동
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarLogoWhite')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+
+            # MY 탭 진입
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "MY"`]').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
+                print('HOME 탭에서 MY 탭 이동 확인')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 MY 탭 이동 확인 실패')
+                print('HOME 탭에서 MY 탭 이동 확인 실패')
+
+            # HOME 탭으로 이동
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
 
         except Exception:
             test_result = 'FAIL'
