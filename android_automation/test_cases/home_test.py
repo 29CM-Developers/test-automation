@@ -422,14 +422,14 @@ class Home:
                 element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
                 element_control.scroll(wd)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
-                before_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
                 # 쉼표를 제거한 문자열 생성
                 before_like_count = before_like_count.replace(',', '')
                 # 문자열을 정수로 변환
                 before_like_count = int(before_like_count)
-                products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').click()
                 sleep(1)
-                #좋아요 선택
+                # 좋아요 선택
                 # 앱평가 발생 시 팝업 제거
                 app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
                 print(app_evaluation)
@@ -440,30 +440,30 @@ class Home:
                     sleep(1)
                     wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
 
-                after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                after_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
                 # 좋아요 누른  좋아요 갯수 확인
                 # 쉼표를 제거한 문자열 생성
                 after_like_count = after_like_count.replace(',', '')
                 # 문자열을 정수로 변환
                 after_like_count = int(after_like_count)
                 sleep(3)
-                if after_like_count == before_like_count+1 :
+                if after_like_count == before_like_count + 1:
                     print(f"갯수 확인 성공 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
-                else :
+                else:
                     print(f"갯수 확인 실패 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
                     test_result = 'WARN'
                     warning_texts.append("피드 아이템 좋아요 개수 증가 확인 실패")
 
-                before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
 
                 # 좋아요 취소 누르기 전 좋아요 갯수 확인
                 # 쉼표를 제거한 문자열 생성
                 before_like_count = before_like_count.replace(',', '')
                 # 문자열을 정수로 변환
                 before_like_count = int(before_like_count)
-                products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.ImageView').click()
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').click()
                 # 좋아요 선택
-                after_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.widget.TextView').text
+                after_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
                 # 좋아요 취소 누른  좋아요 갯수 확인
                 # 쉼표를 제거한 문자열 생성
                 after_like_count = after_like_count.replace(',', '')
