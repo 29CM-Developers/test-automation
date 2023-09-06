@@ -199,7 +199,7 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
             # 8. 홈 > 피드 > 추천 탭선택
-            sleep(2)
+            sleep(3)
 
             # 홈화면 변경 ui 시나리오
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
