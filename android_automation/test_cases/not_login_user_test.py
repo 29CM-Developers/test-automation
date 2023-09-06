@@ -173,7 +173,15 @@ class NotLogin:
             print(f"베스트 상품명 : {best_product_title} ")
             wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
             sleep(1)
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            # 스페셜 오더 상품 확인
+            try:
+                wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                print('SPECIAL-ORDER 상품 발견')
+            except NoSuchElementException:
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                pass
+
             PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
             PDP_product_titile = PDP_product_titile.replace("_", " ")
             best_product_title = best_product_title.replace("_", " ")
