@@ -63,6 +63,11 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 실제 실행 - 홈 화면에서 다른 탭으로 이동 성공
+        self.result_data = Home.test_move_tab_from_home(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 - 홈 배너 성공
         self.result_data = Home.test_home_banner(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)

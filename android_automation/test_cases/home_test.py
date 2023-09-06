@@ -27,6 +27,210 @@ logger.addHandler(stream_handler)  ## 핸들러 등록
 
 class Home:
 
+    def test_move_tab_from_home(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        try:
+            print("[홈화면에서 다른 탭으로 이동 확인]CASE 시작")
+            sleep(2)
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
+            sleep(2)
+            print("카테고리 탭 선택")
+
+            category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
+            # 첫번째 대메뉴 선택
+            # category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=1]/android.widget.TextView[1]').click()
+
+            # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
+            category_list = []
+            medium_category_list = []
+            medium_category_list.append(category_layer.find_element(AppiumBy.XPATH,
+                                                                    '//android.view.View/android.view.View[3]/android.view.View[@index=3]/android.widget.TextView').text)
+            medium_category_list.append(category_layer.find_element(AppiumBy.XPATH,
+                                                                    '//android.view.View/android.view.View[3]/android.view.View[@index=4]/android.widget.TextView').text)
+            medium_category_list.append(category_layer.find_element(AppiumBy.XPATH,
+                                                                    '//android.view.View/android.view.View[3]/android.view.View[@index=5]/android.widget.TextView').text)
+            medium_category_list.append(category_layer.find_element(AppiumBy.XPATH,
+                                                                    '//android.view.View/android.view.View[3]/android.view.View[@index=6]/android.widget.TextView').text)
+            category_list = self.pconf['compare_category_list']
+            print(f"medium_category_list : {medium_category_list}, category_list : {category_list}")
+            if category_list == medium_category_list:
+                print('HOME 탭에서 CATEGORY 탭 이동 확인')
+            else:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 CATEGORY 탭 이동 확인 실패')
+                print(f'HOME 탭에서 CATEGORY 탭 이동 확인 실패 : {medium_category_list}')
+
+            # HOME 탭으로 이동
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            try:
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+
+            # SEARCH 탭 진입
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
+            sleep(1)
+            # 인기 브랜드 타이틀 확인
+            try:
+                search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                sleep(2)
+                try:
+                    wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+                    element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[1]'
+
+                except NoSuchElementException:
+                    element_xpath = '//androidx.compose.ui.platform.ComposeView[1]/android.view.View/android.view.View/android.widget.TextView[1]'
+
+                print(search_container.find_element(AppiumBy.XPATH, element_xpath).text)
+                # 지금 많이 찾는 브랜드 찾기
+                search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath).text
+                if search_container_title == '지금 많이 찾는 브랜드':
+                    print("지금 많이 찾는 브랜드 타이틀 노출 확인")
+                    pass
+                else:
+                    print("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
+                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
+
+            # 인기 검색어 타이틀 확인
+            try:
+                # 확인 : 지금 많이 찾는 브랜드 타이틀 노출 확인 - 인기 브랜드 타이틀 확인
+                search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                # 최근 검색어 있는 경우 모두 지우기로 삭제
+                delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+                print(delete_all)
+                if len(delete_all) == 0:
+                    pass
+                else:
+                    delete_all[0].click()
+                # 지금 많이 찾는 검색어 찾기
+                element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]'
+                search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
+                if search_container_title.text == '지금 많이 찾는 검색어':
+                    print("지금 많이 찾는 검색어 타이틀 노출 확인")
+                    pass
+                else:
+                    print("지금 많이 찾는 검색어 타이틀 노출 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("지금 많이 찾는 검색어 타이틀 노출 실패")
+                print(f"타이틀 확인 : {search_container_title.text}")
+                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 검색어 타이틀')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
+                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
+
+            # 뒤로가기로 카테고리 진입 확인
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+
+            try:
+                # HOME 탭으로 이동
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+                sleep(1)
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+
+            # LIKE 탭 진입
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
+            # 관심 브랜드 선택 화면 발생 케이스
+            try:
+                wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
+            except NoSuchElementException:
+                pass
+
+            try:
+                like_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtTitle').text
+                if like_title == 'LIKE':
+                    print('HOME 탭에서 LIKE 탭 이동 확인')
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('HOME 탭에서 LIKE 탭 이동 확인 실패')
+                    print('HOME 탭에서 LIKE 탭 이동 확인 실패')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 LIKE 탭 이동 확인 실패')
+                print('HOME 탭에서 LIKE 탭 이동 확인 실패')
+
+            try:
+                # HOME 탭으로 이동
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+                sleep(1)
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+
+            # MY 탭 진입
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
+            try:
+                # 로그인 성공 진입 확인
+                login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
+                if login_name.text == self.pconf['NAME']:
+                    pass
+                else:
+                    print("로그인 문구 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("로그인 문구 확인 실패")
+                print("로그인 유저 이름 : %s " % login_name.text)
+
+                print('HOME 탭에서 MY 탭 이동 확인')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('HOME 탭에서 MY 탭 이동 확인 실패')
+                print('HOME 탭에서 MY 탭 이동 확인 실패')
+
+            try:
+                # HOME 탭으로 이동
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+                sleep(1)
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgLogo')
+                print('HOME 탭으로 이동')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 실패')
+            print("[홈화면에서 다른 탭으로 이동]CASE 종료")
+
+        except Exception:
+            # 오류 발생 시 테스트 결과를 실패로 한다
+            test_result = 'FAIL'
+            # 스크린샷
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            # 스크린샷 경로 추출
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            # 에러 메시지 추출
+            error_text = traceback.format_exc().split('\n')
+            try:
+                # 에러메시지 분류 시 예외처리
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+
+        finally:
+            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
+            run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            # 값 재사용 용이성을 위해 dict로 반환한다
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
+
     def test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
         # 현재 함수명 저장 - slack noti에 사용

@@ -74,6 +74,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        test_bottom_sheet(self.wd)
+
         # 실제 실행 - PLP 기능 확인 성공
         self.result_data = Plp.test_product_listing_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -104,6 +106,13 @@ class AndroidTestAutomation(unittest.TestCase):
         # 실제 실행 - 이메일 로그인 성공
         self.result_data = LoginLogout.test_email_login_success(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        test_bottom_sheet(self.wd)
+
+        # 실제 실행 - 홈 화면에서 다른 탭으로 이동 성공
+        self.result_data = Home.test_move_tab_from_home(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
