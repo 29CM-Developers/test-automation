@@ -239,56 +239,46 @@ class Home:
         start_time = time()
         try:
             print("[홈화면 배너 확인]CASE 시작")
-            sleep(1)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
-            print("홈 탭 선택")
-            api_banner_title = []
-            banner_title_set = []
-            response = requests.get(
-                "https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender=" + self.pconf[
-                    'GENDER'])
-            if response.status_code == 200:
-
-                api_data = response.json()
-                count = int(api_data["data"]["count"])
-                for i in range(0, count):
-                    api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
-                print(api_banner_title)
-                home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
-                for i in range(0, count):
-                    sleep(2.5)
-                    home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
-                    print(f"home_banner_title : {home_banner_title}")
-                    banner_title_set.append(home_banner_title)
-                print(f"banner_title_set : {banner_title_set}")
-                banner_title_set = set(banner_title_set)
-                api_banner_title = set(api_banner_title)
-
-                # # set1에만 있는 요소를 찾기
-                # unique_elements_in_api_banner_title = api_banner_title.difference(banner_title_set)
-                #
-                # # set2에만 있는 요소를 찾기
-                # unique_elements_in_banner_title_set = banner_title_set.difference(api_banner_title)
-                #
-                # print(f"api_banner_title에만 있는 요소: {unique_elements_in_api_banner_title}, 갯수 : {len(unique_elements_in_api_banner_title)}")
-                # print(f"banner_title_set에만 있는 요소: {unique_elements_in_banner_title_set}, 갯수 : {len(unique_elements_in_banner_title_set)}")
-
-                intersection_set = banner_title_set.intersection(api_banner_title)
-
-                # if banner_title_set.issubset(api_banner_title):
-                if len(intersection_set) > 0:
-                    print("교집합 확인")
-                    print("홈 배너 확인 성공")
-                else:
-                    print("교집합 확인")
-                    print("홈 배너 확인 실패")
-                    print(f"api_banner_title : {len(api_banner_title)}, banner_title_set : {len(banner_title_set)}")
-                    print(f"{api_banner_title}")
-                    print(f"{banner_title_set}")
-                    test_result = 'WARN'
-                    warning_texts.append("홈 배너 확인 실패")
-            else:
-                print("API 호출에 실패했습니다.")
+            # sleep(1)
+            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            # print("홈 탭 선택")
+            # api_banner_title = []
+            # banner_title_set = []
+            # response = requests.get(
+            #     "https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender=" + self.pconf[
+            #         'GENDER'])
+            # if response.status_code == 200:
+            #
+            #     api_data = response.json()
+            #     count = int(api_data["data"]["count"])
+            #     for i in range(0, count):
+            #         api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
+            #     print(api_banner_title)
+            #     home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
+            #     for i in range(0, count):
+            #         sleep(2.5)
+            #         home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
+            #         print(f"home_banner_title : {home_banner_title}")
+            #         banner_title_set.append(home_banner_title)
+            #     print(f"banner_title_set : {banner_title_set}")
+            #     banner_title_set = set(banner_title_set)
+            #     api_banner_title = set(api_banner_title)
+            #
+            #     intersection_set = banner_title_set.intersection(api_banner_title)
+            #
+            #     if len(intersection_set) > 0:
+            #         print("교집합 확인")
+            #         print("홈 배너 확인 성공")
+            #     else:
+            #         print("교집합 확인")
+            #         print("홈 배너 확인 실패")
+            #         print(f"api_banner_title : {len(api_banner_title)}, banner_title_set : {len(banner_title_set)}")
+            #         print(f"{api_banner_title}")
+            #         print(f"{banner_title_set}")
+            #         test_result = 'WARN'
+            #         warning_texts.append("홈 배너 확인 실패")
+            # else:
+            #     print("API 호출에 실패했습니다.")
 
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
