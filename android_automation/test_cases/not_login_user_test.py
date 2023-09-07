@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
+from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -32,11 +33,14 @@ class NotLogin:
         start_time = time()
         try:
             print("[사용 불가 기능 사용]CASE 시작")
+            test_bottom_sheet(self.wd)
+
             sleep(3)
             # 홈 > 카테고리 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
-            category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[3]/android.view.View[6]').click()
+            category_layer.find_element(AppiumBy.XPATH,
+                                        '//android.view.View/android.view.View[3]/android.view.View[6]').click()
             print("홈 > 카테고리 PLP 진입 > 의류 > 상의 선택")
             # 임의의 상품 좋아요 버튼 선택
             plp_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/recyclerview')
@@ -173,7 +177,15 @@ class NotLogin:
             print(f"베스트 상품명 : {best_product_title} ")
             wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
             sleep(1)
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            # 스페셜 오더 상품 확인
+            try:
+                wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                print('SPECIAL-ORDER 상품 발견')
+            except NoSuchElementException:
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                pass
+
             PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
             PDP_product_titile = PDP_product_titile.replace("_", " ")
             best_product_title = best_product_title.replace("_", " ")
@@ -191,7 +203,7 @@ class NotLogin:
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
             # 8. 홈 > 피드 > 추천 탭선택
-            sleep(2)
+            sleep(3)
 
             # 홈화면 변경 ui 시나리오
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
