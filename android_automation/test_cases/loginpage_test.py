@@ -220,6 +220,7 @@ class LoginLogout:
         try:
             print("[이메일 로그인 성공]CASE 시작")
             sleep(1)
+            test_bottom_sheet(self.wd)
             wd.get('app29cm://mypage')
             sleep(1)
             print("홈 > 마이페이지 화면 진입")
