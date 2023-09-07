@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec, wait
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
+from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
@@ -260,7 +261,7 @@ class LoginLogout:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈화면 진입")
             print("[이메일 로그인 성공]CASE 종료")
-
+            test_bottom_sheet(self.wd)
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'
@@ -468,7 +469,7 @@ class LoginLogout:
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
             if login_name.text == self.pconf['NAME'] :
                 pass
-            else :
+            else:
                 print("로그인 문구 실패")
                 test_result = 'WARN'
                 warning_texts.append("로그인 문구 확인 실패")
@@ -477,6 +478,8 @@ class LoginLogout:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈화면 진입")
             print("[이메일 로그인 실패 및 성공]CASE 종료")
+
+            test_bottom_sheet(self.wd)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다

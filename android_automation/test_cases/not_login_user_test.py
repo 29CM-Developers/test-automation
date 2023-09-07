@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
+from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -32,11 +33,14 @@ class NotLogin:
         start_time = time()
         try:
             print("[사용 불가 기능 사용]CASE 시작")
+            test_bottom_sheet(self.wd)
+
             sleep(3)
             # 홈 > 카테고리 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
-            category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[3]/android.view.View[6]').click()
+            category_layer.find_element(AppiumBy.XPATH,
+                                        '//android.view.View/android.view.View[3]/android.view.View[6]').click()
             print("홈 > 카테고리 PLP 진입 > 의류 > 상의 선택")
             # 임의의 상품 좋아요 버튼 선택
             plp_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/recyclerview')
