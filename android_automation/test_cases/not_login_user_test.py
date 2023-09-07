@@ -197,14 +197,12 @@ class NotLogin:
                 test_result = 'WARN'
                 warning_texts.append("베스트 상품 PDP 정상 확인 실패")
             print(f"베스트 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_titile}  ")
-            sleep(1)
-
+            sleep(3)
             # 상단으로 홈화면 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
             print("상단 홈아이콘 선택")
             # 8. 홈 > 피드 > 추천 탭선택
-            sleep(3)
-
+            sleep(1)
             # 홈화면 변경 ui 시나리오
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
