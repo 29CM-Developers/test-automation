@@ -286,6 +286,7 @@ class Search:
             else:
                 delete_all[0].click()
             # 지금 많이 찾는 검색어 찾기
+            sleep(2)
             element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]'
             search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
             if search_container_title.text == '지금 많이 찾는 검색어':

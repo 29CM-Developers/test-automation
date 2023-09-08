@@ -52,8 +52,9 @@ class Plp:
             before_like_count = before_like_count.replace(',', '')
             # 문자열을 정수로 변환
             before_like_count = int(before_like_count)
-            products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
-            sleep(1)
+            products_layer.find_element(AppiumBy.XPATH,
+                                        '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
+            sleep(2)
             # 좋아요 선택
             # 앱평가 발생 시 팝업 제거
             app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
