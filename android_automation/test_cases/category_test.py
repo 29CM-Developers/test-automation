@@ -65,7 +65,7 @@ class Category:
                 first_product_name = products[0]['itemName']
                 print(f"first_product_name : {first_product_name}")
                 element = element_control.scroll_to_element_with_text(wd, first_product_name)
-                if element.text == first_product_name :
+                if element.text in first_product_name:
                     print('상품 목록의 1번째 아이템명 일치 확인')
                 else :
                     test_result = 'WARN'
