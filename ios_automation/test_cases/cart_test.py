@@ -67,16 +67,29 @@ class Cart:
             option_item_list = Cart.option_item_list(self, product_item_no)
 
             for i in range(len(option_layout)):
+                print(f'{i + 1}/{len(option_layout)}')
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, option_layout[i]).click()
                 print(f'항목 : {option_layout[i]}')
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, option_item_list[0]['title']).click()
-                print(f'옵션 : {option_item_list[0]["title"]}')
 
                 if i < len(option_layout) - 1:
+                    wd.find_element(AppiumBy.XPATH,
+                                    f'//XCUIElementTypeButton[@name="{option_item_list[0]["title"]}"]').click()
+                    print(f'옵션 : {option_item_list[0]["title"]}')
+
                     if 'list' in option_item_list[0]:
                         option_item_list = option_item_list[0]['list']
                     else:
                         break
+                else:
+                    for option in range(len(option_item_list)):
+                        if option_item_list[option]['limited_qty'] != 0:
+                            wd.find_element(AppiumBy.XPATH,
+                                            f'//XCUIElementTypeButton[@name="{option_item_list[option]["title"]}"]').click()
+                            print(f'옵션 : {option_item_list[option]["title"]}')
+                            break
+                        else:
+                            print(f'{option + 1}번째 옵션 품절')
+                            pass
         else:
             pass
 
@@ -139,6 +152,15 @@ class Cart:
 
             # 상품 장바구니에 담기
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기').click()
+
+            # 쿠폰 툴팁 발생 시, 장바구니 담기 완료 바텀시트 미노출로 장바구니 담기 버튼 재선택
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '받지 않은 쿠폰이 있어요')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기').click()
+            except NoSuchElementException:
+                pass
+
+            # 상품 장바구니에 담기 완료 바텀시트 노출 확인
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니에 상품이 담겼습니다.')
                 print('상품 장바구니 담기 확인 - 베스트 상품')
@@ -208,13 +230,22 @@ class Cart:
 
             # 상품 장바구니에 담기
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기').click()
+
+            # 쿠폰 툴팁 발생 시, 장바구니 담기 완료 바텀시트 미노출로 장바구니 담기 버튼 재선택
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '받지 않은 쿠폰이 있어요')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기').click()
+            except NoSuchElementException:
+                pass
+
+            # 상품 장바구니에 담기 완료 바텀시트 노출 확인
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니에 상품이 담겼습니다.')
-                print('상품 장바구니 담기 확인 - 검색 상품')
+                print('상품 장바구니 담기 확인 - 베스트 상품')
             except NoSuchElementException:
                 test_result = 'WARN'
-                warning_texts.append('상품 장바구니 담기 확인 실패 - 검색 상품')
-                print('상품 장바구니 담기 확인 실패 - 검색 상품')
+                warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
+                print('상품 장바구니 담기 확인 실패 - 베스트 상품')
 
             # 장바구니로 이동
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "바로가기"`]').click()

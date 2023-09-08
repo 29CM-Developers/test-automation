@@ -301,6 +301,15 @@ class Home:
 
             # LIKE 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "LIKE"`]').click()
+
+            # LIKE 진입 시, 브랜드 추천 페이지 노출 여부 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+                print('브랜드 추천 페이지 노출')
+            except NoSuchElementException:
+                pass
+
             try:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="LIKE"]')
                 print('HOME 탭에서 LIKE 탭 이동 확인')
