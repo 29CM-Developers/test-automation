@@ -34,7 +34,7 @@
 		},
 		{
 			"key": "expired_token",
-			"value": "",
+			"value": "eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiI0OTdiYzc4Ny03OTVjLTRkOTItYTUzMi1mYjljOWUxZjViYzUiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1BQ0NFU1MtVE9LRU4iLCJhdWQiOiJzZWxsZXIiLCJuYmYiOjE2OTQxNTQ3MjMsImlhdCI6MTY5NDE1NDcyMywiZXhwIjoxNjk0MTY5MTIzLCJ1c2VySW5mbyI6eyJ1c2VyQWx0S2V5IjoiMWY4NGNlNjUtMjBmYi00MWFkLWEyNjktNWVlOGE4ZTlhNWM0IiwibG9naW5JZCI6Im1wYXJrX3BhcnRuZXIiLCJhZG1pbklkIjoxOTU1NSwicGFydG5lcklkIjoyMDAxMywiZW1haWxWZXJpZmllZCI6ZmFsc2UsInJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwicGFydG5lciIsInVtYV9hdXRob3JpemF0aW9uIl19fQ.1-QR0dOhR44V3ycFvW3cecduTf_z9bRBvGSGvk0rcydILn-C5CkPgJKEyrcNyrHRuB4IumNnpdqTcMcOqVuXRg",
 			"type": "default",
 			"enabled": true
 		},
@@ -343,9 +343,15 @@
 			"value": "",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "partnerBrandId",
+			"value": "26475",
+			"type": "default",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-08-02T04:27:27.906Z",
-	"_postman_exported_using": "Postman/10.16.4"
+	"_postman_exported_at": "2023-09-08T06:41:32.597Z",
+	"_postman_exported_using": "Postman/10.17.7"
 }
