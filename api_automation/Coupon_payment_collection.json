@@ -324,12 +324,6 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiJmYWJiNjE4OC1iMDgwLTQ0ZmMtYWY1MC03MWY4YjkyNmY5YTQiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1BQ0NFU1MtVE9LRU4iLCJhdWQiOiJpbnRlcm5hbCIsIm5iZiI6MTY5MTk4MTYyNCwiaWF0IjoxNjkxOTgxNjI0LCJleHAiOjE2OTE5OTYwMjQsInVzZXJJbmZvIjp7InVzZXJBbHRLZXkiOiJiNmI1NTE2Zi1kZGM4LTQwMTctOWU0Yi1lNGMzNDllM2U4NmIiLCJsb2dpbklkIjoiZGFqamVvbmciLCJhZG1pbklkIjoyNjk5LCJwYXJ0bmVySWQiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJpbnRlcm5hbC1zdGFmZiIsInVtYV9hdXRob3JpemF0aW9uIiwib2ZmbGluZV9hY2Nlc3MiXX19.ZvOblA-wLbrqUx8geGF8uNVqVaIbNRkcr1XqAxcibN_aMiPdKh0-ChTbuF9Mp8pZdYV2UW-jV9ESMyxcU1B3xw",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -647,12 +641,6 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiJmYWJiNjE4OC1iMDgwLTQ0ZmMtYWY1MC03MWY4YjkyNmY5YTQiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1BQ0NFU1MtVE9LRU4iLCJhdWQiOiJpbnRlcm5hbCIsIm5iZiI6MTY5MTk4MTYyNCwiaWF0IjoxNjkxOTgxNjI0LCJleHAiOjE2OTE5OTYwMjQsInVzZXJJbmZvIjp7InVzZXJBbHRLZXkiOiJiNmI1NTE2Zi1kZGM4LTQwMTctOWU0Yi1lNGMzNDllM2U4NmIiLCJsb2dpbklkIjoiZGFqamVvbmciLCJhZG1pbklkIjoyNjk5LCJwYXJ0bmVySWQiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJpbnRlcm5hbC1zdGFmZiIsInVtYV9hdXRob3JpemF0aW9uIiwib2ZmbGluZV9hY2Nlc3MiXX19.ZvOblA-wLbrqUx8geGF8uNVqVaIbNRkcr1XqAxcibN_aMiPdKh0-ChTbuF9Mp8pZdYV2UW-jV9ESMyxcU1B3xw",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -941,12 +929,6 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiJmYWJiNjE4OC1iMDgwLTQ0ZmMtYWY1MC03MWY4YjkyNmY5YTQiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1BQ0NFU1MtVE9LRU4iLCJhdWQiOiJpbnRlcm5hbCIsIm5iZiI6MTY5MTk4MTYyNCwiaWF0IjoxNjkxOTgxNjI0LCJleHAiOjE2OTE5OTYwMjQsInVzZXJJbmZvIjp7InVzZXJBbHRLZXkiOiJiNmI1NTE2Zi1kZGM4LTQwMTctOWU0Yi1lNGMzNDllM2U4NmIiLCJsb2dpbklkIjoiZGFqamVvbmciLCJhZG1pbklkIjoyNjk5LCJwYXJ0bmVySWQiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJpbnRlcm5hbC1zdGFmZiIsInVtYV9hdXRob3JpemF0aW9uIiwib2ZmbGluZV9hY2Nlc3MiXX19.ZvOblA-wLbrqUx8geGF8uNVqVaIbNRkcr1XqAxcibN_aMiPdKh0-ChTbuF9Mp8pZdYV2UW-jV9ESMyxcU1B3xw",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"body": {
@@ -1235,12 +1217,6 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJ2ZXIiOiJWMSIsImFsZyI6IkVTMjU2In0.eyJqdGkiOiJmYWJiNjE4OC1iMDgwLTQ0ZmMtYWY1MC03MWY4YjkyNmY5YTQiLCJpc3MiOiIyOWNtLWF1dGhlbnRpY2F0aW9uIiwic3ViIjoiMjljbS1BQ0NFU1MtVE9LRU4iLCJhdWQiOiJpbnRlcm5hbCIsIm5iZiI6MTY5MTk4MTYyNCwiaWF0IjoxNjkxOTgxNjI0LCJleHAiOjE2OTE5OTYwMjQsInVzZXJJbmZvIjp7InVzZXJBbHRLZXkiOiJiNmI1NTE2Zi1kZGM4LTQwMTctOWU0Yi1lNGMzNDllM2U4NmIiLCJsb2dpbklkIjoiZGFqamVvbmciLCJhZG1pbklkIjoyNjk5LCJwYXJ0bmVySWQiOm51bGwsImVtYWlsVmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJpbnRlcm5hbC1zdGFmZiIsInVtYV9hdXRob3JpemF0aW9uIiwib2ZmbGluZV9hY2Nlc3MiXX19.ZvOblA-wLbrqUx8geGF8uNVqVaIbNRkcr1XqAxcibN_aMiPdKh0-ChTbuF9Mp8pZdYV2UW-jV9ESMyxcU1B3xw",
-						"type": "text",
-						"disabled": true
 					}
 				],
 				"body": {
