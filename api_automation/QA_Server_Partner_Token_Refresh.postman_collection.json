@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d8345633-dc6c-4bcf-bf75-15a6286dc5c9",
-		"name": "QA_Server_Partner_Token_Refresh",
+		"_postman_id": "a28db8b5-295d-472c-98cd-d7c075eb6171",
+		"name": "QA_Server_Partner_Token_Refresh Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27801581"
+		"_exporter_id": "25986573"
 	},
 	"item": [
 		{
@@ -20,7 +20,9 @@
 							"});",
 							"",
 							"pm.collectionVariables.set(\"coll_partner_token\", jsonData.partner_token)",
-							"pm.collectionVariables.set(\"coll_refresh_token\", jsonData.refresh_token)"
+							"pm.collectionVariables.set(\"coll_refresh_token\", jsonData.refresh_token)",
+							"pm.collectionVariables.set(\"coll_inhouse_token\", jsonData.inhouse_token)",
+							"pm.collectionVariables.set(\"coll_inhouse_refresh_token\", jsonData.inhouse_refresh_token)"
 						],
 						"type": "text/javascript"
 					}
@@ -132,6 +134,77 @@
 			"response": []
 		},
 		{
+			"name": "inhouse token refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"토큰 갱신 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"coll_inhouse_token\", jsonData.data.accessToken)",
+							"pm.collectionVariables.set(\"coll_inhouse_refresh_token\", jsonData.data.refreshToken)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Origin",
+						"value": "https://qa-partner-item.29cm.co.kr",
+						"type": "text"
+					},
+					{
+						"key": "Referer",
+						"value": "https://qa-partner-item.29cm.co.kr/",
+						"type": "text"
+					},
+					{
+						"key": "host",
+						"value": "qa-authentication-api.29cm.co.kr",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"refreshToken\": \"{{coll_inhouse_refresh_token}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://qa-authentication-api.29cm.co.kr/inhouse-admin/v4/token/refresh",
+					"protocol": "https",
+					"host": [
+						"qa-authentication-api",
+						"29cm",
+						"co",
+						"kr"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"token",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "post partner token",
 			"event": [
 				{
@@ -224,34 +297,26 @@
 			"response": []
 		},
 		{
-			"name": "honghaejin_get personal",
+			"name": "post inhouse token",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.test(\"Response has a property called partner_token\", function () {",
-							"    pm.expect(jsonData).to.have.property('honghaejin_test_environment');",
-							"});",
-							"console.log(jsonData.honghaejin_test_environment.partner_token)",
-							"pm.collectionVariables.set(\"hhj_coll_partner_token\", jsonData.honghaejin_test_environment.partner_token)",
-							"pm.collectionVariables.set(\"hhj_coll_refresh_token\", jsonData.honghaejin_test_environment.refresh_token)"
+							"pm.test(\"인하우스 토큰 갱신 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\n    \"add_key\": \"inhouse_token\",\n    \"add_value\": \"{{coll_inhouse_token}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -278,84 +343,13 @@
 			"response": []
 		},
 		{
-			"name": "honghaejin_token refresh",
+			"name": "post inhouse refresh token",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"토큰 갱신 응답 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.collectionVariables.set(\"hhj_coll_partner_token\", jsonData.data.accessToken)",
-							"pm.collectionVariables.set(\"hhj_coll_refresh_token\", jsonData.data.refreshToken)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Origin",
-						"value": "https://qa-partner-item.29cm.co.kr",
-						"type": "text"
-					},
-					{
-						"key": "Referer",
-						"value": "https://qa-partner-item.29cm.co.kr/",
-						"type": "text"
-					},
-					{
-						"key": "host",
-						"value": "qa-authentication-api.29cm.co.kr",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"refreshToken\": \"{{hhj_coll_refresh_token}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://qa-authentication-api.29cm.co.kr/partner-admin/v4/token/refresh",
-					"protocol": "https",
-					"host": [
-						"qa-authentication-api",
-						"29cm",
-						"co",
-						"kr"
-					],
-					"path": [
-						"partner-admin",
-						"v4",
-						"token",
-						"refresh"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "honghaejin_post partner token",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"파트너 토큰 갱신 응답 200\", function () {",
+							"pm.test(\"인하우스 리프래시 토큰 갱신 응답 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});"
 						],
@@ -368,7 +362,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"add_key\": \"honghaejin_test_environment\",\n    \"add_value\": {\n        \"partner_token\": \"{{hhj_coll_partner_token}}\",\n        \"refresh_token\": \"{{hhj_coll_refresh_token}}\"\n    }\n}",
+					"raw": "{\n    \"add_key\": \"inhouse_refresh_token\",\n    \"add_value\": \"{{coll_inhouse_refresh_token}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -427,12 +421,14 @@
 			"type": "string"
 		},
 		{
-			"key": "hhj_coll_partner_token",
-			"value": ""
+			"key": "coll_inhouse_token",
+			"value": "",
+			"type": "string"
 		},
 		{
-			"key": "hhj_coll_refresh_token",
-			"value": ""
+			"key": "coll_inhouse_refresh_token",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
