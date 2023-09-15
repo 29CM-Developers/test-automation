@@ -1,24 +1,36 @@
 {
-	"id": "becc936f-3f45-4a27-8afc-6561e2f74572",
-	"name": "QA - coupon - Pay",
-	"values": [
-		{
-			"key": "host",
-			"value": "https://qa-promotion-api.29cm.co.kr",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "couponId",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "couponRegistrationType",
-			"value": "",
-			"type": "default",
-			"enabled": true
+  "id": "7ad4b8e9-90db-4fdc-b870-5f09b013f3cc",
+  "name": "QA - coupon - Pay",
+  "values": [
+    {
+      "key": "host",
+      "value": "https://qa-promotion-api.29cm.co.kr",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "qa_host",
+      "value": "http://192.168.103.13:50",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "inhouse_token",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "couponId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "couponRegistrationType",
+      "value": "",
+      "type": "default",
+      "enabled": true
 		},
 		{
 			"key": "couponType",
@@ -150,16 +162,16 @@
 			"key": "couponIssueEndAt",
 			"value": "",
 			"type": "any",
-			"enabled": true
-		},
-		{
-			"key": "serialCouponQty",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		}
-	],
-	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-09-11T09:05:24.153Z",
-	"_postman_exported_using": "Postman/10.17.7"
+          "enabled": true
+        },
+    {
+      "key": "serialCouponQty",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2023-09-15T05:35:23.611Z",
+  "_postman_exported_using": "Postman/10.17.7"
 }

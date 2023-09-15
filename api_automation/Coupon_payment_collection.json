@@ -7,6 +7,54 @@
 	},
 	"item": [
 		{
+			"name": "get inhouse token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Response has a property called partner_token\", function () {",
+							"    pm.expect(jsonData).to.have.property('dajjeong_inhouse');",
+							"});",
+							"",
+							"pm.environment.set(\"inhouse_token\", jsonData.dajjeong_inhouse.inhouse_token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{qa_host}}/qa/personal/test_environment",
+					"host": [
+						"{{qa_host}}"
+					],
+					"path": [
+						"qa",
+						"personal",
+						"test_environment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "일반 쿠폰",
 			"event": [
 				{
@@ -163,9 +211,8 @@
 							"const hours = '14'; // 시간을 14로 설정합니다.",
 							"const minutes = '59'; // 분을 59로 설정합니다.",
 							"const seconds = '59'; // 초를 59로 설정합니다.",
-							"const milliseconds = '999999999'; // 밀리초를 999999999로 설정합니다.",
 							"",
-							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;",
+							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}Z`;",
 							"",
 							"pm.environment.set(\"ended_date\", End_formattedDate)"
 						],
@@ -180,11 +227,16 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"발급 일자 테스트 쿠폰\",\n    \"couponAdminName\": \"20일부터 30일까지 발급 가능\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 100\n}"
+					"raw": "{\n    \"couponName\": \"일반 테스트 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 100\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -212,6 +264,10 @@
 							"// 주어진 날짜 문자열",
 							"const StartDateString = pm.environment.get(\"couponIssueStartAt\")",
 							"const EndDateString = pm.environment.get(\"couponIssueEndAt\")",
+							"",
+							"console.log(StartDateString)",
+							"console.log(EndDateString)",
+							"",
 							"// Date 객체로 변환",
 							"const StartoriginalDate = new Date(StartDateString);",
 							"const EndoriginalDate = new Date(EndDateString);",
@@ -221,13 +277,16 @@
 							"EndoriginalDate.setUTCMilliseconds(0);",
 							"EndoriginalDate.setMilliseconds(0);",
 							"// 한국 시간대로 변환 (UTC+09:00)",
-							"StartoriginalDate.setUTCHours(StartoriginalDate.getUTCHours() - 15, 0, 0, 0); //+15시로 생성되서 -15",
-							"StartoriginalDate.setDate(StartoriginalDate.getDate() + 1);",
-							"EndoriginalDate.setUTCHours(EndoriginalDate.getUTCHours() - 14, 0, 0, 0); //+14시로 생성되서 -14",
-							"EndoriginalDate.setDate(EndoriginalDate.getDate() + 1);",
+							"StartoriginalDate.setUTCHours(StartoriginalDate.getUTCHours() + 9);",
+							"StartoriginalDate.setDate(StartoriginalDate.getDate());",
+							"EndoriginalDate.setUTCHours(EndoriginalDate.getUTCHours() + 9); ",
+							"EndoriginalDate.setDate(EndoriginalDate.getDate());",
 							"// 원하는 형식으로 출력 (ISO 8601 형식)",
 							"const formattedStartDateString = StartoriginalDate.toISOString().slice(0, -5) + '+09:00';",
 							"const formattedEndDateString = EndoriginalDate.toISOString().slice(0, -5) + '+09:00';",
+							"",
+							"console.log(formattedStartDateString)",
+							"console.log(formattedEndDateString)",
 							"",
 							"// value test",
 							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
@@ -326,6 +385,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
 						"type": "text"
 					}
 				],
@@ -520,6 +584,11 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -643,6 +712,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
 						"type": "text"
 					}
 				],
@@ -822,9 +896,8 @@
 							"const hours = '14'; // 시간을 14로 설정합니다.",
 							"const minutes = '59'; // 분을 59로 설정합니다.",
 							"const seconds = '59'; // 초를 59로 설정합니다.",
-							"const milliseconds = '999999999'; // 밀리초를 999999999로 설정합니다.",
 							"",
-							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;",
+							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}Z`;",
 							"",
 							"pm.environment.set(\"ended_date\", End_formattedDate)"
 						],
@@ -838,6 +911,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
 						"type": "text"
 					}
 				],
@@ -880,10 +958,10 @@
 							"EndoriginalDate.setUTCMilliseconds(0);",
 							"EndoriginalDate.setMilliseconds(0);",
 							"// 한국 시간대로 변환 (UTC+09:00)",
-							"StartoriginalDate.setUTCHours(StartoriginalDate.getUTCHours() - 15, 0, 0, 0); //+15시로 생성되서 -15",
-							"StartoriginalDate.setDate(StartoriginalDate.getDate() + 1);",
-							"EndoriginalDate.setUTCHours(EndoriginalDate.getUTCHours() - 14, 0, 0, 0); //+14시로 생성되서 -14",
-							"EndoriginalDate.setDate(EndoriginalDate.getDate() + 1);",
+							"StartoriginalDate.setUTCHours(StartoriginalDate.getUTCHours() + 9);",
+							"StartoriginalDate.setDate(StartoriginalDate.getDate());",
+							"EndoriginalDate.setUTCHours(EndoriginalDate.getUTCHours() + 9); ",
+							"EndoriginalDate.setDate(EndoriginalDate.getDate());",
 							"// 원하는 형식으로 출력 (ISO 8601 형식)",
 							"const formattedStartDateString = StartoriginalDate.toISOString().slice(0, -5) + '+09:00';",
 							"const formattedEndDateString = EndoriginalDate.toISOString().slice(0, -5) + '+09:00';",
@@ -985,6 +1063,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
 						"type": "text"
 					}
 				],
@@ -1150,6 +1233,11 @@
 						"key": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -1273,6 +1361,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
 						"type": "text"
 					}
 				],
