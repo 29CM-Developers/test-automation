@@ -181,7 +181,6 @@ class Home:
                     else:
                         com_utils.element_control.scroll_control(wd, 'D', 50)
                         print('첫번째 피드 확인 안되어 스크롤')
-                        i += 1
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, 'D', 50)
 
@@ -196,7 +195,6 @@ class Home:
                     else:
                         com_utils.element_control.scroll_control(wd, 'D', 50)
                         print('싱품이 연결된 첫번째 피드 확인 안되어 스크롤')
-                        i += 1
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, 'D', 50)
 
@@ -243,7 +241,6 @@ class Home:
                     else:
                         com_utils.element_control.scroll_control(wd, 'D', 50)
                         print('피드 컨텐츠 추가 노출 확인 안되어 스크롤')
-                        i += 1
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, 'D', 50)
 
