@@ -86,7 +86,6 @@ class NotLoginUserTest:
             logger.info(f'[{test_name}] 테스트 시작')
 
             # Home > 베스트 탭 선택하여 베스트 PLP 진입
-            wd.execute_script('mobile:swipe', {'direction': 'up'})
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="전체보기"]').click()
 
@@ -127,7 +126,7 @@ class NotLoginUserTest:
             except:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchBlack').click()
             search_brand = wd.find_element(AppiumBy.XPATH,
-                                           '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
+                                           '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText')
             search_brand_name = search_brand.text
             search_brand.click()
 
