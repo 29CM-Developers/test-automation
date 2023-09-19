@@ -6,6 +6,7 @@ from time import sleep, time
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control
+from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 
 
 class UserLoginTest:
@@ -100,6 +101,9 @@ class UserLoginTest:
 
             # Home 으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+
+            # 복귀 후, 바텀 시트 노출 여부 확인
+            test_bottom_sheet(self.wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -234,6 +238,9 @@ class UserLoginTest:
 
             # Home 으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+
+            # 복귀 후, 바텀 시트 노출 여부 확인
+            test_bottom_sheet(self.wd)
 
         except Exception:
             test_result = 'FAIL'
