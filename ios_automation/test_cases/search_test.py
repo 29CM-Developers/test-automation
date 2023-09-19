@@ -42,9 +42,12 @@ class Search:
                 warning_texts.append('인기 브랜드 타이틀 확인 실패')
                 print('인기 브랜드 타이틀 확인 실패')
 
+            # 최근 검색어 모두 지우기
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
+
             # 필터가 전체 기준인지 확인
             filter_area = wd.find_element(AppiumBy.XPATH,
-                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="2"]')
+                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]')
             filter_btn = filter_area.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton')
             if filter_btn.text == '전체 기준':
                 print('필터 : 전체 기준')
@@ -269,7 +272,7 @@ class Search:
                     print('연관 검색어 있음')
                     relate_keyword = relate_keyword_list[0]
                     relate = wd.find_element(AppiumBy.XPATH,
-                                             '//XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell/XCUIElementTypeCollectionView')
+                                             '//XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell/XCUIElementTypeCollectionView/XCUIElementTypeCell')
                     relate_1st = relate.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton').get_attribute('name')
                     if relate_keyword == relate_1st:
                         print('인기 검색어 검색 확인 - 연관 검색어')
