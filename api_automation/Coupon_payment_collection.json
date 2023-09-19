@@ -55,17 +55,17 @@
 			"response": []
 		},
 		{
-			"name": "\b정률 쿠폰 - 장바구니 10% 할인 쿠폰",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// request data",
-							"var jsondata = JSON.parse(request.data)",
-							"// response data",
-							"var responsejsondata = pm.response.json()",
-							"",
+          "name": "\b정률 쿠폰 - 장바구니 10퍼센트 할인 쿠폰",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// request data",
+                  "var jsondata = JSON.parse(request.data)",
+                  "// response data",
+                  "var responsejsondata = pm.response.json()",
+                  "",
 							"// data set",
 							"pm.environment.set('couponId', responsejsondata.data.couponId)",
 							"",
@@ -2166,18 +2166,18 @@
 			},
 			"response": []
 		},
-		{
-			"name": "정액 쿠폰 - 총 / 인당 발급 개수 제한",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// request data",
-							"var jsondata = JSON.parse(request.data)",
-							"// response data",
-							"var responsejsondata = pm.response.json()",
-							"",
+      {
+        "name": "정액 쿠폰 - 총 및 인당 발급 개수 제한",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "exec": [
+                "// request data",
+                "var jsondata = JSON.parse(request.data)",
+                "// response data",
+                "var responsejsondata = pm.response.json()",
+                "",
 							"// data set",
 							"pm.environment.set('couponId', responsejsondata.data.couponId)",
 							"",
@@ -4730,18 +4730,18 @@
 			},
 			"response": []
 		},
-		{
-			"name": "\b쿠폰 등록 실패 - 정액 할인 / 최대 할인 금액 설정",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
-							"",
-							"var start_date = new Date(currentDate);",
-							"start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
-							"const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+      {
+        "name": "\b쿠폰 등록 실패 - 정액 할인에 최대 할인 금액 설정",
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "exec": [
+                "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+                "",
+                "var start_date = new Date(currentDate);",
+                "start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+                "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
 							"const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
 							"const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
 							"",
