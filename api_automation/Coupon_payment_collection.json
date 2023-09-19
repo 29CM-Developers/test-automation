@@ -55,17 +55,17 @@
 			"response": []
 		},
 		{
-          "name": "\b정률 쿠폰 - 장바구니 10퍼센트 할인 쿠폰",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "// request data",
-                  "var jsondata = JSON.parse(request.data)",
-                  "// response data",
-                  "var responsejsondata = pm.response.json()",
-                  "",
+			"name": "정률 쿠폰 - 장바구니 10퍼센트 할인 쿠폰",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// request data",
+							"var jsondata = JSON.parse(request.data)",
+							"// response data",
+							"var responsejsondata = pm.response.json()",
+							"",
 							"// data set",
 							"pm.environment.set('couponId', responsejsondata.data.couponId)",
 							"",
@@ -407,7 +407,7 @@
 			"response": []
 		},
 		{
-			"name": "정률 쿠폰 - 최소 주문 금액 / 최대 할인 금액 조건 존재",
+			"name": "정률 쿠폰 - 최소 주문 금액과 최대 할인 금액 조건 존재",
 			"event": [
 				{
 					"listen": "test",
@@ -1463,7 +1463,7 @@
 			"response": []
 		},
 		{
-			"name": "\b정률 쿠폰 - 29CM 직접 발급(특정 회원)",
+			"name": "정률 쿠폰 - 29CM 직접 발급(특정 회원)",
 			"event": [
 				{
 					"listen": "test",
@@ -1815,7 +1815,7 @@
 			"response": []
 		},
 		{
-			"name": "\b정률 쿠폰 - 29CM 직접 발급(전체 회원)",
+			"name": "정률 쿠폰 - 29CM 직접 발급(전체 회원)",
 			"event": [
 				{
 					"listen": "test",
@@ -2166,18 +2166,18 @@
 			},
 			"response": []
 		},
-      {
-        "name": "정액 쿠폰 - 총 및 인당 발급 개수 제한",
-        "event": [
-          {
-            "listen": "test",
-            "script": {
-              "exec": [
-                "// request data",
-                "var jsondata = JSON.parse(request.data)",
-                "// response data",
-                "var responsejsondata = pm.response.json()",
-                "",
+		{
+			"name": "정액 쿠폰 - 총 및 인당 발급 개수 제한",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// request data",
+							"var jsondata = JSON.parse(request.data)",
+							"// response data",
+							"var responsejsondata = pm.response.json()",
+							"",
 							"// data set",
 							"pm.environment.set('couponId', responsejsondata.data.couponId)",
 							"",
@@ -4412,7 +4412,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 쿠폰명 미입력",
+			"name": "쿠폰 등록 실패 - 쿠폰명 미입력",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -4519,7 +4519,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 할인율 미입력",
+			"name": "쿠폰 등록 실패 - 할인율 미입력",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -4625,7 +4625,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 할인금액 미입력",
+			"name": "쿠폰 등록 실패 - 할인 금액 미입력",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -4730,18 +4730,18 @@
 			},
 			"response": []
 		},
-      {
-        "name": "\b쿠폰 등록 실패 - 정액 할인에 최대 할인 금액 설정",
-        "event": [
-          {
-            "listen": "prerequest",
-            "script": {
-              "exec": [
-                "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
-                "",
-                "var start_date = new Date(currentDate);",
-                "start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
-                "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+		{
+			"name": "쿠폰 등록 실패 - 정액 할인에 최대 할인 금액 설정",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+							"",
+							"var start_date = new Date(currentDate);",
+							"start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+							"const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
 							"const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
 							"const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
 							"",
@@ -4837,7 +4837,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 일반 쿠폰에 비용 분담 설정",
+			"name": "쿠폰 등록 실패 - 일반 쿠폰에 비용 분담 설정",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -4943,7 +4943,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 총 제한 개수보다 인당 제한 개수가 더 큼",
+			"name": "쿠폰 등록 실패 - 총 제한 개수보다 인당 제한 개수가 더 큼",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -5049,7 +5049,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 발급 시작 시각이 현재보다 이전",
+			"name": "쿠폰 등록 실패 - 발급 시작 시각이 현재보다 이전",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -5156,7 +5156,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 발급 종료 시각이 시작 시각보다 이전",
+			"name": "쿠폰 등록 실패 - 발급 종료 시각이 시작 시각보다 이전",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -5263,7 +5263,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 사용 기간 유효일 수 미입력",
+			"name": "쿠폰 등록 실패 - 사용 기간 유효 일수 미입력",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -5370,7 +5370,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 사용 기간 미입력",
+			"name": "쿠폰 등록 실패 - 사용 기간 미입력",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -5477,7 +5477,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - \b사용 종료가 발급 종료보다 이전",
+			"name": "쿠폰 등록 실패 - 사용 종료가 발급 종료보다 이전",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -5607,7 +5607,7 @@
 			"response": []
 		},
 		{
-			"name": "\b쿠폰 등록 실패 - 장바구니 쿠폰 외부 노출 설정",
+			"name": "쿠폰 등록 실패 - 장바구니 쿠폰 외부 노출 설정",
 			"event": [
 				{
 					"listen": "prerequest",
