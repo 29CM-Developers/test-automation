@@ -25,7 +25,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            wd.get('app29cm://mypage')
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
             sleep(3)
 
@@ -82,7 +82,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            wd.get('app29cm://mypage')
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
             sleep(3)
 
@@ -198,7 +198,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
+            wd.get('app29cm://mypage')
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
             sleep(3)
 

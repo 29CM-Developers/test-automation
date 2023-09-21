@@ -11,7 +11,6 @@ from selenium.common import NoSuchElementException
 
 
 class Home:
-
     def check_feed_title(self):
 
         first_feed_title = ''
@@ -64,21 +63,45 @@ class Home:
                 banner_api_data = response.json()
                 banner_count = int(banner_api_data['data']['count'])
 
-                banner_api = []
+                # 모든 홈 배너의 id와 contents를 저장해서 중복 여부를 확인
+                banner_id = []
+                for i in range(0, banner_count):
+                    banner_id_api = banner_api_data['data']['bannerList'][i]['bannerId']
+                    banner_id.append(banner_id_api)
+                id_duplicate = set()
+                check_id = [x for x in banner_id if x in id_duplicate or (id_duplicate.add(x) or False)]
+
+                banner_contents = []
+                for i in range(0, banner_count):
+                    banner_contents_api = banner_api_data['data']['bannerList'][i]['bannerId']
+                    banner_contents.append(banner_contents_api)
+                contents_duplicate = set()
+                check_contents = [x for x in banner_contents if
+                                  x in contents_duplicate or (contents_duplicate.add(x) or False)]
+
+                if not check_id and not check_contents:
+                    print('중복된 홈 배너 없음 확인')
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('중복된 홈 배너 없음 확인 실패')
+                    print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
+
+                banner_title = []
                 for i in range(0, banner_count):
                     banner_title_api = banner_api_data['data']['bannerList'][i]['bannerTitle']
                     if banner_title_api == 'ㅤ':
                         pass
                     else:
-                        banner_api.append(banner_title_api)
+                        banner_title_api = banner_title_api.replace('\n', " ")
+                        banner_title.append(banner_title_api)
 
-                # 홈화면 배너 타이틀 모두 저장
+                # 홈화면 배너 타이틀 3개 저장
                 banner_home = []
                 for i in range(0, 3):
                     sleep(2)
                     try:
                         banner_title_text = wd.find_element(AppiumBy.XPATH,
-                                                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
+                                                            '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
                         banner_home.append(banner_title_text)
                         print(banner_title_text)
                     except NoSuchElementException:
@@ -86,20 +109,20 @@ class Home:
                         pass
                     except Exception:
                         # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
-                        banner = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView/XCUIElementTypeCell')
+                        banner = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_banner')
                         com_utils.element_control.swipe_control(wd, banner, 'right', 30)
                         banner_title_text = wd.find_element(AppiumBy.XPATH,
-                                                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
+                                                            '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
                         banner_home.append(banner_title_text)
                         print(banner_title_text)
 
                 # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
-                if set(banner_home).issubset(set(banner_api)):
+                if set(banner_home).issubset(set(banner_title)):
                     print('홈 배너 확인')
                 else:
                     test_result = 'WARN'
                     warning_texts.append('홈 배너 확인 실패')
-                    print(f'홈 배너 확인 실패: {set(banner_home).difference(set(banner_api))}')
+                    print(f'홈 배너 확인 실패: {set(banner_home).difference(set(banner_title))}')
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
@@ -111,7 +134,7 @@ class Home:
                     wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
                     break
                 except NoSuchElementException:
-                    dynamic_gate = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="0"]/XCUIElementTypeOther[@index="1"]/XCUIElementTypeScrollView')
+                    dynamic_gate = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'dynamic_gate')
                     com_utils.element_control.swipe_control(wd, dynamic_gate, 'left', 30)
 
             sleep(3)
@@ -173,42 +196,36 @@ class Home:
             # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
             for i in range(0, 10):
                 try:
-                    feed_contents = wd.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeStaticText').text
-                    if feed_title_1st == feed_contents:
+                    feed_contents = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
+                    if feed_contents.is_displayed() and feed_title_1st == feed_contents.text:
                         print('첫번째 피드 컨텐츠 노출 확인')
                         break
                     else:
-                        com_utils.element_control.scroll_control(wd, 'D', 50)
                         print('첫번째 피드 확인 안되어 스크롤')
+                        com_utils.element_control.scroll_control(wd, 'D', 50)
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, 'D', 50)
 
             # 싱픔이 연결된 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
             for i in range(0, 10):
                 try:
-                    feed_contents = wd.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeStaticText').text
-                    if feed_contain_item == feed_contents:
+                    feed_contents = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
+                    if feed_contents.is_displayed() and feed_contain_item == feed_contents.text:
                         print('상품이 연결된 첫번째 피드 컨텐츠 노출 확인')
                         break
                     else:
-                        com_utils.element_control.scroll_control(wd, 'D', 50)
                         print('싱품이 연결된 첫번째 피드 확인 안되어 스크롤')
+                        com_utils.element_control.scroll_control(wd, 'D', 50)
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, 'D', 50)
 
-            # 첫번째 피드의 첫번째 상품의 좋아요 xpath와 좋아요 수 xpath
-            content_like_xpath = '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[3]'
-            content_like_count_xpath = f'{content_like_xpath}/XCUIElementTypeStaticText'
-
             # 좋아요 버튼 선택 전, 좋아요 수 저장
-            content_like_count = wd.find_element(AppiumBy.XPATH, content_like_count_xpath).text
+            content_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_count').text
             content_like_count = int(content_like_count.replace(',', ''))
 
             # 좋아요 버튼 선택 -> 찜하기 등록
-            wd.find_element(AppiumBy.XPATH, content_like_xpath).click()
-            content_like_select = wd.find_element(AppiumBy.XPATH, content_like_count_xpath).text
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_btn').click()
+            content_like_select = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_count').text
             content_like_select = int(content_like_select.replace(',', ''))
             if content_like_select == content_like_count + 1:
                 print('피드 아이템 좋아요 개수 증가 확인')
@@ -219,8 +236,8 @@ class Home:
                 print('피드 아이템 좋아요 개수 증가 확인 실패')
 
             # 좋아요 버튼 선택 -> 찜하기 해제
-            wd.find_element(AppiumBy.XPATH, content_like_xpath).click()
-            content_like_select = wd.find_element(AppiumBy.XPATH, content_like_count_xpath).text
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_btn').click()
+            content_like_select = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_count').text
             content_like_select = int(content_like_select.replace(',', ''))
             if content_like_select == content_like_count:
                 print('피드 아이템 좋아요 개수 차감 확인')
@@ -233,14 +250,13 @@ class Home:
             # 두번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
             for i in range(0, 10):
                 try:
-                    feed_contents = wd.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeStaticText').text
-                    if feed_title_2nd == feed_contents:
+                    feed_contents = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
+                    if feed_contents.is_displayed() and feed_title_2nd == feed_contents.text:
                         print('피드 컨텐츠 추가 노출 확인')
                         break
                     else:
-                        com_utils.element_control.scroll_control(wd, 'D', 50)
                         print('피드 컨텐츠 추가 노출 확인 안되어 스크롤')
+                        com_utils.element_control.scroll_control(wd, 'D', 50)
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, 'D', 50)
 
@@ -279,13 +295,12 @@ class Home:
                             '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="0"]').click()
 
             # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
-            medium_category_list = wd.find_elements(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeCollectionView[2]/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeStaticText')
-            medium_category_list = medium_category_list[0:4]
-
+            check_category = ['all', 'for_you', 'best', 'new']
             category_list = []
-            for medium_category in medium_category_list:
-                category_list.append(medium_category.text)
+            for medium in check_category:
+                category_cell = wd.find_element(AppiumBy.ACCESSIBILITY_ID, medium)
+                category_text = category_cell.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
+                category_list.append(category_text)
             category_list = ', '.join(category_list)
 
             if self.conf['compare_category_list'] == category_list:
@@ -298,10 +313,10 @@ class Home:
             # HOME 탭으로 이동
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
             try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarLogoWhite')
-                print('HOME 탭으로 이동')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
+                print('HOME 탭으로 이동 확인')
             except NoSuchElementException:
-                print('HOME 탭으로 이동 실패')
+                print('HOME 탭으로 이동 확인 실패')
 
             # SEARCH 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
@@ -324,12 +339,12 @@ class Home:
                 warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
                 print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
 
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
             try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarLogoWhite')
-                print('HOME 탭으로 이동')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
+                print('HOME 탭으로 이동 확인')
             except NoSuchElementException:
-                print('HOME 탭으로 이동 실패')
+                print('HOME 탭으로 이동 확인 실패')
 
             # LIKE 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "LIKE"`]').click()
@@ -343,7 +358,7 @@ class Home:
                 pass
 
             try:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="LIKE"]')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count')
                 print('HOME 탭에서 LIKE 탭 이동 확인')
             except NoSuchElementException:
                 test_result = 'WARN'
@@ -353,10 +368,10 @@ class Home:
             # HOME 탭으로 이동
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
             try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarLogoWhite')
-                print('HOME 탭으로 이동')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
+                print('HOME 탭으로 이동 확인')
             except NoSuchElementException:
-                print('HOME 탭으로 이동 실패')
+                print('HOME 탭으로 이동 확인 실패')
 
             # MY 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "MY"`]').click()
@@ -370,6 +385,11 @@ class Home:
 
             # HOME 탭으로 이동
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
+                print('HOME 탭으로 이동 확인')
+            except NoSuchElementException:
+                print('HOME 탭으로 이동 확인 실패')
 
         except Exception:
             test_result = 'FAIL'
