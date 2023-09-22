@@ -39,16 +39,16 @@ class Category:
                         # 대 카테고리 리스트 저장
                         large_category = wd.find_elements(AppiumBy.ACCESSIBILITY_ID, 'large_category')
                         for large in large_category:
-                            large_test = large.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
-                            if large_test not in large_list:
-                                large_list.append(large_test)
+                            large_category_text = large.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
+                            if large_category_text not in large_list:
+                                large_list.append(large_category_text)
                     else:
                         break
                     # 대 카테고리 영역 스크롤 동작
                     large_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'large_category_list')
                     com_utils.element_control.element_scroll_control(wd, large_field, 'D', 30)
-
                 print(large_list)
+
                 if api_large_list == large_list:
                     print('대 카테고리 리스트 확인')
                 else:
@@ -59,18 +59,23 @@ class Category:
                 print('PDP 옵션 정보 API 불러오기 실패')
 
             # 대 카테고리, 중 카테고리 코드 번호 저장
-            large_category_info = com_utils.api_control.large_category_info(self, self.conf["category_group"][0],
+            large_category_info = com_utils.api_control.large_category_info(self.conf["category_group"][0],
                                                                             self.conf["large_category"][0])
             large_category_code = large_category_info[0]
             large_category_name = large_category_info[1]
-            medium_category_code = com_utils.api인_control.medium_category_code(self, large_category_code,
-                                                                               self.conf["medium_category"][0])
+            medium_category_code = com_utils.api_control.medium_category_code(large_category_code,
+                                                                              self.conf["medium_category"][0])
             print(f'{large_category_code}/{large_category_name}/{medium_category_code}')
+
+            # 대 카테고리 리스트 상단으로 스크롤
+            large_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'large_category_list')
+            com_utils.element_control.element_scroll_control(wd, large_field, 'U', 30)
 
             # 신발 > 여성 > 전체 순으로 카테고리 선택
             wd.find_element(AppiumBy.XPATH,
                             f'//XCUIElementTypeButton[@name="{self.conf["large_category"][0]}"]').click()
-            wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeButton[@name="{self.conf["category_group"][0]}"]').click()
+            wd.find_element(AppiumBy.XPATH,
+                            f'//XCUIElementTypeButton[@name="{self.conf["category_group"][0]}"]').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '전체').click()
 
             # 타이틀명으로 카테고리 전체 페이지 진입 확인
@@ -99,7 +104,7 @@ class Category:
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('중 카테고리 페이지 진입 확인 실패')
-                print('WARN :중 카테고리 페이지 진입 확인 실패')
+                print('WARN: 중 카테고리 페이지 진입 확인 실패')
 
             # 정렬 신상품 순으로 변경
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'sort_filter').click()
@@ -116,7 +121,7 @@ class Category:
 
                 # 카테고리 페이지에 첫번째 아이템 노출 확인
                 for i in range(0, 5):
-                    category_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'product_name')
+                    category_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'product_name').text
                     if category_product == category_1st_item:
                         print('카테고리 페이지의 상품 확인')
                         break
@@ -126,10 +131,10 @@ class Category:
             else:
                 test_result = 'WARN'
                 warning_texts.append('피드 컨텐츠 API 불러오기 실패')
-                print('WARN :피드 컨텐츠 API 불러오기 실패')
+                print('WARN: 피드 컨텐츠 API 불러오기 실패')
 
             # 카테고리 페이지의 첫번째 아이템 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, category_1st_item).click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'product_name').click()
             sleep(3)
 
             # PDP 상품 이름 저장
@@ -148,7 +153,7 @@ class Category:
             else:
                 test_result = 'WARN'
                 warning_texts.append('PDP 진입 확인 실패')
-                print(f'WARN :PDP 진입 확인 실패 : {category_1st_item} / {pdp_name}')
+                print(f'WARN: PDP 진입 확인 실패 : {category_1st_item} / {pdp_name}')
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
