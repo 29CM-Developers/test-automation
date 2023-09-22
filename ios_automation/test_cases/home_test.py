@@ -55,6 +55,8 @@ class Home:
         print(f'[{test_name}] 테스트 시작')
 
         try:
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
+
             # 홈화면 배너 API 호출
             response = requests.get(
                 f'https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf["gender"]}')
