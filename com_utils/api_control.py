@@ -1,7 +1,7 @@
 import requests
 
 
-def large_category_info(self, category, large_category_text):
+def large_category_info(category, large_category_text):
     large_category_code = ''
     large_category_name = ''
 
@@ -32,11 +32,13 @@ def large_category_info(self, category, large_category_text):
 
     return large_category_code, large_category_name
 
-def medium_category_code(self, large_category_code, medium_category_name):
+
+def medium_category_code(large_category_code, medium_category_name):
     medium_category_code = ''
 
     # 대 카테고리의 하위 카테고리 API 호출
-    response = requests.get(f'https://recommend-api.29cm.co.kr/api/v4/best/categories?categoryList={large_category_code}')
+    response = requests.get(
+        f'https://recommend-api.29cm.co.kr/api/v4/best/categories?categoryList={large_category_code}')
     if response.status_code == 200:
         medium_category_data = response.json()
 

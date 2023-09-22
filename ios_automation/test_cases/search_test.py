@@ -43,7 +43,11 @@ class Search:
                 print('인기 브랜드 타이틀 확인 실패')
 
             # 최근 검색어 모두 지우기
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색어')
+                wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
+            except NoSuchElementException:
+                pass
 
             # 필터가 전체 기준인지 확인
             filter_area = wd.find_element(AppiumBy.XPATH,
@@ -77,10 +81,7 @@ class Search:
                 print('인기 브랜드 1위 확인 실패')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            relate_brand = wd.find_element(AppiumBy.XPATH,
-                                           '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeCollectionView')
-            relate_brand_name = relate_brand.find_element(AppiumBy.XPATH,
-                                                          '//XCUIElementTypeStaticText[@index="0"]').text
+            relate_brand_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
             if popular_brand_1st_name in relate_brand_name:
                 print(f'인기 브랜드 검색 확인: {relate_brand_name}')
             else:
@@ -89,20 +90,18 @@ class Search:
                 print('인기 브랜드 검색 확인 실패')
 
             # 검색 결과 첫번째 상품의 브랜드명과 1위 브랜드명 비교
-            product_1st = wd.find_element(AppiumBy.XPATH,
-                                          '//XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell[@index="3"]')
-            product_brand = product_1st.find_element(AppiumBy.XPATH,
-                                                     '//XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]').text
+            product_brand = wd.find_elements(AppiumBy.ACCESSIBILITY_ID, 'brand_name')
+            product_brand_name = product_brand[0].text
 
-            if popular_brand_1st_name == product_brand:
+            if popular_brand_1st_name == product_brand_name:
                 print('인기 브랜드 검색 상품 확인')
             else:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 검색 상품 확인 실패')
-                print(f'인기 브랜드 검색 상품 확인 실패: {popular_brand_1st_name} / {product_brand}')
+                print(f'인기 브랜드 검색 상품 확인 실패: {popular_brand_1st_name} / {product_brand_name}')
 
             # 검색 화면으로 복귀
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # 인기 브랜드 30위 확인
             popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
@@ -123,10 +122,7 @@ class Search:
                 print('인기 브랜드 30위 확인 실패')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            relate_brand = wd.find_element(AppiumBy.XPATH,
-                                           '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeCollectionView')
-            relate_brand_name = relate_brand.find_element(AppiumBy.XPATH,
-                                                          '//XCUIElementTypeStaticText[@index="0"]').text
+            relate_brand_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
             if popular_brand_30th_name in relate_brand_name:
                 print(f'인기 브랜드 검색 확인: {relate_brand_name}')
             else:
@@ -135,7 +131,7 @@ class Search:
                 print('인기 브랜드 검색 확인 실패')
 
             # 검색 화면으로 복귀
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # 최근 검색어 모두 지우기
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
@@ -190,7 +186,7 @@ class Search:
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
 
             # 뒤로가기
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -202,7 +198,7 @@ class Search:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -261,7 +257,7 @@ class Search:
                 # 연관 검색어 없을 경우, 검색 필드 확인 / 있을 경우, 첫번째 연관 검색어 확인
                 if not relate_keyword_list:
                     print('연관 검색어 없음')
-                    search_input_field = wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').text
+                    search_input_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'input_keyword').text
                     if search_input_field == popluar_keyword_1st:
                         print('인기 검색어 검색 확인 - 입력란')
                     else:
@@ -270,21 +266,20 @@ class Search:
                         print(f'인기 브랜드 검색 결과 확인 실패 : {popluar_keyword_1st} / {search_input_field}')
                 else:
                     print('연관 검색어 있음')
-                    relate_keyword = relate_keyword_list[0]
-                    relate = wd.find_element(AppiumBy.XPATH,
-                                             '//XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell/XCUIElementTypeCollectionView/XCUIElementTypeCell')
-                    relate_1st = relate.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton').get_attribute('name')
-                    if relate_keyword == relate_1st:
+                    relate_keyword_api = relate_keyword_list[0]
+                    relate_keyword = wd.find_elements(AppiumBy.ACCESSIBILITY_ID, 'related_keyword')[0]
+                    relate_keyword_1st = relate_keyword.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
+                    if relate_keyword_api == relate_keyword_1st:
                         print('인기 검색어 검색 확인 - 연관 검색어')
                     else:
                         test_result = 'WARN'
                         warning_texts.append('인기 브랜드 검색 결과 확인 실패')
-                        print(f'인기 브랜드 검색 결과 확인 실패 : {relate_1st} / {relate_keyword}')
+                        print(f'인기 브랜드 검색 결과 확인 실패 : {relate_keyword_1st} / {relate_keyword_api}')
             else:
                 print('연관 검색어 API 호출 실패')
 
             # 검색 화면으로 복귀
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
             recent_keyword = wd.find_element(AppiumBy.XPATH,
@@ -316,7 +311,7 @@ class Search:
                     com_utils.element_control.scroll_control(wd, "D", 60)
 
             # 뒤로가기
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -328,7 +323,7 @@ class Search:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -354,7 +349,7 @@ class Search:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchBlack').click()
 
             # 검색 결과 화면의 입력란의 검색어 확인
-            search_input_field = wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').text
+            search_input_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'input_keyword').text
             if search_input_field == self.conf["keyword"]['knit']:
                 print('인기 검색어 검색 확인 - 입력란')
             else:
@@ -363,10 +358,7 @@ class Search:
                 print(f'인기 브랜드 검색 결과 확인 실패 : {search_input_field}')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            relate_brand = wd.find_element(AppiumBy.XPATH,
-                                           '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeCollectionView')
-            relate_brand_name = relate_brand.find_element(AppiumBy.XPATH,
-                                                          '//XCUIElementTypeStaticText[@index="0"]').text
+            relate_brand_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
             if self.conf["keyword"]['knit'] in relate_brand_name:
                 print(f'인기 브랜드 검색 확인 - 브랜드명: {relate_brand_name}')
             else:
@@ -375,13 +367,13 @@ class Search:
                 print(f'인기 브랜드 검색 확인 실패 - 브랜드명: {relate_brand_name}')
 
             # 정렬 판매순으로 변경
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천순').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'sort_filter').click()
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
                             f'**/XCUIElementTypeButton[`label == "{self.conf["sort"]["order"]}"`]').click()
             print('정렬 : 판매순 선택')
 
             # 색상 필터 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '색상').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'color_filter').click()
 
             # 색상 블랙 선택
             for i in range(0, 3):
@@ -406,8 +398,7 @@ class Search:
             print('필터 - 상품정보 : 품절상품 제외 선택')
 
             # 필터 적용
-            bottom_sheet = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWindow/XCUIElementTypeOther[@index="1"]')
-            bottom_sheet.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@index="5"]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'filter_apply_btn').click()
 
             sleep(2)
 
@@ -437,7 +428,7 @@ class Search:
             sleep(2)
 
             # 검색 화면으로 복귀
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
             recent_keyword = wd.find_element(AppiumBy.XPATH,
@@ -455,7 +446,7 @@ class Search:
             print('최근 검색어 모두 지우기')
 
             # 뒤로가기
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -467,7 +458,7 @@ class Search:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
