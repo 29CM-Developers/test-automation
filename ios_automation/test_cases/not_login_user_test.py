@@ -66,7 +66,7 @@ class NotLoginUserTest:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
             logger.error(f'{test_name} Error')
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -168,7 +168,7 @@ class NotLoginUserTest:
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -232,7 +232,7 @@ class NotLoginUserTest:
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"

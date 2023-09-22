@@ -20,7 +20,7 @@ class Category:
 
         try:
             # 카테고리 탭 선택
-            wd.get('app29cm://list/shop')
+            wd.get(self.conf['deeplink']['category'])
 
             api_large_list = []
             response = requests.get('https://recommend-api.29cm.co.kr/api/v5/best/categories/groups')
@@ -168,7 +168,7 @@ class Category:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"

@@ -25,7 +25,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            wd.get('app29cm://mypage')
+            wd.get(self.conf['deeplink']['my'])
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
             sleep(3)
 
@@ -63,7 +63,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -82,7 +82,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            wd.get('app29cm://mypage')
+            wd.get(self.conf['deeplink']['my'])
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
             sleep(3)
 
@@ -115,7 +115,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -134,7 +134,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # My 탭 딥링크로 진입
-            wd.get('app29cm://mypage')
+            wd.get(self.conf['deeplink']['my'])
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
                 print("로그인 유저")
@@ -179,7 +179,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -198,7 +198,7 @@ class UserLoginTest:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            wd.get('app29cm://mypage')
+            wd.get(self.conf['deeplink']['my'])
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
             sleep(3)
 
@@ -252,7 +252,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
