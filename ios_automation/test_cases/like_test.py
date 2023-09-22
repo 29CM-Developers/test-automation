@@ -1,7 +1,9 @@
 import os
 import sys
 import traceback
+import requests
 import com_utils.element_control
+import com_utils.cookies_control
 
 from time import time
 from appium.webdriver.common.appiumby import AppiumBy
@@ -10,6 +12,48 @@ from com_utils import values_control
 
 
 class Like:
+    def set_like_zero(self, wd):
+
+        wd.get('app29cm://like')
+
+        # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
+        try:
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+            print('브랜드 추천 페이지 노출')
+        except NoSuchElementException:
+            pass
+
+        cookies = com_utils.cookies_control.cookie_29cm(self.pconf['id_29cm'], self.pconf['password_29cm'])
+
+        like_response = requests.get('https://front-api.29cm.co.kr/api/v4/heart/my-heart/count/', cookies=cookies)
+        like = like_response.json()
+        product_count = int(like['data']['product_count'])
+        brand_count = int(like['data']['brand_count'])
+        post_count = int(like['data']['post_count'])
+
+        if product_count != 0:
+            print(f'좋아요 상품 수 : {product_count}')
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_tab').click()
+            product = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="icHeartLine"]')
+            for product_like in product:
+                product_like.click()
+
+        if brand_count != 0:
+            print(f'좋아요 브랜드 수 : {brand_count}')
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_tab').click()
+            brand = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="ic heart line"]')
+            for brand_like in brand:
+                brand_like.click()
+
+        if post_count != 0:
+            print(f'좋아요 포스트 수 : {post_count}')
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_tab').click()
+            post = wd.find_elements(AppiumBy.XPATH,
+                                    '//XCUIElementTypeCell[@name="like_post_item"]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeButton')
+            for post_like in post:
+                post_like.click()
+
     def test_no_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
@@ -17,15 +61,7 @@ class Like:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "LIKE"`]').click()
-
-            # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
-                print('브랜드 추천 페이지 노출')
-            except NoSuchElementException:
-                pass
+            Like.set_like_zero(self, self.wd)
 
             # 상단 Like 개수 확인
             like_total_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count').text
@@ -36,7 +72,8 @@ class Like:
                 warning_texts.append('총 LIKE 개수 확인 실패')
                 print('총 LIKE 개수 확인 실패')
 
-            # Product 탭 확인
+            # Product 선택 및 탭 확인
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_tab').click()
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
                 print('PRODUCT 좋아요 없음 문구 노출 확인')
@@ -62,6 +99,8 @@ class Like:
                 test_result = 'WARN'
                 warning_texts.append('POST 좋아요 없음 문구 노출 확인')
                 print('POST 좋아요 없음 문구 노출 확인')
+
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
 
         except Exception:
             test_result = 'FAIL'
@@ -198,10 +237,7 @@ class Like:
 
             # LIKE 탭으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
-            except NoSuchElementException:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackWhite').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # POST 탭 새로고침
             post_list = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_list')
