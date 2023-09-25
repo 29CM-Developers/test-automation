@@ -43,16 +43,15 @@ class NotLoginUserTest:
             logger.info(f'[{test_name}] 테스트 시작')
 
             # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
+            wd.get('app29cm://list/shop')
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상의').click()
-            wd.find_element(AppiumBy.XPATH, '(//XCUIElementTypeButton[@name="icHeartLine"])[2]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_btn').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="확인"]').click()
 
             # 로그인 페이지 진입 및 확인
             NotLoginUserTest.check_login_page(self, wd)
 
             # Home 탭으로 복귀
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
         except Exception:
@@ -67,7 +66,7 @@ class NotLoginUserTest:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
             logger.error(f'{test_name} Error')
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -120,11 +119,7 @@ class NotLoginUserTest:
                 logger.warning('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
 
             # 상단 검색 버튼 선택하여 인기 브랜드 10위 선택
-            # 상단 검색 버튼명(색상)이 스크롤 정도에 따라 다르게 노출되어 try-except문으로 확인(하얀색이 아니면 검정색으로)
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchWhite').click()
-            except:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_search_btn').click()
             search_brand = wd.find_element(AppiumBy.XPATH,
                                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText')
             search_brand_name = search_brand.text
@@ -132,7 +127,7 @@ class NotLoginUserTest:
 
             # 검색 결과 화면 진입하여 선택한 브랜드명과 입력란의 문구 비교 확인
             sleep(3)
-            search_input_field = wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').text
+            search_input_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'input_keyword').text
             if search_input_field == search_brand_name:
                 logger.info('인기 브랜드 검색 결과 확인 - 입력란')
             else:
@@ -141,14 +136,13 @@ class NotLoginUserTest:
                 logger.warning(f'인기 브랜드 검색 결과 확인 실패 : {search_brand_name} / {search_input_field}')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            search_result_brand = wd.find_element(AppiumBy.XPATH,
-                            '//XCUIElementTypeCollectionView/XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
-            if search_brand_name in search_result_brand.text:
+            search_result_brand = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
+            if search_brand_name in search_result_brand:
                 logger.info('인기 브랜드 검색 결과 확인 - 브랜드명')
             else:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 검색 결과 확인 실패')
-                logger.warning(f'인기 브랜드 검색 결과 확인 실패 : {search_brand_name} / {search_result_brand.text}')
+                logger.warning(f'인기 브랜드 검색 결과 확인 실패 : {search_brand_name} / {search_result_brand}')
 
             # My 탭 진입하여 로그인,회원가입 문구 노출 확인
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="MY"]').click()
@@ -174,7 +168,7 @@ class NotLoginUserTest:
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -238,7 +232,7 @@ class NotLoginUserTest:
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
-            wd.get('app29cm://home')
+            wd.get(self.conf['deeplink']['home'])
 
         finally:
             run_time = f"{time() - start_time:.2f}"
