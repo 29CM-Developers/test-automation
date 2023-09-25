@@ -28,27 +28,32 @@ class Category:
             # 카테고리 탭 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
             # 대 카테고리, 중 카테고리 코드 번호 저장
-            large_category_info = api_control.large_category_info(self, self.conf['category_group'][0], self.conf['large_category'][0])
+            large_category_info = api_control.large_category_info(self.conf["category_group"][0],
+                                                                  self.conf["large_category"][0])
             large_category_code = large_category_info[0]
             large_category_name = large_category_info[1]
-            medium_category_code = api_control.medium_category_code(self, large_category_code,self.conf['medium_category'][0])
+            medium_category_code = api_control.medium_category_code(large_category_code,
+                                                                    self.conf["medium_category"][0])
             print(f'{large_category_code}/{large_category_name}/{medium_category_code}')
 
             # 신발 > 여성 > 전체 순으로 카테고리 선택
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
 
-            category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=1]/android.widget.TextView[3]').click()
-            category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=2]/android.widget.TextView[@text="WOMEN"]').click()
-            category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=2]/android.view.View[2]/android.widget.TextView[@text="전체"]').click()
+            category_layer.find_element(AppiumBy.XPATH,
+                                        '//android.view.View/android.view.View[@index=1]/android.widget.TextView[3]').click()
+            category_layer.find_element(AppiumBy.XPATH,
+                                        '//android.view.View/android.view.View[@index=2]/android.widget.TextView[@text="WOMEN"]').click()
+            # category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=2]/android.view.View[2]/android.widget.TextView[@text="전체"]').click()
+            category_layer.find_element(AppiumBy.ACCESSIBILITY_ID, 'all_title').click()
 
             # 타이틀명으로 카테고리 전체 페이지 진입 확인
             # API (large_category_info)에서 받아온 카테고리명으로 확인
             try:
                 page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtCategoryName')
                 print(f'페이지 타이틀 : {page_title.text}')
-                if '신발' in page_title.text :
+                if '신발' in page_title.text:
                     print('카테고리 전체 페이지 진입 확인')
-                else :
+                else:
                     test_result = 'WARN'
                     warning_texts.append('카테고리 전체 페이지 진입 확인 실패')
                     print('WARN : 카테고리 전체 페이지 진입 확인 실패')
