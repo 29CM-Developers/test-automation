@@ -5,9 +5,74 @@ import logging
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
-from com_utils import values_control, element_control
+from com_utils import values_control, element_control, cookies_control
 from time import sleep, time
+
+
 class Like:
+    def set_like_zero(self, wd):
+
+        wd.get(self.conf['deeplink']['like'])
+
+        # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
+        # 관심 브랜드 선택 화면 발생
+        brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
+        print(brands_of_interest)
+        if len(brands_of_interest) == 0:
+            pass
+        else:
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
+
+        print(
+            f"self.pconf['id_29cm']: {self.pconf['id_29cm']}, self.pconf['password_29cm']:{self.pconf['password_29cm']}")
+        cookies = cookies_control.cookie_29cm(self.pconf['id_29cm'], self.pconf['password_29cm'])
+
+        like_response = requests.get('https://front-api.29cm.co.kr/api/v4/heart/my-heart/count/', cookies=cookies)
+        like = like_response.json()
+        product_count = int(like['data']['product_count'])
+        brand_count = int(like['data']['brand_count'])
+        post_count = int(like['data']['post_count'])
+
+        if product_count != 0:
+            print(f'좋아요 상품 수 : {product_count}')
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProduct').click()
+            # product = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
+            # for product_like in product:
+            #     product_like.click()
+
+            # 좋아요 해제 후 새로고침
+            # 상품 탭 선택
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutProduct').click()
+            product_like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
+            product_like_layer.find_element(AppiumBy.XPATH,
+                                            '//android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView[2]').click()
+            txtProductCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProductCount').text
+            print(txtProductCount)
+            if txtProductCount == '(0)':
+                print('Product Count 감소 확인')
+            else:
+                print('Product Count 감소 확인 실패')
+                print(f'Product Count : {txtHeartCount} ')
+
+        if brand_count != 0:
+            print(f'좋아요 브랜드 수 : {brand_count}')
+            # 브랜드 탭 선택
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutHeart').click()
+            txtBrandCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandCount').text
+            if txtBrandCount == '(0)':
+                print('Brand Count 감소 확인')
+            else:
+                print('Brand Count 감소 확인 실패')
+                print(f'Brand Count : {txtBrandCount} ')
+            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_tab').click()
+            # brand = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="ic heart line"]')
+            # for brand_like in brand:
+            #     brand_like.click()
+
+            # 좋아요 해제 후 새로고침
+            # brand_list = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_list')
+            # element_control.element_scroll_control(wd, brand_list, 'U', 30)
 
     def test_no_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
@@ -19,6 +84,7 @@ class Like:
             print("[좋아요 존재하지 않는 LIKE 화면 확인]CASE 시작")
             wd.get('app29cm://like')
             # like 탭 선택
+            Like.set_like_zero(self, self.wd)
             sleep(1)
             # 관심 브랜드 선택 화면 발생
             brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
@@ -45,8 +111,9 @@ class Like:
                 warning_texts.append('PRODUCT 좋아요 없음 문구 노출 확인 실패')
                 print('WARN : PRODUCT 좋아요 없음 문구 노출 확인 실패')
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
+            txtBrandCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandCount').text
+            print(f"text info : {txtBrandCount}")
             txtInfo = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtInfo').text
-            print(f"text info : {txtInfo}")
             if txtInfo in '좋아요한 브랜드가 없습니다.\n마음에 드는 브랜드에 하트를 눌러보세요.':
                 print('BRAND 좋아요 없음 문구 노출 확인')
             else:
