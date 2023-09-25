@@ -33,8 +33,9 @@ class Plp:
             sleep(2)
             # 홈 > 카테고리 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
-            category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
-            category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[3]/android.view.View[4]').click()
+            # category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
+            # category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[3]/android.view.View[4]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_title').click()
             print("홈 > 카테고리 > 의류 > 베스트 선택")
             best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
             if best_page_title.text == '베스트':
@@ -45,15 +46,17 @@ class Plp:
                 warning_texts.append("베스트 페이지 진입 확인 실패")
             print(f"타이틀 문구 : {best_page_title.text} ")
 
-            products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
+            # products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
 
-            before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+            # before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+            before_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
             # 쉼표를 제거한 문자열 생성
             before_like_count = before_like_count.replace(',', '')
             # 문자열을 정수로 변환
             before_like_count = int(before_like_count)
-            products_layer.find_element(AppiumBy.XPATH,
-                                        '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
+            # products_layer.find_element(AppiumBy.XPATH,
+            #                             '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like').click()
             sleep(2)
             # 좋아요 선택
             # 앱평가 발생 시 팝업 제거
@@ -66,7 +69,8 @@ class Plp:
                 sleep(1)
                 wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
 
-            after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+            # after_like_count = products_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+            after_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
             # 좋아요 누른  좋아요 갯수 확인
             # 쉼표를 제거한 문자열 생성
             after_like_count = after_like_count.replace(',', '')
@@ -80,16 +84,17 @@ class Plp:
                 test_result = 'WARN'
                 warning_texts.append("피드 아이템 좋아요 개수 증가 확인 실패")
 
-            before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+            before_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
 
             # 좋아요 취소 누르기 전 좋아요 갯수 확인
             # 쉼표를 제거한 문자열 생성
             before_like_count = before_like_count.replace(',', '')
             # 문자열을 정수로 변환
             before_like_count = int(before_like_count)
-            products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
+            # products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like').click()
             # 좋아요 선택
-            after_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+            after_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
             # 좋아요 취소 누른  좋아요 갯수 확인
             # 쉼표를 제거한 문자열 생성
             after_like_count = after_like_count.replace(',', '')

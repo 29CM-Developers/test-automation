@@ -421,14 +421,14 @@ class LoginLogout:
             print("[이메일 로그인 실패 및 성공]CASE 시작")
             sleep(1)
             wd.get('app29cm://mypage')
-            sleep(1)
+            sleep(2)
             # 하단 네비게이터에 MY 메뉴 진입
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').click()
             print("로그인 버튼 선택")
-            sleep(3)
+            sleep(4)
 
             # 로그인 화면 진입 확인
             login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
