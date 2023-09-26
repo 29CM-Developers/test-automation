@@ -1,6 +1,7 @@
 import json
 import logging
 import os.path
+import re
 import subprocess
 import sys
 import traceback
@@ -119,7 +120,7 @@ class Plp:
                 best_item_10th = element_control.scroll_to_element_with_text(wd,api_data)
                 if api_data in best_item_10th.text :
                     print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인")
-                else :
+                else:
                     print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
                     test_result = 'WARN'
                     warning_texts.append("API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
@@ -129,20 +130,23 @@ class Plp:
                 print(f"베스트 상품명 : {best_product_title} ")
                 best_item_10th.click()
                 sleep(2)
-                PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data}')]")
+                api_data_title = re.sub(r'\s+', ' ', api_data)
+                PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data_title}')]")
+                print(f"PDP_title_elements:{PDP_title_elements}")
                 for PDP_title in PDP_title_elements:
                     print(PDP_title.text)
-                    if PDP_title.text in api_data:
+                    if api_data_title in PDP_title.text:
                         break
-                PDP_product_titile = PDP_title.text
-                print(f"PDP_product_titile : {PDP_product_titile} ")
-                if api_data in PDP_product_titile:
+                PDP_product_title = PDP_title.text
+                print(f"PDP_product_title : {PDP_product_title}")
+                if api_data_title in PDP_product_title:
                     print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인")
                 else:
                     print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
                     test_result = 'WARN'
                     warning_texts.append("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
-                print(f"PDP 상품명 : {PDP_product_titile} ")
+                print(f"PDP 상품명 : {PDP_product_title}")
+
                 # 뒤로가기로 베스트 PLP 진입 확인
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
                 print("뒤로가기 선택")
