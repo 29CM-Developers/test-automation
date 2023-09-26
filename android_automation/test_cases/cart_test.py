@@ -150,15 +150,15 @@ class Cart:
                             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                             pass
 
-                        PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
-                        print(f"PDP_product_titile : {PDP_product_titile} ")
-                        if best_product in PDP_product_titile:
+                        PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+                        print(f"PDP_product_title : {PDP_product_title} ")
+                        if best_product in PDP_product_title:
                             print("pdp 진입 확인 - 베스트 상품")
                         else:
                             print("pdp 진입 확인 실패 - 베스트 상품")
                             test_result = 'WARN'
                             warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-                        print(f"베스트 상품명 : {best_product} , PDP 상품명 : {PDP_product_titile}  ")
+                        print(f"베스트 상품명 : {best_product} , PDP 상품명 : {PDP_product_title}  ")
                         sleep(1)
 
                         buy_button = wd.find_element(AppiumBy.XPATH, '//*[contains(@text,"구매하기")]')
@@ -166,9 +166,12 @@ class Cart:
                         sleep(2)
 
                         # 옵션의 존재 여부 확인하여 옵션 선택
-                        Cart.select_options(self, wd, first_available_item_no)
+                        # Cart.select_options(self, wd, first_available_item_no)
 
                         # 상품 장바구니에 담기
+                        wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
+                        sleep(2)
+                        # 쿠폰 이슈로 한번더 선택
                         wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
                         sleep(2)
                         try:
@@ -226,15 +229,15 @@ class Cart:
                 element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                 pass
 
-            PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
-            print(f"PDP_product_titile : {PDP_product_titile} ")
-            if search_product in PDP_product_titile:
+            PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+            print(f"PDP_product_title : {PDP_product_title} ")
+            if search_product in PDP_product_title:
                 print("pdp 진입 확인 - 베스트 상품")
             else:
                 print("pdp 진입 확인 실패 - 베스트 상품")
                 test_result = 'WARN'
                 warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-            print(f"search_product : {search_product} , PDP 상품명 : {PDP_product_titile}  ")
+            print(f"search_product : {search_product} , PDP 상품명 : {PDP_product_title}  ")
             sleep(1)
 
             buy_button = wd.find_element(AppiumBy.XPATH, '//*[contains(@text,"구매하기")]')
@@ -247,6 +250,9 @@ class Cart:
             # 상품 장바구니에 담기
             wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
             sleep(2)
+            # 쿠폰 이슈로 한번더 선택
+            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
+            sleep(2)
             try:
                 add_to_cart = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textAddToCart').text
                 print(f"add_to_cart : {add_to_cart}")
@@ -255,11 +261,27 @@ class Cart:
                 else:
                     test_result = 'WARN'
                     warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                    print('상품 장바구니 담기 확인 실패 - 베스트 상품11')
+                    print(f'상품 장바구니 담기 확인 실패 - 베스트 상품 : {add_to_cart}')
+                # 바로가기 버튼 선택, 확인 : 장바구니 리스트의 상품명과 PDP에서 저장한 상품명 비교 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textShortcuts').click()
+                print("장바구니 바로가기 선택")
+                sleep(2)
+                print(f"PDP_product_title : {PDP_product_title}")
+                product_title = wd.find_elements(By.XPATH, f"//*[contains(@text, '{PDP_product_title}')]")
+                if len(product_title) != 0:
+                    print('상품 장바구니 담기 확인 - 베스트 상품')
+                    print(product_title[0].text)
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
+                    print('상품 장바구니 담기 확인 실패 - 베스트 상품 NoSuchElementException')
+
+
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                print('상품 장바구니 담기 확인 실패 - 베스트 상품22')
+                print('상품 장바구니 담기 확인 실패 - 베스트 상품 NoSuchElementException')
+
             print("[장바구니]CASE 종료")
 
         except Exception:
