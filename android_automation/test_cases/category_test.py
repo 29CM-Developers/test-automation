@@ -43,7 +43,7 @@ class Category:
                                         '//android.view.View/android.view.View[@index=1]/android.widget.TextView[3]').click()
             category_layer.find_element(AppiumBy.XPATH,
                                         '//android.view.View/android.view.View[@index=2]/android.widget.TextView[@text="WOMEN"]').click()
-            # category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=2]/android.view.View[2]/android.widget.TextView[@text="전체"]').click()
+
             category_layer.find_element(AppiumBy.ACCESSIBILITY_ID, 'all_title').click()
 
             # 타이틀명으로 카테고리 전체 페이지 진입 확인

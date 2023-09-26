@@ -36,10 +36,6 @@ class Like:
         if product_count != 0:
             print(f'좋아요 상품 수 : {product_count}')
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProduct').click()
-            # product = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
-            # for product_like in product:
-            #     product_like.click()
-
             # 좋아요 해제 후 새로고침
             # 상품 탭 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutProduct').click()
@@ -65,14 +61,6 @@ class Like:
             else:
                 print('Brand Count 감소 확인 실패')
                 print(f'Brand Count : {txtBrandCount} ')
-            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_tab').click()
-            # brand = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="ic heart line"]')
-            # for brand_like in brand:
-            #     brand_like.click()
-
-            # 좋아요 해제 후 새로고침
-            # brand_list = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_list')
-            # element_control.element_scroll_control(wd, brand_list, 'U', 30)
 
     def test_no_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다

@@ -42,7 +42,6 @@ class Home:
 
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
             # 첫번째 대메뉴 선택
-            # category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=1]/android.widget.TextView[1]').click()
             category_layer.find_element(AppiumBy.ACCESSIBILITY_ID, 'category_first_title').click()
 
             # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
@@ -82,16 +81,10 @@ class Home:
                 sleep(2)
                 try:
                     wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
-                    # element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[1]'
-
                 except NoSuchElementException:
                     pass
-                    # element_xpath = '//androidx.compose.ui.platform.ComposeView[1]/android.view.View/android.view.View/android.widget.TextView[1]'
 
-                # print(search_container.find_element(AppiumBy.XPATH, element_xpath).text)
                 # 지금 많이 찾는 브랜드 찾기
-                # element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[1]'
-                # search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
                 search_container_title = wd.find_element(AppiumBy.XPATH,
                                                          '//android.widget.TextView[@content-desc="search_popular_brand"]')
                 if search_container_title.text == '지금 많이 찾는 브랜드':
@@ -118,13 +111,8 @@ class Home:
                     pass
                 else:
                     delete_all[0].click()
-                # # 지금 많이 찾는 검색어 찾기
-                # element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]'
-                # search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
                 # 지금 많이 찾는 검색어 찾기
                 sleep(2)
-                # element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]'
-                # search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
                 search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_container_title')
                 search_container_title_text = search_container_title.text
                 if search_container_title.text == '지금 많이 찾는 검색어':
@@ -385,7 +373,6 @@ class Home:
             sleep(5)
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             # 2. 홈 > 피드 > 추천 탭선택
-            # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
             print('홈 > 피드 > 추천 탭선택 ')
             guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
@@ -397,8 +384,6 @@ class Home:
                 test_result = 'WARN'
                 warning_texts.append("홈화면 추천 탭 타이틀 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
-
-            # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[1]').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
@@ -409,7 +394,6 @@ class Home:
             if response.status_code == 200:
                 api_data = response.json()
                 # feedType이 contents인 첫번째, 두번째 텍스트 저장
-
                 saved_result = None
                 saved_results =[]
                 results = api_data["data"]["results"]
