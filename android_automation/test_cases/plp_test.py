@@ -138,14 +138,14 @@ class Plp:
                     if api_data_title in PDP_title.text:
                         break
                 PDP_product_title = PDP_title.text
-                print(f"PDP_product_title : {PDP_product_title} ")
+                print(f"PDP_product_title : {PDP_product_title}")
                 if api_data_title in PDP_product_title:
                     print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인")
                 else:
                     print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
                     test_result = 'WARN'
                     warning_texts.append("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
-                print(f"PDP 상품명 : {PDP_product_title} ")
+                print(f"PDP 상품명 : {PDP_product_title}")
 
                 # 뒤로가기로 베스트 PLP 진입 확인
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
