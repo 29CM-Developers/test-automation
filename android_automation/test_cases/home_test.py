@@ -79,11 +79,6 @@ class Home:
             try:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
                 sleep(2)
-                try:
-                    wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
-                except NoSuchElementException:
-                    pass
-
                 # 지금 많이 찾는 브랜드 찾기
                 search_container_title = wd.find_element(AppiumBy.XPATH,
                                                          '//android.widget.TextView[@content-desc="search_popular_brand"]')
@@ -246,8 +241,7 @@ class Home:
             api_banner_id = []
             api_banner_contents = []
             response = requests.get(
-                "https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender=" + self.pconf[
-                    'GENDER'])
+                f"https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf['GENDER']}")
             if response.status_code == 200:
 
                 api_data = response.json()

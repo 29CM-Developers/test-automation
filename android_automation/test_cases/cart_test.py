@@ -237,7 +237,7 @@ class Cart:
                 print("pdp 진입 확인 실패 - 베스트 상품")
                 test_result = 'WARN'
                 warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-            print(f"search_product : {search_product} , PDP 상품명 : {PDP_product_title}  ")
+            print(f"search_product : {search_product} , PDP 상품명 : {PDP_product_title}")
             sleep(1)
 
             buy_button = wd.find_element(AppiumBy.XPATH, '//*[contains(@text,"구매하기")]')
