@@ -42,7 +42,7 @@ class Home:
 
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
             # 첫번째 대메뉴 선택
-            # category_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[@index=1]/android.widget.TextView[1]').click()
+            category_layer.find_element(AppiumBy.ACCESSIBILITY_ID, 'category_first_title').click()
 
             # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
             category_list = []
@@ -79,28 +79,21 @@ class Home:
             try:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
                 sleep(2)
-                try:
-                    wd.find_elements(By.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
-                    element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[1]'
-
-                except NoSuchElementException:
-                    element_xpath = '//androidx.compose.ui.platform.ComposeView[1]/android.view.View/android.view.View/android.widget.TextView[1]'
-
-                print(search_container.find_element(AppiumBy.XPATH, element_xpath).text)
                 # 지금 많이 찾는 브랜드 찾기
-                search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath).text
-                if search_container_title == '지금 많이 찾는 브랜드':
+                search_container_title = wd.find_element(AppiumBy.XPATH,
+                                                         '//android.widget.TextView[@content-desc="search_popular_brand"]')
+                if search_container_title.text == '지금 많이 찾는 브랜드':
                     print("지금 많이 찾는 브랜드 타이틀 노출 확인")
                     pass
                 else:
                     print("지금 많이 찾는 브랜드 타이틀 노출 실패")
                     test_result = 'WARN'
                     warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
-                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀')
+                print(f'HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀: {search_container_title}')
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
-                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
+                print(f'HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀: {search_container_title}')
 
             # 인기 검색어 타이틀 확인
             try:
@@ -114,8 +107,9 @@ class Home:
                 else:
                     delete_all[0].click()
                 # 지금 많이 찾는 검색어 찾기
-                element_xpath = '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]'
-                search_container_title = search_container.find_element(AppiumBy.XPATH, element_xpath)
+                sleep(2)
+                search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_container_title')
+                search_container_title_text = search_container_title.text
                 if search_container_title.text == '지금 많이 찾는 검색어':
                     print("지금 많이 찾는 검색어 타이틀 노출 확인")
                     pass
@@ -239,46 +233,68 @@ class Home:
         start_time = time()
         try:
             print("[홈화면 배너 확인]CASE 시작")
-            # sleep(1)
-            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
-            # print("홈 탭 선택")
-            # api_banner_title = []
-            # banner_title_set = []
-            # response = requests.get(
-            #     "https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender=" + self.pconf[
-            #         'GENDER'])
-            # if response.status_code == 200:
-            #
-            #     api_data = response.json()
-            #     count = int(api_data["data"]["count"])
-            #     for i in range(0, count):
-            #         api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
-            #     print(api_banner_title)
-            #     home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
-            #     for i in range(0, count):
-            #         sleep(2.5)
-            #         home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
-            #         print(f"home_banner_title : {home_banner_title}")
-            #         banner_title_set.append(home_banner_title)
-            #     print(f"banner_title_set : {banner_title_set}")
-            #     banner_title_set = set(banner_title_set)
-            #     api_banner_title = set(api_banner_title)
-            #
-            #     intersection_set = banner_title_set.intersection(api_banner_title)
-            #
-            #     if len(intersection_set) > 0:
-            #         print("교집합 확인")
-            #         print("홈 배너 확인 성공")
-            #     else:
-            #         print("교집합 확인")
-            #         print("홈 배너 확인 실패")
-            #         print(f"api_banner_title : {len(api_banner_title)}, banner_title_set : {len(banner_title_set)}")
-            #         print(f"{api_banner_title}")
-            #         print(f"{banner_title_set}")
-            #         test_result = 'WARN'
-            #         warning_texts.append("홈 배너 확인 실패")
-            # else:
-            #     print("API 호출에 실패했습니다.")
+            sleep(1)
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            print("홈 탭 선택")
+            api_banner_title = []
+            banner_title_set = []
+            api_banner_id = []
+            api_banner_contents = []
+            response = requests.get(
+                f"https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf['GENDER']}")
+            if response.status_code == 200:
+
+                api_data = response.json()
+                count = int(api_data["data"]["count"])
+                print(f"api 배너 갯수  : {count}")
+                for i in range(0, count):
+                    api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
+                    api_banner_id.append(api_data["data"]["bannerList"][i]["bannerId"])
+                    api_banner_contents.append(api_data["data"]["bannerList"][i]["bannerContents"])
+                print(api_banner_title)
+                print(api_banner_id)
+                print(api_banner_contents)
+                set_api_banner_id = set(api_banner_id)
+                set_api_banner_contents = set(api_banner_contents)
+
+                # 중복을 확인합니다.
+                if len(api_banner_id) != len(set_api_banner_id) or len(api_banner_contents) != len(
+                        set_api_banner_contents):
+                    print("리스트에 중복 요소가 있습니다.")
+                    test_result = 'WARN'
+                    warning_texts.append('중복된 홈 배너 없음 확인 실패')
+                else:
+                    print("리스트에 중복 요소가 없습니다.")
+
+                home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
+                try:
+                    for i in range(0, 3):
+                        sleep(2.5)
+                        home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
+                        print(f"home_banner_title : {home_banner_title}")
+                        banner_title_set.append(home_banner_title)
+                except NoSuchElementException:
+                    pass
+
+                banner_title_set = set(banner_title_set)
+                api_banner_title = set(api_banner_title)
+                # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
+                print(f"api_banner_title : {len(api_banner_title)}, banner_title_set : {len(banner_title_set)}")
+                intersection_set = banner_title_set.intersection(api_banner_title)
+
+                if len(intersection_set) > 0:
+                    print("교집합 확인")
+                    print("홈 배너 확인 성공")
+                else:
+                    print("교집합 확인 실패")
+                    print("홈 배너 확인 실패")
+                    print(f"api_banner_title : {len(api_banner_title)}, banner_title_set : {len(banner_title_set)}")
+                    print(f"{api_banner_title}")
+                    print(f"{banner_title_set}")
+                    test_result = 'WARN'
+                    warning_texts.append("홈 배너 확인 실패")
+            else:
+                print("API 호출에 실패했습니다.")
 
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
@@ -351,28 +367,27 @@ class Home:
             sleep(5)
             tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             # 2. 홈 > 피드 > 추천 탭선택
-            tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
             print('홈 > 피드 > 추천 탭선택 ')
             guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
 
-            if guide_text.text == self.pconf['NAME']+'님을 위한 추천 상품':
+            if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
                 print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
             else:
                 print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈화면 추천 탭 타이틀 확인 실패")
             print(f"가이드 문구 : {guide_text.text} ")
-
-            tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[1]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
 
             # API 호출
-            response = requests.get("https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=10&offset=0")
+            response = requests.get(
+                "https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=10&offset=0")
             if response.status_code == 200:
                 api_data = response.json()
                 # feedType이 contents인 첫번째, 두번째 텍스트 저장
-
                 saved_result = None
                 saved_results =[]
                 results = api_data["data"]["results"]
@@ -412,6 +427,17 @@ class Home:
                 element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
                 element_control.scroll(wd)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
+
+                # 하트 이미 선택되었는지 확인
+                heart_element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartIcon')
+                is_selected = heart_element.is_selected()
+                if is_selected:
+                    print("하트 선택된 상태입니다.")
+                    heart_element.click()
+                    print("하트 선택 해제")
+                else:
+                    print("하트 선택되지 않은 상태입니다.")
+
                 before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
                 # 쉼표를 제거한 문자열 생성
                 before_like_count = before_like_count.replace(',', '')
