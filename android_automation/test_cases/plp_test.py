@@ -49,6 +49,17 @@ class Plp:
             # products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
 
             # before_like_count = products_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[1]/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.TextView').text
+
+            # 하트 이미 선택되었는지 확인
+            heart_element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like')
+            is_selected = heart_element.is_selected()
+            if is_selected:
+                print("하트 선택된 상태입니다.")
+                heart_element.click()
+                print("하트 선택 해제")
+            else:
+                print("하트 선택되지 않은 상태입니다.")
+
             before_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
             # 쉼표를 제거한 문자열 생성
             before_like_count = before_like_count.replace(',', '')

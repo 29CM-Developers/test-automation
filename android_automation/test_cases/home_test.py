@@ -449,6 +449,17 @@ class Home:
                 element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
                 element_control.scroll(wd)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
+
+                # 하트 이미 선택되었는지 확인
+                heart_element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartIcon')
+                is_selected = heart_element.is_selected()
+                if is_selected:
+                    print("하트 선택된 상태입니다.")
+                    heart_element.click()
+                    print("하트 선택 해제")
+                else:
+                    print("하트 선택되지 않은 상태입니다.")
+
                 before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
                 # 쉼표를 제거한 문자열 생성
                 before_like_count = before_like_count.replace(',', '')
