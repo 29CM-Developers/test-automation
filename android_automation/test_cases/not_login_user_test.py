@@ -152,158 +152,204 @@ class NotLogin:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+        print("[사용 가능 기능 사용]CASE 시작")
+        sleep(3)
+
+        # 홈화면 변경 ui 로 진행 시
+        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_tab').click()
+        print("베스트탭 선택")
+        sleep(2)
         try:
-            print("[사용 가능 기능 사용]CASE 시작")
-            sleep(3)
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
+            print("전체보기 버튼 선택")
+            sleep(1)
+            best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
+            if best_page_title.text == '베스트':
+                print("베스트 페이지 진입 확인")
+            else:
+                print("베스트 페이지 진입 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("베스트 페이지 진입 확인 실패")
+            print(f"타이틀 문구 : {best_page_title.text} ")
+            best_product_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_title').text
+            print(f"베스트 상품명 : {best_product_title} ")
+            # wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_title').click()
+            sleep(1)
+        except NoSuchElementException:
+            print("전체보기 버튼 미노출- 베스트 탭 ui 변경")
+            best_product_title = wd.find_elements(AppiumBy.XPATH,
+                                                  '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
 
-            # 홈화면 변경 ui 로 진행 시
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_tab').click()
-            print("베스트탭 선택")
-            sleep(2)
-            try:
-                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
-                print("전체보기 버튼 선택")
-                sleep(1)
-                best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
-                if best_page_title.text == '베스트':
-                    print("베스트 페이지 진입 확인")
+            print(f"베스트 상품명 : {best_product_title[0].text} ")
+            best_product_list_title = best_product_title[0].text
+            best_product_title[0].click()
+            sleep(1)
+
+        # 스페셜 오더 상품 확인
+        try:
+            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+            print('SPECIAL-ORDER 상품 발견')
+        except NoSuchElementException:
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            pass
+
+        PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+        print(f"PDP_product_title : {PDP_product_title}")
+        PDP_product_title = PDP_product_title.replace("_", " ")
+        # best_product_title = best_product_title[0].text.replace("_", " ")
+        print(f"PDP_product_title : {PDP_product_title} ")
+        print(f"best_product_title : {best_product_list_title} ")
+        if PDP_product_title in best_product_list_title:
+            print("베스트 상품 PDP 정상 확인")
+        else:
+            print("베스트 상품 PDP 정상 확인 실패")
+            test_result = 'WARN'
+            warning_texts.append("베스트 상품 PDP 정상 확인 실패")
+        print(f"베스트 상품명 : {best_product_list_title} , PDP 상품명 : {PDP_product_title}  ")
+        sleep(3)
+        # 상단으로 홈화면 진입 확인
+        wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
+        print("상단 홈아이콘 선택")
+        # 8. 홈 > 피드 > 추천 탭선택
+        sleep(1)
+        # 홈화면 변경 ui 시나리오
+        tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+        # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
+        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
+        print("추천 탭 선택")
+        sleep(1)
+        guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
+        if guide_text.text == '당신을 위한 추천 상품':
+            print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
+        else:
+            print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
+            test_result = 'WARN'
+            warning_texts.append("추천 가이드 문구 확인 실패")
+        print(f"가이드 문구 : {guide_text.text} ")
+
+        sleep(1)
+        # 우먼탭으로 선택 ui 변경
+        tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
+
+        # 6. Home 상단 네비게이션 검색 아이콘 선택
+        wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
+        print("상단 검색 아이콘 선택")
+        search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+
+        try:
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            print(delete_all)
+            if len(delete_all) == 0:
+                print("검색 ui 변경 화면")
+                # 지금 많이 찾는 브랜드 찾기
+                search_container_title = search_container.find_element(AppiumBy.XPATH,
+                                                                       '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]')
+                if search_container_title.text == '지금 많이 찾는 의류 브랜드':
+                    pass
                 else:
-                    print("베스트 페이지 진입 확인 실패")
+                    print("지금 많이 찾는 의류 브랜드 타이틀 노출 실패")
                     test_result = 'WARN'
-                    warning_texts.append("베스트 페이지 진입 확인 실패")
-                print(f"타이틀 문구 : {best_page_title.text} ")
-                best_product_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_title').text
-                print(f"베스트 상품명 : {best_product_title} ")
-                # wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_title').click()
-                sleep(1)
-            except NoSuchElementException:
-                print("전체보기 버튼 미노출- 베스트 탭 ui 변경")
-                best_product_title = wd.find_elements(AppiumBy.XPATH,
-                                                      '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+                    warning_texts.append("지금 많이 찾는 브랜드 의류 타이틀 노출 실패")
+                print(f"타이틀 확인 : {search_container_title.text}")
+                brand_6th = wd.find_element(AppiumBy.XPATH,
+                                            '(//android.view.View[@content-desc="popular_brand_layer"])[1]/android.view.View[6]')
 
-                print(f"베스트 상품명 : {best_product_title[0].text} ")
-                best_product_title[0].click()
-                sleep(1)
-
-            # 스페셜 오더 상품 확인
-            try:
-                wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-                print('SPECIAL-ORDER 상품 발견')
-            except NoSuchElementException:
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-                pass
-
-            PDP_product_titile = wd.find_element(AppiumBy.XPATH, element_xpath).text
-            PDP_product_titile = PDP_product_titile.replace("_", " ")
-            best_product_title = best_product_title.replace("_", " ")
-            print(f"PDP_product_titile : {PDP_product_titile} ")
-            if PDP_product_titile in best_product_title:
-                print("베스트 상품 PDP 정상 확인")
-            else:
-                print("베스트 상품 PDP 정상 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-            print(f"베스트 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_titile}  ")
-            sleep(3)
-            # 상단으로 홈화면 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
-            print("상단 홈아이콘 선택")
-            # 8. 홈 > 피드 > 추천 탭선택
-            sleep(1)
-            # 홈화면 변경 ui 시나리오
-            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-            # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
-            print("추천 탭 선택")
-            sleep(1)
-            guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
-            if guide_text.text == '당신을 위한 추천 상품':
-                print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
-            else:
-                print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
-                test_result = 'WARN'
-                warning_texts.append("추천 가이드 문구 확인 실패")
-            print(f"가이드 문구 : {guide_text.text} ")
-
-            sleep(1)
-            # 우먼탭으로 선택 ui 변경
-            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
-
-            # 6. Home 상단 네비게이션 검색 아이콘 선택
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
-            print("상단 검색 아이콘 선택")
-            search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
-
-            # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
-            print(delete_all)
-            if len(delete_all) == 0:
-                pass
+                # 7. 검색 화면 > 인기 브랜드 검색어6위 선택
+                brand_6th_name = brand_6th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
+                brand_6th.click()
+                print('브랜드 6위 선택')
+                print(brand_6th_name)
+                # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
+                search_edit_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
+                if brand_6th_name in search_edit_text:
+                    print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
+                else:
+                    print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("브랜드명 비교 실패")
+                print(f"검색어 : {search_edit_text} ")
+                # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
+                brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
+                search_brand = brand_layer.find_element(AppiumBy.XPATH,
+                                                        '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
+                if brand_6th_name in search_brand:
+                    print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
+                else:
+                    print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
+                print(f"브랜드 이름 : {search_brand} ")
+                # 뒤로가기로 카테고리 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+                print("뒤로가기 선택")
+                sleep(2)
             else:
                 delete_all[0].click()
+                # 지금 많이 찾는 브랜드 찾기
+                search_container_title = wd.find_element(AppiumBy.XPATH,
+                                                         '//android.widget.TextView[@content-desc="search_popular_brand"]')
+                if search_container_title.text == '지금 많이 찾는 브랜드':
+                    pass
+                else:
+                    print("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                print(f"타이틀 확인 : {search_container_title.text}")
+                popular_brand_layer = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'popular_brand_layer')
 
-            # 지금 많이 찾는 브랜드 찾기
-            search_container_title = wd.find_element(AppiumBy.XPATH,
-                                                     '//android.widget.TextView[@content-desc="search_popular_brand"]')
-            if search_container_title.text == '지금 많이 찾는 브랜드':
-                pass
-            else:
-                print("지금 많이 찾는 브랜드 타이틀 노출 실패")
-                test_result = 'WARN'
-                warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
-            print(f"타이틀 확인 : {search_container_title.text}")
-            popular_brand_layer = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'popular_brand_layer')
+                # 최초 접속 시 가이드 존재
+                try:
+                    wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
+                    print('가이드 노출 확인')
+                    brand_10th = popular_brand_layer.find_element(AppiumBy.XPATH, '//android.view.View[10]')
 
-            # 최초 접속 시 가이드 존재
-            try:
-                wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '내 취향에 맞는 연령대를 설정해보세요')]")
-                print('가이드 노출 확인')
-                brand_10th = popular_brand_layer.find_element(AppiumBy.XPATH, '//android.view.View[10]')
+                except NoSuchElementException:
+                    brand_10th = popular_brand_layer.find_element(AppiumBy.XPATH,
+                                                                  '//android.view.View[10]')
+                    pass
 
-            except NoSuchElementException:
-                brand_10th = popular_brand_layer.find_element(AppiumBy.XPATH,
-                                                              '//android.view.View[10]')
-                pass
+                # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
+                brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
+                brand_10th.click()
+                print('브랜드 10위 선택')
+                print(brand_10th_name)
+                # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
+                search_edit_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
+                if brand_10th_name in search_edit_text:
+                    print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
+                else:
+                    print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("브랜드명 비교 실패")
+                print(f"검색어 : {search_edit_text} ")
+                # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
+                brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
+                search_brand = brand_layer.find_element(AppiumBy.XPATH,
+                                                        '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
+                if brand_10th_name in search_brand:
+                    print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
+                else:
+                    print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
+                print(f"브랜드 이름 : {search_brand} ")
+                # 뒤로가기로 카테고리 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+                print("뒤로가기 선택")
+                sleep(2)
+                # 최근 검색어 있는 경우 모두 지우기로 삭제
+                delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+                print(delete_all)
+                if len(delete_all) == 0:
+                    pass
+                else:
+                    delete_all[0].click()
+                sleep(1)
 
-            # 7. 검색 화면 > 인기 브랜드 검색어 10위 선택
-            brand_10th_name = brand_10th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
-            brand_10th.click()
-            print('브랜드 10위 선택')
-            print(brand_10th_name)
-            # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
-            search_edit_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
-            if brand_10th_name in search_edit_text:
-                print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
-            else:
-                print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
-                test_result = 'WARN'
-                warning_texts.append("브랜드명 비교 실패")
-            print(f"검색어 : {search_edit_text} ")
-            # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
-            brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
-            search_brand = brand_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
-            if brand_10th_name in search_brand:
-                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
-            else:
-                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
-            print(f"브랜드 이름 : {search_brand} ")
-            # 뒤로가기로 카테고리 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            sleep(2)
-            # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
-            print(delete_all)
-            if len(delete_all) == 0:
-                pass
-            else:
-                delete_all[0].click()
-            sleep(1)
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
