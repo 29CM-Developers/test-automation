@@ -79,17 +79,29 @@ class Home:
             try:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
                 sleep(2)
+                print("검색 ui 변경 화면")
                 # 지금 많이 찾는 브랜드 찾기
-                search_container_title = wd.find_element(AppiumBy.XPATH,
-                                                         '//android.widget.TextView[@content-desc="search_popular_brand"]')
-                if search_container_title.text == '지금 많이 찾는 브랜드':
-                    print("지금 많이 찾는 브랜드 타이틀 노출 확인")
+                search_container_title = search_container.find_element(AppiumBy.XPATH,
+                                                                       '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[@index=2]')
+                if search_container_title.text == '지금 많이 찾는 의류 브랜드':
                     pass
                 else:
-                    print("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                    print("지금 많이 찾는 의류 브랜드 타이틀 노출 실패")
                     test_result = 'WARN'
-                    warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
-                print(f'HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀: {search_container_title}')
+                    warning_texts.append("지금 많이 찾는 브랜드 의류 타이틀 노출 실패")
+                print(f"타이틀 확인 : {search_container_title.text}")
+
+                # # 지금 많이 찾는 브랜드 찾기
+                # search_container_title = wd.find_element(AppiumBy.XPATH,
+                #                                          '//android.widget.TextView[@content-desc="search_popular_brand"]')
+                # if search_container_title.text == '지금 많이 찾는 브랜드':
+                #     print("지금 많이 찾는 브랜드 타이틀 노출 확인")
+                #     pass
+                # else:
+                #     print("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                #     test_result = 'WARN'
+                #     warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
+                # print(f'HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀: {search_container_title}')
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
@@ -101,22 +113,32 @@ class Home:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
                 # 최근 검색어 있는 경우 모두 지우기로 삭제
                 delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
-                print(delete_all)
                 if len(delete_all) == 0:
-                    pass
+                    # 지금 많이 찾는 검색어 찾기
+                    print("검색 ui 변경 화면")
+                    sleep(2)
+                    wd.hide_keyboard()
+                    print("키보드 닫기")
+                    search_container_title = search_container.find_element(AppiumBy.XPATH,
+                                                                           '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[5]')
+                    if search_container_title.text == '지금 많이 찾는 검색어':
+                        print("지금 많이 찾는 검색어 타이틀 노출 확인")
+                    else:
+                        print("지금 많이 찾는 검색어 타이틀 노출 실패")
+                        test_result = 'WARN'
+                        warning_texts.append("지금 많이 찾는 검색어 타이틀 노출 실패")
                 else:
                     delete_all[0].click()
-                # 지금 많이 찾는 검색어 찾기
-                sleep(2)
-                search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_container_title')
-                search_container_title_text = search_container_title.text
-                if search_container_title.text == '지금 많이 찾는 검색어':
-                    print("지금 많이 찾는 검색어 타이틀 노출 확인")
-                    pass
-                else:
-                    print("지금 많이 찾는 검색어 타이틀 노출 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("지금 많이 찾는 검색어 타이틀 노출 실패")
+                    # 지금 많이 찾는 검색어 찾기
+                    sleep(2)
+                    search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_container_title')
+                    if search_container_title.text == '지금 많이 찾는 검색어':
+                        print("지금 많이 찾는 검색어 타이틀 노출 확인")
+                        pass
+                    else:
+                        print("지금 많이 찾는 검색어 타이틀 노출 실패")
+                        test_result = 'WARN'
+                        warning_texts.append("지금 많이 찾는 검색어 타이틀 노출 실패")
                 print(f"타이틀 확인 : {search_container_title.text}")
                 print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 검색어 타이틀')
             except NoSuchElementException:
@@ -374,9 +396,7 @@ class Home:
             if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
                 print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
             else:
-                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 실패")
-                test_result = 'WARN'
-                warning_texts.append("홈화면 추천 탭 타이틀 확인 실패")
+                정
             print(f"가이드 문구 : {guide_text.text} ")
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
             print('홈 > 피드 > 우먼 탭선택 ')
