@@ -30,6 +30,16 @@ class Search:
             # 확인 : 지금 많이 찾는 브랜드 타이틀 노출 확인 - 인기 브랜드 타이틀 확인
             search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
             # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
+            print(delete_all)
+            if len(delete_all) == 0:
+                pass
+            else:
+                search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                search_container.find_element(AppiumBy.XPATH,
+                                              '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
+            sleep(2)
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
             delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
             if len(delete_all) == 0:
                 response = requests.get(
@@ -448,17 +458,11 @@ class Search:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
             print("하단 SEARCH탭 선택")
             # 확인 : 지금 많이 찾는 브랜드 타이틀 노출 확인 - 인기 브랜드 타이틀 확인
-            # search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
-            # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
-            print(delete_all)
-            if len(delete_all) == 0:
-                pass
-            else:
-                delete_all[0].click()
+            wd.hide_keyboard()
+            print("키보드 닫기")
             # 지금 많이 찾는 검색어 찾기
             sleep(2)
-            search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_container_title')
+            search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_popular_search')
             search_container_title_text = search_container_title.text
             print(search_container_title_text)
             if search_container_title_text == '지금 많이 찾는 검색어':
@@ -525,6 +529,17 @@ class Search:
                     print("뒤로가기 선택")
                     sleep(2)
                     # element_control.scroll_control(wd,'U',40)
+                    # 최근 검색어 있는 경우 모두 지우기로 삭제
+                    delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
+                    print(delete_all)
+                    if len(delete_all) == 0:
+                        pass
+                    else:
+                        search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                        search_container.find_element(AppiumBy.XPATH,
+                                                      '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
+                    sleep(2)
+
                     delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
                     print(delete_all)
                     if len(delete_all) == 0:
