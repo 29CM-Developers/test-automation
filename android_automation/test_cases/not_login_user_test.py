@@ -241,6 +241,15 @@ class NotLogin:
 
         try:
             # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
+            print(delete_all)
+            if len(delete_all) == 0:
+                pass
+            else:
+                search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                search_container.find_element(AppiumBy.XPATH,
+                                              '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
+            sleep(2)
             delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
             print(delete_all)
             if len(delete_all) == 0:
