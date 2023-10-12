@@ -321,24 +321,25 @@ class Home:
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
             dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
-            dynamic_button_title = wd.find_elements(By.XPATH, "//*[contains(@text, '센스있는 선물하기')]")
-            print(dynamic_button_title)
-            if len(dynamic_button_title) == 0:
+            try:
+                dynamic_button_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, "dynamic_button_gift")
+            except NoSuchElementException:
                 element_control.swipe_control(wd, dynamic_layer, 'left', 50)
-                dynamic_button_title = wd.find_elements(By.XPATH, "//*[contains(@text, '센스있는 선물하기')]")
-                print(dynamic_button_title)
-            print(dynamic_button_title[0].text)
-            button_title = dynamic_button_title[0].text
-            dynamic_button_title[0].click()
+                dynamic_button_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, "dynamic_button_gift")
+            print(dynamic_button_title)
+            print(dynamic_button_title.text)
+            button_title = dynamic_button_title.text
+            dynamic_button_title.click()
 
             sleep(2)
             gift_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
-            gift_title = gift_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
+            gift_title = gift_layer.find_element(AppiumBy.XPATH,
+                                                 '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
             print(gift_title)
 
             if gift_title == button_title:
                 print(f"선물하기 타이틀 확인 : {gift_title}")
-            else :
+            else:
                 print(f"선물하기 타이틀 확인 실패 : {gift_title}")
                 test_result = 'WARN'
                 warning_texts.append("다이나믹 게이트 타이틀 확인 실패")
