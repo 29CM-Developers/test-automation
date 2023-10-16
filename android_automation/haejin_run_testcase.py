@@ -13,6 +13,7 @@ from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.search_test import Search
 from android_automation.test_cases.like_test import Like
 from android_automation.test_cases.cart_test import Cart
+from android_automation.test_cases.join_test import Join
 from android_setup import hhj2008_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -51,7 +52,6 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
 
     def test_android_bvt(self):
-
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
@@ -97,7 +97,14 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 실제 실행 - 간편 회원가입 실패
+        self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         ##########################
+        # 현재 함수명 저장 - slack noti에 사용
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
         # 노트20 시나리오
         # 실제 실행 - 이메일 로그인 성공
         self.result_data = LoginLogout.test_email_login_success(self, self.wd)

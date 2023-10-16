@@ -40,9 +40,9 @@ class Category:
             category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
 
             category_layer.find_element(AppiumBy.XPATH,
-                                        '//android.view.View/android.view.View[@index=1]/android.widget.TextView[3]').click()
+                                        '//android.view.View/android.view.View[2]/android.widget.TextView[@text="신발"]').click()
             category_layer.find_element(AppiumBy.XPATH,
-                                        '//android.view.View/android.view.View[@index=2]/android.widget.TextView[@text="WOMEN"]').click()
+                                        '//android.view.View/android.view.View[3]/android.widget.TextView[@text="WOMEN"]').click()
 
             category_layer.find_element(AppiumBy.ACCESSIBILITY_ID, 'all_title').click()
 
