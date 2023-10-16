@@ -145,6 +145,14 @@ class Like:
             # LIKE 탭 딥링크로 이동
             wd.get(self.conf['deeplink']['like'])
 
+            # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+                print('브랜드 추천 페이지 노출')
+            except NoSuchElementException:
+                pass
+
             # 추천 리스트의 첫번째 상품명 저장 및 좋아요 선택
             recommended_product = wd.find_element(AppiumBy.XPATH,
                                                   '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="2"]')
