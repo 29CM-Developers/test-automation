@@ -165,8 +165,6 @@ class Search:
                                                   '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
                 sleep(2)
                 # 앱최초 실행 시에 문구 다름
-                # filter_name = element_control.scroll_to_element_with_text(wd, '전체 기준')
-                # filter_name = wd.find_element(By.XPATH, "//*[contains(@text, '최근 검색')]")
                 wd.find_element(By.XPATH, "//*[contains(@text, '전체 기준')]").click()
                 sleep(2)
                 bottom_sheet_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
@@ -275,12 +273,14 @@ class Search:
                 print("뒤로가기 선택")
                 sleep(2)
                 # 최근 검색어 있는 경우 모두 지우기로 삭제
-                delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+                delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
                 print(delete_all)
                 if len(delete_all) == 0:
                     pass
                 else:
-                    delete_all[0].click()
+                    search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                    search_container.find_element(AppiumBy.XPATH,
+                                                  '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
                 sleep(2)
                 # 뒤로가기로 카테고리 진입 확인
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
@@ -710,11 +710,15 @@ class Search:
             print("뒤로가기 선택")
             sleep(2)
             # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
+            print(delete_all)
             if len(delete_all) == 0:
                 pass
             else:
-                delete_all[0].click()
+                search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                search_container.find_element(AppiumBy.XPATH,
+                                              '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
+            sleep(2)
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
             print("뒤로가기 선택")
