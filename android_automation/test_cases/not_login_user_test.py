@@ -198,16 +198,16 @@ class NotLogin:
         PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
         print(f"PDP_product_title : {PDP_product_title}")
         PDP_product_title = PDP_product_title.replace("_", " ")
-        best_product_title = best_product_title.text.replace("_", " ")
+        best_product_title = best_product_list_title.replace("_", " ")
         print(f"PDP_product_title : {PDP_product_title} ")
-        print(f"best_product_title : {best_product_list_title} ")
-        if PDP_product_title in best_product_list_title:
+        print(f"best_product_title : {best_product_title} ")
+        if PDP_product_title in best_product_title:
             print("베스트 상품 PDP 정상 확인")
         else:
             print("베스트 상품 PDP 정상 확인 실패")
             test_result = 'WARN'
             warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-        print(f"베스트 상품명 : {best_product_list_title} , PDP 상품명 : {PDP_product_title}  ")
+        print(f"베스트 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_title}  ")
         sleep(3)
         # 상단으로 홈화면 진입 확인
         wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
