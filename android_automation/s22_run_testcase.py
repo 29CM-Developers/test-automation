@@ -11,6 +11,7 @@ from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.plp_test import Plp
 from android_automation.test_cases.search_test import Search
 from android_automation.test_cases.join_test import Join
+from android_automation.test_cases.my_test import My
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -87,6 +88,16 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 -   검색 결과 화면 확인 성공
         self.result_data = Search.test_search_results_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   설정 화면 진입 확인 성공
+        self.result_data = My.test_enter_settings_screen(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   최근 본 컨텐츠 확인 성공
+        self.result_data = My.test_recently_viewed_content(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
