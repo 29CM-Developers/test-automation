@@ -198,7 +198,7 @@ class NotLogin:
         PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
         print(f"PDP_product_title : {PDP_product_title}")
         PDP_product_title = PDP_product_title.replace("_", " ")
-        # best_product_title = best_product_title[0].text.replace("_", " ")
+        best_product_title = best_product_title.text.replace("_", " ")
         print(f"PDP_product_title : {PDP_product_title} ")
         print(f"best_product_title : {best_product_list_title} ")
         if PDP_product_title in best_product_list_title:
