@@ -273,7 +273,7 @@ class Search:
                 print("뒤로가기 선택")
                 sleep(2)
                 # 최근 검색어 있는 경우 모두 지우기로 삭제
-                delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
+                delete_all = wd.find_element색s(By.XPATH, "//*[contains(@text, '최근 검색')]")
                 print(delete_all)
                 if len(delete_all) == 0:
                     pass
@@ -458,6 +458,7 @@ class Search:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
             print("하단 SEARCH탭 선택")
             # 확인 : 지금 많이 찾는 브랜드 타이틀 노출 확인 - 인기 브랜드 타이틀 확인
+            sleep(1)
             wd.hide_keyboard()
             print("키보드 닫기")
             # 지금 많이 찾는 검색어 찾기

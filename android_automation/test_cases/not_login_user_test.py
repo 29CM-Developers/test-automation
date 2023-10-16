@@ -4,6 +4,8 @@ import subprocess
 import sys
 import traceback
 import logging
+import requests
+
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.mobileby import MobileBy
 from selenium.common import NoSuchElementException
@@ -254,16 +256,26 @@ class NotLogin:
             print(delete_all)
             if len(delete_all) == 0:
                 print("검색 ui 변경 화면")
-                # 지금 많이 찾는 브랜드 찾기
-                search_container_title = search_container.find_element(AppiumBy.XPATH,
-                                                                       '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[2]')
-                if search_container_title.text == '지금 많이 찾는 의류 브랜드':
-                    pass
+                response = requests.get(
+                    'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
+                if response.status_code == 200:
+                    api_data = response.json()
+                    category_name = api_data['data']['brand']['results'][0]['categoryName']
+                    print(f"category_name : {category_name}")
+
+                    # 지금 많이 찾는 브랜드 찾기
+                    search_container_title = search_container.find_element(AppiumBy.XPATH,
+                                                                           '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[@index=2]')
+                    if search_container_title.text == f"지금 많이 찾는 {category_name} 브랜드":
+                        pass
+                    else:
+                        print(f"지금 많이 찾는 {category_name} 브랜드 타이틀 노출 실패")
+                        test_result = 'WARN'
+                        warning_texts.append(f"지금 많이 찾는 {category_name} 브랜드 타이틀 노출 실패")
+                    print(f"타이틀 확인 : {search_container_title.text}")
                 else:
-                    print("지금 많이 찾는 의류 브랜드 타이틀 노출 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("지금 많이 찾는 브랜드 의류 타이틀 노출 실패")
-                print(f"타이틀 확인 : {search_container_title.text}")
+                    print('카테고리 그룹 API 호출 실패')
+
                 brand_6th = wd.find_element(AppiumBy.XPATH,
                                             '(//android.view.View[@content-desc="popular_brand_layer"])[1]/android.view.View[6]')
 
@@ -351,13 +363,15 @@ class NotLogin:
                 print("뒤로가기 선택")
                 sleep(2)
                 # 최근 검색어 있는 경우 모두 지우기로 삭제
-                delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+                delete_all = wd.find_element색s(By.XPATH, "//*[contains(@text, '최근 검색')]")
                 print(delete_all)
                 if len(delete_all) == 0:
                     pass
                 else:
-                    delete_all[0].click()
-                sleep(1)
+                    search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+                    search_container.find_element(AppiumBy.XPATH,
+                                                  '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
+                sleep(2)
 
             # 뒤로가기로 카테고리 진입 확인
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()

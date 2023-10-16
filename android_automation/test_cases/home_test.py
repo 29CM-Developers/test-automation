@@ -80,28 +80,26 @@ class Home:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
                 sleep(2)
                 print("검색 ui 변경 화면")
-                # 지금 많이 찾는 브랜드 찾기
-                search_container_title = search_container.find_element(AppiumBy.XPATH,
-                                                                       '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[@index=2]')
-                if search_container_title.text == '지금 많이 찾는 의류 브랜드':
-                    pass
-                else:
-                    print("지금 많이 찾는 의류 브랜드 타이틀 노출 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("지금 많이 찾는 브랜드 의류 타이틀 노출 실패")
-                print(f"타이틀 확인 : {search_container_title.text}")
+                response = requests.get(
+                    'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
+                if response.status_code == 200:
+                    api_data = response.json()
+                    category_name = api_data['data']['brand']['results'][0]['categoryName']
+                    print(f"category_name : {category_name}")
 
-                # # 지금 많이 찾는 브랜드 찾기
-                # search_container_title = wd.find_element(AppiumBy.XPATH,
-                #                                          '//android.widget.TextView[@content-desc="search_popular_brand"]')
-                # if search_container_title.text == '지금 많이 찾는 브랜드':
-                #     print("지금 많이 찾는 브랜드 타이틀 노출 확인")
-                #     pass
-                # else:
-                #     print("지금 많이 찾는 브랜드 타이틀 노출 실패")
-                #     test_result = 'WARN'
-                #     warning_texts.append("지금 많이 찾는 브랜드 타이틀 노출 실패")
-                # print(f'HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀: {search_container_title}')
+                    # 지금 많이 찾는 브랜드 찾기
+                    search_container_title = search_container.find_element(AppiumBy.XPATH,
+                                                                           '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[@index=2]')
+                    if search_container_title.text == f"지금 많이 찾는 {category_name} 브랜드":
+                        pass
+                    else:
+                        print(f"지금 많이 찾는 {category_name} 브랜드 타이틀 노출 실패")
+                        test_result = 'WARN'
+                        warning_texts.append(f"지금 많이 찾는 {category_name} 브랜드 타이틀 노출 실패")
+                    print(f"타이틀 확인 : {search_container_title.text}")
+                else:
+                    print('카테고리 그룹 API 호출 실패')
+
             except NoSuchElementException:
                 test_result = 'WARN'
                 warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
