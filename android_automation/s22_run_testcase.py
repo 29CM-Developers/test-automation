@@ -101,6 +101,11 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 실제 실행 -   주문 건이 없을 경우, 주문 배송 조회 성공
+        self.result_data = My.test_track_delivery_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
