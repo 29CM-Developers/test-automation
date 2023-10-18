@@ -264,8 +264,7 @@ class NotLogin:
                     print(f"category_name : {category_name}")
 
                     # 지금 많이 찾는 브랜드 찾기
-                    search_container_title = search_container.find_element(AppiumBy.XPATH,
-                                                                           '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[@index=2]')
+                    search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_popular_clothes_brand')
                     if search_container_title.text == f"지금 많이 찾는 {category_name} 브랜드":
                         pass
                     else:
