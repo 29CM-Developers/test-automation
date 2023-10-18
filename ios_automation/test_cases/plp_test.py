@@ -1,12 +1,12 @@
 import os
 import sys
 import traceback
-from time import time, sleep
-
 import requests
+import com_utils
+
+from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
 from com_utils import values_control
 
 
@@ -17,11 +17,9 @@ class Plp:
         print(f'[{test_name}] 테스트 시작')
 
         try:
-            wd.execute_script('mobile:swipe', {'direction': 'up'})
-
-            # 홈 카테고리의 BEST 탭 > 전체 보기 통해서 베스트 PLP 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="전체보기"]').click()
+            # 카테고리 탭 > 여성 의류 BEST
+            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "CATEGORY"`]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best').click()
 
             try:
                 wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="베스트"]')
@@ -31,27 +29,17 @@ class Plp:
                 error_texts = '베스트 PLP 진입 확인 실패'
                 print('베스트 PLP 진입 확인 실패')
 
-            # 베스트 PLP의 두번째 상품 좋아요 버튼과 개수 element 확인
-            product_1st = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="1"]')
-            try:
-                product_1st_heart_btn = product_1st.find_element(AppiumBy.XPATH,
-                                                                 '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeButton')
-                product_1st_heart_text = product_1st_heart_btn.find_element(AppiumBy.XPATH,
-                                                                            '//XCUIElementTypeStaticText')
-            except NoSuchElementException:
-                product_1st_heart_btn = product_1st.find_element(AppiumBy.XPATH,
-                                                                 '//XCUIElementTypeOther[@index="3"]/XCUIElementTypeButton')
-                product_1st_heart_text = product_1st_heart_btn.find_element(AppiumBy.XPATH,
-                                                                            '//XCUIElementTypeStaticText')
-
             # 좋아요 버튼 선택 전, 좋아요 수 저장
-            heart_count = product_1st_heart_text.text
+            heart_count = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').get_attribute(
+                'label')
             heart_count = int(heart_count.replace(',', ''))
 
             # 좋아요 버튼 선택 -> 찜하기 등록
-            product_1st_heart_btn.click()
+            # product_1st_heart_btn.click()
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').click()
             sleep(1)
-            heart_select = product_1st_heart_text.text
+            heart_select = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').get_attribute(
+                'label')
             heart_select = int(heart_select.replace(',', ''))
             if heart_select == heart_count + 1:
                 print('아이템 좋아요 개수 증가 확인')
@@ -62,9 +50,11 @@ class Plp:
                 print(f'아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
 
             # 좋아요 버튼 선택 -> 찜하기 해제
-            product_1st_heart_btn.click()
+            # product_1st_heart_btn.click()
+            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').click()
             sleep(1)
-            heart_select = product_1st_heart_text.text
+            heart_select = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').get_attribute(
+                'label')
             heart_select = int(heart_select.replace(',', ''))
             if heart_select == heart_count:
                 print('아이템 좋아요 개수 차감 확인')
@@ -88,24 +78,32 @@ class Plp:
                     best_product_10th_name = f'{best_product_10th_prefix[0]} {best_product_10th_itemname}'
                 print(best_product_10th_name)
 
-                # 10번째 상품 선택 (화면에 미노출 시, 노출 될때까지 스크롤)
-                for i in range(0, 10):
-                    try:
-                        best_product_10th = wd.find_element(AppiumBy.ACCESSIBILITY_ID, best_product_10th_name)
-                        best_product_10th.click()
+                # 10번째 상품 선택 (화면에 미노출 시, 노출 될 때까지 스크롤)
+                rank_break = False
+                for i in range(0, 5):
+                    best = wd.find_elements(AppiumBy.XPATH,
+                                            '//XCUIElementTypeStaticText[@name="best_product_rank"]')
+                    for rank in best:
+                        best_rank = rank.text
+                        if best_rank == '10':
+                            rank_break = True
+                            wd.find_element(AppiumBy.IOS_PREDICATE, f'label == "{best_product_10th_name}"').click()
+                            break
+                    if rank_break:
                         break
-                    except NoSuchElementException:
-                        wd.execute_script('mobile:swipe', {'direction': 'up'})
+                    com_utils.element_control.scroll_control(wd, "D", 50)
 
                 # PDP 상품 이름 저장 -> 이미지 1개일 경우와 2개 이상일 경우, XPATH index 변경되어 아래와 같이 작성
                 pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
                 try:
                     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'Select a slide to show')
                     pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute('name')
+                                                    '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute(
+                        'name')
                 except NoSuchElementException:
                     pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
+                                                    '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute(
+                        'name')
 
                 # 선택한 상품의 PDP에서 상품 이름 비교
                 if best_product_10th_itemname.strip() in pdp_name:

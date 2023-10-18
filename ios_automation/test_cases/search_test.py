@@ -10,7 +10,18 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 
 
+def clear_recent_keyword(wd):
+    try:
+        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색')
+        clear_btn = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="keyword_clear"]')
+        for clear in reversed(clear_btn):
+            clear.click()
+    except NoSuchElementException:
+        pass
+
+
 class Search:
+
     def test_search_popular_brand(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
@@ -21,59 +32,51 @@ class Search:
             # SEARCH 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
 
-            all_popular_brand_1st = ''
-            all_popular_brand_30th = ''
+            first_brand_category_name = ''
+            api_1st_brand = ''
+            api_30th_brand = ''
             # 전체 기준 인기검색어 리스트 호출
-            response = requests.get('https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30')
+            response = requests.get(
+                'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
             if response.status_code == 200:
-                all_popular_data = response.json()
-                all_popular_brand_1st = all_popular_data['data']['popularBrandKeywords'][0]
-                all_popular_brand_30th = all_popular_data['data']['popularBrandKeywords'][29]
-                print(f'1위: {all_popular_brand_1st} / 30위: {all_popular_brand_30th}')
+                brand_data = response.json()
+                first_brand_category = brand_data['data']['brand']['results'][0]
+                first_brand_category_name = first_brand_category['categoryName']
+                api_1st_brand = first_brand_category['keywords'][0]['keyword']
+                api_30th_brand = first_brand_category['keywords'][29]['keyword']
+                print(f'첫번째 브랜드 카테고리 : {first_brand_category_name}')
+                print(f'1위 : {api_1st_brand} / 30위 : {api_30th_brand}')
             else:
                 print('인기 검색어 API 호출 실패')
 
-            # 인기 브랜드 타이틀 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 브랜드')
+            # 첫번째 인기 브랜드 카테고리 확인
+            brand_category_name = wd.find_element(AppiumBy.XPATH,
+                                                  '//XCUIElementTypeStaticText[@name="first_popular_brand_title"]').text
+            if f'지금 많이 찾는 {first_brand_category_name} 브랜드' in brand_category_name:
                 print('인기 브랜드 타이틀 확인')
-            except NoSuchElementException:
+            else:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 타이틀 확인 실패')
                 print('인기 브랜드 타이틀 확인 실패')
 
-            # 최근 검색어 모두 지우기
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색어')
-                wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
-            except NoSuchElementException:
-                pass
-
             # 필터가 전체 기준인지 확인
-            filter_area = wd.find_element(AppiumBy.XPATH,
-                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]')
-            filter_btn = filter_area.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton')
+            filter_btn = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'keyword_filter')
             if filter_btn.text == '전체 기준':
                 print('필터 : 전체 기준')
                 pass
             else:
                 print(f'필터 : 전체 기준이 아님 / {filter_btn.text}')
                 filter_btn.click()
-                wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"]["ALL"]}"`][1]').click()
-                wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"]["ALL"]}"`][2]').click()
-                wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'gender_filter_all').click()
 
             # 인기 브랜드 1위 확인
-            popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
-            popular_brand_1st = popular_brand.find_element(AppiumBy.XPATH,
-                                                           '//XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText')
-            popular_brand_1st_name = popular_brand_1st.text
+            brand_1st = wd.find_element(AppiumBy.XPATH,
+                                        '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[1]')
+            brand_1st_name = brand_1st.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
 
             # API 호출한 인기 브랜드 1위와 실제 1위가 동일한 지 확인 후 선택
-            if all_popular_brand_1st == popular_brand_1st_name:
-                popular_brand_1st.click()
+            if api_1st_brand == brand_1st_name:
+                brand_1st.click()
                 print('인기 브랜드 1위 확인')
             else:
                 test_result = 'WARN'
@@ -82,7 +85,7 @@ class Search:
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
             relate_brand_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
-            if popular_brand_1st_name in relate_brand_name:
+            if brand_1st_name in relate_brand_name:
                 print(f'인기 브랜드 검색 확인: {relate_brand_name}')
             else:
                 test_result = 'WARN'
@@ -93,37 +96,40 @@ class Search:
             product_brand = wd.find_elements(AppiumBy.ACCESSIBILITY_ID, 'brand_name')
             product_brand_name = product_brand[0].text
 
-            if popular_brand_1st_name == product_brand_name:
+            if brand_1st_name == product_brand_name:
                 print('인기 브랜드 검색 상품 확인')
             else:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 검색 상품 확인 실패')
-                print(f'인기 브랜드 검색 상품 확인 실패: {popular_brand_1st_name} / {product_brand_name}')
+                print(f'인기 브랜드 검색 상품 확인 실패: {brand_1st_name} / {product_brand_name}')
 
             # 검색 화면으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # 인기 브랜드 30위 확인
-            popular_brand = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView[@index="2"]')
+            popular_brand = wd.find_element(AppiumBy.XPATH,
+                                            '//XCUIElementTypeCollectionView[@name="first_popular_brand_list"]')
+            com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
+            com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
             com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
             com_utils.element_control.swipe_control(wd, popular_brand, 'left', 30)
 
-            popular_brand_30th = popular_brand.find_element(AppiumBy.XPATH,
-                                                            '//XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText')
-            popular_brand_30th_name = popular_brand_30th.text
+            brand_30th = popular_brand.find_element(AppiumBy.XPATH,
+                                                    '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[6]')
+            brand_30th_name = brand_30th.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
 
             # API 호출한 인기브랜드 30위와 실제 30위가 동일한지 확인 후 선택
-            if all_popular_brand_30th == popular_brand_30th_name:
-                popular_brand_30th.click()
+            if api_30th_brand == brand_30th_name:
+                brand_30th.click()
                 print('인기 브랜드 30위 확인')
             else:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 30위 확인 실패')
-                print('인기 브랜드 30위 확인 실패')
+                print(f'인기 브랜드 30위 확인 실패 : {api_30th_brand} / {brand_30th_name}')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
             relate_brand_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
-            if popular_brand_30th_name in relate_brand_name:
+            if brand_30th_name in relate_brand_name:
                 print(f'인기 브랜드 검색 확인: {relate_brand_name}')
             else:
                 test_result = 'WARN'
@@ -134,56 +140,48 @@ class Search:
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
             # 최근 검색어 모두 지우기
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
+            clear_recent_keyword(wd)
 
-            # 필터 영역 선택하여 필터 변경 -> 여성, 30~34세 기준으로 변경
-            filter = wd.find_element(AppiumBy.XPATH,
-                                     '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]')
-            brand_filter = filter.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton')
+            # 필터 영역 선택하여 필터 변경 -> 여성 기준으로 변경
+            brand_filter = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'keyword_filter')
             brand_filter.click()
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"]["WOMEN"]}"`]').click()
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"]["30to34"]}"`]').click()
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'gender_filter_female').click()
 
             # 변경된 필터 기준
             response = requests.get(
-                'https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30&group=female&ageGroup=30to34')
+                'https://search-api.29cm.co.kr/api/v4/popular?gender=female&keywordLimit=100&brandLimit=30')
             if response.status_code == 200:
-                filter_popular_data = response.json()
-                filter_popular_brand_10th = filter_popular_data['data']['popularBrandKeywords'][9]
+                filter_popular_brand_data = response.json()
+                filter_brand_list = filter_popular_brand_data['data']['brand']['results'][0]
+                filter_popular_1st_brand = filter_brand_list['keywords'][0]['keyword']
 
                 # 필터 기준 문구 변경 확인
-                if brand_filter.text == '여성 30~34세 기준':
+                if brand_filter.text == '여성 기준':
                     print('필터 적용 확인 - 필터 기준 문구')
                 else:
                     test_result = 'WARN'
                     warning_texts.append('필터 적용 확인 실패')
                     print(f'필터 적용 확인 실패 : {brand_filter.text}')
 
-                # 변경된 기준의 인기브랜드 10위 확인
-                popular_brand_10th = popular_brand.find_element(AppiumBy.XPATH,
-                                                                '//XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText')
-                if filter_popular_brand_10th == popular_brand_10th.text:
-                    print('필터 적용 확인 - 필터 기준 10위')
+                # 변경된 기준의 인기브랜드 1위 확인
+                filter_1st_brand = wd.find_element(AppiumBy.XPATH,
+                                                   '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[1]')
+                filter_1st_brand_name = filter_1st_brand.find_element(AppiumBy.XPATH,
+                                                                      '//XCUIElementTypeStaticText').text
+
+                if filter_popular_1st_brand == filter_1st_brand_name:
+                    print('필터 적용 확인 - 필터 기준 1위 브랜드')
                 else:
                     test_result = 'WARN'
                     warning_texts.append('필터 적용 확인 실패')
-                    print(f'필터 적용 확인 실패 : {filter_popular_brand_10th} / {popular_brand_10th.text}')
+                    print(f'필터 적용 확인 실패 : {filter_popular_1st_brand} / {filter_1st_brand_name}')
             else:
                 print('인기 검색어 필터 API 호출 실패')
 
             # 필터를 전체 기준으로 재변경
-            filter = wd.find_element(AppiumBy.XPATH,
-                                     '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="0"]')
-            brand_filter = filter.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton')
+            brand_filter = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'keyword_filter')
             brand_filter.click()
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_gender"]["ALL"]}"`][1]').click()
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            f'**/XCUIElementTypeButton[`label == "{self.conf["search_filter_age"]["ALL"]}"`][2]').click()
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "적용하기"`]').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'gender_filter_all').click()
 
             # 뒤로가기
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
@@ -219,37 +217,43 @@ class Search:
             # SEARCH 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
 
-            popluar_keyword_1st = ''
-            popluar_keyword_25th = ''
+            api_keyword_1st = ''
+            api_keyword_25th = ''
             # 전체 기준 인기검색어 리스트 호출
-            response = requests.get('https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30')
+            response = requests.get(
+                'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
             if response.status_code == 200:
-                all_popular_data = response.json()
-                popluar_keyword_1st = all_popular_data['data']['popularKeyword'][0]
-                popluar_keyword_25th = all_popular_data['data']['popularKeyword'][24]
-                print(f'1위: {popluar_keyword_1st} / 25위: {popluar_keyword_25th}')
+                keyword_data = response.json()
+                keyword_list = keyword_data['data']['keyword']['results'][0]
+                api_keyword_1st = keyword_list['keywords'][0]['keyword']
+                api_keyword_25th = keyword_list['keywords'][24]['keyword']
+                print(f'1위: {api_keyword_1st} / 25위: {api_keyword_25th}')
             else:
                 print('인기 검색어 API 호출 실패')
 
             # 인기 브랜드 타이틀 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 검색어')
-                print('인기 검색어 타이틀 확인')
-            except NoSuchElementException:
+            for i in range(0, 3):
+                try:
+                    keyword_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 검색어')
+                    if keyword_title.is_displayed():
+                        print('인기 검색어 타이틀 확인')
+                        break
+                    else:
+                        print('인기 검색어 타이틀 확인 안되어 스크롤')
+                        com_utils.element_control.scroll_control(wd, 'D', 50)
+                except NoSuchElementException:
+                    com_utils.element_control.scroll_control(wd, 'D', 50)
+            else:
                 test_result = 'WARN'
                 warning_texts.append('인기 검색어 타이틀 확인 실패')
                 print('인기 검색어 타이틀 확인 실패')
 
-            # 인기 검색어 1위 검색어 선택 / 동일 검색어 2개일 경우와 1개일 경우 분리
-            try:
-                wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                f'**/XCUIElementTypeStaticText[`label == "{popluar_keyword_1st}"`][2]').click()
-            except NoSuchElementException:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, popluar_keyword_1st).click()
+            # 인기 검색어 1위 검색어 선택
+            wd.find_element(AppiumBy.XPATH, '////XCUIElementTypeOther[@name="popular_keyword"]').click()
 
             # 연관 검색어 API 호출
             response = requests.get(
-                f'https://search-api.29cm.co.kr/api/v4/keyword/related?keyword={popluar_keyword_1st}')
+                f'https://search-api.29cm.co.kr/api/v4/keyword/related?keyword={api_keyword_1st}')
             if response.status_code == 200:
                 relate_keyword_data = response.json()
                 relate_keyword_list = relate_keyword_data['data']['relatedKeywords']
@@ -258,12 +262,12 @@ class Search:
                 if not relate_keyword_list:
                     print('연관 검색어 없음')
                     search_input_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'input_keyword').text
-                    if search_input_field == popluar_keyword_1st:
+                    if search_input_field == api_keyword_1st:
                         print('인기 검색어 검색 확인 - 입력란')
                     else:
                         test_result = 'WARN'
                         warning_texts.append('인기 브랜드 검색 결과 확인 실패')
-                        print(f'인기 브랜드 검색 결과 확인 실패 : {popluar_keyword_1st} / {search_input_field}')
+                        print(f'인기 브랜드 검색 결과 확인 실패 : {api_keyword_1st} / {search_input_field}')
                 else:
                     print('연관 검색어 있음')
                     relate_keyword_api = relate_keyword_list[0]
@@ -281,10 +285,16 @@ class Search:
             # 검색 화면으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
+            for i in range(0, 3):
+                try:
+                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색')
+                except NoSuchElementException:
+                    com_utils.element_control.scroll_control(wd, "U", 50)
+
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
             recent_keyword = wd.find_element(AppiumBy.XPATH,
-                                             '//XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
-            if popluar_keyword_1st == recent_keyword.text:
+                                             '//XCUIElementTypeOther[@name="recent_keyword"]/XCUIElementTypeStaticText')
+            if api_keyword_1st == recent_keyword.text:
                 print('최근 검색어 노출 확인')
             else:
                 test_result = 'WARN'
@@ -292,23 +302,27 @@ class Search:
                 print('최근 검색어 노출 확인 실패')
 
             # 최근 검색어 모두 지우기
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
+            clear_recent_keyword(wd)
 
             # 인기 검색어 25위 확인
+            rank_break = False
             for i in range(0, 10):
                 try:
-                    wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "25"`]')
-                    try:
-                        wd.find_element(AppiumBy.ACCESSIBILITY_ID, popluar_keyword_25th)
-                        print('인기 검색어 순위 확인')
+                    keyword_rank = wd.find_elements(AppiumBy.XPATH,
+                                                    '//XCUIElementTypeOther[@name="popular_keyword_rank"]/XCUIElementTypeStaticText')
+                    for rank in keyword_rank:
+                        if rank.text == "25":
+                            rank_break = True
+                            wd.find_element(AppiumBy.ACCESSIBILITY_ID, api_keyword_25th)
+                            print('인기 검색어 순위 확인')
+                            break
+                    if rank_break:
                         break
-                    except NoSuchElementException:
-                        test_result = 'WARN'
-                        warning_texts.append('인기 검색어 순위 확인 실패')
-                        print('인기 검색어 순위 확인 실패')
-                except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, "D", 60)
+                except NoSuchElementException:
+                    test_result = 'WARN'
+                    warning_texts.append('인기 검색어 순위 확인 실패')
+                    print('인기 검색어 순위 확인 실패')
 
             # 뒤로가기
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
@@ -346,7 +360,7 @@ class Search:
 
             # 니트 검색
             wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').send_keys(self.conf["keyword"]["knit"])
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSearchBlack').click()
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_btn').click()
 
             # 검색 결과 화면의 입력란의 검색어 확인
             search_input_field = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'input_keyword').text
@@ -432,7 +446,7 @@ class Search:
 
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
             recent_keyword = wd.find_element(AppiumBy.XPATH,
-                                             '//XCUIElementTypeCollectionView[@index="1"]/XCUIElementTypeCell[@index="0"]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="0"]')
+                                             '//XCUIElementTypeOther[@name="recent_keyword"]/XCUIElementTypeStaticText')
             if self.conf["keyword"]['knit'] == recent_keyword.text:
                 print('최근 검색어 노출 확인')
             else:
@@ -441,9 +455,7 @@ class Search:
                 print('최근 검색어 노출 확인 실패')
 
             # 최근 검색어 모두 지우기
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                            '**/XCUIElementTypeStaticText[`label == "모두 지우기"`]').click()
-            print('최근 검색어 모두 지우기')
+            clear_recent_keyword(wd)
 
             # 뒤로가기
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
