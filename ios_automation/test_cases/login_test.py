@@ -7,6 +7,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control
 from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
+from ios_automation.test_cases.select_category_page import test_select_category
 
 
 class UserLoginTest:
@@ -102,7 +103,8 @@ class UserLoginTest:
             # Home 으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
-            # 복귀 후, 바텀 시트 노출 여부 확인
+            # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
+            test_select_category(self.wd)
             test_bottom_sheet(self.wd)
 
         except Exception:
@@ -239,7 +241,8 @@ class UserLoginTest:
             # Home 으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
 
-            # 복귀 후, 바텀 시트 노출 여부 확인
+            # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
+            test_select_category(self.wd)
             test_bottom_sheet(self.wd)
 
         except Exception:
