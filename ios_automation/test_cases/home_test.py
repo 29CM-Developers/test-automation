@@ -323,13 +323,26 @@ class Home:
             # SEARCH 탭 진입
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
 
-            # 인기 브랜드 타이틀 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 브랜드')
+            # 첫번째 인기 브랜드 카테고리 타이틀 확인
+            first_brand_category = ''
+            response = requests.get(
+                'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
+            if response.status_code == 200:
+                brand_data = response.json()
+                first_brand_category = brand_data['data']['brand']['results'][0]
+                first_brand_category = first_brand_category['categoryName']
+                print(f'첫번째 브랜드 카테고리 : {first_brand_category}')
+            else:
+                print('인기 검색어 API 호출 실패')
+
+            # 첫번째 인기 브랜드 카테고리 확인
+            brand_category_name = wd.find_element(AppiumBy.XPATH,
+                                                  '//XCUIElementTypeStaticText[@name="first_popular_brand_title"]').text
+            if f'지금 많이 찾는 {first_brand_category} 브랜드' in brand_category_name:
                 print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀')
-            except NoSuchElementException:
+            else:
                 test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
+                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
                 print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
 
             # 인기 브랜드 타이틀 확인
@@ -338,7 +351,7 @@ class Home:
                 print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 검색어 타이틀')
             except NoSuchElementException:
                 test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인')
+                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
                 print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()

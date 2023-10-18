@@ -20,7 +20,7 @@ logger.addHandler(stream_handler)
 class NotLoginUserTest:
 
     # 로그인 페이지 진입 확인 메소드. [로그인하기] 버튼의 노출 여부를 판단한다.
-    def check_login_page(self, wd, warning_texts=[], warning_tests=[]):
+    def check_login_page(self, wd, warning_texts=[]):
 
         sleep(2)
         try:
@@ -86,17 +86,14 @@ class NotLoginUserTest:
 
             # Home > 베스트 탭 선택하여 베스트 PLP 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '베스트').click()
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="전체보기"]').click()
 
-            # 베스트 PLP에서 첫번째 상품명 저장하고 PDP 진입
-            plp_product = wd.find_element(AppiumBy.XPATH,
-                                          '//XCUIElementTypeCollectionView/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText[@index="1"]')
-            plp_name = plp_product.text
-            plp_product.click()
+            # 베스트 탭에서 첫번째 상품명 저장하고 PDP 진입
+            plp_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'product_name').text
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'product_info').click()
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             pdp_name_text = wd.find_element(AppiumBy.XPATH,
-                                       '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther').text
+                                            '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther').text
             pdp_name = pdp_name_text.strip(' - 감도 깊은 취향 셀렉트샵 29CM')
             if pdp_name in plp_name:
                 logger.info('PDP 진입 확인')
@@ -118,11 +115,11 @@ class NotLoginUserTest:
                 warning_texts.append('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
                 logger.warning('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
 
-            # 상단 검색 버튼 선택하여 인기 브랜드 10위 선택
+            # 상단 검색 버튼 선택하여 인기 브랜드 6위 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_search_btn').click()
             search_brand = wd.find_element(AppiumBy.XPATH,
-                                           '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="9"]/XCUIElementTypeOther/XCUIElementTypeOther[@index="1"]/XCUIElementTypeStaticText')
-            search_brand_name = search_brand.text
+                                           '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[6]')
+            search_brand_name = search_brand.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
             search_brand.click()
 
             # 검색 결과 화면 진입하여 선택한 브랜드명과 입력란의 문구 비교 확인

@@ -251,7 +251,7 @@ class Like:
 
             # post 내 좋아요 버튼 선택
             post_view = wd.find_elements(AppiumBy.XPATH,
-                                         '//XCUIElementTypeWebView/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther')
+                                         f'//XCUIElementTypeOther[@name="{like_post_name} - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther')
             post_view_len = len(post_view) - 1
             wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeOther[{post_view_len}]/XCUIElementTypeButton[1]').click()
 
