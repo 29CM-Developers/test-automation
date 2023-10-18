@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d3c35a69-250a-4e0b-8146-67de265bb1ed",
+		"_postman_id": "aa14b43b-477e-49c6-a205-c5638e719112",
 		"name": "Coupon - Payment",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27465778"
@@ -236,7 +236,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -588,7 +588,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰 / 최대 1만원 할인 / 1만원 이상 구매 시 사용 가능\",\n    \"couponAdminName\": \"일반 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰 / 최대 1만원 할인 / 1만원 이상 구매 시 사용 가능\",\n    \"couponAdminName\": \"일반 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -940,7 +940,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -1292,7 +1292,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 쿠폰 / 1만원 이상 구매 시 사용 가능\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"상품 1만원 쿠폰 / 1만원 이상 구매 시 사용 가능\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -1644,7 +1644,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"TARGET\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"TARGET\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -1996,7 +1996,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"장바구니 10% 할인 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -2356,7 +2356,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"maxIssueCount\": 10,\n    \"maxIssueCountPerPerson\": 3,\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"maxIssueCount\": 10,\n    \"maxIssueCountPerPerson\": 3,\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -2714,7 +2714,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰 / 앱 전용 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰 / 앱 전용 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -3066,7 +3066,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰 / 웹 전용 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰 / 웹 전용 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -3176,365 +3176,6 @@
 							"});",
 							"pm.test(\"firstCoupon 유효성 체크\", function () {",
 							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
-							"});",
-							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
-							"});",
-							"pm.test(\"unlimitedCoupon 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.unlimitedCoupon).to.eql(pm.environment.get(\"unlimitedCoupon\"));",
-							"});",
-							"pm.test(\"giftCoupon 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.giftCoupon).to.eql(false);",
-							"});",
-							"pm.test(\"serialCouponQty 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.serialCouponQty).to.eql(pm.environment.get(\"serialCouponQty\"));",
-							"});",
-							"pm.test(\"disabled 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.disabled).to.eql(false);",
-							"});",
-							"pm.test(\"couponStatus 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponStatus).to.eql(\"REGISTRATION_COMPLETED\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{inhouse_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{host}}/inhouse-admin/v4/coupons/{{couponId}}",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"inhouse-admin",
-						"v4",
-						"coupons",
-						"{{couponId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "정액 쿠폰 - 사용 기간 ISSUE_DATE",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// request data",
-							"var jsondata = JSON.parse(request.data)",
-							"// response data",
-							"var responsejsondata = pm.response.json()",
-							"",
-							"// data set",
-							"pm.environment.set('couponId', responsejsondata.data.couponId)",
-							"",
-							"// keys test",
-							"pm.test(\"Response data contains all(35) keys\", function () {",
-							"    var expectedDataKeys = [\"couponId\", \"couponRegistrationType\", \"issuer\", \"couponType\", \"duplicateAllowed\", \"couponName\", \"couponAdminName\", \"discountType\", \"discountValue\", \"inhousePayRate\", \"partnerPayRate\", \"minPayAmount\", \"maxDiscountAmount\", \"couponIssueType\", \"issueTarget\", \"maxIssueCount\", \"maxIssueCountPerPerson\", \"couponIssueStartAt\", \"couponIssueEndAt\", \"couponUsePlatform\", \"couponUsePeriodType\", \"validDaysFromIssue\", \"couponUseStartAt\", \"couponUseEndAt\", \"firstCoupon\", \"firstCouponType\", \"excludeFromExternalChannel\", \"unlimitedCoupon\", \"giftCoupon\", \"serialCouponQty\", \"keyword\", \"disabled\", \"adminId\", \"couponStatus\", \"createdAt\"];",
-							"    pm.expect(Object.keys(responsejsondata.data)).to.include.members(expectedDataKeys);",
-							"});",
-							"// set request value",
-							"pm.environment.set(\"couponName\", jsondata.couponName)",
-							"pm.environment.set(\"couponAdminName\", jsondata.couponAdminName)",
-							"pm.environment.set(\"couponRegistrationType\", jsondata.couponRegistrationType)",
-							"pm.environment.set(\"couponType\", jsondata.couponType)",
-							"pm.environment.set(\"duplicateAllowed\", jsondata.duplicateAllowed)",
-							"pm.environment.set(\"firstCoupon\", jsondata.firstCoupon)",
-							"pm.environment.set(\"firstCouponType\", jsondata.firstCouponType)",
-							"pm.environment.set(\"couponIssueStartAt\", jsondata.couponIssueStartAt)",
-							"pm.environment.set(\"couponIssueEndAt\", jsondata.couponIssueEndAt)",
-							"pm.environment.set(\"couponIssueType\", jsondata.couponIssueType)",
-							"pm.environment.set(\"couponUsePeriodType\", jsondata.couponUsePeriodType)",
-							"pm.environment.set(\"couponUsePlatform\", jsondata.couponUsePlatform)",
-							"pm.environment.set(\"discountType\", jsondata.discountType)",
-							"pm.environment.set(\"discountValue\", jsondata.discountValue)",
-							"pm.environment.set(\"maxDiscountAmount\", jsondata.maxDiscountAmount)",
-							"pm.environment.set(\"minPayAmount\", jsondata.minPayAmount)",
-							"pm.environment.set(\"inhousePayRate\", jsondata.inhousePayRate)",
-							"pm.environment.set(\"partnerPayRate\", jsondata.partnerPayRate)",
-							"pm.environment.set(\"issueTarget\", jsondata.issueTarget)",
-							"pm.environment.set(\"validDaysFromIssue\", jsondata.validDaysFromIssue)",
-							"pm.environment.set(\"excludeFromExternalChannel\", jsondata.excludeFromExternalChannel)",
-							"pm.environment.set(\"unlimitedCoupon\", jsondata.unlimitedCoupon)",
-							"pm.environment.set(\"serialCouponQty\", jsondata.serialCouponQty)",
-							"",
-							"// value test",
-							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"result 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
-							"});",
-							"pm.test(\"couponRegistrationType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponRegistrationType).to.eql(pm.environment.get(\"couponRegistrationType\"));",
-							"});",
-							"pm.test(\"issuer 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.issuer).to.eql(\"INHOUSE\");",
-							"});",
-							"pm.test(\"couponType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponType).to.eql(pm.environment.get(\"couponType\"));",
-							"});",
-							"pm.test(\"duplicateAllowed 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.duplicateAllowed).to.eql(pm.environment.get(\"duplicateAllowed\"));",
-							"});",
-							"pm.test(\"couponName 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponName).to.eql(pm.environment.get(\"couponName\"));",
-							"});",
-							"pm.test(\"couponAdminName 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponAdminName).to.eql(pm.environment.get(\"couponAdminName\"));",
-							"});",
-							"pm.test(\"discountType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.discountType).to.eql(pm.environment.get(\"discountType\"));",
-							"});",
-							"pm.test(\"discountValue 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.discountValue).to.eql(pm.environment.get(\"discountValue\"));",
-							"});",
-							"pm.test(\"inhousePayRate 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.inhousePayRate).to.eql(pm.environment.get(\"inhousePayRate\"));",
-							"});",
-							"pm.test(\"partnerPayRate 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.partnerPayRate).to.eql(pm.environment.get(\"partnerPayRate\"));",
-							"});",
-							"pm.test(\"minPayAmount 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.minPayAmount).to.eql(pm.environment.get(\"minPayAmount\"));",
-							"});",
-							"pm.test(\"maxDiscountAmount 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.maxDiscountAmount).to.eql(pm.environment.get(\"maxDiscountAmount\"));",
-							"});",
-							"pm.test(\"couponIssueType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponIssueType).to.eql(pm.environment.get(\"couponIssueType\"));",
-							"});",
-							"pm.test(\"issueTarget 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.issueTarget).to.eql(pm.environment.get(\"issueTarget\"));",
-							"});",
-							"pm.test(\"couponIssueStartAt 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponIssueStartAt).to.eql(pm.environment.get(\"couponIssueStartAt\"));",
-							"});",
-							"pm.test(\"couponIssueEndAt 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponIssueEndAt).to.eql(pm.environment.get(\"couponIssueEndAt\"));",
-							"});",
-							"pm.test(\"couponUsePlatform 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponUsePlatform).to.eql(pm.environment.get(\"couponUsePlatform\"));",
-							"});",
-							"pm.test(\"couponUsePeriodType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponUsePeriodType).to.eql(pm.environment.get(\"couponUsePeriodType\"));",
-							"});",
-							"pm.test(\"firstCoupon 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
-							"});",
-							"pm.test(\"validDaysFromIssue 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.validDaysFromIssue).to.eql(pm.environment.get(\"validDaysFromIssue\"));",
-							"});",
-							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
-							"});",
-							"pm.test(\"unlimitedCoupon 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.unlimitedCoupon).to.eql(pm.environment.get(\"unlimitedCoupon\"));",
-							"});",
-							"pm.test(\"giftCoupon 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.giftCoupon).to.eql(false);",
-							"});",
-							"pm.test(\"serialCouponQty 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.serialCouponQty).to.eql(pm.environment.get(\"serialCouponQty\"));",
-							"});",
-							"pm.test(\"disabled 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.disabled).to.eql(false);",
-							"});",
-							"pm.test(\"couponStatus 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponStatus).to.eql(\"REGISTRATION_COMPLETED\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
-							"",
-							"var start_date = new Date(currentDate);",
-							"start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
-							"const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
-							"const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
-							"const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
-							"",
-							"// 날짜 및 시간 문자열을 만듭니다.",
-							"const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T15:00:00Z`;",
-							"",
-							"pm.environment.set(\"started_date\", start_formattedDate)",
-							"",
-							"var end_date = new Date(currentDate);",
-							"end_date.setDate(end_date.getDate()+7); // end_date를 오늘보다 7일 뒤로 설정합니다.",
-							"const end_year = end_date.getFullYear(); // 현재 연도를 얻습니다.",
-							"const end_month = end_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
-							"const end_day = end_date.getDate().toString().padStart(2, '0'); // 날짜를 얻고 두 자릿수로 패딩합니다.",
-							"",
-							"const hours = '14'; // 시간을 14로 설정합니다.",
-							"const minutes = '59'; // 분을 59로 설정합니다.",
-							"const seconds = '59'; // 초를 59로 설정합니다.",
-							"",
-							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}Z`;",
-							"",
-							"pm.environment.set(\"ended_date\", End_formattedDate)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{inhouse_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰 / 사용 날짜 설정\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
-				},
-				"url": {
-					"raw": "{{host}}/inhouse-admin/v4/coupons",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"inhouse-admin",
-						"v4",
-						"coupons"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "쿠폰 조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var responsejsondata = pm.response.json()",
-							"",
-							"// 주어진 날짜 문자열",
-							"const StartDateString = pm.environment.get(\"couponIssueStartAt\")",
-							"const EndDateString = pm.environment.get(\"couponIssueEndAt\")",
-							"",
-							"// Date 객체로 변환",
-							"const StartoriginalDate = new Date(StartDateString);",
-							"const EndoriginalDate = new Date(EndDateString);",
-							"// 밀리초와 마이크로초를 0으로 설정",
-							"StartoriginalDate.setUTCMilliseconds(0);",
-							"StartoriginalDate.setMilliseconds(0);",
-							"EndoriginalDate.setUTCMilliseconds(0);",
-							"EndoriginalDate.setMilliseconds(0);",
-							"// 한국 시간대로 변환 (UTC+09:00)",
-							"StartoriginalDate.setUTCHours(StartoriginalDate.getUTCHours() + 9);",
-							"StartoriginalDate.setDate(StartoriginalDate.getDate());",
-							"EndoriginalDate.setUTCHours(EndoriginalDate.getUTCHours() + 9); ",
-							"EndoriginalDate.setDate(EndoriginalDate.getDate());",
-							"// 원하는 형식으로 출력 (ISO 8601 형식)",
-							"const formattedStartDateString = StartoriginalDate.toISOString().slice(0, -5) + '+09:00';",
-							"const formattedEndDateString = EndoriginalDate.toISOString().slice(0, -5) + '+09:00';",
-							"",
-							"// value test",
-							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"result 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
-							"});",
-							"pm.test(\"couponRegistrationType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponRegistrationType).to.eql(pm.environment.get(\"couponRegistrationType\"));",
-							"});",
-							"pm.test(\"issuer 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.issuer).to.eql(\"INHOUSE\");",
-							"});",
-							"pm.test(\"couponType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponType).to.eql(pm.environment.get(\"couponType\"));",
-							"});",
-							"pm.test(\"duplicateAllowed 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.duplicateAllowed).to.eql(pm.environment.get(\"duplicateAllowed\"));",
-							"});",
-							"pm.test(\"couponName 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponName).to.eql(pm.environment.get(\"couponName\"));",
-							"});",
-							"pm.test(\"couponAdminName 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponAdminName).to.eql(pm.environment.get(\"couponAdminName\"));",
-							"});",
-							"pm.test(\"discountType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.discountType).to.eql(pm.environment.get(\"discountType\"));",
-							"});",
-							"pm.test(\"discountValue 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.discountValue).to.eql(pm.environment.get(\"discountValue\"));",
-							"});",
-							"pm.test(\"inhousePayRate 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.inhousePayRate).to.eql(pm.environment.get(\"inhousePayRate\"));",
-							"});",
-							"pm.test(\"partnerPayRate 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.partnerPayRate).to.eql(pm.environment.get(\"partnerPayRate\"));",
-							"});",
-							"pm.test(\"minPayAmount 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.minPayAmount).to.eql(pm.environment.get(\"minPayAmount\"));",
-							"});",
-							"pm.test(\"maxDiscountAmount 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.maxDiscountAmount).to.eql(pm.environment.get(\"maxDiscountAmount\"));",
-							"});",
-							"pm.test(\"couponIssueType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponIssueType).to.eql(pm.environment.get(\"couponIssueType\"));",
-							"});",
-							"pm.test(\"issueTarget 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.issueTarget).to.eql(pm.environment.get(\"issueTarget\"));",
-							"});",
-							"pm.test(\"couponIssueStartAt 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponIssueStartAt).to.eql(formattedStartDateString);",
-							"});",
-							"pm.test(\"couponIssueEndAt 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponIssueEndAt).to.eql(formattedEndDateString);",
-							"});",
-							"pm.test(\"couponUsePlatform 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponUsePlatform).to.eql(pm.environment.get(\"couponUsePlatform\"));",
-							"});",
-							"pm.test(\"couponUsePeriodType 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.couponUsePeriodType).to.eql(pm.environment.get(\"couponUsePeriodType\"));",
-							"});",
-							"pm.test(\"firstCoupon 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
-							"});",
-							"pm.test(\"validDaysFromIssue 유효성 체크\", function () {",
-							"    pm.expect(responsejsondata.data.validDaysFromIssue).to.eql(pm.environment.get(\"validDaysFromIssue\"));",
 							"});",
 							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
 							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
@@ -4498,7 +4139,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -4604,7 +4245,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": \"\",\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
+					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": \"\",\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -4710,7 +4351,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": \"\",\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
+					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": \"\",\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -4816,7 +4457,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
+					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -4922,7 +4563,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"inhousePayRate\": 50,\n    \"partnerPayRate\": 50,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
+					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"inhousePayRate\": 50,\n    \"partnerPayRate\": 50,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -5028,7 +4669,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"maxIssueCount\": 5,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"maxIssueCount\": 5,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -5135,7 +4776,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
+					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -5242,7 +4883,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
+					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -5693,7 +5334,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"장바구니 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePeriodType\": \"NONE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"장바구니 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
@@ -5894,7 +5535,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정률 핳인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정률 핳인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 2,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -6221,7 +5862,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 2,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -6548,7 +6189,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 2,\n    \"couponUsePlatform\": \"APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -6875,7 +6516,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 2,\n    \"couponUsePlatform\": \"APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -7110,7 +6751,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 50,\n    \"partnerPayRate\": 50,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
+					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 정액 할인\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 50,\n    \"partnerPayRate\": 50,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 2,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
