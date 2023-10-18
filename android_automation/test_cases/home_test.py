@@ -115,7 +115,7 @@ class Home:
                     # 지금 많이 찾는 검색어 찾기
                     print("검색 ui 변경 화면")
                     sleep(2)
-                    wd.hide_keyboard()
+                    wd.press_keycode(4)
                     print("키보드 닫기")
                     search_container_title = search_container.find_element(AppiumBy.XPATH,
                                                                            '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[5]')

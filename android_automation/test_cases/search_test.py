@@ -459,7 +459,7 @@ class Search:
             print("하단 SEARCH탭 선택")
             # 확인 : 지금 많이 찾는 브랜드 타이틀 노출 확인 - 인기 브랜드 타이틀 확인
             sleep(1)
-            wd.hide_keyboard()
+            wd.press_keycode(4)
             print("키보드 닫기")
             # 지금 많이 찾는 검색어 찾기
             sleep(2)
