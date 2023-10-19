@@ -4142,13 +4142,9 @@
 					"raw": "{\n    \"couponName\": \"\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4248,13 +4244,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": \"\",\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4354,13 +4346,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": \"\",\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4460,13 +4448,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4566,13 +4550,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정액 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"minPayAmount\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"inhousePayRate\": 50,\n    \"partnerPayRate\": 50,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4672,13 +4652,9 @@
 					"raw": "{\n    \"couponName\": \"상품 1만원 할인 쿠폰\",\n    \"couponAdminName\": \"일반 상품 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": false,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"discountType\": \"FIXED_PRICE\",\n    \"discountValue\": 10000,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"maxIssueCount\": 5,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4779,13 +4755,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4886,13 +4858,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -4993,13 +4961,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": \"\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -5100,13 +5064,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"PERIOD\",\n    \"couponUseStartAt\": \"\",\n    \"couponUseEndAt\": \"\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -5230,13 +5190,9 @@
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"PERIOD\",\n    \"couponUseStartAt\": \"{{use_started_date}}\",\n    \"couponUseEndAt\": \"{{use_end_date}}\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -5337,13 +5293,9 @@
 					"raw": "{\n    \"couponName\": \"장바구니 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -6857,13 +6809,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"PRODUCT\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -6964,13 +6912,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"DIRECT\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -7071,13 +7015,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 10,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -7178,13 +7118,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 10,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -7285,13 +7221,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"couponUsePeriodType\": \"NONE\",\n    \"validDaysFromIssue\": 0,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -7414,13 +7346,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"couponUsePeriodType\": \"PERIOD\",\n    \"validDaysFromIssue\": 0,\n    \"couponUseStartAt\": \"{{use_started_date}}\",\n    \"couponUseEndAt\": \"{{use_end_date}}\",\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
@@ -7521,13 +7449,9 @@
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
-					"raw": "https://qa-promotion-api.29cm.co.kr/inhouse-admin/v4/coupons",
-					"protocol": "https",
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
 					"host": [
-						"qa-promotion-api",
-						"29cm",
-						"co",
-						"kr"
+						"{{host}}"
 					],
 					"path": [
 						"inhouse-admin",
