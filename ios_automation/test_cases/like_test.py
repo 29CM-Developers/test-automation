@@ -9,6 +9,7 @@ from time import time
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils import values_control
+from ios_automation.page_action import welove_page
 
 
 class Like:
@@ -243,11 +244,9 @@ class Like:
             wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "인기 게시물 보기"`]').click()
 
             # 첫번째 추천 게시물명 확인 및 선택
-            recommended_post = wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                               '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
-            like_post_name = recommended_post.find_element(AppiumBy.XPATH, 'XCUIElementTypeStaticText[2]').text
+            like_post_name = welove_page.save_first_contents_title(wd)
+            welove_page.click_first_contents(wd)
             print(like_post_name)
-            recommended_post.click()
 
             # post 내 좋아요 버튼 선택
             post_view = wd.find_elements(AppiumBy.XPATH,
