@@ -67,14 +67,9 @@ def ial(wd, element_value):
     locators = ["ACCESSIBILITY_ID", "IOS_CLASS_CHAIN", "XPATH"]
     for locator in locators:
         try:
-            start_time = time()
             element = wd.find_element(getattr(AppiumBy, locator), element_value)
-            run_time = f"{time() - start_time:.2f}"
-            print(locator + "로 찾은 시간: " + run_time)
             break
         except NoSuchElementException:
-            run_time = f"{time() - start_time:.2f}"
-            print(locator + "로 못찾은 시간: " + run_time)
             wd.implicitly_wait(0)
             pass
     wd.implicitly_wait(3)
