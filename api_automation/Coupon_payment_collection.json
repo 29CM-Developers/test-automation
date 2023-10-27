@@ -3991,6 +3991,385 @@
 			"response": []
 		},
 		{
+			"name": "정률 쿠폰 - 장바구니 쿠폰 외부 노출 설정",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+							"",
+							"var start_date = new Date(currentDate);",
+							"start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+							"const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+							"const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+							"const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+							"",
+							"// 날짜 및 시간 문자열을 만듭니다.",
+							"const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T15:00:00Z`;",
+							"",
+							"pm.environment.set(\"started_date\", start_formattedDate)",
+							"",
+							"var end_date = new Date(currentDate);",
+							"end_date.setDate(end_date.getDate()+7); // end_date를 오늘보다 7일 뒤로 설정합니다.",
+							"const end_year = end_date.getFullYear(); // 현재 연도를 얻습니다.",
+							"const end_month = end_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+							"const end_day = end_date.getDate().toString().padStart(2, '0'); // 날짜를 얻고 두 자릿수로 패딩합니다.",
+							"",
+							"const hours = '14'; // 시간을 14로 설정합니다.",
+							"const minutes = '59'; // 분을 59로 설정합니다.",
+							"const seconds = '59'; // 초를 59로 설정합니다.",
+							"",
+							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}Z`;",
+							"",
+							"pm.environment.set(\"ended_date\", End_formattedDate)",
+							"",
+							"",
+							"var use_start_date = new Date(currentDate)",
+							"use_start_date.setDate(use_start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+							"const use_start_year = use_start_date.getFullYear(); // 현재 연도를 얻습니다.",
+							"const use_start_month = use_start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+							"const use_start_day = use_start_date.getDate(); // 내일 일자를 얻습니다.",
+							"",
+							"const use_start_formattedDate = `${use_start_year}-${use_start_month.toString().padStart(2, '0')}-${use_start_day.toString().padStart(2, '0')}T15:00:00Z`;",
+							"",
+							"pm.environment.set(\"use_started_date\", use_start_formattedDate)",
+							"",
+							"var use_end_date = new Date(currentDate)",
+							"use_end_date.setDate(use_end_date.getDate()+10); // start_date를 내일 날짜로 설정합니다.",
+							"const use_end_year = use_end_date.getFullYear(); // 현재 연도를 얻습니다.",
+							"const use_end_month = use_end_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+							"const use_end_day = use_end_date.getDate(); // 내일 일자를 얻습니다.",
+							"",
+							"const use_end_formattedDate = `${use_end_year}-${use_end_month.toString().padStart(2, '0')}-${use_end_day.toString().padStart(2, '0')}T14:59:59Z`;",
+							"",
+							"pm.environment.set(\"use_end_date\", use_end_formattedDate)",
+							"",
+							"// UTC+09:00 으로 변경",
+							"const StartDateString = start_formattedDate;",
+							"const EndDateString = End_formattedDate;",
+							"const useStartDate = use_start_formattedDate;",
+							"const useEndDate = use_end_formattedDate;",
+							"",
+							"const formatDateString = (dateString) => {",
+							"  const date = new Date(dateString);",
+							"  date.setMilliseconds(0);",
+							"  date.setUTCHours(date.getUTCHours() + 9);",
+							"  date.setDate(date.getDate());",
+							"  return date.toISOString().slice(0, -5) + '+09:00';",
+							"};",
+							"",
+							"const formattedStartDateString = formatDateString(StartDateString);",
+							"const formattedEndDateString = formatDateString(EndDateString);",
+							"const useStartDateString = formatDateString(useStartDate);",
+							"const useEndDateString = formatDateString(useEndDate);",
+							"pm.environment.set(\"formattedStartDateString\", formattedStartDateString)",
+							"pm.environment.set(\"formattedEndDateString\", formattedEndDateString)",
+							"pm.environment.set(\"useStartDateString\", useStartDateString)",
+							"pm.environment.set(\"useEndDateString\", useEndDateString)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// request data",
+							"var jsondata = JSON.parse(request.data)",
+							"// response data",
+							"var responsejsondata = pm.response.json()",
+							"",
+							"// data set",
+							"pm.environment.set('couponId', responsejsondata.data.couponId)",
+							"",
+							"// keys test",
+							"pm.test(\"Response data contains all(35) keys\", function () {",
+							"    var expectedDataKeys = [\"couponId\", \"couponRegistrationType\", \"issuer\", \"couponType\", \"duplicateAllowed\", \"couponName\", \"couponAdminName\", \"discountType\", \"discountValue\", \"inhousePayRate\", \"partnerPayRate\", \"minPayAmount\", \"maxDiscountAmount\", \"couponIssueType\", \"issueTarget\", \"maxIssueCount\", \"maxIssueCountPerPerson\", \"couponIssueStartAt\", \"couponIssueEndAt\", \"couponUsePlatform\", \"couponUsePeriodType\", \"validDaysFromIssue\", \"couponUseStartAt\", \"couponUseEndAt\", \"firstCoupon\", \"firstCouponType\", \"excludeFromExternalChannel\", \"unlimitedCoupon\", \"giftCoupon\", \"serialCouponQty\", \"keyword\", \"disabled\", \"adminId\", \"couponStatus\", \"createdAt\"];",
+							"    pm.expect(Object.keys(responsejsondata.data)).to.include.members(expectedDataKeys);",
+							"});",
+							"// set request value",
+							"pm.environment.set(\"couponName\", jsondata.couponName)",
+							"pm.environment.set(\"couponAdminName\", jsondata.couponAdminName)",
+							"pm.environment.set(\"couponRegistrationType\", jsondata.couponRegistrationType)",
+							"pm.environment.set(\"couponType\", jsondata.couponType)",
+							"pm.environment.set(\"duplicateAllowed\", jsondata.duplicateAllowed)",
+							"pm.environment.set(\"firstCoupon\", jsondata.firstCoupon)",
+							"pm.environment.set(\"firstCouponType\", jsondata.firstCouponType)",
+							"pm.environment.set(\"couponIssueStartAt\", jsondata.couponIssueStartAt)",
+							"pm.environment.set(\"couponIssueEndAt\", jsondata.couponIssueEndAt)",
+							"pm.environment.set(\"couponIssueType\", jsondata.couponIssueType)",
+							"pm.environment.set(\"couponUsePeriodType\", jsondata.couponUsePeriodType)",
+							"pm.environment.set(\"couponUsePlatform\", jsondata.couponUsePlatform)",
+							"pm.environment.set(\"discountType\", jsondata.discountType)",
+							"pm.environment.set(\"discountValue\", jsondata.discountValue)",
+							"pm.environment.set(\"maxDiscountAmount\", jsondata.maxDiscountAmount)",
+							"pm.environment.set(\"minPayAmount\", jsondata.minPayAmount)",
+							"pm.environment.set(\"inhousePayRate\", jsondata.inhousePayRate)",
+							"pm.environment.set(\"partnerPayRate\", jsondata.partnerPayRate)",
+							"pm.environment.set(\"issueTarget\", jsondata.issueTarget)",
+							"pm.environment.set(\"validDaysFromIssue\", jsondata.validDaysFromIssue)",
+							"pm.environment.set(\"couponUseStartAt\", jsondata.couponUseStartAt)",
+							"pm.environment.set(\"couponUseEndAt\", jsondata.couponUseEndAt)",
+							"pm.environment.set(\"excludeFromExternalChannel\", jsondata.excludeFromExternalChannel)",
+							"pm.environment.set(\"unlimitedCoupon\", jsondata.unlimitedCoupon)",
+							"pm.environment.set(\"serialCouponQty\", jsondata.serialCouponQty)",
+							"",
+							"// value test",
+							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"result 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+							"});",
+							"pm.test(\"couponRegistrationType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponRegistrationType).to.eql(pm.environment.get(\"couponRegistrationType\"));",
+							"});",
+							"pm.test(\"issuer 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issuer).to.eql(\"INHOUSE\");",
+							"});",
+							"pm.test(\"couponType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponType).to.eql(pm.environment.get(\"couponType\"));",
+							"});",
+							"pm.test(\"duplicateAllowed 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.duplicateAllowed).to.eql(pm.environment.get(\"duplicateAllowed\"));",
+							"});",
+							"pm.test(\"couponName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponName).to.eql(pm.environment.get(\"couponName\"));",
+							"});",
+							"pm.test(\"couponAdminName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponAdminName).to.eql(pm.environment.get(\"couponAdminName\"));",
+							"});",
+							"pm.test(\"discountType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountType).to.eql(pm.environment.get(\"discountType\"));",
+							"});",
+							"pm.test(\"discountValue 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountValue).to.eql(pm.environment.get(\"discountValue\"));",
+							"});",
+							"pm.test(\"inhousePayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.inhousePayRate).to.eql(pm.environment.get(\"inhousePayRate\"));",
+							"});",
+							"pm.test(\"partnerPayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.partnerPayRate).to.eql(pm.environment.get(\"partnerPayRate\"));",
+							"});",
+							"pm.test(\"minPayAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.minPayAmount).to.eql(pm.environment.get(\"minPayAmount\"));",
+							"});",
+							"pm.test(\"maxDiscountAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.maxDiscountAmount).to.eql(pm.environment.get(\"maxDiscountAmount\"));",
+							"});",
+							"pm.test(\"couponIssueType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueType).to.eql(pm.environment.get(\"couponIssueType\"));",
+							"});",
+							"pm.test(\"issueTarget 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issueTarget).to.eql(pm.environment.get(\"issueTarget\"));",
+							"});",
+							"pm.test(\"couponIssueStartAt 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueStartAt).to.eql(pm.environment.get(\"formattedStartDateString\"));",
+							"});",
+							"pm.test(\"couponIssueEndAt 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueEndAt).to.eql(pm.environment.get(\"formattedEndDateString\"));",
+							"});",
+							"pm.test(\"couponUsePlatform 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePlatform).to.eql(pm.environment.get(\"couponUsePlatform\"));",
+							"});",
+							"pm.test(\"couponUsePeriodType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePeriodType).to.eql(pm.environment.get(\"couponUsePeriodType\"));",
+							"});",
+							"pm.test(\"firstCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
+							"});",
+							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
+							"});",
+							"pm.test(\"unlimitedCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.unlimitedCoupon).to.eql(pm.environment.get(\"unlimitedCoupon\"));",
+							"});",
+							"pm.test(\"giftCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.giftCoupon).to.eql(false);",
+							"});",
+							"pm.test(\"serialCouponQty 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.serialCouponQty).to.eql(pm.environment.get(\"serialCouponQty\"));",
+							"});",
+							"pm.test(\"disabled 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.disabled).to.eql(false);",
+							"});",
+							"pm.test(\"couponStatus 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponStatus).to.eql(\"REGISTRATION_COMPLETED\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"couponName\": \"장바구니 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
+				},
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"coupons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "쿠폰 조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responsejsondata = pm.response.json()",
+							"",
+							"// value test",
+							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"result 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+							"});",
+							"pm.test(\"couponRegistrationType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponRegistrationType).to.eql(pm.environment.get(\"couponRegistrationType\"));",
+							"});",
+							"pm.test(\"issuer 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issuer).to.eql(\"INHOUSE\");",
+							"});",
+							"pm.test(\"couponType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponType).to.eql(pm.environment.get(\"couponType\"));",
+							"});",
+							"pm.test(\"duplicateAllowed 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.duplicateAllowed).to.eql(pm.environment.get(\"duplicateAllowed\"));",
+							"});",
+							"pm.test(\"couponName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponName).to.eql(pm.environment.get(\"couponName\"));",
+							"});",
+							"pm.test(\"couponAdminName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponAdminName).to.eql(pm.environment.get(\"couponAdminName\"));",
+							"});",
+							"pm.test(\"discountType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountType).to.eql(pm.environment.get(\"discountType\"));",
+							"});",
+							"pm.test(\"discountValue 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountValue).to.eql(pm.environment.get(\"discountValue\"));",
+							"});",
+							"pm.test(\"inhousePayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.inhousePayRate).to.eql(pm.environment.get(\"inhousePayRate\"));",
+							"});",
+							"pm.test(\"partnerPayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.partnerPayRate).to.eql(pm.environment.get(\"partnerPayRate\"));",
+							"});",
+							"pm.test(\"minPayAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.minPayAmount).to.eql(pm.environment.get(\"minPayAmount\"));",
+							"});",
+							"pm.test(\"maxDiscountAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.maxDiscountAmount).to.eql(pm.environment.get(\"maxDiscountAmount\"));",
+							"});",
+							"pm.test(\"couponIssueType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueType).to.eql(pm.environment.get(\"couponIssueType\"));",
+							"});",
+							"pm.test(\"issueTarget 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issueTarget).to.eql(pm.environment.get(\"issueTarget\"));",
+							"});",
+							"pm.test(\"couponIssueStartAt 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueStartAt).to.eql(pm.environment.get(\"formattedStartDateString\"));",
+							"});",
+							"pm.test(\"couponIssueEndAt 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueEndAt).to.eql(pm.environment.get(\"formattedEndDateString\"));",
+							"});",
+							"pm.test(\"couponUsePlatform 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePlatform).to.eql(pm.environment.get(\"couponUsePlatform\"));",
+							"});",
+							"pm.test(\"couponUsePeriodType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePeriodType).to.eql(pm.environment.get(\"couponUsePeriodType\"));",
+							"});",
+							"pm.test(\"firstCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
+							"});",
+							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
+							"});",
+							"pm.test(\"unlimitedCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.unlimitedCoupon).to.eql(pm.environment.get(\"unlimitedCoupon\"));",
+							"});",
+							"pm.test(\"giftCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.giftCoupon).to.eql(false);",
+							"});",
+							"pm.test(\"serialCouponQty 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.serialCouponQty).to.eql(pm.environment.get(\"serialCouponQty\"));",
+							"});",
+							"pm.test(\"disabled 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.disabled).to.eql(false);",
+							"});",
+							"pm.test(\"couponStatus 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponStatus).to.eql(\"REGISTRATION_COMPLETED\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/coupons/{{couponId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"coupons",
+						"{{couponId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "쿠폰 등록 실패 - 쿠폰명 미입력",
 			"event": [
 				{
@@ -5126,109 +5505,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"couponName\": \"[일반 쿠폰] 장바구니 / 정률 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"minPayAmount\": 0,\n    \"maxDiscountAmount\": 10000,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"issueTarget\": \"ALL\",\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"couponUsePeriodType\": \"PERIOD\",\n    \"couponUseStartAt\": \"{{use_started_date}}\",\n    \"couponUseEndAt\": \"{{use_end_date}}\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false\n}"
-				},
-				"url": {
-					"raw": "{{host}}/inhouse-admin/v4/coupons",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"inhouse-admin",
-						"v4",
-						"coupons"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "쿠폰 등록 실패 - 장바구니 쿠폰 외부 노출 설정",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
-							"",
-							"var start_date = new Date(currentDate);",
-							"start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
-							"const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
-							"const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
-							"const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
-							"",
-							"// 날짜 및 시간 문자열을 만듭니다.",
-							"const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T15:00:00Z`;",
-							"",
-							"pm.environment.set(\"started_date\", start_formattedDate)",
-							"",
-							"var end_date = new Date(currentDate);",
-							"end_date.setDate(end_date.getDate()+7); // end_date를 오늘보다 7일 뒤로 설정합니다.",
-							"const end_year = end_date.getFullYear(); // 현재 연도를 얻습니다.",
-							"const end_month = end_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
-							"const end_day = end_date.getDate().toString().padStart(2, '0'); // 날짜를 얻고 두 자릿수로 패딩합니다.",
-							"",
-							"const hours = '14'; // 시간을 14로 설정합니다.",
-							"const minutes = '59'; // 분을 59로 설정합니다.",
-							"const seconds = '59'; // 초를 59로 설정합니다.",
-							"",
-							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}Z`;",
-							"",
-							"pm.environment.set(\"ended_date\", End_formattedDate)"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.test(\"Response status code is 400\", function () {",
-							"    pm.response.to.have.status(400);",
-							"});",
-							"",
-							"pm.test(\"쿠폰 등록 실패 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
-							"});",
-							"",
-							"pm.test(\"data 유효성 체크\", function () {",
-							"    pm.expect(jsonData.data).to.be.null;",
-							"});",
-							"",
-							"pm.test(\"error message 체크\", function () {",
-							"    pm.expect(jsonData.message).to.include(\"장바구니 쿠폰의 경우, 외부 채널 노출 설정을 할 수 없습니다.\");",
-							"});",
-							"",
-							"pm.test(\"error_code 체크\", function () {",
-							"    pm.expect(jsonData.error_code).to.equal(\"COMMON_INVALID_PARAMETER\");",
-							"});",
-							"",
-							"pm.test(\"errorCode 체크\", function () {",
-							"    pm.expect(jsonData.errorCode).to.equal(\"COMMON_INVALID_PARAMETER\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{inhouse_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"장바구니 쿠폰\",\n    \"couponAdminName\": \"일반 쿠폰 / 장바구니 쿠폰\",\n    \"couponRegistrationType\": \"COMMON\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": false,\n    \"firstCouponType\": null,\n    \"couponIssueStartAt\": \"{{started_date}}\",\n    \"couponIssueEndAt\": \"{{ended_date}}\",\n    \"couponIssueType\": \"DOWNLOAD\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 0,\n    \"minPayAmount\": 0,\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"validDaysFromIssue\": 3,\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -6553,6 +6829,333 @@
 			"response": []
 		},
 		{
+			"name": "첫구매 쿠폰 - 외부 노출 설정",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+							"const year = currentDate.getFullYear(); // 현재 연도를 얻습니다.",
+							"const month = currentDate.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+							"",
+							"// 오늘을 기준으로 설정합니다.",
+							"const start_day = currentDate.getDate().toString().padStart(2, '0');",
+							"",
+							"// 날짜 및 시간 문자열을 만듭니다.",
+							"const start_formattedDate = `${year}-${month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T15:00:00Z`;",
+							"",
+							"pm.environment.set(\"started_date\", start_formattedDate)",
+							"",
+							"// 0일을 넣어서 현재 월의 마지막 날을 얻습니다.",
+							"const lastDayOfMonth = new Date(year, month, 0); ",
+							"",
+							"const end_day = lastDayOfMonth.getDate().toString().padStart(2, '0'); // 날짜를 얻고 두 자릿수로 패딩합니다.",
+							"const hours = currentDate.getHours(); // 현재 시간(0-23)",
+							"const minutes = currentDate.getMinutes(); // 현재 분(0-59)",
+							"const seconds = currentDate.getSeconds(); // 현재 초(0-59)",
+							"const milliseconds = currentDate.getMilliseconds(); // 현재 밀리초(0-999)",
+							"// const hours = '14'; // 시간을 14로 설정합니다.",
+							"// const minutes = '59'; // 분을 59로 설정합니다.",
+							"// const seconds = '59'; // 초를 59로 설정합니다.",
+							"// const milliseconds = '999999999'; // 밀리초를 999999999로 설정합니다.",
+							"",
+							"const End_formattedDate = `${year}-${month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;",
+							"console.log(End_formattedDate)",
+							"pm.environment.set(\"ended_date\", End_formattedDate)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// request data",
+							"var jsondata = JSON.parse(request.data)",
+							"// response data",
+							"var responsejsondata = pm.response.json()",
+							"",
+							"// data set",
+							"pm.environment.set('couponId', responsejsondata.data.couponId)",
+							"",
+							"// keys test",
+							"pm.test(\"Response data contains all(35) keys\", function () {",
+							"    var expectedDataKeys = [\"couponId\", \"couponRegistrationType\", \"issuer\", \"couponType\", \"duplicateAllowed\", \"couponName\", \"couponAdminName\", \"discountType\", \"discountValue\", \"inhousePayRate\", \"partnerPayRate\", \"minPayAmount\", \"maxDiscountAmount\", \"couponIssueType\", \"issueTarget\", \"maxIssueCount\", \"maxIssueCountPerPerson\", \"couponIssueStartAt\", \"couponIssueEndAt\", \"couponUsePlatform\", \"couponUsePeriodType\", \"validDaysFromIssue\", \"couponUseStartAt\", \"couponUseEndAt\", \"firstCoupon\", \"firstCouponType\", \"excludeFromExternalChannel\", \"unlimitedCoupon\", \"giftCoupon\", \"serialCouponQty\", \"keyword\", \"disabled\", \"adminId\", \"couponStatus\", \"createdAt\"];",
+							"    pm.expect(Object.keys(responsejsondata.data)).to.include.members(expectedDataKeys);",
+							"});",
+							"// set request value",
+							"pm.environment.set(\"couponName\", jsondata.couponName)",
+							"pm.environment.set(\"couponAdminName\", jsondata.couponAdminName)",
+							"pm.environment.set(\"couponRegistrationType\", jsondata.couponRegistrationType)",
+							"pm.environment.set(\"couponType\", jsondata.couponType)",
+							"pm.environment.set(\"duplicateAllowed\", jsondata.duplicateAllowed)",
+							"pm.environment.set(\"firstCoupon\", jsondata.firstCoupon)",
+							"pm.environment.set(\"firstCouponType\", jsondata.firstCouponType)",
+							"pm.environment.set(\"couponIssueStartAt\", jsondata.couponIssueStartAt)",
+							"pm.environment.set(\"couponIssueEndAt\", jsondata.couponIssueEndAt)",
+							"pm.environment.set(\"couponIssueType\", jsondata.couponIssueType)",
+							"pm.environment.set(\"couponUsePeriodType\", jsondata.couponUsePeriodType)",
+							"pm.environment.set(\"couponUsePlatform\", jsondata.couponUsePlatform)",
+							"pm.environment.set(\"discountType\", jsondata.discountType)",
+							"pm.environment.set(\"discountValue\", jsondata.discountValue)",
+							"pm.environment.set(\"maxDiscountAmount\", jsondata.maxDiscountAmount)",
+							"pm.environment.set(\"minPayAmount\", jsondata.minPayAmount)",
+							"pm.environment.set(\"inhousePayRate\", jsondata.inhousePayRate)",
+							"pm.environment.set(\"partnerPayRate\", jsondata.partnerPayRate)",
+							"pm.environment.set(\"issueTarget\", jsondata.issueTarget)",
+							"pm.environment.set(\"excludeFromExternalChannel\", jsondata.excludeFromExternalChannel)",
+							"pm.environment.set(\"unlimitedCoupon\", jsondata.unlimitedCoupon)",
+							"pm.environment.set(\"serialCouponQty\", jsondata.serialCouponQty)",
+							"",
+							"// value test",
+							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"result 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+							"});",
+							"pm.test(\"couponRegistrationType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponRegistrationType).to.eql(pm.environment.get(\"couponRegistrationType\"));",
+							"});",
+							"pm.test(\"issuer 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issuer).to.eql(\"INHOUSE\");",
+							"});",
+							"pm.test(\"couponType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponType).to.eql(pm.environment.get(\"couponType\"));",
+							"});",
+							"pm.test(\"duplicateAllowed 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.duplicateAllowed).to.eql(pm.environment.get(\"duplicateAllowed\"));",
+							"});",
+							"pm.test(\"couponName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponName).to.eql(pm.environment.get(\"couponName\"));",
+							"});",
+							"pm.test(\"couponAdminName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponAdminName).to.eql(pm.environment.get(\"couponAdminName\"));",
+							"});",
+							"pm.test(\"discountType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountType).to.eql(pm.environment.get(\"discountType\"));",
+							"});",
+							"pm.test(\"discountValue 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountValue).to.eql(pm.environment.get(\"discountValue\"));",
+							"});",
+							"pm.test(\"inhousePayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.inhousePayRate).to.eql(pm.environment.get(\"inhousePayRate\"));",
+							"});",
+							"pm.test(\"partnerPayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.partnerPayRate).to.eql(pm.environment.get(\"partnerPayRate\"));",
+							"});",
+							"pm.test(\"minPayAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.minPayAmount).to.eql(pm.environment.get(\"minPayAmount\"));",
+							"});",
+							"pm.test(\"maxDiscountAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.maxDiscountAmount).to.eql(pm.environment.get(\"maxDiscountAmount\"));",
+							"});",
+							"pm.test(\"couponIssueType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueType).to.eql(pm.environment.get(\"couponIssueType\"));",
+							"});",
+							"pm.test(\"issueTarget 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issueTarget).to.eql(pm.environment.get(\"issueTarget\"));",
+							"});",
+							"pm.test(\"couponIssueEndAt 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueEndAt).to.eql(\"2999-12-31T23:59:59.999999999+09:00\");",
+							"});",
+							"pm.test(\"couponUsePlatform 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePlatform).to.eql(pm.environment.get(\"couponUsePlatform\"));",
+							"});",
+							"pm.test(\"couponUsePeriodType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePeriodType).to.eql(pm.environment.get(\"couponUsePeriodType\"));",
+							"});",
+							"pm.test(\"firstCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
+							"});",
+							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
+							"});",
+							"pm.test(\"unlimitedCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.unlimitedCoupon).to.eql(pm.environment.get(\"unlimitedCoupon\"));",
+							"});",
+							"pm.test(\"giftCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.giftCoupon).to.eql(false);",
+							"});",
+							"pm.test(\"serialCouponQty 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.serialCouponQty).to.eql(pm.environment.get(\"serialCouponQty\"));",
+							"});",
+							"pm.test(\"disabled 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.disabled).to.eql(false);",
+							"});",
+							"pm.test(\"couponStatus 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponStatus).to.eql(\"REGISTRATION_COMPLETED\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
+				},
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/coupons",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"coupons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "쿠폰 조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responsejsondata = pm.response.json()",
+							"",
+							"// value test",
+							"pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"result 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+							"});",
+							"pm.test(\"couponRegistrationType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponRegistrationType).to.eql(pm.environment.get(\"couponRegistrationType\"));",
+							"});",
+							"pm.test(\"issuer 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issuer).to.eql(\"INHOUSE\");",
+							"});",
+							"pm.test(\"couponType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponType).to.eql(pm.environment.get(\"couponType\"));",
+							"});",
+							"pm.test(\"duplicateAllowed 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.duplicateAllowed).to.eql(pm.environment.get(\"duplicateAllowed\"));",
+							"});",
+							"pm.test(\"couponName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponName).to.eql(pm.environment.get(\"couponName\"));",
+							"});",
+							"pm.test(\"couponAdminName 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponAdminName).to.eql(pm.environment.get(\"couponAdminName\"));",
+							"});",
+							"pm.test(\"discountType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountType).to.eql(pm.environment.get(\"discountType\"));",
+							"});",
+							"pm.test(\"discountValue 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.discountValue).to.eql(pm.environment.get(\"discountValue\"));",
+							"});",
+							"pm.test(\"inhousePayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.inhousePayRate).to.eql(pm.environment.get(\"inhousePayRate\"));",
+							"});",
+							"pm.test(\"partnerPayRate 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.partnerPayRate).to.eql(pm.environment.get(\"partnerPayRate\"));",
+							"});",
+							"pm.test(\"minPayAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.minPayAmount).to.eql(pm.environment.get(\"minPayAmount\"));",
+							"});",
+							"pm.test(\"maxDiscountAmount 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.maxDiscountAmount).to.eql(pm.environment.get(\"maxDiscountAmount\"));",
+							"});",
+							"pm.test(\"couponIssueType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueType).to.eql(pm.environment.get(\"couponIssueType\"));",
+							"});",
+							"pm.test(\"issueTarget 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.issueTarget).to.eql(pm.environment.get(\"issueTarget\"));",
+							"});",
+							"pm.test(\"couponIssueEndAt 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponIssueEndAt).to.eql(\"3000-01-01T00:00:00+09:00\");",
+							"});",
+							"pm.test(\"couponUsePlatform 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePlatform).to.eql(pm.environment.get(\"couponUsePlatform\"));",
+							"});",
+							"pm.test(\"couponUsePeriodType 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponUsePeriodType).to.eql(pm.environment.get(\"couponUsePeriodType\"));",
+							"});",
+							"pm.test(\"firstCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.firstCoupon).to.eql(pm.environment.get(\"firstCoupon\"));",
+							"});",
+							"pm.test(\"excludeFromExternalChannel 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.excludeFromExternalChannel).to.eql(pm.environment.get(\"excludeFromExternalChannel\"));",
+							"});",
+							"pm.test(\"unlimitedCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.unlimitedCoupon).to.eql(pm.environment.get(\"unlimitedCoupon\"));",
+							"});",
+							"pm.test(\"giftCoupon 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.giftCoupon).to.eql(false);",
+							"});",
+							"pm.test(\"serialCouponQty 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.serialCouponQty).to.eql(pm.environment.get(\"serialCouponQty\"));",
+							"});",
+							"pm.test(\"disabled 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.disabled).to.eql(false);",
+							"});",
+							"pm.test(\"couponStatus 유효성 체크\", function () {",
+							"    pm.expect(responsejsondata.data.couponStatus).to.eql(\"REGISTRATION_COMPLETED\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{inhouse_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/inhouse-admin/v4/coupons/{{couponId}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"inhouse-admin",
+						"v4",
+						"coupons",
+						"{{couponId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "첫구매 쿠폰 등록 실패 - 비용 분담 설정",
 			"event": [
 				{
@@ -7282,109 +7885,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": false,\n    \"unlimitedCoupon\": false,\n    \"couponUsePeriodType\": \"PERIOD\",\n    \"validDaysFromIssue\": 0,\n    \"couponUseStartAt\": \"{{use_started_date}}\",\n    \"couponUseEndAt\": \"{{use_end_date}}\",\n    \"serialCouponQty\": 0\n}"
-				},
-				"url": {
-					"raw": "{{host}}/inhouse-admin/v4/coupons",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"inhouse-admin",
-						"v4",
-						"coupons"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "첫구매 쿠폰 등록 실패 - 외부 노출 설정",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
-							"",
-							"var start_date = new Date(currentDate);",
-							"start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
-							"const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
-							"const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
-							"const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
-							"",
-							"// 날짜 및 시간 문자열을 만듭니다.",
-							"const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T15:00:00Z`;",
-							"",
-							"pm.environment.set(\"started_date\", start_formattedDate)",
-							"",
-							"var end_date = new Date(currentDate);",
-							"end_date.setDate(end_date.getDate()+7); // end_date를 오늘보다 7일 뒤로 설정합니다.",
-							"const end_year = end_date.getFullYear(); // 현재 연도를 얻습니다.",
-							"const end_month = end_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
-							"const end_day = end_date.getDate().toString().padStart(2, '0'); // 날짜를 얻고 두 자릿수로 패딩합니다.",
-							"",
-							"const hours = '14'; // 시간을 14로 설정합니다.",
-							"const minutes = '59'; // 분을 59로 설정합니다.",
-							"const seconds = '59'; // 초를 59로 설정합니다.",
-							"",
-							"const End_formattedDate = `${end_year}-${end_month.toString().padStart(2, '0')}-${end_day}T${hours}:${minutes}:${seconds}Z`;",
-							"",
-							"pm.environment.set(\"ended_date\", End_formattedDate)"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.test(\"Response status code is 400\", function () {",
-							"    pm.response.to.have.status(400);",
-							"});",
-							"",
-							"pm.test(\"쿠폰 등록 실패 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
-							"});",
-							"",
-							"pm.test(\"data 유효성 체크\", function () {",
-							"    pm.expect(jsonData.data).to.be.null;",
-							"});",
-							"",
-							"pm.test(\"error message 체크\", function () {",
-							"    pm.expect(jsonData.message).to.include(\"장바구니 쿠폰의 경우, 외부 채널 노출 설정을 할 수 없습니다.\");",
-							"});",
-							"",
-							"pm.test(\"error_code 체크\", function () {",
-							"    pm.expect(jsonData.error_code).to.equal(\"COMMON_INVALID_PARAMETER\");",
-							"});",
-							"",
-							"pm.test(\"errorCode 체크\", function () {",
-							"    pm.expect(jsonData.errorCode).to.equal(\"COMMON_INVALID_PARAMETER\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{inhouse_token}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"couponName\": \"첫구매 쿠폰 / 장바구니 쿠폰\",\n    \"couponAdminName\": \"첫구매 쿠폰\",\n    \"couponRegistrationType\": \"FIRST_ORDER\",\n    \"couponType\": \"CART\",\n    \"duplicateAllowed\": true,\n    \"firstCoupon\": true,\n    \"firstCouponType\": \"SIGN_UP\",\n    \"inhousePayRate\": 100,\n    \"partnerPayRate\": 0,\n    \"discountType\": \"FIXED_RATE\",\n    \"discountValue\": 10,\n    \"maxDiscountAmount\": 10000,\n    \"minPayAmount\": 0,\n    \"maxIssueCount\": 0,\n    \"maxIssueCountPerPerson\": 0,\n    \"couponIssueType\": \"CONDITIONAL\",\n    \"issueTarget\": \"ALL\",\n    \"couponUsePeriodType\": \"ISSUE_DATE\",\n    \"couponUsePlatform\": \"WEB_AND_APP\",\n    \"excludeFromExternalChannel\": true,\n    \"unlimitedCoupon\": false,\n    \"validDaysFromIssue\": 2,\n    \"serialCouponQty\": 0\n}"
 				},
 				"url": {
 					"raw": "{{host}}/inhouse-admin/v4/coupons",
@@ -12061,7 +12561,7 @@
 							"});",
 							"",
 							"pm.test(\"error message 체크\", function () {",
-							"    pm.expect(jsonData.message).to.include(\"장바구니 쿠폰의 경우, 외부 채널 노출 설정을 할 수 없습니다.\");",
+							"    pm.expect(jsonData.message).to.include(\"등급 쿠폰은 외부 채널 노출 설정을 할 수 없습니다.\");",
 							"});",
 							"",
 							"pm.test(\"error_code 체크\", function () {",
