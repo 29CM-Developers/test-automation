@@ -21,6 +21,7 @@ from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 from ios_automation.test_cases.like_test import Like
 from ios_automation.test_cases.cart_test import Cart
 from ios_automation.test_cases.join_test import Join
+from ios_automation.test_cases.my_test import My
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -99,6 +100,26 @@ class IOSTestAutomation(unittest.TestCase):
 
         # SEARCH -> 검색 결과 화면 확인
         self.result_data = Search.test_search_results_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 설정
+        self.result_data = My.test_enter_settings_screen(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 최근 본 컨텐츠 확인
+        self.result_data = My.test_recently_viewed_content(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 주문 건이 없열 경우, 주문 배송 조회
+        self.result_data = My.test_track_delivery_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 주문 건이 없열 경우, 상품 리뷰
+        self.result_data = My.test_review_without_orders(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
