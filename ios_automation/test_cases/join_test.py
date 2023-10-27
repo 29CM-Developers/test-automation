@@ -1,12 +1,11 @@
 import os
 import sys
 import traceback
+import com_utils.deeplink_control
 
-from time import time, sleep
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.common import NoSuchElementException
-
+from time import time
 from com_utils import values_control
+from ios_automation.page_action import login_page, my_page, navigation_bar, join_page
 
 
 class Join:
@@ -18,32 +17,28 @@ class Join:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            wd.get(self.conf['deeplink']['my'])
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
-            sleep(3)
+            # My 탭으로 이동하여 로그인 페이지 진입
+            com_utils.deeplink_control.move_to_my(self, wd)
+            my_page.enter_login_page(wd)
 
             # 간편 회원가입 선택
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeLink[`label == "간편 회원가입하기"`]').click()
+            login_page.click_simple_join_btn(wd)
 
             # 필수 약관 선택 후 가입 시도
-            terms = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="2"]/XCUIElementTypeOther')
-            for required_term in terms:
-                if '필수' in required_term.text:
-                    required_term.click()
-                else:
-                    pass
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '동의하고 가입하기').click()
+            join_page.click_required_terms(wd)
 
-            # 기가입된 이메일 입력
-            wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').send_keys(self.pconf['id_29cm'])
+            # 기가입 이메일 입력
+            join_page.input_email(wd, self.pconf['id_29cm'])
 
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '동일한 이메일 주소로 가입된 계정이 있습니다. 기존 계정으로 로그인해주세요.')
-                print('기가입된 계정으로 회원가입 실패 확인')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('기가입된 계정으로 회원가입 실패 확인 실패')
-                print('기가입된 계정으로 회원가입 실패 확인 실패')
+            # 기가입 이메일 가입 불가 에러
+            test_result = join_page.check_same_email_join_error(wd, warning_texts)
+
+            # My 탭으로 복귀
+            join_page.click_back_btn(wd)
+            login_page.click_back_btn(wd)
+
+            # Home 탭으로 이동
+            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -55,7 +50,7 @@ class Join:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get(self.conf['deeplink']['home'])
+            com_utils.deeplink_control.move_to_home(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"

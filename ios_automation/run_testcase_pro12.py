@@ -15,6 +15,7 @@ from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.not_login_user_test import NotLoginUserTest
 from ios_automation.test_cases.plp_test import Plp
 from ios_automation.test_cases.search_test import Search
+from ios_automation.test_cases.join_test import Join
 from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
 
 
@@ -99,6 +100,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 간편 회원가입 실패
+        self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
