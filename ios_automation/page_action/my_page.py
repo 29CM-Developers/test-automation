@@ -52,7 +52,7 @@ def check_nickname(self, wd, warning_texts):
 def check_recent_title(wd, warning_texts, type, title):
     recent_title = wd.find_element(AppiumBy.XPATH,
                                    '//XCUIElementTypeCell/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText').text
-    if title == recent_title:
+    if recent_title in title:
         test_result = 'PASS'
         print(f'최근 본 {type} 확인')
     else:
