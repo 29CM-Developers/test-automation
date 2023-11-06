@@ -17,7 +17,7 @@ from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.plp_test import Plp
 from ios_automation.test_cases.category_test import Category
 from ios_automation.test_cases.search_test import Search
-from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
+from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.test_cases.like_test import Like
 from ios_automation.test_cases.cart_test import Cart
 from ios_automation.test_cases.join_test import Join
@@ -65,7 +65,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         # 앱 실행 후, 바텀 시트 노출 여부 확인
-        test_bottom_sheet(self.wd)
+        close_bottom_sheet(self.wd)
 
         # 비로그인 유저 사용 불가
         self.result_data = NotLoginUserTest.test_not_login_user_impossible(self, self.wd)
@@ -136,7 +136,7 @@ class IOSTestAutomation(unittest.TestCase):
     def test_iOS_BVT(self):
         self.def_name = sys._getframe().f_code.co_name
 
-        test_bottom_sheet(self.wd)
+        close_bottom_sheet(self.wd)
 
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)

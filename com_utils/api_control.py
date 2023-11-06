@@ -1,4 +1,5 @@
 import requests
+import com_utils.cookies_control
 
 
 def large_category_info(category, large_category_text):
@@ -56,16 +57,33 @@ def medium_category_code(large_category_code, medium_category_name):
     return medium_category_code
 
 
+# rank : 확인하고자하는 여성의류 순위 작성 (1위일 경우, 1로 작성)
 def best_plp_women_clothes(rank):
     best_product = {}
     best_response = requests.get(
         'https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
     if best_response.status_code == 200:
         best_product_data = best_response.json()
-        best_product_info = best_product_data['data']['content'][rank]
+        best_product_info = best_product_data['data']['content'][rank - 1]
         best_product['item_no'] = best_product_info['itemNo']
         best_product['item_name'] = best_product_info['itemName']
         print(f'여성 의류 베스트 상품 : {best_product}')
         return best_product
     else:
         print('베스트 PLP API 불러오기 실패')
+
+
+# 테스트 하는 id, password 입력
+def my_heart_count(id, password):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+
+    like_count = {}
+    like_response = requests.get('https://front-api.29cm.co.kr/api/v4/heart/my-heart/count/', cookies=cookies)
+    if like_response.status_code == 200:
+        like = like_response.json()
+        like_count['product_count'] = int(like['data']['product_count'])
+        like_count['brand_count'] = int(like['data']['brand_count'])
+        like_count['post_count'] = int(like['data']['post_count'])
+        return like_count
+    else:
+        print('좋아요 수 불러오기 실패')

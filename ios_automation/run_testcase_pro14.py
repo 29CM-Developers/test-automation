@@ -13,7 +13,7 @@ from ios_setup import pro14_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.category_test import Category
-from ios_automation.test_cases.bottom_sheet import test_bottom_sheet
+from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.test_cases.like_test import Like
 from ios_automation.test_cases.cart_test import Cart
 from selenium.common.exceptions import InvalidSessionIdException
@@ -60,7 +60,7 @@ class IOSTestAutomation(unittest.TestCase):
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         # 앱 실행 후, 바텀 시트 노출 여부 확인
-        test_bottom_sheet(self.wd)
+        close_bottom_sheet(self.wd)
 
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)
