@@ -1,7 +1,7 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
-import com_utils.element_control
+from com_utils.element_control import ial, ialc, element_scroll_control
+from com_utils.api_control import my_heart_count
 
 
 def close_brand_recommended_page(wd):
@@ -15,7 +15,7 @@ def close_brand_recommended_page(wd):
 
 def set_like_zero(self, wd):
     # 좋아요 api 호출하여 각 탭의 좋아요 수 확인
-    my_heart = com_utils.api_control.my_heart_count(self.pconf['id_29cm'], self.pconf['password_29cm'])
+    my_heart = my_heart_count(self.pconf['id_29cm'], self.pconf['password_29cm'])
     product_count = my_heart['product_count']
     brand_count = my_heart['brand_count']
     post_count = my_heart['post_count']
@@ -45,7 +45,7 @@ def set_like_zero(self, wd):
 
 # 비교하는 like 수를 like_count에 작성
 def check_like_total_count(wd, warning_texts, like_count):
-    like_total_count = com_utils.element_control.ial(wd, 'like_total_count')
+    like_total_count = ial(wd, 'like_total_count')
     if like_total_count.text == like_count:
         test_result = 'PASS'
         print('총 LIKE 개수 확인')
@@ -57,20 +57,20 @@ def check_like_total_count(wd, warning_texts, like_count):
 
 
 def click_product_tab(wd):
-    com_utils.element_control.ialc(wd, 'like_product_tab')
+    ialc(wd, 'like_product_tab')
 
 
 def click_brand_tab(wd):
-    com_utils.element_control.ialc(wd, 'like_brand_tab')
+    ialc(wd, 'like_brand_tab')
 
 
 def click_post_tab(wd):
-    com_utils.element_control.ialc(wd, 'like_post_tab')
+    ialc(wd, 'like_post_tab')
 
 
 def check_no_product_like(wd, warning_texts):
     try:
-        com_utils.element_control.ial(wd, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
+        ial(wd, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
         test_result = 'PASS'
         print('PRODUCT 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
@@ -82,7 +82,7 @@ def check_no_product_like(wd, warning_texts):
 
 def check_no_brand_like(wd, warning_texts):
     try:
-        com_utils.element_control.ial(wd, '좋아요한 브랜드가 없어요.')
+        ial(wd, '좋아요한 브랜드가 없어요.')
         test_result = 'PASS'
         print('BRAND 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
@@ -94,7 +94,7 @@ def check_no_brand_like(wd, warning_texts):
 
 def check_no_post_like(wd, warning_texts):
     try:
-        com_utils.element_control.ial(wd, '좋아요한 게시물이 없습니다. 다시 보고 싶은 게시물에 하트를 눌러보세요.')
+        ial(wd, '좋아요한 게시물이 없습니다. 다시 보고 싶은 게시물에 하트를 눌러보세요.')
         test_result = 'PASS'
         print('POST 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
@@ -105,18 +105,18 @@ def check_no_post_like(wd, warning_texts):
 
 
 def refresh_product_like_tab(wd):
-    product_list = com_utils.element_control.ial(wd, 'like_product_list')
-    com_utils.element_control.element_scroll_control(wd, product_list, 'U', 30)
+    product_list = ial(wd, 'like_product_list')
+    element_scroll_control(wd, product_list, 'U', 30)
 
 
 def refresh_brand_like_tab(wd):
-    product_list = com_utils.element_control.ial(wd, 'like_brand_list')
-    com_utils.element_control.element_scroll_control(wd, product_list, 'U', 30)
+    product_list = ial(wd, 'like_brand_list')
+    element_scroll_control(wd, product_list, 'U', 30)
 
 
 def refresh_post_like_tab(wd):
-    product_list = com_utils.element_control.ial(wd, 'like_post_list')
-    com_utils.element_control.element_scroll_control(wd, product_list, 'U', 30)
+    product_list = ial(wd, 'like_post_list')
+    element_scroll_control(wd, product_list, 'U', 30)
 
 
 def click_to_unlike_product(wd):
@@ -205,19 +205,19 @@ def click_liked_brand_name(wd):
 
 
 def click_brand_back_btn(wd):
-    com_utils.element_control.ialc(wd, 'common back icon black')
+    ialc(wd, 'common back icon black')
 
 
 def save_liked_brand_product_name(wd):
-    brand_product_name = com_utils.element_control.ial(wd,
-                                                       '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText').text
+    brand_product_name = ial(wd,
+                             '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText').text
     print(f'좋아요 브랜드의 상품: {brand_product_name}')
     return brand_product_name
 
 
 def click_liked_brand_porduct_name(wd):
-    com_utils.element_control.ialc(wd,
-                                   '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther')
+    ialc(wd,
+         '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther')
 
 
 def move_to_welove_page(wd):
@@ -239,23 +239,23 @@ def check_post_like(wd, warning_texts, like_post_name):
 
 
 def save_grid_image_size(wd):
-    image_size = com_utils.element_control.ial(wd,
-                                               '//XCUIElementTypeCell[@name="like_product_item"]/XCUIElementTypeOther/XCUIElementTypeImage').size
+    image_size = ial(wd,
+                     '//XCUIElementTypeCell[@name="like_product_item"]/XCUIElementTypeOther/XCUIElementTypeImage').size
     return image_size
 
 
 def save_list_image_size(wd):
-    image_size = com_utils.element_control.ial(wd,
-                                               '//XCUIElementTypeCollectionView[@name="like_product_list"]/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage').size
+    image_size = ial(wd,
+                     '//XCUIElementTypeCollectionView[@name="like_product_list"]/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage').size
     return image_size
 
 
 def click_change_view_type_to_list(wd):
-    com_utils.element_control.ialc(wd, 'ic like list')
+    ialc(wd, 'ic like list')
 
 
 def click_change_view_type_to_grid(wd):
-    com_utils.element_control.ialc(wd, 'ic like grid')
+    ialc(wd, 'ic like grid')
 
 
 def check_veiw_image_size(warning_texts, grid_height, grid_width, list_height, list_width):
