@@ -5472,7 +5472,7 @@
 							"});",
 							"",
 							"pm.test(\"error message 체크\", function () {",
-							"    pm.expect(jsonData.message).to.include(\"사용 종료 일시는 발급 종료 일시보다 미래 일시여야 합니다.\");",
+							"    pm.expect(jsonData.message).to.include(\"사용 종료 일시는 발급 종료 일시와 동일하거나 그 이후여야 합니다.\");",
 							"});",
 							"",
 							"pm.test(\"error_code 체크\", function () {",
