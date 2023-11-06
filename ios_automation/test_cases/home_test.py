@@ -8,6 +8,7 @@ from com_utils import values_control
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from ios_automation.page_action import navigation_bar, bottom_sheet
 
 
 class Home:
@@ -313,7 +314,7 @@ class Home:
                 print(f'HOME 탭에서 CATEGORY 탭 이동 확인 실패 : {category_list}')
 
             # HOME 탭으로 이동
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
+            navigation_bar.move_to_home(wd)
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
                 print('HOME 탭으로 이동 확인')
@@ -355,6 +356,7 @@ class Home:
                 print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
+            bottom_sheet.close_bottom_sheet(wd)
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
                 print('HOME 탭으로 이동 확인')
@@ -381,7 +383,7 @@ class Home:
                 print('HOME 탭에서 LIKE 탭 이동 확인 실패')
 
             # HOME 탭으로 이동
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
+            navigation_bar.move_to_home(wd)
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
                 print('HOME 탭으로 이동 확인')
@@ -399,7 +401,7 @@ class Home:
                 print('HOME 탭에서 MY 탭 이동 확인 실패')
 
             # HOME 탭으로 이동
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "HOME"`]').click()
+            navigation_bar.move_to_home(wd)
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
                 print('HOME 탭으로 이동 확인')
