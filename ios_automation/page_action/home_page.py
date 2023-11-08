@@ -6,7 +6,7 @@ from com_utils.element_control import ial, ialc
 
 def check_home_logo(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
+        ial(wd, 'navi_logo_btn')
         print('HOME 탭으로 이동 확인')
     except NoSuchElementException:
         print('HOME 탭으로 이동 확인 실패')
