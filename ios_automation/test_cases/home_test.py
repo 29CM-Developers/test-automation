@@ -8,7 +8,7 @@ from com_utils import values_control
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from ios_automation.page_action import navigation_bar, bottom_sheet
+from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page
 
 
 class Home:
@@ -56,6 +56,20 @@ class Home:
         print(f'[{test_name}] 테스트 시작')
 
         try:
+            # 라이프 탭 선택
+            home_page.click_tab_name(wd, '라이프')
+
+            # 라이프 선택 시, 노출되는 탭 이름 비교
+            save_tab_names = home_page.save_tab_names(wd)
+            test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
+
+            # 라이프 선택 닫기
+            home_page.click_close_life_tab(wd)
+
+            # 기본으로 노출되는 탭 이름 비교
+            save_tab_names = home_page.save_tab_names(wd)
+            home_page.check_tab_names(self, warning_texts, 'home', save_tab_names)
+
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
 
             # 홈화면 배너 API 호출
@@ -292,7 +306,7 @@ class Home:
             print(f'[{test_name}] 테스트 시작')
 
             # CATEGORY 탭 진입
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "CATEGORY"`]').click()
+            navigation_bar.move_to_category(wd)
 
             wd.find_element(AppiumBy.XPATH,
                             '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="0"]').click()
@@ -313,16 +327,12 @@ class Home:
                 warning_texts.append('HOME 탭에서 CATEGORY 탭 이동 확인 실패')
                 print(f'HOME 탭에서 CATEGORY 탭 이동 확인 실패 : {category_list}')
 
-            # HOME 탭으로 이동
+            # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
-                print('HOME 탭으로 이동 확인')
-            except NoSuchElementException:
-                print('HOME 탭으로 이동 확인 실패')
+            home_page.check_home_logo(wd)
 
             # SEARCH 탭 진입
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "SEARCH"`]').click()
+            navigation_bar.move_to_search(wd)
 
             # 첫번째 인기 브랜드 카테고리 타이틀 확인
             first_brand_category = ''
@@ -355,24 +365,16 @@ class Home:
                 warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
                 print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
 
+            # HOME으로 이동하여 29CM 로고 확인
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
             bottom_sheet.close_bottom_sheet(wd)
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
-                print('HOME 탭으로 이동 확인')
-            except NoSuchElementException:
-                print('HOME 탭으로 이동 확인 실패')
+            home_page.check_home_logo(wd)
 
             # LIKE 탭 진입
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "LIKE"`]').click()
+            navigation_bar.move_to_like(wd)
 
             # LIKE 진입 시, 브랜드 추천 페이지 노출 여부 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
-                print('브랜드 추천 페이지 노출')
-            except NoSuchElementException:
-                pass
+            like_page.close_brand_recommended_page(wd)
 
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count')
@@ -382,31 +384,17 @@ class Home:
                 warning_texts.append('HOME 탭에서 LIKE 탭 이동 확인 실패')
                 print('HOME 탭에서 LIKE 탭 이동 확인 실패')
 
-            # HOME 탭으로 이동
+            # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
-                print('HOME 탭으로 이동 확인')
-            except NoSuchElementException:
-                print('HOME 탭으로 이동 확인 실패')
+            home_page.check_home_logo(wd)
 
-            # MY 탭 진입
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "MY"`]').click()
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
-                print('HOME 탭에서 MY 탭 이동 확인')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 MY 탭 이동 확인 실패')
-                print('HOME 탭에서 MY 탭 이동 확인 실패')
+            # MY 탭 진입하여 닉네임 확인
+            navigation_bar.move_to_my(wd)
+            test_result = my_page.check_nickname(self, wd, warning_texts)
 
-            # HOME 탭으로 이동
+            # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_logo_btn')
-                print('HOME 탭으로 이동 확인')
-            except NoSuchElementException:
-                print('HOME 탭으로 이동 확인 실패')
+            home_page.check_home_logo(wd)
 
         except Exception:
             test_result = 'FAIL'

@@ -2,7 +2,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 
 
-def pdp_back_btn(wd):
+def click_pdp_back_btn(wd):
     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
 
