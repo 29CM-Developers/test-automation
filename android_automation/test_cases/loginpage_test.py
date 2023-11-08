@@ -249,15 +249,58 @@ class LoginLogout:
 
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == self.pconf['NAME'] :
+            if login_name.text == self.pconf['NAME']:
                 pass
-            else :
+            else:
                 print("로그인 문구 실패")
                 test_result = 'WARN'
                 warning_texts.append("로그인 문구 확인 실패")
             print("로그인 유저 이름 : %s " % login_name.text)
+            # 보강시나리오 회원 정보 수정 버튼 선택
+            try:
+                element_control.scroll_to_element_with_text(wd, '회원 정보 수정').click()
+                sleep(5)
+                element_control.aalk(wd, '//android.widget.EditText', self.pconf['LOGIN_SUCCESS_PW'])
+                wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
+                sleep(2)
+                try:
+                    edit_member_information = element_control.aal(wd, '회원정보 수정')
+                    print("회원정보 수정 화면 진입")
+                    if edit_member_information.text == '회원정보 수정':
+                        print("회원정보 수정 페이지 타이틀 확인")
+                    else:
+                        print("회원정보 수정 페이지 타이틀 확인 실패")
+                        test_result = 'WARN'
+                        warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
+                    print(f"가이드 문구 : {edit_member_information.text} ")
+                except NoSuchElementException:
+                    print("회원정보 수정 페이지 타이틀 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
+                    print(f"가이드 문구 : {edit_member_information.text} ")
+                try:
+                    user_email = element_control.aal(wd, self.pconf['LOGIN_SUCCESS_ID'])
+                    print("로그인한 유저 이메일 확인")
+
+                    if user_email.text == self.pconf['LOGIN_SUCCESS_ID']:
+                        print("회원정보 수정 페이지 확인")
+                    else:
+                        print("회원정보 수정 페이지 확인 실패")
+                        test_result = 'WARN'
+                        warning_texts.append("회원정보 수정 페이지 확인 실패")
+                    print(f"가이드 문구 : {user_email.text} ")
+                except NoSuchElementException:
+                    print("회원정보 수정 페이지 타이틀 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
+                    print(f"가이드 문구 : {user_email.text} ")
+            except NoSuchElementException:
+                print("회원정보 수정 페이지 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("회원정보 수정 페이지 확인 실패")
+
             # 하단 네비게이터에 홈 메뉴 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            element_control.aalc(wd, 'HOME')
             print("홈화면 진입")
             print("[이메일 로그인 성공]CASE 종료")
             test_bottom_sheet(self.wd)
