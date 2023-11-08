@@ -100,12 +100,13 @@ def aal(wd, element_value):
     for locator in locators:
         try:
             element = wd.find_element(getattr(AppiumBy, locator), element_value)
-        except NoSuchElementException:
+            break
+        except Exception:
             pass
-        try:
-            element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
-        except NoSuchElementException:
-            pass
+    try:
+        element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+    except NoSuchElementException:
+        pass
 
     return element
 
