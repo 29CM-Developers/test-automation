@@ -1,13 +1,10 @@
 import os
 import sys
 import traceback
-import requests
-import com_utils
 
-from time import time, sleep
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.common import NoSuchElementException
-from com_utils import values_control
+from time import time
+from com_utils import values_control, api_control
+from ios_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page
 
 
 class Plp:
@@ -18,108 +15,83 @@ class Plp:
 
         try:
             # 카테고리 탭 > 여성 의류 BEST
-            wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "CATEGORY"`]').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best').click()
+            navigation_bar.move_to_category(wd)
+            category_page.click_best_category(wd)
 
-            try:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="베스트"]')
-                print('베스트 PLP 진입 확인')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                error_texts = '베스트 PLP 진입 확인 실패'
-                print('베스트 PLP 진입 확인 실패')
+            # 베스트 PLP 진입 확인
+            test_result = best_product_list_page.check_entry_best_plp(wd, warning_texts)
+
+            # 일간 필터 선택
+            best_product_list_page.click_period_sort(wd, '일간')
+
+            # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
+            api_oneday_product = api_control.best_plp_women_clothes(1, 'ONE_DAY')['item_name']
+            oneday_product = best_product_list_page.save_best_first_product_name(wd)
+            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneday_product,
+                                                                         oneday_product)
+
+            # 주간 필터 선택
+            best_product_list_page.click_period_sort(wd, '주간')
+
+            # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
+            api_oneweek_product = api_control.best_plp_women_clothes(1, 'ONE_WEEK')['item_name']
+            oneweek_product = best_product_list_page.save_best_first_product_name(wd)
+            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneweek_product,
+                                                                         oneweek_product)
+
+            # 월간 필터 선택
+            best_product_list_page.click_period_sort(wd, '월간')
+
+            # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
+            api_onemonth_product = api_control.best_plp_women_clothes(1, 'ONE_MONTH')['item_name']
+            onemonth_product = best_product_list_page.save_best_first_product_name(wd)
+            test_result = best_product_list_page.check_best_product_name(warning_texts, api_onemonth_product,
+                                                                         onemonth_product)
+
+            # 실시간 필터로 복귀
+            best_product_list_page.click_period_sort(wd, '실시간')
 
             # 좋아요 버튼 선택 전, 좋아요 수 저장
-            heart_count = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').get_attribute(
-                'label')
-            heart_count = int(heart_count.replace(',', ''))
+            heart_count = best_product_list_page.save_best_product_like_count(wd)
 
             # 좋아요 버튼 선택 -> 찜하기 등록
-            # product_1st_heart_btn.click()
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').click()
-            sleep(1)
-            heart_select = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').get_attribute(
-                'label')
-            heart_select = int(heart_select.replace(',', ''))
-            if heart_select == heart_count + 1:
-                print('아이템 좋아요 개수 증가 확인')
-                pass
-            else:
-                test_result = 'WARN'
-                warning_texts.append('아이템 좋아요 개수 증가 확인 실패')
-                print(f'아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
+            best_product_list_page.click_best_product_like_btn(wd)
+            heart_select = best_product_list_page.save_best_product_like_count(wd)
+
+            # 좋아요 수 증가 확인
+            test_result = best_product_list_page.check_increase_like_count(warning_texts, heart_count, heart_select)
 
             # 좋아요 버튼 선택 -> 찜하기 해제
-            # product_1st_heart_btn.click()
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').click()
-            sleep(1)
-            heart_select = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').get_attribute(
-                'label')
-            heart_select = int(heart_select.replace(',', ''))
-            if heart_select == heart_count:
-                print('아이템 좋아요 개수 차감 확인')
-                pass
-            else:
-                test_result = 'WARN'
-                warning_texts.append('아이템 좋아요 개수 차감 확인 실패')
-                print(f'아이템 좋아요 개수 차감 확인 실패: {heart_count} / {heart_select}')
+            best_product_list_page.click_best_product_like_btn(wd)
+            heart_deselect = best_product_list_page.save_best_product_like_count(wd)
 
-            # 여성의류 실시간 베스트 API 호출
-            response = requests.get('https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
-            if response.status_code == 200:
-                best_product_data = response.json()
+            # 좋아요 수 차감 확인
+            test_result = best_product_list_page.check_decrease_like_count(warning_texts, heart_count, heart_deselect)
 
-                # 10번째 상품의 상품명 저장
-                best_product_10th_prefix = best_product_data['data']['content'][9]['subjectDescriptions']
-                best_product_10th_itemname = best_product_data['data']['content'][9]['itemName']
-                if not best_product_10th_prefix:
-                    best_product_10th_name = f'{best_product_10th_itemname}'
-                else:
-                    best_product_10th_name = f'{best_product_10th_prefix[0]} {best_product_10th_itemname}'
-                print(best_product_10th_name)
+            # 실시간 여성 의류 베스트 1위 상품명 저장 및 선택
+            now_1st_product = api_control.best_plp_women_clothes(1, 'NOW')['item_name']
+            best_product_list_page.click_best_first_product(wd)
 
-                # 10번째 상품 선택 (화면에 미노출 시, 노출 될 때까지 스크롤)
-                rank_break = False
-                for i in range(0, 5):
-                    best = wd.find_elements(AppiumBy.XPATH,
-                                            '//XCUIElementTypeStaticText[@name="best_product_rank"]')
-                    for rank in best:
-                        best_rank = rank.text
-                        if best_rank == '10':
-                            rank_break = True
-                            wd.find_element(AppiumBy.IOS_PREDICATE, f'label == "{best_product_10th_name}"').click()
-                            break
-                    if rank_break:
-                        break
-                    com_utils.element_control.scroll_control(wd, "D", 50)
+            # PDP 상품명 비교
+            pdp_name = product_detail_page.save_product_name(wd)
+            product_detail_page.check_product_name(warning_texts, pdp_name, now_1st_product)
 
-                # PDP 상품 이름 저장 -> 이미지 1개일 경우와 2개 이상일 경우, XPATH index 변경되어 아래와 같이 작성
-                pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
-                try:
-                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'Select a slide to show')
-                    pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute(
-                        'name')
-                except NoSuchElementException:
-                    pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute(
-                        'name')
+            # 베스트 PLP로 복귀
+            product_detail_page.click_pdp_back_btn(wd)
 
-                # 선택한 상품의 PDP에서 상품 이름 비교
-                if best_product_10th_itemname.strip() in pdp_name:
-                    print('PDP 진입 확인')
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('PDP 진입 확인 실패')
-                    print(f'PDP 진입 확인 실패 : {best_product_10th_itemname} / {pdp_name}')
+            # API에서 호출한 상품명 저장
+            now_10th_product_prefix = api_control.best_plp_women_clothes(10, 'NOW')['item_prefix']
+            now_10th_product = api_control.best_plp_women_clothes(10, 'NOW')['item_name']
+            now_10th_product_name = best_product_list_page.save_api_product_name(now_10th_product_prefix,
+                                                                                 now_10th_product)
 
-                # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common home icon black').click()
+            # 실시간 10위 상품 노출 확인
+            best_product_list_page.find_scroll_and_find_product_rank(wd, '10')
+            test_result = best_product_list_page.check_additional_product(wd, warning_texts, now_10th_product_name)
 
-            else:
-                test_result = 'WARN'
-                warning_texts.append('베스트 PLP API 불러오기 실패')
-                print('베스트 PLP API 불러오기 실패')
+            # Home으로 복귀
+            best_product_list_page.click_back_btn(wd)
+            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
