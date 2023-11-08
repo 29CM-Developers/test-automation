@@ -87,3 +87,46 @@ def my_heart_count(id, password):
         return like_count
     else:
         print('좋아요 수 불러오기 실패')
+
+
+def search_total_popular_brand_name():
+    search_popular_brand_name = {}
+    response = requests.get(
+        'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
+    if response.status_code == 200:
+        api_data = response.json()
+        brands = api_data['data']['brand']['results'][0]['keywords']
+        search_popular_brand_name['category_name'] = api_data['data']['brand']['results'][0]['categoryName']
+        search_popular_brand_name['api_1st_brand_name'] = brands[0]['keyword']
+        search_popular_brand_name['api_30th_brand_name'] = brands[29]['keyword']
+        print(
+            f"api_1st_brand_name : {search_popular_brand_name['api_1st_brand_name']}, api 30th_brand_name : {search_popular_brand_name['api_30th_brand_name']}, category_name : {search_popular_brand_name['category_name']}")
+        return search_popular_brand_name
+    else:
+        print('베스트 PLP API 불러오기 실패')
+
+
+def search_woman_popular_brand_name():
+    response = requests.get(
+        'https://search-api.29cm.co.kr/api/v4/popular?gender=female&keywordLimit=100&brandLimit=30')
+    if response.status_code == 200:
+        api_data = response.json()
+        brands = api_data['data']['brand']['results'][0]['keywords']
+        api_1st_brand_name = brands[0]['keyword']
+        print(f"api 1st_brand_name : {api_1st_brand_name}")
+        return api_1st_brand_name
+    else:
+        print('베스트 PLP API 불러오기 실패')
+
+
+def search_popular_keyword():
+    search_popular_keyword = {}
+    response = requests.get('https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30')
+    if response.status_code == 200:
+        api_data = response.json()
+        keywords = api_data['data']['popularKeyword']
+        search_popular_keyword['api_1st_keyword_name'] = keywords[0]
+        search_popular_keyword['api_25th_keyword_name'] = keywords[24]
+        return search_popular_keyword
+    else:
+        print('베스트 PLP API 불러오기 실패')
