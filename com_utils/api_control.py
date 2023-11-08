@@ -58,15 +58,17 @@ def medium_category_code(large_category_code, medium_category_name):
 
 
 # rank : 확인하고자하는 여성의류 순위 작성 (1위일 경우, 1로 작성)
-def best_plp_women_clothes(rank):
+# period : NOW, ONE_DAY, ONE_WEEK, ONE_MONTH
+def best_plp_women_clothes(rank, period):
     best_product = {}
     best_response = requests.get(
-        'https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
+        f'https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort={period}&limit=100&offset=0')
     if best_response.status_code == 200:
         best_product_data = best_response.json()
         best_product_info = best_product_data['data']['content'][rank - 1]
         best_product['item_no'] = best_product_info['itemNo']
         best_product['item_name'] = best_product_info['itemName']
+        best_product['item_prefix'] = best_product_info['subjectDescriptions']
         print(f'여성 의류 베스트 상품 : {best_product}')
         return best_product
     else:
