@@ -5,7 +5,7 @@ import com_utils.deeplink_control
 
 from time import time
 from com_utils import values_control
-from ios_automation.page_action import login_page, my_page, navigation_bar
+from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.page_action.select_category_page import test_select_category
 
@@ -28,7 +28,19 @@ class UserLoginTest:
             # 프로필 이름 확인
             test_result = my_page.check_nickname(self, wd, warning_texts)
 
+            # 회원 정보 수정 페이지 진입
+            my_page.click_edit_user_info_menu(wd)
+
+            # 비밀번호 재확인
+            my_edit_user_info_page.input_password(wd, self.pconf['password_29cm'])
+            my_edit_user_info_page.click_next_btn(wd)
+
+            # 회원 정보 수정 페이지의 타이틀과 닉네임 확인
+            test_result = my_edit_user_info_page.check_edit_page_title(wd, warning_texts)
+            test_result = my_edit_user_info_page.check_edit_page_id(wd, warning_texts, self.pconf['id_29cm'])
+
             # Home 으로 복귀
+            my_edit_user_info_page.click_back_btn(wd)
             navigation_bar.move_to_home(wd)
 
             # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
