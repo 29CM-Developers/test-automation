@@ -60,7 +60,7 @@ class My:
             print(f'[{test_name}] 테스트 시작')
 
             # 여성의류 베스트 1위 상품의 itemNo 확인
-            product_item_no = com_utils.api_control.best_plp_women_clothes(1)['item_no']
+            product_item_no = com_utils.api_control.best_plp_women_clothes(1, 'NOW')['item_no']
 
             # 딥링크로 베스트 상품 PDP 진입
             com_utils.deeplink_control.move_to_pdp(wd, product_item_no)
