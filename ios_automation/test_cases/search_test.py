@@ -128,13 +128,22 @@ class Search:
                 print(f'인기 브랜드 30위 확인 실패 : {api_30th_brand} / {brand_30th_name}')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            relate_brand_name = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'releate_brand_name').text
-            if brand_30th_name in relate_brand_name:
-                print(f'인기 브랜드 검색 확인: {relate_brand_name}')
-            else:
+            relate_brand_name = wd.find_elements(AppiumBy.XPATH,
+                                                 '//XCUIElementTypeStaticText[@name="releate_brand_name"]')
+            brand_find = False
+            for brand_name in relate_brand_name:
+                relate_name = brand_name.text
+                print(relate_name)
+                if brand_30th_name in relate_name:
+                    brand_find = True
+                    print('인기 브랜드 검색 확인')
+                    break
+                else:
+                    pass
+            if not brand_find:
                 test_result = 'WARN'
                 warning_texts.append('인기 브랜드 검색 확인 실패')
-                print('인기 브랜드 검색 확인 실패')
+                print(f'인기 브랜드 검색 확인 실패')
 
             # 검색 화면으로 복귀
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()

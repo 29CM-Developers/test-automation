@@ -38,14 +38,20 @@ def check_login_btn(wd, warning_texts):
 
 
 def check_nickname(self, wd, warning_texts):
-    try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
-        test_result = 'PASS'
-        print("이메일 로그인 성공 확인")
-    except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('이메일 로그인 성공 확인 실패')
-        print("이메일 로그인 성공 확인 실패")
+    test_result = 'WARN'
+    for i in range(0, 5):
+        try:
+            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
+            if element.is_displayed():
+                test_result = 'PASS'
+                print('HOME 탭 닉네임 확인')
+                break
+        except NoSuchElementException:
+            pass
+        com_utils.element_control.scroll_control(wd, "U", 50)
+    if test_result == 'WARN':
+        warning_texts.append('HOME 탭 닉네임 확인 실패')
+        print('HOME 탭 닉네임 확인 실패')
     return test_result
 
 
@@ -105,6 +111,18 @@ def click_review_menu(wd):
     for i in range(0, 5):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상품 리뷰')
+            if element.is_displayed():
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        com_utils.element_control.scroll_control(wd, "D", 50)
+
+
+def click_edit_user_info_menu(wd):
+    for i in range(0, 5):
+        try:
+            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '회원 정보 수정')
             if element.is_displayed():
                 element.click()
                 break

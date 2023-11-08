@@ -102,7 +102,7 @@ class Like:
             test_result = product_detail_page.check_product_name(warning_texts, pdp_product_name, like_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
-            product_detail_page.pdp_back_btn(wd)
+            product_detail_page.click_pdp_back_btn(wd)
 
             # 그리드 뷰 상태에서 이미지 사이즈 저장
             grid_size = like_page.save_grid_image_size(wd)
@@ -145,7 +145,7 @@ class Like:
                                                                  liked_brand_product_name)
 
             # Like 탭으로 복귀
-            product_detail_page.pdp_back_btn(wd)
+            product_detail_page.click_pdp_back_btn(wd)
 
             # 포스트 탭 선택
             like_page.click_post_tab(wd)
