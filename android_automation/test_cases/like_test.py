@@ -213,9 +213,10 @@ class Like:
                 warning_texts.append('좋아요 브랜드 노출 확인 실패')
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
             like_BrandName.click()
-            sleep(3)
+            sleep(4)
             brand_web_view_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
-            brand_name = brand_web_view_layer.find_element(AppiumBy.XPATH, '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
+            brand_name = brand_web_view_layer.find_element(AppiumBy.XPATH,
+                                                           '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
             print(brand_name)
             original_string = BrandName
             uppercase_string = original_string.upper()

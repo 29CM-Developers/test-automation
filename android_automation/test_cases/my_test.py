@@ -217,7 +217,7 @@ class My:
             print("홈 > 마이페이지 화면 진입")
             try:
                 wd.find_element(By.XPATH, "//*[contains(@text, '주문배송조회')]").click()
-                sleep(2)
+                sleep(3)
                 order_delivery_tracking_title = wd.find_elements(By.XPATH, "//*[contains(@text, '주문배송조회')]")
                 order_delivery_tracking_guide = wd.find_element(By.XPATH, "//*[contains(@text, '주문내역이 없습니다')]")
                 print(f"order_delivery_tracking_title.text : {order_delivery_tracking_title[1].text}")
