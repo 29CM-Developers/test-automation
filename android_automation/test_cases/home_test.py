@@ -256,6 +256,25 @@ class Home:
             sleep(1)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
             print("홈 탭 선택")
+
+            # 보강시나리오
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'life_tab').click()
+            print("라이프 탭 선택")
+
+            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/closeIcon').click()
+            print("라이프 탭 해제")
+            sleep(1)
+            try:
+                element_control.aal(wd, 'women_tab')
+                element_control.aal(wd, 'men_tab')
+                element_control.aal(wd, 'life_tab')
+                element_control.aal(wd, 'best_tab')
+                element_control.aal(wd, 'recommend_tab')
+            except NoSuchElementException:
+                print("홈 상단 탭 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("홈 상단 탭 확인 실패")
+
             api_banner_title = []
             banner_title_set = []
             api_banner_id = []
@@ -318,21 +337,21 @@ class Home:
 
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
-            dynamic_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/dynamicItems')
+            dynamic_layer = element_control.aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
             try:
-                dynamic_button_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, "dynamic_button_gift")
+                dynamic_button_title = element_control.aal(wd, 'dynamic_button_gift')
             except NoSuchElementException:
                 element_control.swipe_control(wd, dynamic_layer, 'left', 50)
-                dynamic_button_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, "dynamic_button_gift")
+                dynamic_button_title = element_control.aal(wd, 'dynamic_button_gift')
             print(dynamic_button_title)
             print(dynamic_button_title.text)
             button_title = dynamic_button_title.text
             dynamic_button_title.click()
 
-            sleep(2)
-            gift_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/rootView')
-            gift_title = gift_layer.find_element(AppiumBy.XPATH,
-                                                 '//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
+            sleep(3)
+            gift_layer = element_control.aal(wd, 'com.the29cm.app29cm:id/rootView')
+            gift_title = element_control.aal(gift_layer,
+                                             '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
             print(gift_title)
 
             if gift_title == button_title:
@@ -343,7 +362,8 @@ class Home:
                 warning_texts.append("다이나믹 게이트 타이틀 확인 실패")
 
             # 뒤로가기로 홈화면 진입 확인
-            gift_layer.find_element(AppiumBy.XPATH,'//android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button').click()
+            element_control.aalc(gift_layer,
+                                 '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button')
             print("뒤로가기 선택")
             sleep(3)
             print("[홈화면 배너 확인]CASE 종료")
