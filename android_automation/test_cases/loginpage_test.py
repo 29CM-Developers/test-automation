@@ -13,7 +13,7 @@ from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll, scroll_to_element_with_text
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
