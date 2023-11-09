@@ -390,7 +390,8 @@ class Search:
 
             # 확인: 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
             brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
-            search_brand = brand_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
+            search_brand = brand_layer.find_element(AppiumBy.XPATH,
+                                                    '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
             if '니트' in search_brand:
                 print("확인2. 브랜드 영역에 해당 브랜드 이름 노출 확인")
             else:
@@ -400,16 +401,18 @@ class Search:
             print(f"브랜드 이름 : {search_brand} ")
 
             selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
-            selector = selector_layer.find_element(AppiumBy.XPATH, '//android.view.View/android.view.View/android.view.View[1]/android.widget.TextView')
+            selector = selector_layer.find_element(AppiumBy.XPATH,
+                                                   '//android.view.View/android.view.View/android.view.View[2]/android.widget.TextView')
             selector.click()
             bottom_sheet_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
-            filter_by_sales = bottom_sheet_layer.find_element(AppiumBy.XPATH,'//android.view.View/android.view.View[8]/android.widget.TextView')
+            filter_by_sales = bottom_sheet_layer.find_element(AppiumBy.XPATH,
+                                                              '//android.view.View/android.view.View[8]/android.widget.TextView')
             filter_by_sales_name = filter_by_sales.text
             filter_by_sales.click()
             sleep(1)
-            if selector.text in filter_by_sales_name :
+            if selector.text in filter_by_sales_name:
                 print("판매순 정렬 변경 확인")
-            else :
+            else:
                 print("판매순 정렬 변경 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("필터 적용 확인 실패")

@@ -16,6 +16,7 @@ from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
 from android_automation.test_cases.bottom_sheet import test_bottom_sheet
+from com_utils.element_control import aal, aalk, aalc, swipe_control
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -34,6 +35,7 @@ class NotLogin:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            sleep(3)
             print("[사용 불가 기능 사용]CASE 시작")
             test_bottom_sheet(self.wd)
 
@@ -217,11 +219,18 @@ class NotLogin:
         # 8. 홈 > 피드 > 추천 탭선택
         sleep(1)
         # 홈화면 변경 ui 시나리오
-        tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+        # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
         # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
+        # 이굿위크 여부 확인
+        try:
+            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
+        except NoSuchElementException:
+            main_tab_container = aal(wd, 'com.the29cm.app29cm:id/container')
+            swipe_control(wd, main_tab_container, 'left', 10)
+        aalc(wd, 'recommend_tab')
         print("추천 탭 선택")
         sleep(1)
+
         guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
         if guide_text.text == '당신을 위한 추천 상품':
             print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
@@ -243,15 +252,15 @@ class NotLogin:
 
         try:
             # 최근 검색어 있는 경우 모두 지우기로 삭제
-            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
-            print(delete_all)
-            if len(delete_all) == 0:
-                pass
-            else:
-                search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
-                search_container.find_element(AppiumBy.XPATH,
-                                              '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
-            sleep(2)
+            # delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
+            # print(delete_all)
+            # if len(delete_all) == 0:
+            #     pass
+            # else:
+            #     search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+            #     search_container.find_element(AppiumBy.XPATH,
+            #                                   '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
+            # sleep(2)
             delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
             print(delete_all)
             if len(delete_all) == 0:

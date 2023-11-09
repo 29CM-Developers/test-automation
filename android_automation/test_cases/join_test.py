@@ -21,9 +21,9 @@ class Join:
         try:
             print("[간편 회원 가입 실패] CASE 시작")
             # 하단 네비게이터에 MY 메뉴 진입
-            sleep(1)
+            sleep(2)
             wd.get('app29cm://mypage')
-            sleep(1)
+            sleep(2)
             print("홈 > 마이페이지 화면 진입")
             # 로그인 회원가입 버튼 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').click()
