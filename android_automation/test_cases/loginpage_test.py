@@ -13,7 +13,7 @@ from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll, scroll_to_element_with_text
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -262,13 +262,13 @@ class LoginLogout:
             print("로그인 유저 이름 : %s " % login_name.text)
             # 보강시나리오 회원 정보 수정 버튼 선택
             try:
-                element_control.scroll_to_element_with_text(wd, '회원 정보 수정').click()
+                scroll_to_element_with_text(wd, '회원 정보 수정').click()
                 sleep(5)
-                element_control.aalk(wd, '//android.widget.EditText', self.pconf['LOGIN_SUCCESS_PW'])
+                aalk(wd, '//android.widget.EditText', self.pconf['LOGIN_SUCCESS_PW'])
                 wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
                 sleep(2)
                 try:
-                    edit_member_information = element_control.aal(wd, '회원정보 수정')
+                    edit_member_information = aal(wd, '회원정보 수정')
                     print("회원정보 수정 화면 진입")
                     if edit_member_information.text == '회원정보 수정':
                         print("회원정보 수정 페이지 타이틀 확인")
