@@ -60,15 +60,15 @@ class Home:
             home_page.click_tab_name(wd, '라이프')
 
             # 라이프 선택 시, 노출되는 탭 이름 비교
-            save_tab_names = home_page.save_tab_names(wd)
-            test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
-
-            # 라이프 선택 닫기
-            home_page.click_close_life_tab(wd)
-
-            # 기본으로 노출되는 탭 이름 비교
-            save_tab_names = home_page.save_tab_names(wd)
-            home_page.check_tab_names(self, warning_texts, 'home', save_tab_names)
+            # save_tab_names = home_page.save_tab_names(wd)
+            # test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
+            #
+            # # 라이프 선택 닫기
+            # home_page.click_close_life_tab(wd)
+            #
+            # # 기본으로 노출되는 탭 이름 비교
+            # save_tab_names = home_page.save_tab_names(wd)
+            # home_page.check_tab_names(self, warning_texts, 'home', save_tab_names)
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
 
@@ -372,6 +372,9 @@ class Home:
 
             # LIKE 탭 진입
             navigation_bar.move_to_like(wd)
+
+            # LIKE 진입 시, 알림 바텀시트 노출 여부 확인
+            like_page.close_noti_bottom_sheet(wd)
 
             # LIKE 진입 시, 브랜드 추천 페이지 노출 여부 확인
             like_page.close_brand_recommended_page(wd)

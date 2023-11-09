@@ -13,6 +13,14 @@ def close_brand_recommended_page(wd):
         pass
 
 
+def close_noti_bottom_sheet(wd):
+    try:
+        ial(wd, '좋아요한 상품의 할인이 시작되면 알림을 보내드릴게요')
+        ialc(wd, '닫기')
+    except NoSuchElementException:
+        pass
+
+
 def set_like_zero(self, wd):
     # 좋아요 api 호출하여 각 탭의 좋아요 수 확인
     my_heart = my_heart_count(self.pconf['id_29cm'], self.pconf['password_29cm'])
