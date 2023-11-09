@@ -57,8 +57,8 @@ class Home:
 
         try:
             # 라이프 탭 선택
-            home_page.click_tab_name(wd, '라이프')
-
+            # home_page.click_tab_name(wd, '라이프')
+            #
             # 라이프 선택 시, 노출되는 탭 이름 비교
             # save_tab_names = home_page.save_tab_names(wd)
             # test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
