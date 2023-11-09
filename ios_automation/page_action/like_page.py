@@ -15,8 +15,9 @@ def close_brand_recommended_page(wd):
 
 def close_noti_bottom_sheet(wd):
     try:
-        ial(wd, '좋아요한 상품의 할인이 시작되면 알림을 보내드릴게요')
+        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '좋아요한 상품의 할인이 시작되면 알림을 보내드릴게요')
         ialc(wd, '닫기')
+        print('알림 바텀시트 노출')
     except NoSuchElementException:
         pass
 
