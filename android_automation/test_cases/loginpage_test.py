@@ -12,7 +12,9 @@ from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
-from com_utils import values_control, slack_result_notifications, element_control
+from com_utils import values_control, slack_result_notifications
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll
+
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
 formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -20,6 +22,8 @@ formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%
 stream_handler = logging.StreamHandler()  ## 스트림 핸들러 생성
 stream_handler.setFormatter(formatter)  ## 텍스트 포맷 설정
 logger.addHandler(stream_handler)  ## 핸들러 등록
+
+
 class LoginLogout:
 
     # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
@@ -279,7 +283,7 @@ class LoginLogout:
                     warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
                     print(f"가이드 문구 : {edit_member_information.text} ")
                 try:
-                    user_email = element_control.aal(wd, self.pconf['LOGIN_SUCCESS_ID'])
+                    user_email = aal(wd, self.pconf['LOGIN_SUCCESS_ID'])
                     print("로그인한 유저 이메일 확인")
 
                     if user_email.text == self.pconf['LOGIN_SUCCESS_ID']:
@@ -300,7 +304,7 @@ class LoginLogout:
                 warning_texts.append("회원정보 수정 페이지 확인 실패")
 
             # 하단 네비게이터에 홈 메뉴 진입
-            element_control.aalc(wd, 'HOME')
+            aalc(wd, 'HOME')
             print("홈화면 진입")
             print("[이메일 로그인 성공]CASE 종료")
             test_bottom_sheet(self.wd)
@@ -341,7 +345,7 @@ class LoginLogout:
             print("[이메일 로그아웃]CASE 시작")
             wd.get('app29cm://mypage')
             # like 탭 선택
-            sleep(1)
+            sleep(3)
             print("홈 > 마이페이지 화면 진입")
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
@@ -354,8 +358,8 @@ class LoginLogout:
             print(f"로그인 유저 이름 : {login_name.text} ")
             # 최하단[LOGOUT] 버튼 선택
             # 스크롤하여 버튼 찾기
-            element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/btnLogout')
-            element_control.scroll(wd)
+            scroll_to_element_id(wd, 'com.the29cm.app29cm:id/btnLogout')
+            scroll(wd)
             sleep(1)
 
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/btnLogout').click()
@@ -457,7 +461,7 @@ class LoginLogout:
         start_time = time()
         try:
             print("[이메일 로그인 실패 및 성공]CASE 시작")
-            sleep(1)
+            sleep(2)
             wd.get('app29cm://mypage')
             sleep(2)
             # 하단 네비게이터에 MY 메뉴 진입
