@@ -13,7 +13,7 @@ from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll, scroll_to_element_with_text
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, scroll_to_element_with_text
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -221,10 +221,10 @@ class LoginLogout:
         start_time = time()
         try:
             print("[이메일 로그인 성공]CASE 시작")
-            sleep(1)
+            sleep(2)
             test_bottom_sheet(self.wd)
             wd.get('app29cm://mypage')
-            sleep(1)
+            sleep(2)
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
@@ -262,8 +262,10 @@ class LoginLogout:
             print("로그인 유저 이름 : %s " % login_name.text)
             # 보강시나리오 회원 정보 수정 버튼 선택
             try:
-                scroll_to_element_with_text(wd, '회원 정보 수정').click()
-                sleep(5)
+                scroll_to_element_with_text(wd, '회원 정보 수정')
+                scroll_control(wd, 'D', 10)
+                aalc(wd, '회원 정보 수정')
+                sleep(3)
                 aalk(wd, '//android.widget.EditText', self.pconf['LOGIN_SUCCESS_PW'])
                 wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
                 sleep(2)
