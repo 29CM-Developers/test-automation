@@ -46,8 +46,8 @@ def save_first_post_hashtag(wd):
     post_hash_tag = ''
     for i in range(0, 3):
         try:
-            post = wd.find_element(AppiumBy.XPATH, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
-            first_hash_tag = post.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[1]')
+            post = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
+            first_hash_tag = ial(post, '//XCUIElementTypeButton[1]')
             if first_hash_tag.is_displayed():
                 post_hash_tag = post.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[1]').text
                 break
@@ -58,8 +58,8 @@ def save_first_post_hashtag(wd):
 
 
 def click_first_post_hashtag(wd):
-    post = wd.find_element(AppiumBy.XPATH, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
-    post.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[1]').click()
+    post = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
+    ialc(post, '//XCUIElementTypeButton[1]')
 
 
 def check_hash_tag_title(wd, warning_texts, hash_tag):
