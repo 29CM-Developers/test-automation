@@ -10,6 +10,7 @@ from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils import values_control
+from ios_automation.page_action import category_page, welove_page, navigation_bar
 
 
 class Category:
@@ -169,6 +170,62 @@ class Category:
             except Exception:
                 pass
             wd.get(self.conf['deeplink']['home'])
+
+        finally:
+            run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
+
+    def test_welove(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # 카테고리 탭 선택
+            wd.get(self.conf['deeplink']['category'])
+
+            # 핀메뉴에서 위러브 페이지 진입
+            category_page.click_pin_menu(wd, 'WELOVE')
+
+            post_title = welove_page.save_first_post_title(wd)
+
+            # 첫번째 포스트의 첫번째 해시태그 저장 후 선택
+            post_hash_tag = welove_page.save_first_post_hashtag(wd)
+            welove_page.click_first_post_hashtag(wd)
+
+            # 해시태그 페이지 타이틀과 저장한 해시태그 비교 확인
+            test_result = welove_page.check_hash_tag_title(wd, warning_texts, post_hash_tag)
+
+            # welove 페이지에서 저장한 포스트가 해시태그 페이지에 노출되는지 확인
+            test_result = welove_page.check_hash_tag_post(wd, warning_texts, post_title)
+
+            # welove 페이지로 복귀
+            welove_page.click_hash_tag_back_btn(wd)
+
+            # 포스트 추가 노출 확인
+            test_result = welove_page.find_and_save_third_post(wd, warning_texts)
+
+            # Home으로 복귀
+            welove_page.click_welove_back_btn(wd)
+            navigation_bar.move_to_home(wd)
+
+        except Exception:
+            test_result = 'FAIL'
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            error_text = traceback.format_exc().split('\n')
+            try:
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            com_utils.deeplink_control.move_to_home(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
