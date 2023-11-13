@@ -1,7 +1,13 @@
 from time import sleep
+from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 # Home 탭으로 이동 딥링크
+def move_to_home_iOS(self, wd):
+    wd.get(self.conf['deeplink']['home'])
+    close_bottom_sheet(wd)
+
+
 def move_to_home(self, wd):
     wd.get(self.conf['deeplink']['home'])
 
