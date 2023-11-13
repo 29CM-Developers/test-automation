@@ -8,14 +8,13 @@ from com_utils import values_control
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from com_utils.element_control import ial, ialc
 
 
 def clear_recent_keyword(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색')
-        clear_btn = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="keyword_clear"]')
-        for clear in reversed(clear_btn):
-            clear.click()
+        ial(wd, '//XCUIElementTypeOther[@name="recent_keyword"]')
+        ialc(wd, '//XCUIElementTypeButton[@name="모두 지우기"]')
     except NoSuchElementException:
         pass
 
@@ -296,7 +295,7 @@ class Search:
 
             for i in range(0, 3):
                 try:
-                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색')
+                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '최근 검색어')
                 except NoSuchElementException:
                     com_utils.element_control.scroll_control(wd, "U", 50)
 
