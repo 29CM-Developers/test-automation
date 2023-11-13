@@ -14,6 +14,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 from com_utils import values_control, element_control
 from time import sleep, time
 
@@ -162,6 +163,7 @@ class Home:
             try:
                 wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
+                test_bottom_sheet(self.wd)
             except NoSuchElementException:
                 pass
 
