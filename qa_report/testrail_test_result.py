@@ -11,7 +11,6 @@ client.password = testrail_token['testrail_token']['password']
 
 def get_plan(plan_id):
     plan = client.send_get(f"get_plan/{plan_id}")
-    # print(plan)
     return plan
 
 
@@ -100,6 +99,5 @@ def plan_result(plan_id):
     plt.title(f'Total TestCase Count : {total_count}', fontsize=12)
 
     plt.savefig(f'chart.png')
-    # plt.show()
 
     return test_rate

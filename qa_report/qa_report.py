@@ -81,7 +81,6 @@ def feature_check_open_modal(ack, body, client):
 def slack_message(ack, body, logger, client):
     ack()
     logger.info(body)
-    # print(f'바디 : {body}')
 
     input_data = body['view']['state']['values']
     print(f'확인 : {input_data}')
@@ -175,7 +174,7 @@ def slack_message(ack, body, logger, client):
     ]
 
     response = client.chat_postMessage(
-        channel=channel_id,  # 채널 ID 또는 이름
+        channel=channel_id,
         text=f"*[{feature_name}]* 테스트 진행상황 공유 {mention_user} cc.<!subteam^S058C8XCU7R>",
         attachments=attachments
     )
