@@ -6,8 +6,9 @@ import com_utils.api_control
 
 from time import time
 from com_utils import values_control
+from com_utils.api_control import my_coupon_list
 from ios_automation.page_action import my_page, my_setting_page, navigation_bar, product_detail_page, welove_page, \
-    delivery_order_page, product_review_page
+    delivery_order_page, product_review_page, my_coupon_page
 
 
 class My:
@@ -67,12 +68,13 @@ class My:
 
             # PDP 상품 이름 저장 -> 이미지 1개일 경우와 2개 이상일 경우, XPATH index 변경되어 아래와 같이 작성
             product_name = product_detail_page.save_product_name(wd)
+            recent_product_name = product_detail_page.save_remove_prefix_product_name(product_name)
 
             # My 탭으로 이동
             com_utils.deeplink_control.move_to_my(self, wd)
 
             # 최근 본 상품 영역 확인
-            test_result = my_page.check_recent_title(wd, warning_texts, '상품', product_name)
+            test_result = my_page.check_recent_title(wd, warning_texts, '상품', recent_product_name)
 
             # welove 페이지 이동
             com_utils.deeplink_control.move_to_welove(self, wd)
@@ -91,7 +93,7 @@ class My:
             my_page.expand_recent_contents(wd)
 
             # 최근 본 상품 히스토리 확인
-            test_result = my_page.check_recent_history(wd, warning_texts, product_name, post_title)
+            test_result = my_page.check_recent_history(wd, warning_texts, recent_product_name, post_title)
 
             # 최근 본 상품 영역 축소 후 Home 탭으로 이동
             my_page.close_recent_contents(wd)
@@ -181,6 +183,64 @@ class My:
             # product_review_page.click_back_btn(wd)
             # navigation_bar.move_to_home(wd)
             com_utils.deeplink_control.move_to_home(self, wd)
+
+        except Exception:
+            test_result = 'FAIL'
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            error_text = traceback.format_exc().split('\n')
+            try:
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            com_utils.deeplink_control.move_to_home(self, wd)
+
+        finally:
+            run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            return result_data
+
+    def test_coupons_list(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # My 탭으로 이동
+            com_utils.deeplink_control.move_to_my(self, wd)
+
+            # 쿠폰 메뉴 선택
+            my_page.click_coupon_menu(wd)
+
+            # 장바구니 타입 선택
+            my_coupon_page.click_coupon_type(wd)
+            my_coupon_page.click_option_cart(wd)
+
+            # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
+            api_coupon_list = my_coupon_list(self.pconf['id_29cm'], self.pconf['password_29cm'], 'CART')
+            coupon_list = my_coupon_page.save_my_coupon_list(wd)
+
+            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '장바구니')
+
+            # 상품 쿠폰 타입 선택
+            my_coupon_page.click_coupon_type(wd)
+            my_coupon_page.click_option_product(wd)
+
+            # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
+            api_coupon_list = my_coupon_list(self.pconf['id_29cm'], self.pconf['password_29cm'], 'PRODUCT')
+            coupon_list = my_coupon_page.save_my_coupon_list(wd)
+
+            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '상품')
+
+            my_coupon_page.click_back_btn(wd)
+            navigation_bar.move_to_home(wd)
+
 
         except Exception:
             test_result = 'FAIL'

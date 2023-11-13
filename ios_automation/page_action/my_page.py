@@ -1,6 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from com_utils.element_control import ial, ialc
 
 import com_utils.element_control
 
@@ -123,6 +124,18 @@ def click_edit_user_info_menu(wd):
     for i in range(0, 5):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '회원 정보 수정')
+            if element.is_displayed():
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        com_utils.element_control.scroll_control(wd, "D", 50)
+
+
+def click_coupon_menu(wd):
+    for i in range(0, 5):
+        try:
+            element = ial(wd, '쿠폰')
             if element.is_displayed():
                 element.click()
                 break
