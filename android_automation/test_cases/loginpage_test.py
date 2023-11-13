@@ -228,12 +228,12 @@ class LoginLogout:
             print("홈 > 마이페이지 화면 진입")
 
             # 로그인 회원가입 버튼 선택
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').click()
+            aalc(wd, 'com.the29cm.app29cm:id/txtLogin')
             print("로그인 버튼 선택")
             sleep(3)
 
             # 로그인 화면 진입 확인
-            login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
+            login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
             print("홈 > 마이페이지 > 로그인 화면 진입")
 
             if login_page_title.text == '로그인':
@@ -245,9 +245,9 @@ class LoginLogout:
             print(f"가이드 문구 : {login_page_title.text} ")
 
             # 올바른 비밀번로 입력 후 로그인 하기 버튼 선택
-            wd.find_element(By.XPATH, '//android.widget.EditText[1]').send_keys(self.pconf['LOGIN_SUCCESS_ID'])
-            wd.find_element(By.XPATH, '//android.widget.EditText[2]').send_keys(self.pconf['LOGIN_SUCCESS_PW'])
-            wd.find_element(By.XPATH, '//android.widget.Button').click()
+            aalk(wd, '//android.widget.EditText[1]', self.pconf['LOGIN_SUCCESS_ID'])
+            aalk(wd, '//android.widget.EditText[2]', self.pconf['LOGIN_SUCCESS_PW'])
+            aalc(wd, '//android.widget.Button')
             print("로그인 버튼 선택")
             sleep(3)
 
