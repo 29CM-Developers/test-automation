@@ -10,71 +10,34 @@ from selenium.common import NoSuchElementException
 from time import time
 
 
-def al_click(wd, xpath, text):
-    try:
-        find_element = wd.find_element(By.XPATH, f'{xpath}')
-        print('element 찾음')
-        print(find_element.text)
-        find_element.screenshot('child.png')
-        if find_element.text == text:
-            find_element.click()
-            print(find_element.text)
-        else:
-            # other_find_element = find_element.find_elements(By.XPATH, f'{xpath}//following-sibling::*')
-            # 형제 element 찾기
-            other_find_element = find_element.find_elements(By.XPATH, './/*')
-            print(f'형제 element 개수: {len(other_find_element)}')
-            print(f'형제 element text: {other_find_element[0].text}')
-            if len(other_find_element) > 1:
-                for element in other_find_element:
-                    if element.text == text:
-                        element.click()
-                        print('형제 element 찾음')
-                        break
-            else:
-                # 부모 element 찾기
-                # parent_find_element = find_element.find_elements(By.XPATH, f'{xpath}/parent::*')
-                parent_find_element = wd.find_elements(By.XPATH, f'{xpath}/..')
-                print(f'부모 element 개수: {len(parent_find_element)}')
-                if len(parent_find_element) > 1:
-                    pass
-                else:
-                    parent_find_element = wd.find_elements(By.XPATH, f'{xpath}/../..')
-                    parent_find_element[0].screenshot('second_parent.png')
-                    parent_find_element = wd.find_elements(By.XPATH, f'{xpath}/../../..')
-                    parent_find_element[0].screenshot('third_parent.png')
-    except NoSuchElementException:
-        print('element 못찾음')
-        try:
-            # find_element = wd.find_elements(By.XPATH, f'{xpath}//following-sibling::*')
-            find_element = wd.find_elements(By.XPATH, './/*')
-            for element in find_element:
-                if element.text == text:
-                    element.click()
-                    print('형제 element 찾음')
-                    break
-        except NoSuchElementException:
-            print('형제 element 중에 못찾음')
-            find_element = None
-
-    return find_element
-
-
-def ial(wd, element_value):
+def ial(webdriver, element_value):
     """
     iOS_all_in_one_locator
     """
-    locators = ["ACCESSIBILITY_ID", "IOS_CLASS_CHAIN", "XPATH"]
+    locators = ["ACCESSIBILITY_ID", "IOS_CLASS_CHAIN", "IOS_PREDICATE", "XPATH"]
+    wd = webdriver
     for locator in locators:
         try:
             element = wd.find_element(getattr(AppiumBy, locator), element_value)
             break
         except NoSuchElementException:
-            wd.implicitly_wait(0)
             pass
-    wd.implicitly_wait(3)
     return element
 
+
+def ials(webdriver, element_value):
+    """
+    iOS_all_in_one_locator
+    """
+    locators = ["ACCESSIBILITY_ID", "IOS_CLASS_CHAIN", "IOS_PREDICATE", "XPATH"]
+    wd = webdriver
+    for locator in locators:
+        try:
+            element = wd.find_elements(getattr(AppiumBy, locator), element_value)
+            break
+        except NoSuchElementException:
+            pass
+    return element
 
 def ialc(wd, element_value):
     """
@@ -92,24 +55,42 @@ def ialk(wd, element_value, text):
     element.send_keys(text)
 
 
-def aal(wd, element_value):
+def aal(webdriver, element_value):
     """
     android_all_in_one_locator
     """
     locators = ["ACCESSIBILITY_ID", "ID", "XPATH"]
+    wd = webdriver
     for locator in locators:
         try:
             element = wd.find_element(getattr(AppiumBy, locator), element_value)
             break
         except Exception:
             pass
-    try:
-        element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
-    except NoSuchElementException:
-        pass
-
+        try:
+            element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+        except NoSuchElementException:
+            pass
     return element
 
+
+def aals(webdriver, element_value):
+    """
+    android_all_in_one_locator
+    """
+    locators = ["ACCESSIBILITY_ID", "ID", "XPATH"]
+    wd = webdriver
+    for locator in locators:
+        try:
+            element = wd.find_elements(getattr(AppiumBy, locator), element_value)
+            break
+        except Exception:
+            pass
+        try:
+            element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+        except NoSuchElementException:
+            pass
+    return element
 
 def aalc(wd, element_value):
     """
@@ -282,3 +263,53 @@ def element_scroll_control(wd, element, direction, percent):
         end_y = start_y - move_y
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
     sleep(2)
+
+
+def al_click(wd, xpath, text):
+    try:
+        find_element = wd.find_element(By.XPATH, f'{xpath}')
+        print('element 찾음')
+        print(find_element.text)
+        find_element.screenshot('child.png')
+        if find_element.text == text:
+            find_element.click()
+            print(find_element.text)
+        else:
+            # other_find_element = find_element.find_elements(By.XPATH, f'{xpath}//following-sibling::*')
+            # 형제 element 찾기
+            other_find_element = find_element.find_elements(By.XPATH, './/*')
+            print(f'형제 element 개수: {len(other_find_element)}')
+            print(f'형제 element text: {other_find_element[0].text}')
+            if len(other_find_element) > 1:
+                for element in other_find_element:
+                    if element.text == text:
+                        element.click()
+                        print('형제 element 찾음')
+                        break
+            else:
+                # 부모 element 찾기
+                # parent_find_element = find_element.find_elements(By.XPATH, f'{xpath}/parent::*')
+                parent_find_element = wd.find_elements(By.XPATH, f'{xpath}/..')
+                print(f'부모 element 개수: {len(parent_find_element)}')
+                if len(parent_find_element) > 1:
+                    pass
+                else:
+                    parent_find_element = wd.find_elements(By.XPATH, f'{xpath}/../..')
+                    parent_find_element[0].screenshot('second_parent.png')
+                    parent_find_element = wd.find_elements(By.XPATH, f'{xpath}/../../..')
+                    parent_find_element[0].screenshot('third_parent.png')
+    except NoSuchElementException:
+        print('element 못찾음')
+        try:
+            # find_element = wd.find_elements(By.XPATH, f'{xpath}//following-sibling::*')
+            find_element = wd.find_elements(By.XPATH, './/*')
+            for element in find_element:
+                if element.text == text:
+                    element.click()
+                    print('형제 element 찾음')
+                    break
+        except NoSuchElementException:
+            print('형제 element 중에 못찾음')
+            find_element = None
+
+    return find_element

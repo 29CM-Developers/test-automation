@@ -54,7 +54,7 @@ def check_tab_names(self, warning_texts, tab, tab_list):
         print('홈 상단 탭 확인')
     else:
         test_result = 'WARN'
-        warning_texts.append('이메일 로그인 실패 확인 실패')
+        warning_texts.append('홈 상단 탭 확인 실패')
         print(self.conf['compare_home_tab'][tab])
         print('홈 상단 탭 확인 실패')
     return test_result

@@ -5244,7 +5244,7 @@
 							"});",
 							"",
 							"pm.test(\"error message 체크\", function () {",
-							"    pm.expect(jsonData.message).to.include(\"발급일로부터 사용 가능한 유효일수는 필수값 입니다.\");",
+							"    pm.expect(jsonData.message).to.include(\"다운받은 날부터 사용 가능한 일수를 입력해주세요.\");",
 							"});",
 							"",
 							"pm.test(\"error_code 체크\", function () {",

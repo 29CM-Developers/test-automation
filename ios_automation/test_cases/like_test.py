@@ -22,6 +22,9 @@ class Like:
             # 딥링크로 LIKE 탭 진입
             com_utils.deeplink_control.move_to_like(self, wd)
 
+            # 화면 진입 시, 알림 설정 바텀 시트 노출 확인
+            like_page.close_noti_bottom_sheet(wd)
+
             # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
             like_page.close_brand_recommended_page(wd)
 
