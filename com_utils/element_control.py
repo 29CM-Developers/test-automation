@@ -1,6 +1,7 @@
 from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
+from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
@@ -12,31 +13,53 @@ from time import time
 
 def ial(webdriver, element_value):
     """
-    iOS_all_in_one_locator
+    V1.0 iOS_all_in_one_locator
     """
-    locators = ["ACCESSIBILITY_ID", "IOS_CLASS_CHAIN", "IOS_PREDICATE", "XPATH"]
+    locators = ["ACCESSIBILITY_ID", "IOS_PREDICATE", "IOS_CLASS_CHAIN", "XPATH"]
     wd = webdriver
-    for locator in locators:
-        try:
-            element = wd.find_element(getattr(AppiumBy, locator), element_value)
-            break
-        except NoSuchElementException:
-            pass
+    # webdriver의 경우 대기시간 컨트롤을 위해 wd가 어떤 데이터인지 파악해둔다
+    if isinstance(wd, WebDriver):
+        truewd = True
+    else:
+        truewd = False
+    # Locator 분기를 통해 최적화 한다
+    if element_value.startswith("//") or element_value.startswith("(//"):
+        element = wd.find_element(AppiumBy.XPATH, element_value)
+    elif element_value.startswith("**"):
+        element = wd.find_element(AppiumBy.IOS_CLASS_CHAIN, element_value)
+    else:
+        for locator in locators:
+            try:
+                if truewd:
+                    wd.implicitly_wait(1)
+                element = wd.find_element(getattr(AppiumBy, locator), element_value)
+                break
+            except NoSuchElementException:
+                pass
     return element
 
 
 def ials(webdriver, element_value):
     """
-    iOS_all_in_one_locator
+    V1.0 iOS_all_in_one_locator
     """
-    locators = ["ACCESSIBILITY_ID", "IOS_CLASS_CHAIN", "IOS_PREDICATE", "XPATH"]
+    locators = ["ACCESSIBILITY_ID", "IOS_PREDICATE", "IOS_CLASS_CHAIN", "XPATH"]
     wd = webdriver
-    for locator in locators:
-        try:
-            element = wd.find_elements(getattr(AppiumBy, locator), element_value)
-            break
-        except NoSuchElementException:
-            pass
+    # webdriver의 경우 대기시간 컨트롤을 위해 wd가 어떤 데이터인지 파악해둔다
+    truewd = isinstance(wd, WebDriver)
+    # Locator 분기를 통해 최적화 한다
+    if element_value.startswith("//") or element_value.startswith("(//"):
+        element = wd.find_elements(AppiumBy.XPATH, element_value)
+    elif element_value.startswith("**"):
+        element = wd.find_elements(AppiumBy.IOS_CLASS_CHAIN, element_value)
+    else:
+        for locator in locators:
+            try:
+                wd.implicitly_wait(1) if truewd else None
+                element = wd.find_elements(getattr(AppiumBy, locator), element_value)
+                break
+            except NoSuchElementException:
+                pass
     return element
 
 def ialc(wd, element_value):
@@ -57,39 +80,63 @@ def ialk(wd, element_value, text):
 
 def aal(webdriver, element_value):
     """
-    android_all_in_one_locator
+    V1 android_all_in_one_locator
     """
-    locators = ["ACCESSIBILITY_ID", "ID", "XPATH"]
+    locators = ["ACCESSIBILITY_ID", "CLASS_NAME", "ID", "XPATH"]
     wd = webdriver
-    for locator in locators:
-        try:
-            element = wd.find_element(getattr(AppiumBy, locator), element_value)
-            break
-        except Exception:
-            pass
-        try:
-            element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
-        except NoSuchElementException:
-            pass
+    # webdriver 의 경우 대기 시간 컨트롤 을 위해 wd가 어떤 데이터 인지 파악 해둔다
+    truewd = isinstance(wd, WebDriver)
+    # Locator 분기를 통해 최적화 한다
+    try:
+        if element_value.startswith("//") or element_value.startswith("(//"):
+            try:
+                element = wd.find_element(AppiumBy.XPATH, element_value)
+            except NoSuchElementException:
+                element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+        elif element_value.startswith("com"):
+            element = wd.find_element(AppiumBy.ID, element_value)
+        else:
+            for locator in locators:
+                try:
+                    wd.implicitly_wait(1) if truewd else None
+                    element = wd.find_element(getattr(AppiumBy, locator), element_value)
+                    break
+                except NoSuchElementException:
+                    pass
+    except Exception:
+        element = None
+        pass
     return element
 
 
 def aals(webdriver, element_value):
     """
-    android_all_in_one_locator
+    V1 android_all_in_one_locator
     """
-    locators = ["ACCESSIBILITY_ID", "ID", "XPATH"]
+    locators = ["ACCESSIBILITY_ID", "CLASS_NAME", "ID", "XPATH"]
     wd = webdriver
-    for locator in locators:
-        try:
-            element = wd.find_elements(getattr(AppiumBy, locator), element_value)
-            break
-        except Exception:
-            pass
-        try:
-            element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
-        except NoSuchElementException:
-            pass
+    # webdriver의 경우 대기시간 컨트롤을 위해 wd가 어떤 데이터인지 파악해둔다
+    truewd = isinstance(wd, WebDriver)
+    # Locator 분기를 통해 최적화 한다
+    try:
+        if element_value.startswith("//") or element_value.startswith("(//"):
+            try:
+                element = wd.find_elements(AppiumBy.XPATH, element_value)
+            except NoSuchElementException:
+                element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+        elif element_value.startswith("com"):
+            element = wd.find_elements(AppiumBy.ID, element_value)
+        else:
+            for locator in locators:
+                try:
+                    wd.implicitly_wait(1) if truewd else None
+                    element = wd.find_elements(getattr(AppiumBy, locator), element_value)
+                    break
+                except NoSuchElementException:
+                    pass
+    except Exception:
+        element = None
+        pass
     return element
 
 def aalc(wd, element_value):
