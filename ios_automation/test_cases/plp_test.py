@@ -1,6 +1,7 @@
 import os
 import sys
 import traceback
+import com_utils
 
 from time import time
 from com_utils import values_control, api_control
@@ -103,7 +104,7 @@ class Plp:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            wd.get(self.conf['deeplink']['home'])
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"

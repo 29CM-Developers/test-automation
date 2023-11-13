@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 import traceback
+import com_utils
 
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
@@ -66,7 +67,7 @@ class NotLoginUserTest:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
             logger.error(f'{test_name} Error')
-            wd.get(self.conf['deeplink']['home'])
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -165,7 +166,7 @@ class NotLoginUserTest:
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
-            wd.get(self.conf['deeplink']['home'])
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -229,7 +230,7 @@ class NotLoginUserTest:
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
-            wd.get(self.conf['deeplink']['home'])
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"

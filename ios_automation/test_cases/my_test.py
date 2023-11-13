@@ -42,7 +42,7 @@ class My:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            com_utils.deeplink_control.move_to_home(self, wd)
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -109,7 +109,7 @@ class My:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            com_utils.deeplink_control.move_to_home(self, wd)
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -148,7 +148,7 @@ class My:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            com_utils.deeplink_control.move_to_home(self, wd)
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -182,7 +182,7 @@ class My:
             # Home 탭으로 복귀
             # product_review_page.click_back_btn(wd)
             # navigation_bar.move_to_home(wd)
-            com_utils.deeplink_control.move_to_home(self, wd)
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -194,7 +194,7 @@ class My:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            com_utils.deeplink_control.move_to_home(self, wd)
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -252,7 +252,7 @@ class My:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
-            com_utils.deeplink_control.move_to_home(self, wd)
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
