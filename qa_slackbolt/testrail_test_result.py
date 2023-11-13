@@ -1,5 +1,6 @@
 import requests
 import matplotlib.pyplot as plt
+import matplotlib
 
 from testrail import APIClient
 
@@ -94,6 +95,7 @@ def plan_result(plan_id):
         color.append('#FFDC3C')
         explode.append(0)
 
+    matplotlib.use('Agg')
     plt.figure(figsize=(3.5, 2.5))
     plt.pie(count, labels=labels, autopct='%.1f%%', colors=color, explode=explode)
     plt.title(f'Total TestCase Count : {total_count}', fontsize=12)
