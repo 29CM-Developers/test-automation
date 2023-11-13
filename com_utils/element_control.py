@@ -23,7 +23,7 @@ def ial(webdriver, element_value):
     else:
         truewd = False
     # Locator 분기를 통해 최적화 한다
-    if element_value.startswith("//"):
+    if element_value.startswith("//") or element_value.startswith("(//"):
         element = wd.find_element(AppiumBy.XPATH, element_value)
     elif element_value.startswith("**"):
         element = wd.find_element(AppiumBy.IOS_CLASS_CHAIN, element_value)
@@ -48,7 +48,7 @@ def ials(webdriver, element_value):
     # webdriver의 경우 대기시간 컨트롤을 위해 wd가 어떤 데이터인지 파악해둔다
     truewd = isinstance(wd, WebDriver)
     # Locator 분기를 통해 최적화 한다
-    if element_value.startswith("//"):
+    if element_value.startswith("//") or element_value.startswith("(//"):
         element = wd.find_elements(AppiumBy.XPATH, element_value)
     elif element_value.startswith("**"):
         element = wd.find_elements(AppiumBy.IOS_CLASS_CHAIN, element_value)
