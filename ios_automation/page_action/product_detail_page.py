@@ -21,6 +21,14 @@ def save_product_name(wd):
     return product_name
 
 
+def save_remove_prefix_product_name(product_name):
+    start_index = product_name.find('_') + 1
+    end_index = len(product_name)
+    no_prefix_product_name = product_name[start_index:end_index]
+
+    return no_prefix_product_name
+
+
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
 def check_product_name(warning_texts, product_name, compare_name):
