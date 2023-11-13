@@ -91,6 +91,34 @@ def my_heart_count(id, password):
         print('좋아요 수 불러오기 실패')
 
 
+# 테스트 하는 id, password 입력
+def my_coupon_list(id, password, coupon_type):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+
+    coupon_response = requests.get(
+        f'https://promotion-api.29cm.co.kr/api/v5/coupons/issued/my-coupon?page=1&size=100&couponType={coupon_type}',
+        cookies=cookies)
+    if coupon_response.status_code == 200:
+        coupon = coupon_response.json()
+
+        if coupon_type == 'CART':
+            coupon_count = int(coupon['data']['cartCouponCount'])
+        else:
+            coupon_count = int(coupon['data']['itemCouponCount'])
+
+        coupons = []
+        if coupon_count == 0:
+            pass
+        else:
+            for i in range(0, coupon_count):
+                coupon_name = coupon['data']['resultList'][i]['couponName']
+                coupons.append(coupon_name)
+        return coupons
+
+    else:
+        print('보유 중인 쿠폰 목록 불러오기 실패')
+
+
 def search_total_popular_brand_name():
     search_popular_brand_name = {}
     response = requests.get(

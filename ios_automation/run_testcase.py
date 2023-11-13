@@ -109,16 +109,16 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # My -> 최근 본 컨텐츠 확인
-        # self.result_data = My.test_recently_viewed_content(self, self.wd)
-        # self.count = slack_result_notifications.slack_thread_notification(self)
-        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        self.result_data = My.test_recently_viewed_content(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # My -> 주문 건이 없열 경우, 주문 배송 조회
+        # My -> 주문 건이 없을 경우, 주문 배송 조회
         self.result_data = My.test_track_delivery_without_orders(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # My -> 주문 건이 없열 경우, 상품 리뷰
+        # My -> 주문 건이 없을 경우, 상품 리뷰
         self.result_data = My.test_review_without_orders(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
@@ -164,6 +164,11 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # welove 화면 확인
+        self.result_data = Category.test_welove(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # Like 존재하지 않을 경우
         self.result_data = Like.test_no_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -174,10 +179,15 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 장바구니 리스트
+        # # 장바구니 리스트
         # self.result_data = Cart.test_cart_list(self, self.wd)
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 쿠폰함
+        self.result_data = My.test_coupons_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)

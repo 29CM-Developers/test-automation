@@ -16,6 +16,7 @@ from ios_automation.test_cases.category_test import Category
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.test_cases.like_test import Like
 from ios_automation.test_cases.cart_test import Cart
+from ios_automation.test_cases.my_test import My
 from selenium.common.exceptions import InvalidSessionIdException
 
 
@@ -88,6 +89,11 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # welove 화면 확인
+        self.result_data = Category.test_welove(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # Like 존재하지 않을 경우
         self.result_data = Like.test_no_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -102,6 +108,11 @@ class IOSTestAutomation(unittest.TestCase):
         # self.result_data = Cart.test_cart_list(self, self.wd)
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 쿠폰함
+        self.result_data = My.test_coupons_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
