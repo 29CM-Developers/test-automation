@@ -81,6 +81,7 @@ def ialk(wd, element_value, text):
 def aal(webdriver, element_value):
     """
     V1 android_all_in_one_locator
+    1. Contains 사용 시 앞에 'c_' 를 붙여주세요
     """
     locators = ["ACCESSIBILITY_ID", "CLASS_NAME", "ID", "XPATH"]
     wd = webdriver
@@ -92,7 +93,10 @@ def aal(webdriver, element_value):
             try:
                 element = wd.find_element(AppiumBy.XPATH, element_value)
             except NoSuchElementException:
-                element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+                pass
+        elif element_value.startswith("c_"):
+            element_value = element_value.lstrip("c_")
+            element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
         elif element_value.startswith("com"):
             element = wd.find_element(AppiumBy.ID, element_value)
         else:
@@ -113,6 +117,7 @@ def aal(webdriver, element_value):
 def aals(webdriver, element_value):
     """
     V1 android_all_in_one_locator
+    1. Contains 사용 시 앞에 'c_' 를 붙여주세요
     """
     locators = ["ACCESSIBILITY_ID", "CLASS_NAME", "ID", "XPATH"]
     wd = webdriver
@@ -124,7 +129,10 @@ def aals(webdriver, element_value):
             try:
                 element = wd.find_elements(AppiumBy.XPATH, element_value)
             except NoSuchElementException:
-                element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+                pass
+        elif element_value.startswith("c_"):
+            element_value = element_value.lstrip("c_")
+            element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
         elif element_value.startswith("com"):
             element = wd.find_elements(AppiumBy.ID, element_value)
         else:
