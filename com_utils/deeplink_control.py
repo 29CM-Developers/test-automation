@@ -1,11 +1,12 @@
 from time import sleep
-from ios_automation.page_action.bottom_sheet import close_bottom_sheet
+from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet, close_bottom_sheet
+from ios_automation.page_action import like_page
 
 
 # Home 탭으로 이동 딥링크
 def move_to_home_iOS(self, wd):
     wd.get(self.conf['deeplink']['home'])
-    close_bottom_sheet(wd)
+    find_icon_and_close_bottom_sheet(wd)
 
 
 def move_to_home(self, wd):
@@ -14,14 +15,20 @@ def move_to_home(self, wd):
 
 def move_to_category(self, wd):
     wd.get(self.conf['deeplink']['category'])
+    find_icon_and_close_bottom_sheet(wd)
 
 
 def move_to_like(self, wd):
     wd.get(self.conf['deeplink']['like'])
+    # LIKE 탭 진입 후, 바텀시트, 노티 바텀시트, 브랜드 추천 페이지 노출 여부 순차적으로 확인
+    close_bottom_sheet(wd)
+    like_page.close_noti_bottom_sheet(wd)
+    like_page.close_brand_recommended_page(wd)
 
 
 def move_to_my(self, wd):
     wd.get(self.conf['deeplink']['my'])
+    find_icon_and_close_bottom_sheet(wd)
 
 
 def move_to_welove(self, wd):

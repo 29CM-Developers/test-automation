@@ -22,12 +22,7 @@ class Like:
             # 딥링크로 LIKE 탭 진입
             com_utils.deeplink_control.move_to_like(self, wd)
 
-            # 화면 진입 시, 알림 설정 바텀 시트 노출 확인
-            like_page.close_noti_bottom_sheet(wd)
-
-            # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
-            like_page.close_brand_recommended_page(wd)
-
+            # 기선택된 좋아요 있을 경우 모두 해제
             like_page.set_like_zero(self, wd)
 
             # 상단 Like 개수 확인
@@ -77,9 +72,6 @@ class Like:
 
             # 딥링크로 LIKE 탭 진입
             com_utils.deeplink_control.move_to_like(self, wd)
-
-            # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
-            like_page.close_brand_recommended_page(wd)
 
             # 추천 리스트의 첫번째 상품명 저장 및 좋아요 선택
             like_product_name = like_page.save_like_product_name(wd)

@@ -7,7 +7,8 @@ import com_utils
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException
-from com_utils import values_control
+from com_utils import values_control, deeplink_control
+from ios_automation.page_action import navigation_bar
 
 logger = logging.getLogger(name='log')
 logger.setLevel(logging.INFO)
@@ -44,7 +45,7 @@ class NotLoginUserTest:
             logger.info(f'[{test_name}] 테스트 시작')
 
             # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
-            wd.get('app29cm://list/shop')
+            deeplink_control.move_to_category(self, wd)
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상의').click()
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_btn').click()
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="확인"]').click()
@@ -53,7 +54,7 @@ class NotLoginUserTest:
             NotLoginUserTest.check_login_page(self, wd)
 
             # Home 탭으로 복귀
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -153,7 +154,7 @@ class NotLoginUserTest:
                 logger.warning('My 탭 로그인 문구 확인 실패')
 
             # Home 탭으로 복귀
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
+            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'

@@ -368,3 +368,17 @@ def al_click(wd, xpath, text):
             find_element = None
 
     return find_element
+
+
+def tap_control(wd):
+    size = wd.get_window_size()
+    start_x = size['width'] / 2
+    start_y = size['height'] / 4
+
+    actions = ActionChains(wd)
+    actions.w3c_actions = ActionBuilder(wd, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+    actions.w3c_actions.pointer_action.move_to_location(start_x, start_y)
+    actions.w3c_actions.pointer_action.pointer_down()
+    actions.w3c_actions.pointer_action.pause(0.1)
+    actions.w3c_actions.pointer_action.release()
+    actions.perform()
