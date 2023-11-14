@@ -102,7 +102,8 @@ def aal(webdriver, element_value):
                     element = wd.find_element(getattr(AppiumBy, locator), element_value)
                     break
                 except NoSuchElementException:
-                    pass
+                    element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+                    break
     except Exception:
         element = None
         pass
@@ -133,7 +134,8 @@ def aals(webdriver, element_value):
                     element = wd.find_elements(getattr(AppiumBy, locator), element_value)
                     break
                 except NoSuchElementException:
-                    pass
+                    element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+                    break
     except Exception:
         element = None
         pass
