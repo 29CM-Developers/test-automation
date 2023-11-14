@@ -6,7 +6,6 @@ import com_utils.deeplink_control
 from time import time
 from com_utils import values_control
 from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page
-from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.page_action.select_category_page import test_select_category
 
 
@@ -45,7 +44,6 @@ class UserLoginTest:
 
             # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
             test_select_category(wd)
-            close_bottom_sheet(wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -139,7 +137,6 @@ class UserLoginTest:
 
             # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
             test_select_category(wd)
-            close_bottom_sheet(wd)
 
         except Exception:
             test_result = 'FAIL'
