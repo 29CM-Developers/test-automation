@@ -22,10 +22,13 @@ def save_product_name(wd):
 
 
 def save_remove_prefix_product_name(product_name):
-    start_index = product_name.find('_') + 1
-    end_index = len(product_name)
-    no_prefix_product_name = product_name[start_index:end_index]
-
+    index = product_name.find(']_')
+    if index == -1:
+        no_prefix_product_name = product_name
+    else:
+        start_index = index + 2
+        end_index = len(product_name)
+        no_prefix_product_name = product_name[start_index:end_index]
     return no_prefix_product_name
 
 
