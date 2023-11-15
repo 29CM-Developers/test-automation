@@ -105,9 +105,9 @@ class IOSTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 장바구니 리스트
-        # self.result_data = Cart.test_cart_list(self, self.wd)
-        # self.count = slack_result_notifications.slack_thread_notification(self)
-        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        self.result_data = Cart.test_cart_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 쿠폰함
         self.result_data = My.test_coupons_list(self, self.wd)
