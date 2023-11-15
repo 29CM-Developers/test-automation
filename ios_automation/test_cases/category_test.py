@@ -140,14 +140,6 @@ class Category:
 
             # PDP 상품 이름 저장
             pdp_name = product_detail_page.save_product_name(wd)
-            # pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
-            # try:
-            #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'Select a slide to show')
-            #     pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-            #                                     '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute('name')
-            # except NoSuchElementException:
-            #     pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-            #                                     '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             if category_1st_item in pdp_name:
