@@ -60,6 +60,7 @@ def save_first_post_hashtag(wd):
 def click_first_post_hashtag(wd):
     post = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
     ialc(post, '//XCUIElementTypeButton[1]')
+    sleep(3)
 
 
 def check_hash_tag_title(wd, warning_texts, hash_tag):

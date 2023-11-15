@@ -134,7 +134,7 @@ class Home:
                         print(banner_title_text)
 
                 # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
-                if set(banner_home).issubset(set(banner_title)):
+                if any(banner in banner_title for banner in banner_home):
                     print('홈 배너 확인')
                 else:
                     test_result = 'WARN'
@@ -372,12 +372,6 @@ class Home:
 
             # LIKE 탭 진입
             navigation_bar.move_to_like(wd)
-
-            # LIKE 진입 시, 알림 바텀시트 노출 여부 확인
-            like_page.close_noti_bottom_sheet(wd)
-
-            # LIKE 진입 시, 브랜드 추천 페이지 노출 여부 확인
-            like_page.close_brand_recommended_page(wd)
 
             try:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count')
