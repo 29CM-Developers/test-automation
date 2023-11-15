@@ -3,23 +3,17 @@ import json
 
 from datetime import datetime
 
-def create_plan(self):
+def create_plan(self, os_type):
     url = f"{self.econf['tr_host']}/index.php?/api/v2/add_plan/21"
 
     now = datetime.now()
     str_datetime = "[%04d-%02d-%02d %02d:%02d]" % (now.year, now.month, now.day, now.hour, now.minute)
     payload = json.dumps({
-        "name": f"{str_datetime} Test Automation",
+        "name": f"{str_datetime} 29CM {os_type} Test Automation",
         "entries": [
             {
                 "suite_id": 138,
-                "name": "iOS Automation",
-                "include_all": True,
-                "case_ids": self.econf['tr_tc_ids']
-            },
-            {
-                "suite_id": 138,
-                "name": "Android Automation",
+                "name": f"{os_type} Device",
                 "include_all": True,
                 "case_ids": self.econf['tr_tc_ids']
             }
@@ -36,8 +30,8 @@ def create_plan(self):
     return response.json()
 
 
-def get_tests(self, os):
-    url = f"{self.econf['tr_host']}/index.php?/api/v2/get_tests/{self.testcase_data['entries'][os]['runs'][0]['id']}"
+def get_tests(self):
+    url = f"{self.econf['tr_host']}/index.php?/api/v2/get_tests/{self.testcase_data['entries'][0]['runs'][0]['id']}"
 
     payload = ""
     headers = {
@@ -50,16 +44,14 @@ def get_tests(self, os):
 
     return response.json()
 
-def send_test_result(self, os, test_result, case_name):
-    url = f"{self.econf['tr_host']}/index.php?/api/v2/add_results_for_cases/{self.testcase_data['entries'][os]['runs'][0]['id']}"
+def send_test_result(self, test_result, case_name):
+    url = f"{self.econf['tr_host']}/index.php?/api/v2/add_results_for_cases/{self.testcase_data['entries'][0]['runs'][0]['id']}"
 
     result = 1 if test_result == 'PASS' else 5
-    all_cases = self.ios_testcases if os == 0 else self.android_testcases
-
     payload = json.dumps({
         "results": [
             {
-                "case_id": search_test(all_cases, case_name),
+                "case_id": search_test(self.testcases, case_name),
                 "status_id": result,
                 "comment": f"This test {test_result}",
                 "defects": ""
