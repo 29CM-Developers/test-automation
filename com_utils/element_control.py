@@ -1,5 +1,4 @@
 from time import sleep
-
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import WebDriver
 from selenium.webdriver import ActionChains
@@ -61,6 +60,7 @@ def ials(webdriver, element_value):
             except NoSuchElementException:
                 pass
     return element
+
 
 def ialc(wd, element_value):
     """
@@ -147,6 +147,7 @@ def aals(webdriver, element_value):
         pass
     return element
 
+
 def aalc(wd, element_value):
     """
     android_all_in_one_locator
@@ -163,8 +164,10 @@ def aalk(wd, element_value, text):
     element.send_keys(text)
 
 
+"""
+Android에서 사용하는 스크롤 동작
+"""
 def scroll_to_element_id(wd, element_id):
-
     while True:
         try:
             # 원하는 요소를 찾으면 스크롤 종료
@@ -180,8 +183,8 @@ def scroll_to_element_id(wd, element_id):
             wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
             sleep(2)
 
-def scroll_to_element_xpath(wd, element_xpath):
 
+def scroll_to_element_xpath(wd, element_xpath):
     while True:
         try:
             # 원하는 요소를 찾으면 스크롤 종료
@@ -197,7 +200,29 @@ def scroll_to_element_xpath(wd, element_xpath):
             wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
             sleep(2)
 
+
 def scroll(wd):
+    # 요소를 찾지 못하면 아래로 스크롤
+    size = wd.get_window_size()
+    start_x = size["width"] / 2
+    start_y = size["height"] * 0.5
+    end_y = size["height"] * 0.2
+    duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+    wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+    sleep(2)
+
+
+def scroll_to_element_with_text(wd, text):
+    for _ in range(10):
+        try:
+            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{text}')]")
+            print(f"element : {element.text}")
+            if element.is_displayed():
+                print("아이템 발견")
+                return element
+        except:
+            pass
+
         # 요소를 찾지 못하면 아래로 스크롤
         size = wd.get_window_size()
         start_x = size["width"] / 2
@@ -206,6 +231,37 @@ def scroll(wd):
         duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
         sleep(2)
+
+    return element
+
+
+def scroll_up_to_element_id(wd, element_id):
+    for _ in range(10):
+        try:
+            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, element_id)
+            print(f"element : {element.get_attribute('content-desc')}")
+            if element.is_displayed():
+                print("아이템 발견")
+                return element
+        except:
+            pass
+
+        # 요소를 찾지 못하면 아래로 스크롤
+        size = wd.get_window_size()
+        start_x = size["width"] / 2
+        start_y = size["height"] * 0.2
+        end_y = size["height"] * 0.5
+        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+        sleep(2)
+
+    return element
+
+
+"""
+Android, iOS 에서 공통으로 사용하는 스와이프 동작
+"""
+
 
 # 특정 영역 스와이프 동작 -> 좌우, 중앙으로부터 몇 % 스와이프 지정
 def swipe_control(wd, element, direction, percent):
@@ -235,51 +291,13 @@ def swipe_control(wd, element, direction, percent):
     actions.w3c_actions.pointer_action.release()
     actions.perform()
 
-def scroll_to_element_with_text(wd,text):
-    for _ in range(10):
-        try:
-            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{text}')]")
-            print(f"element : {element.text}")
-            if element.is_displayed():
-                print("아이템 발견")
-                return element
-        except:
-            pass
 
-        # 요소를 찾지 못하면 아래로 스크롤
-        size = wd.get_window_size()
-        start_x = size["width"] / 2
-        start_y = size["height"] * 0.5
-        end_y = size["height"] * 0.2
-        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
-        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
-        sleep(2)
+"""
+Android, iOS에서 공통으로 사용하는 스크롤 동작
+"""
 
-    return element
 
-def scroll_up_to_element_id(wd, element_id):
-    for _ in range(10):
-        try:
-            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, element_id)
-            print(f"element : {element.get_attribute('content-desc')}")
-            if element.is_displayed():
-                print("아이템 발견")
-                return element
-        except:
-            pass
-
-        # 요소를 찾지 못하면 아래로 스크롤
-        size = wd.get_window_size()
-        start_x = size["width"] / 2
-        start_y = size["height"] * 0.2
-        end_y = size["height"] * 0.5
-        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
-        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
-        sleep(2)
-
-    return element
 def scroll_control(wd, direction, percent):
-
     size = wd.get_window_size()
     start_x = size["width"] / 2
     duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
@@ -318,6 +336,25 @@ def element_scroll_control(wd, element, direction, percent):
         end_y = start_y - move_y
         wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
     sleep(2)
+
+
+"""
+디바이스 화면의 1/4 지점 tap 동작
+"""
+
+
+def tap_control(wd):
+    size = wd.get_window_size()
+    start_x = size['width'] / 2
+    start_y = size['height'] / 4
+
+    actions = ActionChains(wd)
+    actions.w3c_actions = ActionBuilder(wd, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+    actions.w3c_actions.pointer_action.move_to_location(start_x, start_y)
+    actions.w3c_actions.pointer_action.pointer_down()
+    actions.w3c_actions.pointer_action.pause(0.1)
+    actions.w3c_actions.pointer_action.release()
+    actions.perform()
 
 
 def al_click(wd, xpath, text):
@@ -368,3 +405,4 @@ def al_click(wd, xpath, text):
             find_element = None
 
     return find_element
+
