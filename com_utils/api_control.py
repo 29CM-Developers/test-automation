@@ -69,6 +69,7 @@ def best_plp_women_clothes(rank, period):
         best_product['item_no'] = best_product_info['itemNo']
         best_product['item_name'] = best_product_info['itemName']
         best_product['item_prefix'] = best_product_info['subjectDescriptions']
+        best_product['item_soldout'] = best_product_info['isSoldOut']
         print(f'여성 의류 베스트 상품 : {best_product}')
         return best_product
     else:
@@ -146,7 +147,7 @@ def search_woman_popular_brand_name():
         print(f"api 1st_brand_name : {api_1st_brand_name}")
         return api_1st_brand_name
     else:
-        print('베스트 PLP API 불러오기 실패')
+        print('여성 인기 브랜드 API 불러오기 실패')
 
 
 def search_popular_keyword():
@@ -159,4 +160,32 @@ def search_popular_keyword():
         search_popular_keyword['api_25th_keyword_name'] = keywords[24]
         return search_popular_keyword
     else:
-        print('베스트 PLP API 불러오기 실패')
+        print('인기 검색어 API 불러오기 실패')
+
+
+# keyword : 검색어 / order : 노출 순서
+def search_result(keyword, order):
+    result = {}
+    search_response = requests.get(
+        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}&excludeSoldOut=false')
+    if search_response.status_code == 200:
+        search_result_data = search_response.json()
+        result['product_item_no'] = search_result_data['data']['products'][order - 1]['itemNo']
+        return result
+    else:
+        print('검색 결과 API 불러오기 실패')
+
+
+# product_item_no : 상품의 item_no
+def product_detail(product_item_no):
+    product_detail = {}
+    response = requests.get(f'https://cache.29cm.co.kr/item/detail/{product_item_no}/')
+    if response.status_code == 200:
+        product_data = response.json()
+        product_detail['item_name'] = product_data['item_name']
+        product_detail['option_items_list'] = product_data['option_items']['list']
+        if product_data['option_items']['list']:
+            product_detail['option_items_layout'] = product_data['option_items']['layout']
+        return product_detail
+    else:
+        print('PDP 상세 정보 API 불러오기 실패')
