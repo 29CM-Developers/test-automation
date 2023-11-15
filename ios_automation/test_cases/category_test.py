@@ -10,7 +10,7 @@ from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils import values_control
-from ios_automation.page_action import category_page, welove_page, navigation_bar
+from ios_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page
 
 
 class Category:
@@ -139,17 +139,18 @@ class Category:
             sleep(3)
 
             # PDP 상품 이름 저장
-            pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'Select a slide to show')
-                pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-                                                '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute('name')
-            except NoSuchElementException:
-                pdp_name = pdp_web.find_element(AppiumBy.XPATH,
-                                                '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
+            pdp_name = product_detail_page.save_product_name(wd)
+            # pdp_web = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView')
+            # try:
+            #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'Select a slide to show')
+            #     pdp_name = pdp_web.find_element(AppiumBy.XPATH,
+            #                                     '//XCUIElementTypeOther[@index="5"]/XCUIElementTypeStaticText').get_attribute('name')
+            # except NoSuchElementException:
+            #     pdp_name = pdp_web.find_element(AppiumBy.XPATH,
+            #                                     '//XCUIElementTypeOther[@index="4"]/XCUIElementTypeStaticText').get_attribute('name')
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            if pdp_name in category_1st_item:
+            if category_1st_item in pdp_name:
                 print('PDP 진입 확인')
             else:
                 test_result = 'WARN'
