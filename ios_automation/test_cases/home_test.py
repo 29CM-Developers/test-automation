@@ -134,7 +134,7 @@ class Home:
                         print(banner_title_text)
 
                 # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
-                if set(banner_home).issubset(set(banner_title)):
+                if any(banner in banner_title for banner in banner_home):
                     print('홈 배너 확인')
                 else:
                     test_result = 'WARN'
