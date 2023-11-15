@@ -13,6 +13,7 @@ from time import time
 def ial(webdriver, element_value):
     """
     V1.0 iOS_all_in_one_locator
+    1. Contains 사용 시 앞에 'c_' 를 붙여주세요
     """
     locators = ["ACCESSIBILITY_ID", "IOS_PREDICATE", "IOS_CLASS_CHAIN", "XPATH"]
     wd = webdriver
@@ -26,6 +27,9 @@ def ial(webdriver, element_value):
         element = wd.find_element(AppiumBy.XPATH, element_value)
     elif element_value.startswith("**"):
         element = wd.find_element(AppiumBy.IOS_CLASS_CHAIN, element_value)
+    elif element_value.startswith("c_"):
+        element_value = element_value.lstrip("c_")
+        element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@label, '{element_value}')]")
     else:
         for locator in locators:
             try:
@@ -51,6 +55,9 @@ def ials(webdriver, element_value):
         element = wd.find_elements(AppiumBy.XPATH, element_value)
     elif element_value.startswith("**"):
         element = wd.find_elements(AppiumBy.IOS_CLASS_CHAIN, element_value)
+    elif element_value.startswith("c_"):
+        element_value = element_value.lstrip("c_")
+        element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@label, '{element_value}')]")
     else:
         for locator in locators:
             try:
