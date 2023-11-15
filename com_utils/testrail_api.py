@@ -53,7 +53,7 @@ def get_tests(self, os):
 def send_test_result(self, os, test_result, case_name):
     url = f"{self.econf['tr_host']}/index.php?/api/v2/add_results_for_cases/{self.testcase_data['entries'][os]['runs'][0]['id']}"
 
-    result = 1 if test_result == 'pass' else 5
+    result = 1 if test_result == 'PASS' else 5
     all_cases = self.ios_testcases if os == 0 else self.android_testcases
 
     payload = json.dumps({
