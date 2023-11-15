@@ -59,8 +59,16 @@ def click_purchase_btn(wd):
     ialc(wd, '구매하기')
 
 
+def click_gift_btn(wd):
+    ialc(wd, '선물하기')
+
+
 def click_put_in_cart_btn(wd):
     ialc(wd, '장바구니 담기')
+
+
+def click_direct_gift_btn(wd):
+    ialc(wd, '바로 선물하기')
 
 
 def click_move_to_cart(wd):
@@ -81,6 +89,7 @@ def select_options(wd, product_item_no):
     if exist == '옵션 있음':
         option_layout = product_detail(product_item_no)['option_items_layout']
         option_item_list = product_detail(product_item_no)['option_items_list']
+        option_name = ''
 
         for i in range(len(option_layout)):
             print(f'{i + 1}/{len(option_layout)}')
@@ -94,11 +103,12 @@ def select_options(wd, product_item_no):
             else:
                 for option in option_item_list:
                     if option['limited_qty'] != 0:
-                        ialc(wd, f'//XCUIElementTypeButton[@name="{option["title"]}"]')
-                        print(f'옵션 : {option["title"]}')
+                        option_name = option["title"].strip()
+                        print(f'옵션 : {option_name}')
+                        ialc(wd, f'//XCUIElementTypeButton[@name="{option_name}"]')
                         break
                     else:
-                        print(f'{option["title"]} 옵션 품절')
+                        print(f'{option_name} 옵션 품절')
                         pass
 
 
@@ -126,7 +136,7 @@ def save_no_soldout_product_no():
     return product_item_no
 
 
-def save_purchse_price(wd):
+def save_purchase_price(wd):
     xpath_index = ials(wd, '//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther')
     index = ial(wd, '//XCUIElementTypeStaticText[@name="구매 가능 금액"]').get_attribute('index')
     price = ial(wd,
