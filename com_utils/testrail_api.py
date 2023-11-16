@@ -15,7 +15,7 @@ def create_plan(self, os_type, device, tc_list):
                 "suite_id": 138,
                 "name": f"{os_type} Device",
                 "include_all": True,
-                "case_ids": self.econf[f'{tc_list}']
+                "case_ids": tc_list
             }
         ]
     })
