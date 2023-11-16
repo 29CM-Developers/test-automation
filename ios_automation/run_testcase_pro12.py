@@ -37,7 +37,7 @@ class IOSTestAutomation(unittest.TestCase):
         cls.total_time = ''
         cls.slack_result = ''
 
-        cls.testcase_data = create_plan(cls, 'iOS', 'iPhone Pro 12')
+        cls.testcase_data = create_plan(cls, 'iOS', 'iPhone Pro 12', cls.pconf['pro12_tc_ids'])
         cls.testcases = get_tests(cls)
 
     def setUp(self):
