@@ -198,7 +198,21 @@ class NotLogin:
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
             print('SPECIAL-ORDER 상품 발견')
         except NoSuchElementException:
+            print('SPECIAL-ORDER 상품 미발견')
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
+            pass
+        # 이굿 위크 상품 확인
+        try:
+            sale_tag = aal(wd, '이굿위크 할인 상품')
+            if sale_tag == None:
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                print('sale_tag 상품 ㅁㅣ발견')
+            else:
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
+                print('sale_tag 상품 발견')
+        except NoSuchElementException:
+            print('sale_tag 상품 미발견')
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
             pass
 
         PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
@@ -250,6 +264,7 @@ class NotLogin:
         # 6. Home 상단 네비게이션 검색 아이콘 선택
         wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
         print("상단 검색 아이콘 선택")
+        sleep(2)
         search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
 
         try:

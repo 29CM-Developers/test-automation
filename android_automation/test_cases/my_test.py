@@ -127,8 +127,9 @@ class My:
                             print('SPECIAL-ORDER 상품 발견')
                         except NoSuchElementException:
                             print('SPECIAL-ORDER 상품 미발견')
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
                             pass
+                        # 이굿 위크 상품 확인
                         try:
                             sale_tag = aal(wd, '이굿위크 할인 상품')
                             if sale_tag == None:
@@ -139,7 +140,7 @@ class My:
                                 print('sale_tag 상품 발견')
                         except NoSuchElementException:
                             print('sale_tag 상품 미발견')
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                             pass
 
                         sleep(2)
