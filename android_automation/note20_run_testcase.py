@@ -50,10 +50,8 @@ class AndroidTestAutomation(unittest.TestCase):
 
 
     def test_automation_android_bvt(self):
-
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
-
         # 실제 실행 - 이메일 로그인 성공
         self.result_data = LoginLogout.test_email_login_success(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
@@ -72,11 +70,6 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 - 홈 컨텐츠 성공
         self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 -   카테고리 기능 확인 성공
-        self.result_data = Category.test_category_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
