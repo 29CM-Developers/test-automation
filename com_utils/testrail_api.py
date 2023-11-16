@@ -3,13 +3,13 @@ import json
 
 from datetime import datetime
 
-def create_plan(self, os_type):
+def create_plan(self, os_type, device):
     url = f"{self.econf['tr_host']}/index.php?/api/v2/add_plan/21"
 
     now = datetime.now()
     str_datetime = "[%04d-%02d-%02d %02d:%02d]" % (now.year, now.month, now.day, now.hour, now.minute)
     payload = json.dumps({
-        "name": f"{str_datetime} 29CM {os_type} Test Automation",
+        "name": f"{str_datetime} 29CM {os_type} Test Automation - {device}",
         "entries": [
             {
                 "suite_id": 138,
