@@ -8,6 +8,7 @@ import com_utils.api_control
 
 from time import time
 from com_utils import values_control
+from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import welove_page, like_page, navigation_bar, product_detail_page
 
 
@@ -61,6 +62,7 @@ class Like:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '좋아요 존재하지 않는 LIKE 화면 확인')
             return result_data
 
     def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -153,7 +155,7 @@ class Like:
             welove_page.click_first_post(wd)
 
             # post 내 좋아요 버튼 선택
-            welove_page.click_post_like_btn(wd, like_post_name)
+            welove_page.click_post_like_btn(wd)
 
             # LIKE 탭으로 복귀
             welove_page.click_post_to_welove_back_btn(wd)
@@ -204,4 +206,5 @@ class Like:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '좋아요 존재하는 LIKE 화면 확인')
             return result_data

@@ -8,6 +8,10 @@ def click_pdp_back_btn(wd):
     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
 
+def click_home_btn(wd):
+    ialc(wd, 'common home icon black')
+
+
 def save_product_name(wd):
     product_name = ial(wd, 'c_감도 깊은 취향 셀렉트샵 29CM').text
     product_name = product_name.replace(' - 감도 깊은 취향 셀렉트샵 29CM', '')
@@ -67,6 +71,10 @@ def click_put_in_cart_btn(wd):
     ialc(wd, '장바구니 담기')
 
 
+def click_direct_purchase_btn(wd):
+    ialc(wd, '바로 구매하기')
+
+
 def click_direct_gift_btn(wd):
     ialc(wd, '바로 선물하기')
 
@@ -114,9 +122,8 @@ def select_options(wd, product_item_no):
 
 def check_add_product_to_cart(wd, warning_texts):
     try:
-        ial(wd, '장바구니에 상품이 담겼습니다.')
+        ial(wd, 'c_장바구니에 상품')
         test_result = 'PASS'
-        # wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니에 상품이 담겼습니다.')
         print('상품 장바구니 담기 확인')
     except NoSuchElementException:
         test_result = 'WARN'

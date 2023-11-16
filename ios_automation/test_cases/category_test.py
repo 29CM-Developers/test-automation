@@ -10,6 +10,7 @@ from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils import values_control
+from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page
 
 
@@ -171,6 +172,7 @@ class Category:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '카테고리를 선택해서 PLP 진입')
             return result_data
 
     def test_welove(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -227,4 +229,5 @@ class Category:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '카테고리 핀메뉴의 Welove 진입하여 탐색')
             return result_data

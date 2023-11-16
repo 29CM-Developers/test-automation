@@ -7,6 +7,7 @@ from time import time
 from com_utils import values_control
 from com_utils.api_control import search_popular_keyword, search_result, product_detail
 from com_utils.element_control import tap_control
+from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import product_detail_page
 from com_utils.deeplink_control import move_to_home
 
@@ -105,4 +106,5 @@ class Cart:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
             return result_data

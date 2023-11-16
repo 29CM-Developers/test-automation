@@ -12,15 +12,31 @@ from com_utils import slack_result_notifications
 from ios_setup import pro14_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.home_test import Home
-from ios_automation.test_cases.category_test import Category
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.test_cases.like_test import Like
 from ios_automation.test_cases.cart_test import Cart
 from ios_automation.test_cases.my_test import My
 from selenium.common.exceptions import InvalidSessionIdException
+from com_utils.testrail_api import *
 
 
 class IOSTestAutomation(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
+        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
+
+        # report data
+        cls.count = 0
+        cls.result_lists = []
+        cls.total_time = ''
+        cls.slack_result = ''
+
+        cls.testcase_data = create_plan(cls, 'iOS', 'local device')
+        cls.testcases = get_tests(cls)
 
     def setUp(self):
         # Appium Service
@@ -31,15 +47,6 @@ class IOSTestAutomation(unittest.TestCase):
         # webdriver
         self.wd, self.iOS_cap = pro14_setup()
         self.wd.implicitly_wait(3)
-
-        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
-        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
-
-        self.count = 0
-        self.total_time = ''
-        self.slack_result = ''
-        self.result_lists = []
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
@@ -55,6 +62,10 @@ class IOSTestAutomation(unittest.TestCase):
             print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()
+
+    @classmethod
+    def tearDownClass(cls):
+        close_plan(cls)
 
     def test_automation_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
@@ -84,16 +95,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 카테고리 화면 확인
-        self.result_data = Category.test_category_page(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # welove 화면 확인
-        self.result_data = Category.test_welove(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
         # Like 존재하지 않을 경우
         self.result_data = Like.test_no_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -108,6 +109,16 @@ class IOSTestAutomation(unittest.TestCase):
         self.result_data = Cart.test_cart_list(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # # PDP에서 선물 주문서로 이동
+        # self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # PDP에서 구매 주문서로 이동
+        # self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 쿠폰함
         self.result_data = My.test_coupons_list(self, self.wd)
