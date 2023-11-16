@@ -259,26 +259,31 @@ class Home:
         try:
             print("[홈화면 배너 확인]CASE 시작")
             sleep(1)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            aalc(wd, 'HOME')
             print("홈 탭 선택")
 
             # 보강시나리오
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'life_tab').click()
+            aalc(wd, 'life_tab')
             print("라이프 탭 선택")
-
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/closeIcon').click()
+            # 라이프탭 아이디 설정 후 추가 필요
+            aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
             print("라이프 탭 해제")
             sleep(1)
             try:
-                element_control.aal(wd, 'women_tab')
-                element_control.aal(wd, 'men_tab')
-                element_control.aal(wd, 'life_tab')
-                element_control.aal(wd, 'best_tab')
-                element_control.aal(wd, 'recommend_tab')
+                aal(wd, 'women_tab')
+                aal(wd, 'men_tab')
+                aal(wd, 'life_tab')
+                aal(wd, 'best_tab')
+                aal(wd, 'recommend_tab')
             except NoSuchElementException:
                 print("홈 상단 탭 확인 실패")
                 test_result = 'WARN'
                 warning_texts.append("홈 상단 탭 확인 실패")
+
+            aalc(wd, 'women_tab')
+            print("우먼탭 선택")
+            sleep(1)
+            close_bottom_sheet(self.wd)
 
             api_banner_title = []
             banner_title_set = []
@@ -412,11 +417,22 @@ class Home:
         try:
             print("[홈화면 컨텐츠 확인]CASE 시작")
             sleep(5)
-            tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-            # 2. 홈 > 피드 > 추천 탭선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
-            print('홈 > 피드 > 추천 탭선택 ')
-            guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
+            # # 이굿위크 여부 확인
+            # try:
+            #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
+            # except NoSuchElementException:
+            #     main_tab_container = aal(wd, 'com.the29cm.app29cm:id/container')
+            #     swipe_control(wd, main_tab_container, 'left', 10)
+            # aalc(wd, 'recommend_tab')
+            # print("추천 탭 선택")
+            # sleep(1)
+
+            # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+            # # 2. 홈 > 피드 > 추천 탭선택
+            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
+            # print('홈 > 피드 > 추천 탭선택 ')
+            scroll_to_element_with_text(wd, '추천 상품')
+            guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
 
             if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
                 print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
@@ -432,6 +448,7 @@ class Home:
             aalc(wd, 'women_tab')
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
+            close_bottom_sheet(self.wd)
 
             # API 호출
             response = requests.get(
