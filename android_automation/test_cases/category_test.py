@@ -12,6 +12,7 @@ from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
     swipe_control, scroll_to_element_with_text, scroll, swipe_control, element_scroll_control
 from android_automation.page_action import category_page, welove_page, navigation_bar
+from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -221,6 +222,7 @@ class Category:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '카테고리를 선택해서 PLP 진입')
             return result_data
 
     def test_welove(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -283,4 +285,5 @@ class Category:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '카테고리 핀메뉴의 Welove 진입하여 탐색')
             return result_data

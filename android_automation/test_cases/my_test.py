@@ -11,6 +11,7 @@ from time import sleep, time
 from com_utils import values_control, slack_result_notifications, element_control
 from android_automation.page_action import navigation_bar
 from com_utils.element_control import aalc, aal, aals
+from com_utils.testrail_api import send_test_result
 
 
 class My:
@@ -80,6 +81,7 @@ class My:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '설정화면 진입')
             return result_data
 
     def test_recently_viewed_content(self, wd, test_result='PASS', error_texts=[], img_src='',
@@ -202,6 +204,7 @@ class My:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '최근 본 컨텐츠 확인')
             return result_data
 
     def test_track_delivery_without_orders(self, wd, test_result='PASS', error_texts=[], img_src='',
@@ -267,6 +270,7 @@ class My:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '주문 건이 없을 경우, 주문 배송 조회 없음 확인')
             return result_data
 
     def test_review_without_orders(self, wd, test_result='PASS', error_texts=[], img_src='',
@@ -330,4 +334,5 @@ class My:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '주문 건이 없을 경우, 상품 리뷰 없음 확인')
             return result_data

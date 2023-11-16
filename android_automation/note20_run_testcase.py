@@ -13,15 +13,27 @@ from android_automation.test_cases.like_test import Like
 from android_setup import note20_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
+from com_utils.testrail_api import *
 
 
 class AndroidTestAutomation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
+        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
+
+        # report data
+        cls.count = 0
+        cls.result_lists = []
+        cls.total_time = ''
+        cls.slack_result = ''
+
+        cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy Note20', cls.pconf['Note20_tc_ids'])
+        cls.testcases = get_tests(cls)
 
     def setUp(self):
-
-        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
-        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         # Appium Service
         self.appium = AppiumService()
@@ -31,14 +43,12 @@ class AndroidTestAutomation(unittest.TestCase):
         # webdriver
         self.wd, self.and_cap = note20_setup()
         self.wd.implicitly_wait(5)
-
-        # report data
-        self.count = 0
-        self.result_lists = []
-        self.total_time = ''
-        self.slack_result = ''
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
+
+    @classmethod
+    def tearDownClass(cls):
+        close_plan(cls)
 
     def tearDown(self):
         try:
@@ -47,7 +57,6 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
         except InvalidSessionIdException:
             self.appium.stop()
-
 
     def test_automation_android_bvt(self):
         # 현재 함수명 저장 - slack noti에 사용
@@ -82,6 +91,13 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = Like.test_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -  장바구니 리스트
+        # 실제 실행 -  장바구니에서 구매하기
+        # 실제 실행 -  PDP에서 선물 주문서로 이동
+        # 실제 실행 -  PDP에서 구매 주문서로 이동
+        # 실제 실행 -  구매하기
+        # 실제 실행 -  쿠폰함
 
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)

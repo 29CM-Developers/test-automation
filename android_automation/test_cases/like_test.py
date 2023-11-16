@@ -10,6 +10,7 @@ from com_utils import values_control, cookies_control
 from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
     swipe_control, scroll_to_element_with_text, scroll, swipe_control, element_scroll_control
+from com_utils.testrail_api import send_test_result
 
 
 class Like:
@@ -152,6 +153,7 @@ class Like:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '좋아요 존재하지 않는 LIKE 화면 확인')
             return result_data
     def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
@@ -345,4 +347,5 @@ class Like:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '좋아요 존재하는 LIKE 화면 확인')
             return result_data

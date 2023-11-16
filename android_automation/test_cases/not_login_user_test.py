@@ -17,6 +17,7 @@ from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
 from com_utils.element_control import aal, aalk, aalc, swipe_control
+from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -148,6 +149,7 @@ class NotLogin:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입')
             return result_data
 
     def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -429,4 +431,5 @@ class NotLogin:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '비로그인 유저가 사용 가능한 기능 확인')
             return result_data

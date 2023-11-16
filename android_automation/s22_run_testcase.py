@@ -16,15 +16,27 @@ from android_automation.test_cases.my_test import My
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
+from com_utils.testrail_api import *
 
 
 class AndroidTestAutomation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
+        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
+
+        # report data
+        cls.count = 0
+        cls.result_lists = []
+        cls.total_time = ''
+        cls.slack_result = ''
+
+        cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy s22', cls.pconf['s22_tc_ids'])
+        cls.testcases = get_tests(cls)
 
     def setUp(self):
-
-        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
-        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         # Appium Service
         self.appium = AppiumService()
@@ -34,14 +46,13 @@ class AndroidTestAutomation(unittest.TestCase):
         # webdriver
         self.wd, self.and_cap = s22_setup()
         self.wd.implicitly_wait(5)
-
         # report data
-        self.count = 0
-        self.result_lists = []
-        self.total_time = ''
-        self.slack_result = ''
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
+
+    @classmethod
+    def tearDownClass(cls):
+        close_plan(cls)
 
     def tearDown(self):
         try:

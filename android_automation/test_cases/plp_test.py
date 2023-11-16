@@ -15,12 +15,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from com_utils import values_control, element_control
 from time import sleep, time
+from com_utils.testrail_api import send_test_result
+
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
 formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 stream_handler = logging.StreamHandler()  ## 스트림 핸들러 생성
 stream_handler.setFormatter(formatter)  ## 텍스트 포맷 설정
 logger.addHandler(stream_handler)  ## 핸들러 등록
+
+
 class Plp:
 
     def test_product_listing_page(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -186,4 +190,5 @@ class Plp:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, 'PLP 기능 확인')
             return result_data

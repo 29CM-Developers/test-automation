@@ -15,6 +15,7 @@ from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, \
     scroll_to_element_with_text, scroll
+from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -338,6 +339,7 @@ class LoginLogout:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '이메일 로그인 성공')
             return result_data
     def test_logout(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
@@ -409,6 +411,7 @@ class LoginLogout:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '로그아웃')
             return result_data
     def Login_with_SNS(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         # 현재 함수명 저장 - slack noti에 사용
@@ -555,4 +558,5 @@ class LoginLogout:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '이메일 로그인 실패')
             return result_data
