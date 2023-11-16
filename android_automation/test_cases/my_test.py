@@ -143,7 +143,7 @@ class My:
                             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                             pass
 
-                        sleep(3)
+                        sleep(4)
                         PDP_product_title = aal(wd, f'{element_xpath}').text
                         sleep(2)
                         print(f"PDP_product_title : {PDP_product_title} ")
