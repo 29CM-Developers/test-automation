@@ -18,14 +18,27 @@ from android_automation.test_cases.my_test import My
 from android_setup import hhj2008_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
+from com_utils.testrail_api import *
 
 
 class AndroidTestAutomation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
+        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
 
+        # report data
+        cls.count = 0
+        cls.result_lists = []
+        cls.total_time = ''
+        cls.slack_result = ''
+
+        cls.testcase_data = create_plan(cls, 'ANDROID', 'Zflip3', cls.pconf['s22_tc_ids'])
+        # cls.testcase_data = create_plan(cls, 'ANDROID', 'Zflip3', cls.pconf['Note20_tc_ids'])
+        cls.testcases = get_tests(cls)
     def setUp(self):
-        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
-        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         # Appium Service
         self.appium = AppiumService()
@@ -35,14 +48,13 @@ class AndroidTestAutomation(unittest.TestCase):
         # webdriver
         self.wd, self.and_cap = hhj2008_setup()
         self.wd.implicitly_wait(5)
-
         # report data
-        self.count = 0
-        self.result_lists = []
-        self.total_time = ''
-        self.slack_result = ''
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
+
+    @classmethod
+    def tearDownClass(cls):
+        close_plan(cls)
 
     def tearDown(self):
         try:
@@ -78,6 +90,16 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 실제 실행 -   카테고리 기능 확인 성공
+        self.result_data = Category.test_category_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   WELOVE 기능 확인 성공
+        self.result_data = Category.test_welove(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 -   검색 화면 인기브랜드 확인 성공
         self.result_data = Search.test_search_popular_brand(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -108,6 +130,13 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 실제 실행 -   주문 건이 없을 경우, 상품 리뷰 성공
+        self.result_data = My.test_review_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   PDP에서 좋아요
+
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -118,50 +147,54 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        ##########################
-        # 현재 함수명 저장 - slack noti에 사용
-        self.def_name = self.dconf[sys._getframe().f_code.co_name]
-        # 노트20 시나리오
-        # 실제 실행 - 이메일 로그인 성공
-        self.result_data = LoginLogout.test_email_login_success(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 - 홈 화면에서 다른 탭으로 이동 성공
-        self.result_data = Home.test_move_tab_from_home(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 - 홈 배너 성공
-        self.result_data = Home.test_home_banner(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 - 홈 컨텐츠 성공
-        self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 -   카테고리 기능 확인 성공
-        self.result_data = Category.test_category_page(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
-        self.result_data = Like.test_no_like_item(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 -   LIKE 존재하는 경우 화면 확인 성공
-        self.result_data = Like.test_like_item(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 실제 실행 - 이메일 로그아웃 성공
-        self.result_data = LoginLogout.test_logout(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # #########################
+        # # 현재 함수명 저장 - slack noti에 사용
+        # self.def_name = self.dconf[sys._getframe().f_code.co_name]
+        # # 노트20 시나리오
+        # # 실제 실행 - 이메일 로그인 성공
+        # self.result_data = LoginLogout.test_email_login_success(self, self.wd)
+        # self.response = slack_result_notifications.slack_notification(self)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 - 홈 화면에서 다른 탭으로 이동 성공
+        # self.result_data = Home.test_move_tab_from_home(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 - 홈 배너 성공
+        # self.result_data = Home.test_home_banner(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 - 홈 컨텐츠 성공
+        # self.result_data = Home.test_home_contents(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 -   LIKE 존재하지 않는 경우 화면 확인 성공
+        # self.result_data = Like.test_no_like_item(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 -   LIKE 존재하는 경우 화면 확인 성공
+        # self.result_data = Like.test_like_item(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 -  장바구니 리스트
+        # # 이거
+        # # 실제 실행 -  장바구니에서 구매하기
+        # # 실제 실행 -  PDP에서 선물 주문서로 이동
+        # # 실제 실행 -  PDP에서 구매 주문서로 이동
+        # # 실제 실행 -  구매하기
+        # # 실제 실행 -  쿠폰함
+        # # 이거
+        #
+        # # 실제 실행 - 이메일 로그아웃 성공
+        # self.result_data = LoginLogout.test_logout(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
 if __name__ == '__main__':
     unittest.main()

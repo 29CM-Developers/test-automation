@@ -13,10 +13,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
-from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 from com_utils.element_control import aal, aalk, aalc, swipe_control
+from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -37,7 +38,7 @@ class NotLogin:
         try:
             sleep(3)
             print("[사용 불가 기능 사용]CASE 시작")
-            test_bottom_sheet(self.wd)
+            close_bottom_sheet(self.wd)
 
             sleep(3)
             # 홈 > 카테고리 PLP 진입
@@ -148,6 +149,7 @@ class NotLogin:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입')
             return result_data
 
     def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -196,7 +198,7 @@ class NotLogin:
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
             print('SPECIAL-ORDER 상품 발견')
         except NoSuchElementException:
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
             pass
 
         PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
@@ -429,4 +431,5 @@ class NotLogin:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '비로그인 유저가 사용 가능한 기능 확인')
             return result_data

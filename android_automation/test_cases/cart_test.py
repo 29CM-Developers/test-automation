@@ -9,7 +9,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
+from com_utils.testrail_api import send_test_result
 from com_utils import values_control, element_control
 from time import sleep, time
 
@@ -311,4 +311,5 @@ class Cart:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
             return result_data

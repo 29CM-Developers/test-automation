@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
 from com_utils import values_control, slack_result_notifications, element_control
+from com_utils.testrail_api import send_test_result
 
 
 class Join:
@@ -102,4 +103,5 @@ class Join:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '간편 회원가입 실패')
             return result_data

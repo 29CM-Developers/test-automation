@@ -7,6 +7,7 @@ import requests
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.loginpage_test import LoginLogout
 from android_automation.test_cases.not_login_user_test import NotLogin
+from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.plp_test import Plp
 from android_automation.test_cases.search_test import Search
@@ -15,15 +16,27 @@ from android_automation.test_cases.my_test import My
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
+from com_utils.testrail_api import *
 
 
 class AndroidTestAutomation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
+        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
+
+        # report data
+        cls.count = 0
+        cls.result_lists = []
+        cls.total_time = ''
+        cls.slack_result = ''
+
+        cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy s22', cls.pconf['s22_tc_ids'])
+        cls.testcases = get_tests(cls)
 
     def setUp(self):
-
-        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/hhj2008").json()
-        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
 
         # Appium Service
         self.appium = AppiumService()
@@ -33,14 +46,13 @@ class AndroidTestAutomation(unittest.TestCase):
         # webdriver
         self.wd, self.and_cap = s22_setup()
         self.wd.implicitly_wait(5)
-
         # report data
-        self.count = 0
-        self.result_lists = []
-        self.total_time = ''
-        self.slack_result = ''
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
+
+    @classmethod
+    def tearDownClass(cls):
+        close_plan(cls)
 
     def tearDown(self):
         try:
@@ -51,7 +63,6 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
 
     def test_automation_android_bvt(self):
-
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
@@ -59,7 +70,7 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result  = slack_result_notifications.slack_update_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 비로그인 사용 가능 기능 사용
         self.result_data = NotLogin.test_not_login_user_possible(self, self.wd)
@@ -73,6 +84,16 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 - PLP 기능 확인 성공
         self.result_data = Plp.test_product_listing_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   카테고리 기능 확인 성공
+        self.result_data = Category.test_category_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -   WELOVE 기능 확인 성공
+        self.result_data = Category.test_welove(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
@@ -106,6 +127,11 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 실제 실행 -   주문 건이 없을 경우, 상품 리뷰 성공
+        self.result_data = My.test_review_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -115,6 +141,5 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
 if __name__ == '__main__':
     unittest.main()
