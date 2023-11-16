@@ -3,7 +3,7 @@ import json
 
 from datetime import datetime
 
-def create_plan(self, os_type, device):
+def create_plan(self, os_type, device, tc_list):
     url = f"{self.econf['tr_host']}/index.php?/api/v2/add_plan/21"
 
     now = datetime.now()
@@ -15,7 +15,7 @@ def create_plan(self, os_type, device):
                 "suite_id": 138,
                 "name": f"{os_type} Device",
                 "include_all": True,
-                "case_ids": self.econf['tr_tc_ids']
+                "case_ids": self.econf[f'{tc_list}']
             }
         ]
     })
