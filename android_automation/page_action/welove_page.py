@@ -35,6 +35,7 @@ def save_first_post_title(wd):
 
 def save_first_post_hashtag(wd):
     post_hash_tag = ''
+    com_utils.element_control.scroll_control(wd, 'D', 30)
     for i in range(0, 3):
         try:
             post = aal(wd, 'com.the29cm.app29cm:id/seriesContainer')
@@ -45,6 +46,7 @@ def save_first_post_hashtag(wd):
                 break
             com_utils.element_control.scroll_control(wd, 'D', 30)
         except NoSuchElementException:
+            com_utils.element_control.scroll_control(wd, 'D', 30)
             pass
     return post_hash_tag
 
