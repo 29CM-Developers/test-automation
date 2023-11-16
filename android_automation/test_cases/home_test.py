@@ -14,9 +14,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from android_automation.test_cases.bottom_sheet import test_bottom_sheet
-from com_utils import values_control, element_control
+from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_like_bottom_sheet
+from com_utils import values_control
 from time import sleep, time
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, swipe_control, \
+    scroll_to_element_with_text, scroll, swipe_control
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -79,7 +81,7 @@ class Home:
             # 인기 브랜드 타이틀 확인
             try:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
-                sleep(2)
+                sleep(3)
                 print("검색 ui 변경 화면")
                 response = requests.get(
                     'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
@@ -163,7 +165,8 @@ class Home:
             try:
                 wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
-                test_bottom_sheet(self.wd)
+                close_bottom_sheet(self.wd)
+                close_like_bottom_sheet(self.wd)
             except NoSuchElementException:
                 pass
 
@@ -309,7 +312,8 @@ class Home:
 
                 home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
                 try:
-                    for i in range(0, 3):
+                    sleep(3)
+                    for i in range(0, 10):
                         sleep(2.5)
                         home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
                         print(f"home_banner_title : {home_banner_title}")
@@ -339,21 +343,21 @@ class Home:
 
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
-            dynamic_layer = element_control.aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
+            dynamic_layer = aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
             try:
-                dynamic_button_title = element_control.aal(wd, 'dynamic_button_gift')
+                dynamic_button_title = aal(wd, 'dynamic_button_gift')
             except NoSuchElementException:
-                element_control.swipe_control(wd, dynamic_layer, 'left', 50)
-                dynamic_button_title = element_control.aal(wd, 'dynamic_button_gift')
+                swipe_control(wd, dynamic_layer, 'left', 50)
+                dynamic_button_title = aal(wd, 'dynamic_button_gift')
             print(dynamic_button_title)
             print(dynamic_button_title.text)
             button_title = dynamic_button_title.text
             dynamic_button_title.click()
 
             sleep(3)
-            gift_layer = element_control.aal(wd, 'com.the29cm.app29cm:id/rootView')
-            gift_title = element_control.aal(gift_layer,
-                                             '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
+            gift_layer = aal(wd, 'com.the29cm.app29cm:id/rootView')
+            gift_title = aal(gift_layer,
+                             '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
             print(gift_title)
 
             if gift_title == button_title:
@@ -364,8 +368,8 @@ class Home:
                 warning_texts.append("다이나믹 게이트 타이틀 확인 실패")
 
             # 뒤로가기로 홈화면 진입 확인
-            element_control.aalc(gift_layer,
-                                 '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button')
+            aalc(gift_layer,
+                 '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button')
             print("뒤로가기 선택")
             sleep(3)
             print("[홈화면 배너 확인]CASE 종료")
@@ -417,9 +421,15 @@ class Home:
             if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
                 print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
             else:
-                정
+                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("추천 가이드 문구 확인 실패")
+
             print(f"가이드 문구 : {guide_text.text} ")
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
+            aalc(wd, 'men_tab')
+            print('홈 > 피드 > 맨 탭선택 ')
+            sleep(1)
+            aalc(wd, 'women_tab')
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
 
@@ -458,15 +468,15 @@ class Home:
                     except NoSuchElementException:
                         pass
                     # 스크롤 액션 수행
-                    element_control.scroll(wd)
+                    scroll(wd)
 
                 if found_element is None:
                     test_result = 'WARN'
                     warning_texts.append("첫번째 feedTitle 발견 실패")
 
                 # 스크롤
-                element_control.scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
-                element_control.scroll(wd)
+                scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
+                scroll(wd)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
 
                 # 하트 이미 선택되었는지 확인
@@ -547,7 +557,7 @@ class Home:
                     except NoSuchElementException:
                         pass
                     # 스크롤 액션 수행
-                    element_control.scroll(wd)
+                    scroll(wd)
 
                 if found_element is None:
                     print("피드 컨텐츠 추가 노출 확인 실패")
