@@ -196,7 +196,7 @@ class NotLogin:
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
             print('SPECIAL-ORDER 상품 발견')
         except NoSuchElementException:
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
             pass
 
         PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text

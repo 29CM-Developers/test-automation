@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
 from com_utils import values_control, slack_result_notifications, element_control
+from android_automation.page_action import navigation_bar
+from com_utils.element_control import aalc, aal, aals
 
 
 class My:
@@ -123,7 +125,7 @@ class My:
                             print('SPECIAL-ORDER 상품 발견')
                         except NoSuchElementException:
                             print('SPECIAL-ORDER 상품 미발견')
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
                             pass
 
                         PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
