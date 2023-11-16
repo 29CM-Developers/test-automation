@@ -105,13 +105,14 @@ class Category:
             # 필터링 버튼 선택
             selector.click()
             buttom_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
-            new_product_order = buttom_layer.find_element(AppiumBy.XPATH, '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.widget.TextView')
+            new_product_order = buttom_layer.find_element(AppiumBy.XPATH,
+                                                          '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.widget.TextView')
             new_product_order.click()
             sleep(1)
             print(f" 정렬 : {selector.text}")
-            if '신상품순' in selector.text :
+            if '신상품순' in selector.text:
                 print(f"정렬 확인 : {selector.text}")
-            else :
+            else:
                 print(f"정렬 확인 실패 : {selector.text}")
 
             # 선택한 대 -> 중 카테고리에 해당하는 PLP API 호출
