@@ -29,7 +29,7 @@ class Join:
             # 로그인 회원가입 버튼 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').click()
             print("로그인 버튼 선택")
-            sleep(3)
+            sleep(4)
             # 로그인 화면 진입 확인
             login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
             print("홈 > 마이페이지 > 로그인 화면 진입")

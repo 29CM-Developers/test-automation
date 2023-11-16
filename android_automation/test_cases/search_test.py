@@ -7,6 +7,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control, api_control
 from time import sleep, time
+from com_utils.element_control import aalc, aal, aals
 from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
@@ -258,7 +259,9 @@ class Search:
             api_1st_keyword_name = search_popular_keyword['api_1st_keyword_name']
             api_25th_keyword_name = search_popular_keyword['api_25th_keyword_name']
 
-            element = wd.find_element(By.XPATH, f"//*[contains(@text, '{api_1st_keyword_name}')]")
+            element_control.scroll_to_element_with_text(wd, f'{api_1st_keyword_name}')
+
+            element = aal(wd, f'{api_1st_keyword_name}')
             print(f"element : {element.text}")
             keyword_1st_name = element.text
             print(f"keyword_1st_name : {keyword_1st_name}")

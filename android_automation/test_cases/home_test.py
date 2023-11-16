@@ -79,6 +79,14 @@ class Home:
             # SEARCH 탭 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'SEARCH').click()
             sleep(1)
+            # 최근 검색어 있는 경우 모두 지우기로 삭제
+            delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
+            print(delete_all)
+            if len(delete_all) == 0:
+                pass
+            else:
+                delete_all[0].click()
+                sleep(2)
             # 인기 브랜드 타이틀 확인
             try:
                 search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
@@ -167,7 +175,7 @@ class Home:
                 wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
                 close_bottom_sheet(self.wd)
-                close_like_bottom_sheet(self.wd)
+                # close_like_bottom_sheet(self.wd)
             except NoSuchElementException:
                 pass
 
@@ -308,24 +316,43 @@ class Home:
                 set_api_banner_id = set(api_banner_id)
                 set_api_banner_contents = set(api_banner_contents)
 
-                # 중복을 확인합니다.
-                if len(api_banner_id) != len(set_api_banner_id) or len(api_banner_contents) != len(
-                        set_api_banner_contents):
-                    print("리스트에 중복 요소가 있습니다.")
+                id_duplicate = set()
+                check_id = [x for x in api_banner_id if x in id_duplicate or (id_duplicate.add(x) or False)]
+                contents_duplicate = set()
+                check_contents = [x for x in api_banner_contents if
+                                  x in contents_duplicate or (contents_duplicate.add(x) or False)]
+
+                if not check_id and not check_contents:
+                    print('중복된 홈 배너 없음 확인')
+                else:
                     test_result = 'WARN'
                     warning_texts.append('중복된 홈 배너 없음 확인 실패')
-                else:
-                    print("리스트에 중복 요소가 없습니다.")
+                    print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
 
-                home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
+                # # 중복을 확인합니다.
+                # if len(api_banner_id) != len(set_api_banner_id) or len(api_banner_contents) != len(
+                #         set_api_banner_contents):
+                #     print("리스트에 중복 요소가 있습니다.")
+                #     test_result = 'WARN'
+                #     warning_texts.append('중복된 홈 배너 없음 확인 실패')
+                # else:
+                #     print("리스트에 중복 요소가 없습니다.")
+                sleep(3)
+                # home_banner_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/bannerImg')
                 try:
                     sleep(3)
                     for i in range(0, 10):
                         sleep(2.5)
-                        home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
+                        # home_banner_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/title').text
+                        home_banner_title = aal(wd, 'com.the29cm.app29cm:id/title')
+                        if home_banner_title == None:
+                            print("타이틀 없는 배너")
+                        else:
+                            home_banner_title = home_banner_title.text
                         print(f"home_banner_title : {home_banner_title}")
                         banner_title_set.append(home_banner_title)
                 except NoSuchElementException:
+                    print("타이틀 없는 배너")
                     pass
 
                 banner_title_set = set(banner_title_set)

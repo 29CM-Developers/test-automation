@@ -129,8 +129,22 @@ class My:
                             print('SPECIAL-ORDER 상품 미발견')
                             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
                             pass
+                        # 이굿 위크 상품 확인
+                        try:
+                            sale_tag = aal(wd, '이굿위크 할인 상품')
+                            if sale_tag == None:
+                                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                                print('sale_tag 상품 ㅁㅣ발견')
+                            else:
+                                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
+                                print('sale_tag 상품 발견')
+                        except NoSuchElementException:
+                            print('sale_tag 상품 미발견')
+                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                            pass
 
-                        PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+                        sleep(3)
+                        PDP_product_title = aal(wd, f'{element_xpath}').textsleep(2)
                         print(f"PDP_product_title : {PDP_product_title} ")
                         if best_product in PDP_product_title:
                             print("pdp 진입 확인 - 베스트 상품")
