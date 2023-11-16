@@ -8,12 +8,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec, wait
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
-from android_automation.test_cases.bottom_sheet import test_bottom_sheet
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, scroll_to_element_with_text
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, \
+    scroll_to_element_with_text, scroll
 
 logger = logging.getLogger(name='Log')
 logger.setLevel(logging.INFO)  ## 경고 수준 설정
@@ -222,7 +223,7 @@ class LoginLogout:
         try:
             print("[이메일 로그인 성공]CASE 시작")
             sleep(2)
-            test_bottom_sheet(self.wd)
+            close_bottom_sheet(self.wd)
             wd.get('app29cm://mypage')
             sleep(2)
             print("홈 > 마이페이지 화면 진입")
@@ -264,13 +265,13 @@ class LoginLogout:
             try:
                 scroll_to_element_with_text(wd, '회원 정보 수정')
                 scroll_control(wd, 'D', 10)
-                aalc(wd, '회원 정보 수정')
+                aalc(wd, 'c_회원 정보 수정')
                 sleep(3)
                 aalk(wd, '//android.widget.EditText', self.pconf['LOGIN_SUCCESS_PW'])
                 wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
                 sleep(2)
                 try:
-                    edit_member_information = aal(wd, '회원정보 수정')
+                    edit_member_information = aal(wd, 'c_회원정보 수정')
                     print("회원정보 수정 화면 진입")
                     if edit_member_information.text == '회원정보 수정':
                         print("회원정보 수정 페이지 타이틀 확인")
@@ -285,7 +286,7 @@ class LoginLogout:
                     warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
                     print(f"가이드 문구 : {edit_member_information.text} ")
                 try:
-                    user_email = aal(wd, self.pconf['LOGIN_SUCCESS_ID'])
+                    user_email = aal(wd, f'c_{self.pconf["LOGIN_SUCCESS_ID"]}')
                     print("로그인한 유저 이메일 확인")
 
                     if user_email.text == self.pconf['LOGIN_SUCCESS_ID']:
@@ -309,7 +310,7 @@ class LoginLogout:
             aalc(wd, 'HOME')
             print("홈화면 진입")
             print("[이메일 로그인 성공]CASE 종료")
-            test_bottom_sheet(self.wd)
+            close_bottom_sheet(self.wd)
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'
@@ -344,11 +345,12 @@ class LoginLogout:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            sleep(4)
             print("[이메일 로그아웃]CASE 시작")
             wd.get('app29cm://mypage')
-            # like 탭 선택
-            sleep(3)
+            sleep(1)
             print("홈 > 마이페이지 화면 진입")
+            close_bottom_sheet(wd)
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
             if login_name.text == self.pconf['NAME']:
@@ -524,7 +526,7 @@ class LoginLogout:
             print("홈화면 진입")
             print("[이메일 로그인 실패 및 성공]CASE 종료")
 
-            test_bottom_sheet(self.wd)
+            close_bottom_sheet(self.wd)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
