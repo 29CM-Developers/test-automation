@@ -32,6 +32,38 @@ class Category:
             sleep(3)
             # 카테고리 탭 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
+
+            api_large_list = []
+            response = requests.get('https://recommend-api.29cm.co.kr/api/v5/best/categories/groups')
+            if response.status_code == 200:
+                large_category_data = response.json()
+                # api에서 호출한 대 카테고리 리스트 저장
+                for i in range(0, len(large_category_data['data'])):
+                    api_large_category = large_category_data['data'][i]['categoryName']
+                    api_large_list.append(api_large_category)
+                print(f'api_large_list : {api_large_list}')
+
+                # api에서 호출한 리스트 길이와 비교하여 노출되는 대 카테고리 리스트 저장
+                large_list = []
+                category_layer = aal(wd, 'com.the29cm.app29cm:id/shopComposeView')
+
+                large_list.append(aal(wd, 'category_first_title').text)
+                large_list.append(
+                    aal(category_layer, '//android.view.View/android.view.View[2]/android.widget.TextView[2]').text)
+                large_list.append(
+                    aal(category_layer, '//android.view.View/android.view.View[2]/android.widget.TextView[3]').text)
+
+                print(f'large_list : {large_list}')
+
+                if set(large_list).intersection(api_large_list):
+                    print('대 카테고리 리스트 확인')
+                else:
+                    test_result = 'WARN'
+                    warning_texts.append('카테고리 리스트 확인 실패')
+                    print('대 카테고리 리스트 확인 실패')
+            else:
+                print('PDP 옵션 정보 API 불러오기 실패')
+
             # 대 카테고리, 중 카테고리 코드 번호 저장
             large_category_info = api_control.large_category_info(self.conf["category_group"][0],
                                                                   self.conf["large_category"][0])
