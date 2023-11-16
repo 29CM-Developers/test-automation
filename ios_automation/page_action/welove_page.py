@@ -3,7 +3,7 @@ import com_utils.element_control
 from selenium.common import NoSuchElementException
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
-from com_utils.element_control import ial, ialc
+from com_utils.element_control import ial, ialc, ials
 
 
 # welove 페이지에서 뒤로가기
@@ -34,12 +34,10 @@ def click_first_post(wd):
 
 
 # like_post_name = 포스트 제목
-def click_post_like_btn(wd, like_post_name):
-    like_post_name = ' '.join(like_post_name.split())
-    post_view = wd.find_elements(AppiumBy.XPATH,
-                                 f'//XCUIElementTypeOther[@name="{like_post_name} - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther')
+def click_post_like_btn(wd):
+    post_view = ials(wd, '//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther')
     post_view_len = len(post_view) - 1
-    wd.find_element(AppiumBy.XPATH, f'//XCUIElementTypeOther[{post_view_len}]/XCUIElementTypeButton[1]').click()
+    ialc(wd, f'//XCUIElementTypeOther[{post_view_len}]/XCUIElementTypeButton[1]')
 
 
 def save_first_post_hashtag(wd):
