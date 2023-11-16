@@ -32,7 +32,6 @@ def create_plan(self, os_type, device):
 
 def get_tests(self):
     url = f"{self.econf['tr_host']}/index.php?/api/v2/get_tests/{self.testcase_data['entries'][0]['runs'][0]['id']}"
-
     payload = ""
     headers = {
         'Content-Type': 'application/json',
@@ -46,7 +45,6 @@ def get_tests(self):
 
 def send_test_result(self, test_result, case_name):
     url = f"{self.econf['tr_host']}/index.php?/api/v2/add_results_for_cases/{self.testcase_data['entries'][0]['runs'][0]['id']}"
-
     result = 1 if test_result == 'PASS' else 5
     payload = json.dumps({
         "results": [
@@ -68,7 +66,7 @@ def send_test_result(self, test_result, case_name):
 
 
 def search_test(tr_testcases, run_case):
-    for i in range(len(tr_testcases)):
+    for i in range(len(tr_testcases['tests'])):
         if tr_testcases['tests'][i]['title'] == run_case:
             case_id = tr_testcases['tests'][i]['case_id']
             break
