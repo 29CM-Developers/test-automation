@@ -5,8 +5,11 @@ import logging
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
-from com_utils import values_control, element_control, cookies_control
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from com_utils import values_control, cookies_control
 from time import sleep, time
+from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
+    swipe_control, scroll_to_element_with_text, scroll, swipe_control, element_scroll_control
 
 
 class Like:
@@ -161,6 +164,7 @@ class Like:
             wd.get('app29cm://like')
             # like 탭 선택
             sleep(1)
+            close_bottom_sheet(wd)
             like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
             productItem = like_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[2]/android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
             print(f"productItem : {productItem}")
@@ -197,6 +201,23 @@ class Like:
                 print('WARN : 좋아요 상품 PDP 진입 확인 실패')
             wd.find_element(AppiumBy.ID, 'android:id/content').click()
 
+            # 그리드 뷰 상태에서 이미지 사이즈 저장
+            # image_size_layer = aal(wd,'com.the29cm.app29cm:id/likeRecyclerView')
+            sleep(1)
+            grid_size = aal(wd, '//android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/imageThumbnail"]').size
+            print(f'grid_size : {grid_size["height"]} / {grid_size["width"]}')
+            aalc(wd, 'com.the29cm.app29cm:id/imageGrid')
+            sleep(1)
+            list_size = aal(wd, '//android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/imageThumbnail"]').size
+            print(f'grid_size : {list_size["height"]} / {list_size["width"]}')
+            if grid_size['height'] != list_size['height'] and grid_size['width'] != list_size['width']:
+                test_result = 'PASS'
+                print("좋아요 상품 탭의 뷰 정렬 변경 확인")
+            else:
+                test_result = 'WARN'
+                warning_texts.append('좋아요 상품 탭의 뷰 정렬 변경 확인 실패')
+                print("좋아요 상품 탭의 뷰 정렬 변경 확인 실패")
+            aalc(wd, 'com.the29cm.app29cm:id/imageGrid')
 
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
             like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
@@ -214,9 +235,9 @@ class Like:
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
             like_BrandName.click()
             sleep(4)
-            brand_web_view_layer = element_control.aal(wd, 'com.the29cm.app29cm:id/rootView')
-            brand_name = element_control.aal(wd,
-                                             '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
+            brand_web_view_layer = aal(wd, 'com.the29cm.app29cm:id/rootView')
+            brand_name = aal(wd,
+                             '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
             print(brand_name)
             original_string = BrandName
             uppercase_string = original_string.upper()
