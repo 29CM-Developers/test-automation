@@ -143,8 +143,8 @@ class My:
                             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                             pass
 
-                        sleep(2)
-                        PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+                        sleep(3)
+                        PDP_product_title = aal(wd, f'{element_xpath}').textsleep(2)
                         print(f"PDP_product_title : {PDP_product_title} ")
                         if best_product in PDP_product_title:
                             print("pdp 진입 확인 - 베스트 상품")
