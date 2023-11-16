@@ -148,16 +148,17 @@ class Category:
                 print(f"정렬 확인 실패 : {selector.text}")
 
             # 선택한 대 -> 중 카테고리에 해당하는 PLP API 호출
-            response = requests.get(f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort=new')
+            response = requests.get(
+                f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort=new')
             if response.status_code == 200:
                 api_data = response.json()
                 products = api_data['data']['products']
                 first_product_name = products[0]['itemName']
                 print(f"first_product_name : {first_product_name}")
                 element = scroll_to_element_with_text(wd, first_product_name)
-                if element.text in first_product_name :
+                if element.text in first_product_name:
                     print('상품 목록의 1번째 아이템명 일치 확인')
-                else :
+                else:
                     test_result = 'WARN'
                     warning_texts.append('상품 목록의 1번째 아이템명 일치 확인 실패')
                     print('상품 목록의 1번째 아이템명 일치 확인 실패')
