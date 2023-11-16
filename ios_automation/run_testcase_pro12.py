@@ -17,10 +17,28 @@ from ios_automation.test_cases.plp_test import Plp
 from ios_automation.test_cases.search_test import Search
 from ios_automation.test_cases.join_test import Join
 from ios_automation.test_cases.my_test import My
+from ios_automation.test_cases.category_test import Category
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
+from com_utils.testrail_api import *
 
 
 class IOSTestAutomation(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
+        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
+
+        # report data
+        cls.count = 0
+        cls.result_lists = []
+        cls.total_time = ''
+        cls.slack_result = ''
+
+        cls.testcase_data = create_plan(cls, 'iOS', 'iPhone Pro 12', cls.pconf['pro12_tc_ids'])
+        cls.testcases = get_tests(cls)
 
     def setUp(self):
         # Appium Service
@@ -31,15 +49,6 @@ class IOSTestAutomation(unittest.TestCase):
         # webdriver
         self.wd, self.iOS_cap = pro12_setup()
         self.wd.implicitly_wait(3)
-
-        self.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
-        self.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        self.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
-
-        self.count = 0
-        self.total_time = ''
-        self.slack_result = ''
-        self.result_lists = []
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
@@ -55,6 +64,10 @@ class IOSTestAutomation(unittest.TestCase):
             print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()
+
+    @classmethod
+    def tearDownClass(cls):
+        close_plan(cls)
 
     def test_automation_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
@@ -81,6 +94,16 @@ class IOSTestAutomation(unittest.TestCase):
 
         # PLP 기능 확인
         self.result_data = Plp.test_product_listing_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 카테고리 화면 확인
+        self.result_data = Category.test_category_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # welove 화면 확인
+        self.result_data = Category.test_welove(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
