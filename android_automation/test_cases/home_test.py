@@ -175,7 +175,7 @@ class Home:
                 wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
                 close_bottom_sheet(self.wd)
-                # close_like_bottom_sheet(self.wd)
+                close_like_bottom_sheet(self.wd)
             except NoSuchElementException:
                 pass
 
