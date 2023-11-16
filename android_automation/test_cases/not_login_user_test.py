@@ -13,9 +13,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
-from android_automation.test_cases.bottom_sheet import test_bottom_sheet
 from com_utils.element_control import aal, aalk, aalc, swipe_control
 
 logger = logging.getLogger(name='Log')
@@ -37,7 +37,7 @@ class NotLogin:
         try:
             sleep(3)
             print("[사용 불가 기능 사용]CASE 시작")
-            test_bottom_sheet(self.wd)
+            close_bottom_sheet(self.wd)
 
             sleep(3)
             # 홈 > 카테고리 PLP 진입
