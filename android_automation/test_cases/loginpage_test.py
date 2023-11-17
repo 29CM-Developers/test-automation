@@ -228,6 +228,7 @@ class LoginLogout:
             wd.get('app29cm://mypage')
             sleep(2)
             print("홈 > 마이페이지 화면 진입")
+            close_bottom_sheet(self.wd)
 
             # 로그인 회원가입 버튼 선택
             aalc(wd, 'com.the29cm.app29cm:id/txtLogin')
