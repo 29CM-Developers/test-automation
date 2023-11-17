@@ -1,6 +1,7 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc
+from time import sleep
 
 
 def close_bottom_sheet(wd):
@@ -16,13 +17,15 @@ def close_bottom_sheet(wd):
 
 def close_like_bottom_sheet(wd):
     try:
-        braze = aal(wd, 'com.the29cm.app29cm:id/com_braze_inappmessage_html')
+        sleep(2)
+        braze = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
         if braze == None:
             print('바텀 시트 미노출')
         else:
+            print('바텀 시트 노출확인')
             like_bottom_sheet = aal(wd, '다음에')
             if like_bottom_sheet == None:
-                print('바텀 시트 미노출')
+                print('바텀 시트 다음에 문구 미노출')
                 pass
             else:
                 aalc(wd, '다음에')
