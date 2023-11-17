@@ -8,10 +8,13 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
-from com_utils import values_control, slack_result_notifications, element_control
+from android_automation.page_action import welove_page, my_page
+import com_utils
+from com_utils import values_control, slack_result_notifications, element_control, deeplink_control
 from android_automation.page_action import navigation_bar
 from com_utils.element_control import aalc, aal, aals
 from com_utils.testrail_api import send_test_result
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 class My:
@@ -171,25 +174,39 @@ class My:
             else:
                 print("API 호출에 실패했습니다.")
             # 딥링크로 컨텐츠 진입
-            # 5. 컨텐츠의 컨텐츠명 저장
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHistoryTitle').click()
-            sleep(1)
-            print("최근 검색 펼침")
+            # welove 페이지 이동
+            com_utils.deeplink_control.move_to_welove(self, wd)
 
-            # txt_1st_history_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHistoryTitle').text
-            # txt_2nd_history_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHistoryTitle').text
+            # 첫번째 추천 게시물명 확인 및 선택
+            post_title = welove_page.save_first_post_title(wd)
+            welove_page.click_first_post(wd)
+
+            # My 탭으로 이동
+            wd.get('app29cm://mypage')
+            close_bottom_sheet(wd)
+
+            # 최근 본 상품 영역 확인
+            test_result = my_page.check_recent_title(wd, warning_texts, "컨텐츠", post_title)
+
+            # 최근 본 상품 영역 확장
+            my_page.expand_recent_contents(wd, post_title)
+
+            # txt_1st_history_title = aal(wd, f'c_{txt_history_title}').text
+            # txt_2nd_history_title = aal(wd, f'c_{post_title}').text
             # print(f"txt_1st_history_title : {txt_1st_history_title} , txt_2nd_history_title : {txt_2nd_history_title}")
-            # if txt_2nd_history_title in best_product and txt_1st_history_title in best_product:
+            # if txt_2nd_history_title in post_title and txt_1st_history_title in best_product:
             #     print("recent 영역에 4번, 1번 순으로 노출되는지 확인")
             # else:
             #     print("recent 영역에 4번, 1번 순으로 노출되는지 확인 실패")
             #     test_result = 'WARN'
             #     warning_texts.append("최근 본 컨텐츠 히스토리 확인 실패")
 
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/pullUpLayout').click()
-            sleep(1)
-            print("최근 검색 닫기")
-            wd.get('app29cm://home')
+            # 최근 본 상품 히스토리 확인
+            test_result = my_page.check_recent_history(wd, warning_texts, txt_history_title, post_title)
+
+            # 최근 본 상품 영역 축소 후 Home 탭으로 이동
+            my_page.close_recent_contents(wd)
+            navigation_bar.move_to_home(wd)
             print("[최근 본 컨텐츠 확인] CASE 종료")
 
         except Exception:

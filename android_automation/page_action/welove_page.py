@@ -32,6 +32,9 @@ def save_first_post_title(wd):
     print(f'포스트명 : {post_title}')
     return post_title
 
+def click_first_post(wd):
+    aalc(wd, 'com.the29cm.app29cm:id/txtPostTitle')
+    sleep(3)
 
 def save_first_post_hashtag(wd):
     post_hash_tag = ''
