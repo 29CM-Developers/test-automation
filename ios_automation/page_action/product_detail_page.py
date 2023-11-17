@@ -1,3 +1,4 @@
+from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials
@@ -69,14 +70,17 @@ def click_gift_btn(wd):
 
 def click_put_in_cart_btn(wd):
     ialc(wd, '장바구니 담기')
+    sleep(1)
 
 
 def click_direct_purchase_btn(wd):
     ialc(wd, '바로 구매하기')
+    sleep(1)
 
 
 def click_direct_gift_btn(wd):
     ialc(wd, '바로 선물하기')
+    sleep(1)
 
 
 def click_move_to_cart(wd):
@@ -118,6 +122,7 @@ def select_options(wd, product_item_no):
                     else:
                         print(f'{option_name} 옵션 품절')
                         pass
+    sleep(1)
 
 
 def check_add_product_to_cart(wd, warning_texts):
@@ -148,5 +153,6 @@ def save_purchase_price(wd):
     index = ial(wd, '//XCUIElementTypeStaticText[@name="구매 가능 금액"]').get_attribute('index')
     price = ial(wd,
                 f'//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther[{len(xpath_index)}]/XCUIElementTypeStaticText[@index="{int(index) + 1}"]').text
+    price = int(price.replace(',', ''))
     print(f'구매 가능 가격 : {price}')
     return price
