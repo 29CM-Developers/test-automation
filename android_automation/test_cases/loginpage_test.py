@@ -239,6 +239,8 @@ class LoginLogout:
             login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
             print("홈 > 마이페이지 > 로그인 화면 진입")
 
+            close_bottom_sheet(self.wd)
+
             if login_page_title.text == '로그인':
                 print("로그인 문구 확인")
             else:
