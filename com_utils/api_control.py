@@ -1,3 +1,4 @@
+import random
 import requests
 import com_utils.cookies_control
 
@@ -189,3 +190,20 @@ def product_detail(product_item_no):
         return product_detail
     else:
         print('PDP 상세 정보 API 불러오기 실패')
+
+
+def order_product_random_no():
+    response = requests.get(
+        'https://search-api.29cm.co.kr/api/v4/products/search?keyword=양말&excludeSoldOut=false&minPrice=0&maxPrice=1500')
+    if response.status_code == 200:
+        product_data = response.json()
+        while True:
+            item_count = product_data['data']['products']
+            random_no = random.randint(0, len(item_count) - 1)
+            print(f'랜덤 숫자 : {random_no}')
+            item_no = product_data['data']['products'][random_no]['itemNo']
+            item_soldout = product_data['data']['products'][random_no]['isSoldOut']
+            if not item_soldout:
+                return item_no
+    else:
+        print('검색 결과 API 불러오기 실패')
