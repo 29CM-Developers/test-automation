@@ -501,6 +501,7 @@ class Home:
                         saved_results.append(result['feedTitle'])
                         break
                 print(f"saved_result : {saved_result}, saved_results.append(result['feedTitle']) : {saved_results}")
+                sleep(5)
 
                 found_element = None
                 for _ in range(10):
