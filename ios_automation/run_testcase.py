@@ -23,27 +23,28 @@ from ios_automation.test_cases.cart_test import Cart
 from ios_automation.test_cases.join_test import Join
 from ios_automation.test_cases.my_test import My
 from ios_automation.test_cases.pdp_test import Pdp
+from ios_automation.test_cases.payment_test import Payment
 from com_utils.testrail_api import *
 
 
 class IOSTestAutomation(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
-        cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
-        cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
-        cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
-
-        # report data
-        cls.count = 0
-        cls.result_lists = []
-        cls.total_time = ''
-        cls.slack_result = ''
-
-        # cls.testcase_data = create_plan(cls, 'iOS', 'Local Device', cls.pconf['pro12_tc_ids'])
-        cls.testcase_data = create_plan(cls, 'iOS', 'Local Device', cls.pconf['pro14_tc_ids'])
-        cls.testcases = get_tests(cls)
+    # @classmethod
+    # def setUpClass(cls):
+    #     cls.pconf = requests.get(f"http://192.168.103.13:50/qa/personal/dajjeong").json()
+    #     cls.conf = requests.get(f"http://192.168.103.13:50/qa/personal/info").json()
+    #     cls.dconf = requests.get(f"http://192.168.103.13:50/qa/personal/def_names").json()
+    #     cls.econf = requests.get(f"http://192.168.103.13:50/qa/personal/test_environment").json()
+    #
+    #     # report data
+    #     cls.count = 0
+    #     cls.result_lists = []
+    #     cls.total_time = ''
+    #     cls.slack_result = ''
+    #
+    #     cls.testcase_data = create_plan(cls, 'iOS', 'Local Device', cls.pconf['pro12_tc_ids'])
+    #     # cls.testcase_data = create_plan(cls, 'iOS', 'Local Device', cls.pconf['pro14_tc_ids'])
+    #     cls.testcases = get_tests(cls)
 
     def setUp(self):
         # Appium Service
@@ -80,9 +81,9 @@ class IOSTestAutomation(unittest.TestCase):
         except InvalidSessionIdException:
             self.appium.stop()
 
-    @classmethod
-    def tearDownClass(cls):
-        close_plan(cls)
+    # @classmethod
+    # def tearDownClass(cls):
+    #     close_plan(cls)
 
     # Pro 12 케이스
     def test_iOS_bvt(self):
@@ -217,6 +218,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # PDP에서 구매 주문서로 이동
         self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 무통장 입금으로 구매하기
+        self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
