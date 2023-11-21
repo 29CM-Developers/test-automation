@@ -38,18 +38,25 @@ def slash_command(ack, command, body, client):
     global channel_id
     channel_id = body['channel_id']
 
-    global feature_name, today_issue_high_count, today_issue_mid_count, today_issue_low_count, today_total_count
+    global feature_name, total_issue_high_count, total_issue_mid_count, total_issue_low_count, total_count
     feature_name = body['text']
 
     if feature_name != "":
-        today_issue_high_count = jira_today_priority_issue(feature_name, '가장높음,높음')
-        today_issue_mid_count = jira_today_priority_issue(feature_name, '중간')
-        today_issue_low_count = jira_today_priority_issue(feature_name, '가장낮음,낮음')
-        today_total_count = today_issue_high_count + today_issue_mid_count + today_issue_low_count
-        if today_total_count == 0:
-            open_check_feature_name(ack, client, body)
-        else:
-            open_modal(ack, body, client)
+        try:
+            total_issue_high_count = jira_total_priority_issue(feature_name, '가장높음,높음')
+            total_issue_mid_count = jira_total_priority_issue(feature_name, '중간')
+            total_issue_low_count = jira_total_priority_issue(feature_name, '가장낮음,낮음')
+            total_count = total_issue_high_count + total_issue_mid_count + total_issue_low_count
+            if total_count == 0:
+                open_check_feature_name(ack, client, body)
+            else:
+                open_modal(ack, body, client)
+        except KeyError:
+            app.client.chat_postEphemeral(
+                channel=channel_id,
+                text=f"카테고리명에 특수문자는 사용할 수 없습니다.\n입력한 카테고리명을 다시 확인해주세요.",
+                user=body['user_id']
+            )
     else:
         open_error_modal(ack, client, body)
 
@@ -98,17 +105,23 @@ def slack_message(ack, body, logger, client):
     feature_name = input_data['feature_name']['feature_name']['value']
 
     # 오늘 등록한 이슈
+    today_issue_high_count = jira_today_priority_issue(feature_name, '가장높음,높음')
+    today_issue_mid_count = jira_today_priority_issue(feature_name, '중간')
+    today_issue_low_count = jira_today_priority_issue(feature_name, '가장낮음,낮음')
+    today_total_count = today_issue_high_count + today_issue_mid_count + today_issue_low_count
+
     if today_total_count == 0:
-        today_issue = "• 금일 등록된 이슈는 없습니다."
+        today_issue = "● 금일 등록된 이슈는 없습니다."
     else:
-        today_issue = f"• 금일 등록된 이슈는 *{today_total_count}건* (:priority_high:높음 이상: {today_issue_high_count}건, " \
+        today_issue = f"● 금일 등록된 이슈는 *{today_total_count}건* (:priority_high:높음 이상: {today_issue_high_count}건, " \
                       f":priority_mid:중간: {today_issue_mid_count}건, :priority_low:낮음 이하: {today_issue_low_count}건)"
 
     # 잔여 이슈
-    total_issue_high_count = jira_total_priority_issue(feature_name, '가장높음,높음')
-    total_issue_mid_count = jira_total_priority_issue(feature_name, '중간')
-    total_issue_low_count = jira_total_priority_issue(feature_name, '가장낮음,낮음')
-    total_count = total_issue_high_count + total_issue_mid_count + total_issue_low_count
+    if total_count == 0:
+        total_issue = "● 전체 이슈 중 완료되지 않은 이슈는 없습니다."
+    else:
+        total_issue = f"● 전체 이슈 중 완료되지 않은 이슈는 *{total_count}건* (:priority_high:높음 이상: {total_issue_high_count}건, " \
+                      f":priority_mid:중간: {total_issue_mid_count}건, :priority_low:낮음 이하: {total_issue_low_count}건)"
 
     # 테스트케이스 방식 선택
     testcase = input_data[data_key[2]]['testcase']['selected_option']['value']
@@ -118,17 +131,17 @@ def slack_message(ack, body, logger, client):
         test_rate = testrail['progress_rate']
         passed_rate = testrail['pass_rate']
         failed_rate = testrail['fail_rate']
-        test_rate_text = f'• 진행률 : {test_rate}% (:green_check:Pass : {passed_rate}%, :red_check:Fail : {failed_rate}%)'
+        test_rate_text = f'● 진행률 : {test_rate}% (:green_check:Pass : {passed_rate}%, :red_check:Fail : {failed_rate}%)'
         image_url = os.path.dirname(os.path.realpath(__file__)) + '/chart.png'
     else:
         test_rate = input_data['test_rate']['testrail_no']['value']
-        test_rate_text = f'• 진행률 : {test_rate}%'
+        test_rate_text = f'● 진행률 : {test_rate}%'
         image_url = ""
 
     # 대시보드 링크 여부 확인
     try:
         dashboard_link = body['view']['state']['values']['dashboard']['dashboard']['value']
-        dashboard = f"\n• <{dashboard_link}|이슈 대시보드를 참고해주세요.>"
+        dashboard = f"\n● <{dashboard_link}|이슈 대시보드를 참고해주세요.>"
     except:
         dashboard = ""
 
@@ -158,8 +171,7 @@ def slack_message(ack, body, logger, client):
                     "text": {
                         "type": "mrkdwn",
                         "text": f"*`Total`*\n"
-                                f"• 전체 이슈 중 완료되지 않은 이슈는 *{total_count}건* (:priority_high:높음 이상: {total_issue_high_count}건, "
-                                f":priority_mid:중간: {total_issue_mid_count}건, :priority_low:낮음 이하: {total_issue_low_count}건)"
+                                f"{total_issue}"
                                 f"{dashboard}"
                     }
                 },
