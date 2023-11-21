@@ -7,7 +7,7 @@ import slack_modal_blocks
 from slack_bolt import App
 from slack_sdk import WebClient
 from slack_bolt.adapter.socket_mode import SocketModeHandler
-from jira_issue import jira_today_priority_issue, jira_total_priority_issue
+from jira_issue import jira_total_issue, jira_today_issue
 from testrail_test_result import plan_result
 
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -43,10 +43,11 @@ def slash_command(ack, command, body, client):
 
     if feature_name != "":
         try:
-            total_issue_high_count = jira_total_priority_issue(feature_name, '가장높음,높음')
-            total_issue_mid_count = jira_total_priority_issue(feature_name, '중간')
-            total_issue_low_count = jira_total_priority_issue(feature_name, '가장낮음,낮음')
-            total_count = total_issue_high_count + total_issue_mid_count + total_issue_low_count
+            issue_total_count = jira_total_issue(feature_name)
+            total_count = issue_total_count['total']
+            total_issue_high_count = issue_total_count['high']
+            total_issue_mid_count = issue_total_count['mid']
+            total_issue_low_count = issue_total_count['low']
             if total_count == 0:
                 open_check_feature_name(ack, client, body)
             else:
@@ -105,10 +106,11 @@ def slack_message(ack, body, logger, client):
     feature_name = input_data['feature_name']['feature_name']['value']
 
     # 오늘 등록한 이슈
-    today_issue_high_count = jira_today_priority_issue(feature_name, '가장높음,높음')
-    today_issue_mid_count = jira_today_priority_issue(feature_name, '중간')
-    today_issue_low_count = jira_today_priority_issue(feature_name, '가장낮음,낮음')
-    today_total_count = today_issue_high_count + today_issue_mid_count + today_issue_low_count
+    today_issue = jira_today_issue(feature_name)
+    today_total_count = today_issue['total']
+    today_issue_high_count = today_issue['high']
+    today_issue_mid_count = today_issue['mid']
+    today_issue_low_count = today_issue['low']
 
     if today_total_count == 0:
         today_issue = "● 금일 등록된 이슈는 없습니다."
