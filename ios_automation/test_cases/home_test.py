@@ -57,6 +57,8 @@ class Home:
         print(f'[{test_name}] 테스트 시작')
 
         try:
+            bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+
             # 라이프 탭 선택
             # home_page.click_tab_name(wd, '라이프')
             #
@@ -193,6 +195,8 @@ class Home:
         print(f'[{test_name}] 테스트 시작')
 
         try:
+            bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+
             # 로그인한 유저의 추천 탭 타이틀 확인
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천').click()
             try:

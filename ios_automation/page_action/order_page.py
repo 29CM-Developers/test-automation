@@ -1,4 +1,6 @@
 import re
+from time import sleep
+
 from com_utils.element_control import ial, ialc, scroll_control
 from selenium.common import NoSuchElementException
 
@@ -103,3 +105,106 @@ def check_purchase_price(wd, warning_texts, pdp_price):
         warning_texts.append('주문서 가격 확인 실패')
         print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
     return test_result
+
+
+def click_virtual_account(wd):
+    virtual_account = False
+    for i in range(0, 5):
+        try:
+            element = ial(wd, '//XCUIElementTypeButton[@name="무통장입금"]')
+            if element.is_displayed():
+                virtual_account = True
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        scroll_control(wd, 'U', 50)
+    if not virtual_account:
+        print('무통장 입금 옵션 미노출')
+
+
+def click_all_agreement(wd):
+    for i in range(0, 5):
+        try:
+            element = ial(wd, 'c_동의합니다')
+            if element.is_displayed():
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        scroll_control(wd, 'D', 50)
+
+
+def click_payment(wd):
+    ialc(wd, 'c_결제하기')
+
+
+def check_inipay_page(wd):
+    try:
+        sleep(2)
+        ial(wd, '//XCUIElementTypeOther[@name="INIpay Mobile"]')
+        print('이니시스 페이지 진입')
+    except NoSuchElementException:
+        print('이니시스 페이지 진입 실패')
+
+
+def click_virtual_account_payment(wd):
+    ialc(wd, '//XCUIElementTypeOther[@name="전체 동의"]')
+    ialc(wd, 'c_토스뱅크')
+    for i in range(0, 3):
+        try:
+            element = ial(wd, '//XCUIElementTypeButton[@name="다음"]')
+            if element.is_displayed():
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        scroll_control(wd, 'D', 50)
+    sleep(3)
+
+
+def check_done_payment(wd, warning_texts):
+    try:
+        ial(wd, '//XCUIElementTypeStaticText[@name="주문이 완료되었습니다."]')
+        test_result = 'PASS'
+        print('주문 완료 페이지 확인 - 타이틀')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('주문 완료 페이지 확인 실패 - 타이틀')
+        print('주문 완료 페이지 확인 실패 - 타이틀')
+    return test_result
+
+
+def save_order_no(wd):
+    order_no = ial(wd, 'c_ORD').text
+    print(f'주문번호 : {order_no}')
+    return order_no
+
+
+def check_payment_type(wd, warning_texts, payment_type):
+    payment_info = ''
+    for i in range(0, 3):
+        try:
+            element = ial(wd, '//XCUIElementTypeOther[@name="결제정보"]')
+            if element.is_displayed():
+                index = int(element.get_attribute('index'))
+                payment_info = ial(wd,
+                                   f'//XCUIElementTypeOther[@index="{index + 2}"]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText').text
+                break
+        except NoSuchElementException:
+            pass
+        scroll_control(wd, 'D', 50)
+
+    if payment_info == payment_type:
+        test_result = 'PASS'
+        print('주문 완료 페이지 확인 - 결제방법')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('주문 완료 페이지 확인 실패 - 결제방법')
+        print(f'주문 완료 페이지 확인 실패 - 결제방법 : {payment_info}')
+    return test_result
+
+
+def click_delivery_order_tracking(wd):
+    ialc(wd, '//XCUIElementTypeStaticText[@name="주문조회"]')
+    sleep(1)
