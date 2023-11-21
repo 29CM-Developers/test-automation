@@ -24,8 +24,7 @@ def check_no_delivery_order(wd, warning_texts):
 
 def check_delivery_order(wd, warning_texts, order_no):
     try:
-        order_no = ial(wd, f'c_{order_no}')
-        order_no.click()
+        ialc(wd, f'c_{order_no}')
         sleep(2)
         test_result = 'PASS'
         print('주문 배송 조회 확인 - 주문번호')
