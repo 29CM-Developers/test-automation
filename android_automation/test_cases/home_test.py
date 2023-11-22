@@ -5,7 +5,6 @@ import subprocess
 import sys
 import traceback
 import logging
-
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.mobileby import MobileBy
@@ -388,11 +387,10 @@ class Home:
             button_title = dynamic_button_title.text
             dynamic_button_title.click()
 
-            sleep(3)
-            gift_layer = aal(wd, 'com.the29cm.app29cm:id/rootView')
-            gift_title = aal(gift_layer,
-                             '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
-            print(gift_title)
+            sleep(5)
+            gift_title = aal(wd, 'com.the29cm.app29cm:id/txtPageTitle').text
+            print(f'gift_title : {gift_title}')
+            print(f'button_title : {gift_title}')
 
             if gift_title == button_title:
                 print(f"선물하기 타이틀 확인 : {gift_title}")
@@ -402,8 +400,7 @@ class Home:
                 warning_texts.append("다이나믹 게이트 타이틀 확인 실패")
 
             # 뒤로가기로 홈화면 진입 확인
-            aalc(gift_layer,
-                 '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button')
+            aalc(wd, 'com.the29cm.app29cm:id/imgBack')
             print("뒤로가기 선택")
             sleep(3)
             print("[홈화면 배너 확인]CASE 종료")

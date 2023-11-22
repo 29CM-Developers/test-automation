@@ -1,9 +1,11 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils.element_control import aalc
+from time import sleep
 
 
 def move_to_home(wd):
+    sleep(1)
     aalc(wd, 'HOME')
     close_bottom_sheet(wd)
 
