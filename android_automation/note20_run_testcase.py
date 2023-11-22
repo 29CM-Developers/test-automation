@@ -1,6 +1,7 @@
 import unittest
 import os
 import sys
+
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 import requests
@@ -10,6 +11,10 @@ from android_automation.test_cases.not_login_user_test import NotLogin
 from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.like_test import Like
+
+가from
+android_automation.test_cases.my_test
+import My
 from android_setup import note20_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -97,7 +102,10 @@ class AndroidTestAutomation(unittest.TestCase):
         # 실제 실행 -  PDP에서 선물 주문서로 이동
         # 실제 실행 -  PDP에서 구매 주문서로 이동
         # 실제 실행 -  구매하기
-        # 실제 실행 -  쿠폰함
+        # # 실제 실행 -  쿠폰함
+        self.result_data = My.test_coupons_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
