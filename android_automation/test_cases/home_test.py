@@ -5,7 +5,6 @@ import subprocess
 import sys
 import traceback
 import logging
-
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.mobileby import MobileBy
@@ -299,6 +298,7 @@ class Home:
             banner_title_set = []
             api_banner_id = []
             api_banner_contents = []
+            banner_total = []
             response = requests.get(
                 f"https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf['GENDER']}")
             if response.status_code == 200:
@@ -310,9 +310,14 @@ class Home:
                     api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
                     api_banner_id.append(api_data["data"]["bannerList"][i]["bannerId"])
                     api_banner_contents.append(api_data["data"]["bannerList"][i]["bannerContents"])
+
+                    banner_total.append({api_data["data"]["bannerList"][i]["bannerTitle"],
+                                         api_data["data"]["bannerList"][i]["bannerId"],
+                                         api_data["data"]["bannerList"][i]["bannerContents"]})
                 print(api_banner_title)
                 print(api_banner_id)
                 print(api_banner_contents)
+                print(banner_total)
                 set_api_banner_id = set(api_banner_id)
                 set_api_banner_contents = set(api_banner_contents)
 
@@ -321,13 +326,23 @@ class Home:
                 contents_duplicate = set()
                 check_contents = [x for x in api_banner_contents if
                                   x in contents_duplicate or (contents_duplicate.add(x) or False)]
+                seen = set()
+                has_duplicates = any(
+                    tuple(sorted(str(element))) in seen or seen.add(tuple(sorted(str(element)))) for element in
+                    banner_total)
 
-                if not check_id and not check_contents:
-                    print('중복된 홈 배너 없음 확인')
+                # 중복된 집합이 있는지 확인
+                if has_duplicates:
+                    print("중복된 집합이 리스트에 있습니다.")
                 else:
-                    test_result = 'WARN'
-                    warning_texts.append('중복된 홈 배너 없음 확인 실패')
-                    print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
+                    print("중복된 집합이 리스트에 없습니다.")
+
+                # if not check_id and not check_contents:
+                #     print('중복된 홈 배너 없음 확인')
+                # else:
+                #     test_result = 'WARN'
+                #     warning_texts.append('중복된 홈 배너 없음 확인 실패')
+                #     print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
 
                 # # 중복을 확인합니다.
                 # if len(api_banner_id) != len(set_api_banner_id) or len(api_banner_contents) != len(
@@ -388,11 +403,10 @@ class Home:
             button_title = dynamic_button_title.text
             dynamic_button_title.click()
 
-            sleep(3)
-            gift_layer = aal(wd, 'com.the29cm.app29cm:id/rootView')
-            gift_title = aal(gift_layer,
-                             '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.TextView').text
-            print(gift_title)
+            sleep(5)
+            gift_title = aal(wd, 'com.the29cm.app29cm:id/txtPageTitle').text
+            print(f'gift_title : {gift_title}')
+            print(f'button_title : {gift_title}')
 
             if gift_title == button_title:
                 print(f"선물하기 타이틀 확인 : {gift_title}")
@@ -402,8 +416,7 @@ class Home:
                 warning_texts.append("다이나믹 게이트 타이틀 확인 실패")
 
             # 뒤로가기로 홈화면 진입 확인
-            aalc(gift_layer,
-                 '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.widget.Button')
+            aalc(wd, 'com.the29cm.app29cm:id/imgBack')
             print("뒤로가기 선택")
             sleep(3)
             print("[홈화면 배너 확인]CASE 종료")

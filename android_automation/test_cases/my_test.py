@@ -8,10 +8,14 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
-from com_utils import values_control, slack_result_notifications, element_control
-from android_automation.page_action import navigation_bar
+from android_automation.page_action import welove_page, my_page
+import com_utils
+from com_utils import values_control, slack_result_notifications, element_control, deeplink_control
+from android_automation.page_action import navigation_bar, my_coupon_page, my_page
+from com_utils.api_control import my_coupon_list
 from com_utils.element_control import aalc, aal, aals
 from com_utils.testrail_api import send_test_result
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 class My:
@@ -171,25 +175,39 @@ class My:
             else:
                 print("API 호출에 실패했습니다.")
             # 딥링크로 컨텐츠 진입
-            # 5. 컨텐츠의 컨텐츠명 저장
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHistoryTitle').click()
-            sleep(1)
-            print("최근 검색 펼침")
+            # welove 페이지 이동
+            com_utils.deeplink_control.move_to_welove(self, wd)
 
-            # txt_1st_history_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHistoryTitle').text
-            # txt_2nd_history_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHistoryTitle').text
+            # 첫번째 추천 게시물명 확인 및 선택
+            post_title = welove_page.save_first_post_title(wd)
+            welove_page.click_first_post(wd)
+
+            # My 탭으로 이동
+            wd.get('app29cm://mypage')
+            close_bottom_sheet(wd)
+
+            # 최근 본 상품 영역 확인
+            test_result = my_page.check_recent_title(wd, warning_texts, "컨텐츠", post_title)
+
+            # 최근 본 상품 영역 확장
+            my_page.expand_recent_contents(wd, post_title)
+
+            # txt_1st_history_title = aal(wd, f'c_{txt_history_title}').text
+            # txt_2nd_history_title = aal(wd, f'c_{post_title}').text
             # print(f"txt_1st_history_title : {txt_1st_history_title} , txt_2nd_history_title : {txt_2nd_history_title}")
-            # if txt_2nd_history_title in best_product and txt_1st_history_title in best_product:
+            # if txt_2nd_history_title in post_title and txt_1st_history_title in best_product:
             #     print("recent 영역에 4번, 1번 순으로 노출되는지 확인")
             # else:
             #     print("recent 영역에 4번, 1번 순으로 노출되는지 확인 실패")
             #     test_result = 'WARN'
             #     warning_texts.append("최근 본 컨텐츠 히스토리 확인 실패")
 
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/pullUpLayout').click()
-            sleep(1)
-            print("최근 검색 닫기")
-            wd.get('app29cm://home')
+            # 최근 본 상품 히스토리 확인
+            test_result = my_page.check_recent_history(wd, warning_texts, txt_history_title, post_title)
+
+            # 최근 본 상품 영역 축소 후 Home 탭으로 이동
+            my_page.close_recent_contents(wd)
+            navigation_bar.move_to_home(wd)
             print("[최근 본 컨텐츠 확인] CASE 종료")
 
         except Exception:
@@ -350,4 +368,77 @@ class My:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '주문 건이 없을 경우, 상품 리뷰 없음 확인')
+            return result_data
+
+    def test_coupons_list(self, wd, test_result='PASS', error_texts=[], img_src='',
+                          warning_texts=[]):
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        try:
+            print("[보유하고 있는 쿠폰 목록 확인] CASE 시작")
+            # 하단 네비게이터에 MY 메뉴 진입
+            sleep(5)
+            # navigation_bar.move_to_my(wd)
+            wd.get('app29cm://mypage')
+            sleep(3)
+            print("홈 > 마이페이지 화면 진입")
+
+            # 쿠폰 메뉴 선택
+            my_page.click_coupon_menu(wd)
+
+            # 장바구니 타입 선택
+            my_coupon_page.click_coupon_type(wd)
+            my_coupon_page.click_option_cart(wd)
+
+            # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
+            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID_1'], self.pconf['LOGIN_SUCCESS_PW'], 'CART')
+            coupon_list = my_coupon_page.save_my_coupon_list(wd)
+
+            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '장바구니')
+
+            # 상품 쿠폰 타입 선택
+            my_coupon_page.click_cart_coupon_type(wd)
+            my_coupon_page.click_option_product(wd)
+
+            # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
+            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID_1'], self.pconf['LOGIN_SUCCESS_PW'],
+                                             'PRODUCT')
+            coupon_list = my_coupon_page.save_my_coupon_list(wd)
+
+            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '상품')
+
+            my_coupon_page.click_back_btn(wd)
+            navigation_bar.move_to_home(wd)
+
+            wd.get('app29cm://home')
+            print("[보유하고 있는 쿠폰 목록 확인] CASE 종료")
+        except Exception:
+            # 오류 발생 시 테스트 결과를 실패로 한다
+            test_result = 'FAIL'
+            # 스크린샷
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            # 스크린샷 경로 추출
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            # 에러 메시지 추출
+            error_text = traceback.format_exc().split('\n')
+            try:
+                # 에러메시지 분류 시 예외처리
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+        finally:
+            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
+            run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            # 값 재사용 용이성을 위해 dict로 반환한다
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '보유하고 있는 쿠폰 목록 확인')
             return result_data
