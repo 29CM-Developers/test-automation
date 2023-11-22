@@ -16,6 +16,8 @@ from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from ios_automation.test_cases.like_test import Like
 from ios_automation.test_cases.cart_test import Cart
 from ios_automation.test_cases.my_test import My
+from ios_automation.test_cases.pdp_test import Pdp
+from ios_automation.test_cases.payment_test import Payment
 from selenium.common.exceptions import InvalidSessionIdException
 from com_utils.testrail_api import *
 
@@ -110,15 +112,20 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # # PDP에서 선물 주문서로 이동
-        # self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
-        # self.count = slack_result_notifications.slack_thread_notification(self)
-        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-        #
-        # # PDP에서 구매 주문서로 이동
-        # self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
-        # self.count = slack_result_notifications.slack_thread_notification(self)
-        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # PDP에서 선물 주문서로 이동
+        self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # PDP에서 구매 주문서로 이동
+        self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 무통장 입금으로 구매하기
+        self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 쿠폰함
         self.result_data = My.test_coupons_list(self, self.wd)
