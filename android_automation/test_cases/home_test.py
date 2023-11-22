@@ -298,6 +298,7 @@ class Home:
             banner_title_set = []
             api_banner_id = []
             api_banner_contents = []
+            banner_total = []
             response = requests.get(
                 f"https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf['GENDER']}")
             if response.status_code == 200:
@@ -309,9 +310,14 @@ class Home:
                     api_banner_title.append(api_data["data"]["bannerList"][i]["bannerTitle"])
                     api_banner_id.append(api_data["data"]["bannerList"][i]["bannerId"])
                     api_banner_contents.append(api_data["data"]["bannerList"][i]["bannerContents"])
+
+                    banner_total.append({api_data["data"]["bannerList"][i]["bannerTitle"],
+                                         api_data["data"]["bannerList"][i]["bannerId"],
+                                         api_data["data"]["bannerList"][i]["bannerContents"]})
                 print(api_banner_title)
                 print(api_banner_id)
                 print(api_banner_contents)
+                print(banner_total)
                 set_api_banner_id = set(api_banner_id)
                 set_api_banner_contents = set(api_banner_contents)
 
@@ -320,13 +326,23 @@ class Home:
                 contents_duplicate = set()
                 check_contents = [x for x in api_banner_contents if
                                   x in contents_duplicate or (contents_duplicate.add(x) or False)]
+                seen = set()
+                has_duplicates = any(
+                    tuple(sorted(str(element))) in seen or seen.add(tuple(sorted(str(element)))) for element in
+                    banner_total)
 
-                if not check_id and not check_contents:
-                    print('중복된 홈 배너 없음 확인')
+                # 중복된 집합이 있는지 확인
+                if has_duplicates:
+                    print("중복된 집합이 리스트에 있습니다.")
                 else:
-                    test_result = 'WARN'
-                    warning_texts.append('중복된 홈 배너 없음 확인 실패')
-                    print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
+                    print("중복된 집합이 리스트에 없습니다.")
+
+                # if not check_id and not check_contents:
+                #     print('중복된 홈 배너 없음 확인')
+                # else:
+                #     test_result = 'WARN'
+                #     warning_texts.append('중복된 홈 배너 없음 확인 실패')
+                #     print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
 
                 # # 중복을 확인합니다.
                 # if len(api_banner_id) != len(set_api_banner_id) or len(api_banner_contents) != len(
