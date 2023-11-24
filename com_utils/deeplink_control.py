@@ -36,5 +36,11 @@ def move_to_welove(self, wd):
 
 
 def move_to_pdp(wd, product_item_no):
+    sleep(5)
     wd.get(f'app29cm://product/{product_item_no}')
     sleep(3)
+
+
+# Home 탭으로 이동 딥링크
+def move_to_home_Android(self, wd):
+    wd.get('app29cm://home')
