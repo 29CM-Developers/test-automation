@@ -1,6 +1,5 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
 from com_utils.element_control import ial, ialc, scroll_control
 
 
@@ -24,14 +23,7 @@ def click_close_life_tab(wd):
 
 # click_tab_name : 선택하려는 상단 탭 이름 입력
 def click_tab_name(wd, click_tab_name):
-    tab = wd.find_elements(AppiumBy.XPATH,
-                           '//XCUIElementTypeOther[3]/XCUIElementTypeCollectionView/XCUIElementTypeCell')
-    for text in tab:
-        tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther/XCUIElementTypeStaticText')
-        if tab_name.text == click_tab_name:
-            tab_name.click()
-        else:
-            pass
+    ialc(wd, click_tab_name)
 
 
 def save_tab_names(wd):
@@ -69,6 +61,18 @@ def check_entry_recommended_tab(self, wd, warning_texts):
         test_result = 'WARN'
         warning_texts.append('홈화면 추천 탭 타이틀 확인 실패')
         print('홈화면 추천 탭 타이틀 확인 실패')
+    return test_result
+
+
+def check_not_login_user_recommended_tab(wd, warning_texts):
+    try:
+        ial(wd, '당신을 위한 추천 상품')
+        test_result = 'PASS'
+        print('비로그인 유저 홈화면 추천 탭 타이틀 확인')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
+        print('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
     return test_result
 
 
