@@ -189,6 +189,7 @@ def product_detail(product_item_no):
         product_detail['option_items_list'] = product_data['option_items']['list']
         if product_data['option_items']['list']:
             product_detail['option_items_layout'] = product_data['option_items']['layout']
+        print(f'product_detail : {product_detail}')
         return product_detail
     else:
         print('PDP 상세 정보 API 불러오기 실패')
