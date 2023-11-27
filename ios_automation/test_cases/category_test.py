@@ -73,7 +73,8 @@ class Category:
             plp_name = category_page.save_category_product_name(wd)
             test_result = category_page.check_category_product_name(warning_texts, plp_name, api_name)
 
-            # PDP 상품 이름 저장
+            # 첫번째 상품 PDP 진입 후, 상품 이름 저장
+            category_page.click_category_product(wd)
             pdp_name = product_detail_page.save_product_name(wd)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
@@ -101,7 +102,7 @@ class Category:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '카테고리를 선택해서 PLP 진입')
+            # send_test_result(self, test_result, '카테고리를 선택해서 PLP 진입')
             return result_data
 
     def test_welove(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
