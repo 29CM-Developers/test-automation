@@ -35,15 +35,49 @@ def large_category_info(category, large_category_text):
     return large_category_code, large_category_name
 
 
-def medium_category_code(large_category_code, medium_category_name):
-    medium_category_code = ''
+'''
+기존 함수 Dict 타입으로 변경
+'''
 
+
+def large_categories_info(category, large_category_name):
+    category_info = {}
+
+    # 카테고리 그룹 API 호출
+    response = requests.get('https://recommend-api.29cm.co.kr/api/v4/best/category-groups')
+    if response.status_code == 200:
+        category_group_data = response.json()
+        category_group = category_group_data['data']
+
+        # 찾고자 하는 카테고리 그룹의 아이템 리스트 확인
+        for i in range(0, 2):
+            category_group_name = category_group[i]['categoryGroupName']
+            if category_group_name == category:
+                category_group_item_list = category_group[i]['categoryGroupItemList']
+                # 찾고자 하는 이름의 대 카테고리 코드 번호 저장
+                for v in range(0, 10):
+                    category_item_group_name = category_group_item_list[v]['categoryGroupItemName']
+                    if category_item_group_name == large_category_name:
+                        category_info['large_category_code'] = category_group_item_list[v]['categoryCode']
+                        category_info['large_category_name'] = category_group_item_list[v]['categoryName']
+                        break
+                    else:
+                        pass
+            else:
+                pass
+        print(f'대 카테고리 정보 : {category_info}')
+    else:
+        print('카테고리 그룹 API 호출 실패')
+    return category_info
+
+
+def medium_categories_code(large_category_code, medium_category_name):
+    medium_category_code = ''
     # 대 카테고리의 하위 카테고리 API 호출
     response = requests.get(
         f'https://recommend-api.29cm.co.kr/api/v4/best/categories?categoryList={large_category_code}')
     if response.status_code == 200:
         medium_category_data = response.json()
-
         # 찾고자 하는 이름의 중 카테고리 코드 번호 저장
         for i in range(0, 10):
             category_name = medium_category_data['data'][i]['categoryName']
@@ -52,10 +86,39 @@ def medium_category_code(large_category_code, medium_category_name):
                 break
             else:
                 pass
+        print(f'중 카테고리 정보 : {medium_category_code}')
     else:
         print('중 카테고리 리스트 API 호출 실패')
-
     return medium_category_code
+
+
+def large_category_list():
+    api_large_list = []
+    response = requests.get('https://recommend-api.29cm.co.kr/api/v5/best/categories/groups')
+    if response.status_code == 200:
+        large_category_data = response.json()
+        # api에서 호출한 대 카테고리 리스트 저장
+        for i in range(0, len(large_category_data['data'])):
+            api_large_category = large_category_data['data'][i]['categoryName']
+            api_large_list.append(api_large_category)
+        print(f'API 대카테고리 : {api_large_list}')
+    else:
+        print('대 카테고리 API 불러오기 실패')
+    return api_large_list
+
+
+# rank : 확인하고자하는 상품 순위 작성 (1위일 경우, 1로 작성)
+def category_plp_product(large_category_code, medium_category_code, rank):
+    response = requests.get(
+        f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort=new')
+    category_products = {}
+    if response.status_code == 200:
+        category_products_data = response.json()
+        category_products['item_name'] = category_products_data['data']['products'][rank - 1]['itemName']
+        print(category_products)
+    else:
+        print('피드 컨텐츠 API 불러오기 실패')
+    return category_products
 
 
 # rank : 확인하고자하는 여성의류 순위 작성 (1위일 경우, 1로 작성)
