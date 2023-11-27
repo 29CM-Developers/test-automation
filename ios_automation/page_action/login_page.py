@@ -1,6 +1,8 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
 
+from selenium.common import NoSuchElementException
+
 
 def click_back_btn(wd):
     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
@@ -34,6 +36,20 @@ def check_login_error_text(self, wd, warning_texts):
         test_result = 'WARN'
         warning_texts.append('이메일 로그인 실패 확인 실패')
         print("이메일 로그인 실패 확인 실패")
+    return test_result
+
+
+def check_login_page(wd, warning_texts):
+    sleep(2)
+    try:
+        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기')
+        test_result = 'PASS'
+        print('로그인 페이지 진입 확인')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('로그인 페이지 진입 확인 실패')
+        print('로그인 페이지 진입 확인 실패')
+    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
     return test_result
 
 

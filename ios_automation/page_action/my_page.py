@@ -30,11 +30,11 @@ def check_login_btn(wd, warning_texts):
     try:
         wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]')
         test_result = 'PASS'
-        print('로그아웃 성공 확인')
+        print('My 탭 로그인 문구 확인')
     except NoSuchElementException:
         test_result = 'WARN'
-        warning_texts.append('로그아웃 성공 확인 실패')
-        print('로그아웃 성공 확인')
+        warning_texts.append('My 탭 로그인 문구 확인 실패')
+        print('My 탭 로그인 문구 확인 실패')
     return test_result
 
 

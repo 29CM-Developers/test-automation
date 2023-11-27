@@ -1,7 +1,6 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
-from com_utils.element_control import ial, ialc
+from com_utils.element_control import ial, ialc, scroll_control
 
 
 def check_home_logo(wd):
@@ -24,14 +23,7 @@ def click_close_life_tab(wd):
 
 # click_tab_name : 선택하려는 상단 탭 이름 입력
 def click_tab_name(wd, click_tab_name):
-    tab = wd.find_elements(AppiumBy.XPATH,
-                           '//XCUIElementTypeOther[3]/XCUIElementTypeCollectionView/XCUIElementTypeCell')
-    for text in tab:
-        tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther/XCUIElementTypeStaticText')
-        if tab_name.text == click_tab_name:
-            tab_name.click()
-        else:
-            pass
+    ialc(wd, click_tab_name)
 
 
 def save_tab_names(wd):
@@ -58,3 +50,111 @@ def check_tab_names(self, warning_texts, tab, tab_list):
         print(self.conf['compare_home_tab'][tab])
         print('홈 상단 탭 확인 실패')
     return test_result
+
+
+def check_entry_recommended_tab(self, wd, warning_texts):
+    try:
+        ial(wd, f'{self.pconf["nickname"]}님을 위한 추천 상품')
+        test_result = 'PASS'
+        print('홈화면 추천 탭 타이틀 확인')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('홈화면 추천 탭 타이틀 확인 실패')
+        print('홈화면 추천 탭 타이틀 확인 실패')
+    return test_result
+
+
+def check_not_login_user_recommended_tab(wd, warning_texts):
+    try:
+        ial(wd, '당신을 위한 추천 상품')
+        test_result = 'PASS'
+        print('비로그인 유저 홈화면 추천 탭 타이틀 확인')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
+        print('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
+    return test_result
+
+
+def scroll_to_feed_contents(wd, warning_texts, feed_title):
+    test_result = 'WARN'
+    for i in range(0, 10):
+        try:
+            feed_contents = wd.find_elements(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
+            for title in feed_contents:
+                if title.is_displayed() and feed_title == title.text:
+                    find_contents = True
+                    test_result = 'PASS'
+                    print('피드 컨텐츠 노출 확인')
+                    break
+            else:
+                scroll_control(wd, 'D', 40)
+        except NoSuchElementException:
+            scroll_control(wd, 'D', 60)
+        if test_result == 'PASS':
+            break
+    if test_result == 'WARN':
+        test_result = 'WARN'
+        warning_texts.append('피드 컨텐츠 노출 확인 실패')
+        print('피드 컨텐츠 노출 확인 실패')
+    return test_result
+
+
+def save_contents_like_count(wd):
+    content_like_count = ial(wd, 'home_content_like_count')
+    for i in range(0, 3):
+        if content_like_count.is_displayed():
+            content_like_count = int(content_like_count.text.replace(',', ''))
+            break
+        else:
+            scroll_control(wd, 'D', 30)
+    return content_like_count
+
+
+def click_contents_like_btn(wd):
+    ialc(wd, 'home_content_like_btn')
+
+
+def check_increase_like_count(warning_texts, heart_count, heart_select):
+    if heart_select == heart_count + 1:
+        test_result = 'PASS'
+        print('피드 아이템 좋아요 개수 증가 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('피드 아이템 좋아요 개수 증가 확인 실패')
+        print(f'피드 아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
+    return test_result
+
+
+def check_decrease_like_count(warning_texts, heart_count, heart_unselect):
+    if heart_unselect == heart_count:
+        test_result = 'PASS'
+        print('피드 아이템 좋아요 개수 차감 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('피드 아이템 좋아요 개수 차감 확인 실패')
+        print(f'피드 아이템 좋아요 개수 차감 확인 실패: {heart_count} / {heart_unselect}')
+    return test_result
+
+
+def save_contents_product_name(wd):
+    product_name = ial(wd,
+                       '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[2]').text
+    print(f'컨텐츠의 상품명 : {product_name}')
+    return product_name
+
+
+def save_contents_product_price(wd):
+    product_price = ial(wd,
+                        '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[3]').text
+    if '%' in product_price:
+        percent = product_price.find('%')
+        start_index = percent + 2
+        end_index = len(product_price)
+        product_price = product_price[start_index:end_index]
+    print(f'컨텐츠의 상품가격 : {product_price}')
+    return product_price
+
+
+def click_contents_product(wd):
+    ialc(wd, '//XCUIElementTypeOther[@name="home_content_product"]')
