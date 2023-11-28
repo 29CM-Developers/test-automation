@@ -105,6 +105,7 @@ def save_purchase_btn_price(wd):
 
 def save_delivery_price(wd):
     parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제금액")]/../..')
+    com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(parent_elements, '//android.widget.Button')
     com_utils.element_control.scroll_control(wd, 'D', 100)
     # 앱에서 웹뷰로 전환
@@ -121,13 +122,13 @@ def save_delivery_price(wd):
     delivery_price_element = delivery_price_parents.find_elements(By.XPATH, '*')
     print(f'delivery_price_element : {delivery_price_element}')
     for i in range(len(delivery_price_element)):
-        print(f'delivery_price : {delivery_price_element[i].text}')
+        print(f'delivery_price_element : {delivery_price_element[i].text}')
         if delivery_price_element[i].text == '배송비':
             delivery_price = delivery_price_element[i + 1].text
             print(f'delivery_price : {delivery_price}')
             break
     # 배송비 문자열 숫자 변환
-    delivery_price = re.sub(r'[^0-9]', '', delivery_price2)
+    delivery_price = re.sub(r'[^0-9]', '', delivery_price)
     delivery_price = int(delivery_price) if delivery_price else 0
     print(f'delivery_price : {delivery_price}')
     # 네이티브로 전환
