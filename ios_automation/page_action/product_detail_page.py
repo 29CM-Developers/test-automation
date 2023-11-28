@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, ials
+from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import product_detail, best_plp_women_clothes
 
 
@@ -45,10 +45,12 @@ def check_product_name(warning_texts, product_name, compare_name):
 
 
 def save_product_price(wd):
-    xpath = '(//XCUIElementTypeStaticText[@name="원"])[1]'
-    won_index = int(ial(wd, xpath).get_attribute('index'))
-    find_price = ial(wd, f'{xpath}/..')
-    price = ial(find_price, f'//XCUIElementTypeStaticText[@index="{won_index - 1}"]').text
+    # xpath = '(//XCUIElementTypeStaticText[@name="원"])[1]'
+    # won_index = int(ial(wd, xpath).get_attribute('index'))
+    # find_price = ial(wd, f'{xpath}/..')
+    # price = ial(find_price, f'//XCUIElementTypeStaticText[@index="{won_index - 1}"]').text
+    price = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-4bcxzt ent7twr4"]').text
+    price = int(price.replace(',', '').replace('원', ''))
     print(f'PDP 전시 가격: {price}')
     return price
 
@@ -107,6 +109,11 @@ def click_direct_gift_btn(wd):
 
 def click_move_to_cart(wd):
     wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "바로가기"`]').click()
+    sleep(3)
+
+
+def click_like_btn(wd):
+    ialc(wd, '//span[contains(text(), "찜하기")]')
 
 
 # 옵션 존재 여부 확인
@@ -178,3 +185,22 @@ def save_purchase_price(wd):
     price = int(price.replace(',', ''))
     print(f'구매 가능 가격 : {price}')
     return price
+
+
+def move_bottom_sheet(wd, direction):
+    element = ial(wd,
+                  '//XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[1]')
+    element_scroll_control(wd, element, direction, 40)
+
+
+def check_like_bottom_sheet(wd, warning_texts):
+    try:
+        ial(wd, 'c_함께 보면 좋은 상품')
+        ial(wd, 'c_다른 고객이 함께 구매한 상품')
+        test_result = 'PASS'
+        print('추천 상품 바텀 시트 노출 확인')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('추천 상품 바텀 시트 노출 확인 실패')
+        print('추천 상품 바텀 시트 노출 확인 실패')
+    return test_result

@@ -7,11 +7,82 @@ from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import product_detail_page, order_page
-from com_utils.deeplink_control import move_to_pdp
+from ios_automation.page_action import context_change, product_detail_page, order_page, like_page, navigation_bar
+from com_utils.deeplink_control import move_to_pdp, move_to_like
 
 
 class Pdp:
+    def test_like_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # 여성 인기 브랜드 1위 검색 결과 저장
+            brand_name = search_woman_popular_brand_name()
+
+            # 1위 인기 검색어 검색 결과의 첫번째 상품 정보 불러오기
+            search_product_item_no = search_result(brand_name, 1)['product_item_no']
+
+            # 딥링크로 검색 상품 진입
+            move_to_pdp(wd, search_product_item_no)
+
+            pdp_name = product_detail_page.save_product_name(wd)
+
+            # 웹뷰로 전환
+            context_change.switch_context(wd, 'webview')
+
+            # CTA의 좋아요 버튼 선택
+            product_detail_page.click_like_btn(wd)
+
+            # native로 전환
+            context_change.switch_context(wd, 'native')
+
+            # 바텀시트 최대로 확장하여 바텀시트 내 타이틀 확인 > 바텀 시트 닫기
+            product_detail_page.move_bottom_sheet(wd, 'D')
+            test_result = product_detail_page.check_like_bottom_sheet(wd, warning_texts)
+            product_detail_page.move_bottom_sheet(wd, 'U')
+            product_detail_page.move_bottom_sheet(wd, 'U')
+
+            # 딥링크로 Like 탭 이동
+            move_to_like(self, wd)
+
+            # Like 탭에서 좋아요 한 상품 노출 확인 > 좋아요 해제
+            test_result = like_page.check_product_like(wd, warning_texts, pdp_name)
+            like_page.click_to_unlike_product(wd)
+            like_page.refresh_product_like_tab(wd)
+
+            # Home으로 이동
+            navigation_bar.move_to_home(wd)
+
+        except Exception:
+            # 오류 발생 시 테스트 결과를 실패로 한다
+            test_result = 'FAIL'
+            # 스크린샷
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            # 스크린샷 경로 추출
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            # 에러 메시지 추출
+            error_text = traceback.format_exc().split('\n')
+            try:
+                # 에러메시지 분류 시 예외처리
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get(self.conf['deeplink']['home'])
+
+        finally:
+            run_time = f"{time() - start_time:.2f}"
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, 'PDP에서 좋아요 선택하기')
+            return result_data
+
     def test_gift_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
