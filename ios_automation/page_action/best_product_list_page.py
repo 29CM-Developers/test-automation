@@ -51,6 +51,19 @@ def check_best_product_name(warning_texts, compare_name, product_name):
     return test_result
 
 
+def save_plp_price(wd):
+    price = ial(wd, '//XCUIElementTypeStaticText[@name="product_discount_price"]').text
+    if '%' in price:
+        percent = price.find('%')
+        start_index = percent + 2
+        end_index = len(price)
+        price = price[start_index:end_index].replace('원', '')
+    else:
+        price = price.replace('원', '')
+    print(f'PLP 가격 : {price}')
+    return price
+
+
 def find_scroll_and_find_product_rank(wd, find_rank):
     rank_break = False
     for i in range(0, 5):
@@ -79,6 +92,7 @@ def check_additional_product(wd, warning_texts, product_name):
 
 def click_best_first_product(wd):
     ialc(wd, '//XCUIElementTypeStaticText[@name="product_name"]')
+    sleep(2)
 
 
 def save_best_product_like_count(wd):

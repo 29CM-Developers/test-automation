@@ -9,7 +9,7 @@ from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page
+from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page
 
 
 class Home:
@@ -60,18 +60,18 @@ class Home:
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
             # 라이프 탭 선택
-            # home_page.click_tab_name(wd, '라이프')
-            #
+            home_page.click_tab_name(wd, '라이프')
+
             # 라이프 선택 시, 노출되는 탭 이름 비교
-            # save_tab_names = home_page.save_tab_names(wd)
-            # test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
-            #
-            # # 라이프 선택 닫기
-            # home_page.click_close_life_tab(wd)
-            #
-            # # 기본으로 노출되는 탭 이름 비교
-            # save_tab_names = home_page.save_tab_names(wd)
-            # home_page.check_tab_names(self, warning_texts, 'home', save_tab_names)
+            save_tab_names = home_page.save_tab_names(wd)
+            test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
+
+            # 라이프 선택 닫기
+            home_page.click_close_life_tab(wd)
+
+            # 기본으로 노출되는 탭 이름 비교
+            save_tab_names = home_page.save_tab_names(wd)
+            home_page.check_tab_names(self, warning_texts, 'home', save_tab_names)
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
 
@@ -195,20 +195,15 @@ class Home:
         print(f'[{test_name}] 테스트 시작')
 
         try:
+            # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
             # 로그인한 유저의 추천 탭 타이틀 확인
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '추천').click()
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, f'{self.pconf["nickname"]}님을 위한 추천 상품')
-                print('홈화면 추천 탭 타이틀 확인')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('홈화면 추천 탭 타이틀 확인 실패')
-                print('홈화면 추천 탭 타이틀 확인 실패')
+            home_page.click_tab_name(wd, '추천')
+            test_result = home_page.check_entry_recommended_tab(self, wd, warning_texts)
 
             # 우먼 카테고리 탭 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
+            home_page.click_tab_name(wd, '우먼')
 
             # 피드 정보 불러오기
             feed_title_list = Home.check_feed_title(self)
@@ -217,71 +212,40 @@ class Home:
             feed_title_2nd = feed_title_list[2]
 
             # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
-            for i in range(0, 10):
-                try:
-                    feed_contents = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
-                    if feed_contents.is_displayed() and feed_title_1st == feed_contents.text:
-                        print('첫번째 피드 컨텐츠 노출 확인')
-                        break
-                    else:
-                        print('첫번째 피드 확인 안되어 스크롤')
-                        com_utils.element_control.scroll_control(wd, 'D', 50)
-                except NoSuchElementException:
-                    com_utils.element_control.scroll_control(wd, 'D', 50)
+            test_result = home_page.scroll_to_feed_contents(wd, warning_texts, feed_title_1st)
 
             # 싱픔이 연결된 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
-            for i in range(0, 10):
-                try:
-                    feed_contents = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
-                    if feed_contents.is_displayed() and feed_contain_item == feed_contents.text:
-                        print('상품이 연결된 첫번째 피드 컨텐츠 노출 확인')
-                        break
-                    else:
-                        print('싱품이 연결된 첫번째 피드 확인 안되어 스크롤')
-                        com_utils.element_control.scroll_control(wd, 'D', 50)
-                except NoSuchElementException:
-                    com_utils.element_control.scroll_control(wd, 'D', 50)
+            test_result = home_page.scroll_to_feed_contents(wd, warning_texts, feed_contain_item)
 
             # 좋아요 버튼 선택 전, 좋아요 수 저장
-            content_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_count').text
-            content_like_count = int(content_like_count.replace(',', ''))
+            content_like_count = home_page.save_contents_like_count(wd)
 
-            # 좋아요 버튼 선택 -> 찜하기 등록
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_btn').click()
-            content_like_select = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_count').text
-            content_like_select = int(content_like_select.replace(',', ''))
-            if content_like_select == content_like_count + 1:
-                print('피드 아이템 좋아요 개수 증가 확인')
-                pass
-            else:
-                test_result = 'WARN'
-                warning_texts.append('피드 아이템 좋아요 개수 증가 확인 실패')
-                print('피드 아이템 좋아요 개수 증가 확인 실패')
+            # 좋아요 버튼 선택하여 좋아요 후, 카운트 확인
+            home_page.click_contents_like_btn(wd)
+            content_like_select = home_page.save_contents_like_count(wd)
+            test_result = home_page.check_increase_like_count(warning_texts, content_like_count, content_like_select)
 
-            # 좋아요 버튼 선택 -> 찜하기 해제
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_btn').click()
-            content_like_select = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_like_count').text
-            content_like_select = int(content_like_select.replace(',', ''))
-            if content_like_select == content_like_count:
-                print('피드 아이템 좋아요 개수 차감 확인')
-                pass
-            else:
-                test_result = 'WARN'
-                warning_texts.append('피드 아이템 좋아요 개수 차감 확인 실패')
-                print('피드 아이템 좋아요 개수 차감 확인 실패')
+            # 좋아요 버튼 선택하여 좋아요 해제 후, 카운트 확인
+            home_page.click_contents_like_btn(wd)
+            content_like_unselect = home_page.save_contents_like_count(wd)
+            test_result = home_page.check_decrease_like_count(warning_texts, content_like_count, content_like_unselect)
+
+            # 컨텐츠 상품의 상품명과 상품가격 저장 후, 해당 상품의 상세 페이지 진입
+            contents_prodcut_name = home_page.save_contents_product_name(wd)
+            contents_product_price = home_page.save_contents_product_price(wd)
+            home_page.click_contents_product(wd)
+
+            # 상품명과 상품가격 비교 확인
+            pdp_name = product_detail_page.save_product_name(wd)
+            pdp_price = product_detail_page.save_product_price(wd)
+            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, contents_prodcut_name)
+            test_result = product_detail_page.check_product_price(warning_texts, pdp_price, contents_product_price)
+
+            # Home으로 복귀
+            product_detail_page.click_pdp_back_btn(wd)
 
             # 두번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
-            for i in range(0, 10):
-                try:
-                    feed_contents = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
-                    if feed_contents.is_displayed() and feed_title_2nd == feed_contents.text:
-                        print('피드 컨텐츠 추가 노출 확인')
-                        break
-                    else:
-                        print('피드 컨텐츠 추가 노출 확인 안되어 스크롤')
-                        com_utils.element_control.scroll_control(wd, 'D', 50)
-                except NoSuchElementException:
-                    com_utils.element_control.scroll_control(wd, 'D', 50)
+            test_result = home_page.scroll_to_feed_contents(wd, warning_texts, feed_title_2nd)
 
         except Exception:
             test_result = 'FAIL'

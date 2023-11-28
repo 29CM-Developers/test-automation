@@ -5,6 +5,7 @@ import com_utils
 
 from time import time
 from com_utils import values_control, api_control
+from com_utils.deeplink_control import move_to_category
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page
 
@@ -17,7 +18,7 @@ class Plp:
 
         try:
             # 카테고리 탭 > 여성 의류 BEST
-            navigation_bar.move_to_category(wd)
+            move_to_category(self, wd)
             category_page.click_best_category(wd)
 
             # 베스트 PLP 진입 확인
@@ -70,13 +71,18 @@ class Plp:
             # 좋아요 수 차감 확인
             test_result = best_product_list_page.check_decrease_like_count(warning_texts, heart_count, heart_deselect)
 
-            # 실시간 여성 의류 베스트 1위 상품명 저장 및 선택
+            # 실시간 여성 의류 베스트 1위 상품명과 금액 저장 및 선택
             now_1st_product = api_control.best_plp_women_clothes(1, 'NOW')['item_name']
+            now_1st_product_price = best_product_list_page.save_plp_price(wd)
             best_product_list_page.click_best_first_product(wd)
 
             # PDP 상품명 비교
             pdp_name = product_detail_page.save_product_name(wd)
-            product_detail_page.check_product_name(warning_texts, pdp_name, now_1st_product)
+            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, now_1st_product)
+
+            # # PDP 상품가격 비교
+            # pdp_price = product_detail_page.save_product_price(wd)
+            # test_result = product_detail_page.check_product_price(warning_texts, pdp_price, now_1st_product_price)
 
             # 베스트 PLP로 복귀
             product_detail_page.click_pdp_back_btn(wd)
