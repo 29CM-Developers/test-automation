@@ -45,10 +45,6 @@ def check_product_name(warning_texts, product_name, compare_name):
 
 
 def save_product_price(wd):
-    # xpath = '(//XCUIElementTypeStaticText[@name="원"])[1]'
-    # won_index = int(ial(wd, xpath).get_attribute('index'))
-    # find_price = ial(wd, f'{xpath}/..')
-    # price = ial(find_price, f'//XCUIElementTypeStaticText[@index="{won_index - 1}"]').text
     price = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-4bcxzt ent7twr4"]').text
     price = int(price.replace(',', '').replace('원', ''))
     print(f'PDP 전시 가격: {price}')

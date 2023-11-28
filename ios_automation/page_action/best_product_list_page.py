@@ -60,6 +60,7 @@ def save_plp_price(wd):
         price = price[start_index:end_index].replace('원', '')
     else:
         price = price.replace('원', '')
+    price = int(price.replace(',', ''))
     print(f'PLP 가격 : {price}')
     return price
 
