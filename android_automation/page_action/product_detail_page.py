@@ -58,7 +58,7 @@ def save_remove_prefix_product_name(product_name):
 def check_product_name(warning_texts, product_name, compare_name):
     if compare_name in product_name:
         test_result = 'PASS'
-        print('PDP 진입 확인 - 상품명')
+        print('상품명 동일 확인')
     else:
         test_result = 'WARN'
         warning_texts.append('PDP 진입 확인 실패')
@@ -110,6 +110,11 @@ def click_direct_gift_btn(wd):
 def click_move_to_cart(wd):
     aalc(wd, f'c_바로가기')
 
+
+def click_like_btn(wd):
+    sleep(1)
+    aalc(wd, 'c_찜하기')
+    sleep(5)
 
 # 옵션 존재 여부 확인
 def option_exist(product_item_no):
@@ -206,3 +211,33 @@ def save_purchase_price(wd):
     price = int(price.replace(',', ''))
     print(f'구매 가능 가격 : {price}')
     return price
+
+
+def check_bottom_sheet_title(wd, warning_texts):
+    try:
+        title1 = aal(wd, 'c_함께 보면 좋은 상품').text
+        if title1 == '함께 보면 좋은 상품':
+            test_result = 'PASS'
+            print('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인')
+        else:
+            print(f'바텀 시트 타이틀 : {title1}')
+            test_result = 'WARN'
+            warning_texts.append('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
+
+        title2 = aal(wd, 'c_다른 고객이 함께 구매한 상품').text
+        if title2 == None:
+            print('바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 미발생')
+            pass
+        elif title2 == '다른 고객이 함께 구매한 상품':
+            test_result = 'PASS'
+            print('바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 비교 확인')
+        else:
+            print(f'바텀 시트 타이틀 : {title2}')
+            test_result = 'WARN'
+            warning_texts.append('바텀 시트의 바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 비교 확인 타이틀 비교 확인 실패')
+    except NoSuchElementException:
+        print('NoSuchElementException')
+        test_result = 'WARN'
+        warning_texts.append('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
+        print('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
+    return test_result
