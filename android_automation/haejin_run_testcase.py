@@ -1,6 +1,7 @@
 import unittest
 import os
 import sys
+from android_automation.test_cases.payment_test import Payment
 from android_automation.test_cases.pdp_test import Pdp
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
@@ -137,6 +138,9 @@ class AndroidTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 -   PDP에서 좋아요
+        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
