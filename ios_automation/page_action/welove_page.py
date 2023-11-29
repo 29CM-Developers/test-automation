@@ -39,6 +39,7 @@ def click_post_like_btn(wd):
 
 
 def save_first_post_hashtag(wd):
+    com_utils.element_control.scroll_control(wd, 'D', 10)
     post_hash_tag = ''
     for i in range(0, 3):
         try:
