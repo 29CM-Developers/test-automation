@@ -1,0 +1,111 @@
+from time import sleep
+from appium.webdriver.common.appiumby import AppiumBy
+from com_utils.element_control import ialc
+
+
+def switch_context(wd, context):
+    native = wd.contexts[0]
+    webview = wd.contexts[-1]
+    if context == 'native':
+        wd.switch_to.context(native)
+    elif context == 'webview':
+        wd.switch_to.context(webview)
+    print(f'{wd.current_context} 전환 완료')
+
+
+def click_back_btn(wd):
+    ialc(wd, 'common back icon black')
+
+
+def save_number_of_order_product(wd):
+    info = wd.find_elements(AppiumBy.CSS_SELECTOR, '[class="css-buzszu e1v64bz04"]')
+    order_product_count = int(info[0].text.replace('총 ', ''))
+    print(f'주문 상품 수 : {order_product_count}')
+    return order_product_count
+
+
+def save_total_order_price(wd):
+    info = wd.find_elements(AppiumBy.CSS_SELECTOR, '[class="css-buzszu e1v64bz04"]')
+    total_price = int(info[1].text.replace(',', ''))
+    print(f'총 주문 금액 : {total_price}')
+    return total_price
+
+
+def save_product_name_list(wd):
+    cart_product_name = []
+    product = wd.find_elements(AppiumBy.CSS_SELECTOR, '[class="css-1lk9wst e1p0is0o10"]')
+    for name in product:
+        product_name = name.text
+        cart_product_name.append(product_name)
+    print(f'장바구니 상품 목록 : {cart_product_name}')
+    sleep(2)
+    return cart_product_name
+
+
+def save_product_name(wd):
+    product_name = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1lk9wst e1p0is0o10"]').text
+    print(f'상품명 : {product_name}')
+    return product_name
+
+
+def save_product_price(wd):
+    product_price = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-bmeojf e1p0is0o15"]')
+    product_price = int(product_price.text.replace(',', ''))
+    print(f'상품 가격 : {product_price}')
+    return product_price
+
+
+def save_product_count(wd):
+    product_count = wd.find_element(AppiumBy.CSS_SELECTOR, '[inputmode="numeric"]').get_attribute('value')
+    product_count = int(product_count)
+    print(f'상품 개수 : {product_count}')
+    return product_count
+
+
+def click_delete_product(wd):
+    ialc(wd, '//div[2]/button[contains(text(), "삭제")]')
+    sleep(2)
+
+
+def click_add_product(wd):
+    ialc(wd, '//button[contains(text(), "+")]')
+    sleep(2)
+
+
+def check_cart_product_list(wd, warning_texts, best_pdp_name, keyword_pdp_name):
+    cart_product_list = save_product_name_list(wd)
+    if best_pdp_name in cart_product_list and keyword_pdp_name in cart_product_list:
+        test_result = 'PASS'
+        print('장바구니 리스트 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('장바구니 리스트 확인 실패')
+        print('장바구니 리스트 확인 실패')
+    return test_result
+
+
+def check_delete_product(warning_texts, before_count, after_count, before_price, after_price, product_price):
+    if after_count == before_count - 1 and after_price == before_price - product_price:
+        test_result = 'PASS'
+        print('장바구니 상품 제거 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('장바구니 상품 제거 확인 실패')
+        print('장바구니 상품 제거 확인 실패')
+    return test_result
+
+
+def check_add_product(warning_texts, before_count, after_count, before_price, after_price, product_price):
+    if after_count == before_count + 1 and after_price == before_price + product_price:
+        test_result = 'PASS'
+        print('장바구니 상품 추가 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('장바구니 상품 변경 추가 실패')
+        print('장바구니 상품 변경 추가 실패')
+    return test_result
+
+
+def click_check_out_btn(wd):
+    ialc(wd, '//button[contains(text(), "CHECK OUT")]')
+    sleep(3)

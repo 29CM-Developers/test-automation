@@ -7,7 +7,8 @@ from time import time
 from com_utils import values_control, api_control
 from com_utils.deeplink_control import move_to_category
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page
+from ios_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page, \
+    context_change
 
 
 class Plp:
@@ -80,9 +81,13 @@ class Plp:
             pdp_name = product_detail_page.save_product_name(wd)
             test_result = product_detail_page.check_product_name(warning_texts, pdp_name, now_1st_product)
 
+            # context_change.switch_context(wd, 'webveiw')
+            #
             # # PDP 상품가격 비교
             # pdp_price = product_detail_page.save_product_price(wd)
             # test_result = product_detail_page.check_product_price(warning_texts, pdp_price, now_1st_product_price)
+            #
+            # context_change.switch_context(wd, 'native')
 
             # 베스트 PLP로 복귀
             product_detail_page.click_pdp_back_btn(wd)

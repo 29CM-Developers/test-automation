@@ -35,12 +35,11 @@ def click_first_post(wd):
 
 # like_post_name = 포스트 제목
 def click_post_like_btn(wd):
-    post_view = ials(wd, '//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther')
-    post_view_len = len(post_view) - 1
-    ialc(wd, f'//XCUIElementTypeOther[{post_view_len}]/XCUIElementTypeButton[1]')
+    wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1w1sbu5 e69h9670"]').click()
 
 
 def save_first_post_hashtag(wd):
+    com_utils.element_control.scroll_control(wd, 'D', 10)
     post_hash_tag = ''
     for i in range(0, 3):
         try:

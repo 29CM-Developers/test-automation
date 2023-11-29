@@ -140,6 +140,7 @@ def check_decrease_like_count(warning_texts, heart_count, heart_unselect):
 def save_contents_product_name(wd):
     product_name = ial(wd,
                        '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[2]').text
+    product_name = product_name.strip()
     print(f'컨텐츠의 상품명 : {product_name}')
     return product_name
 
@@ -151,7 +152,7 @@ def save_contents_product_price(wd):
         percent = product_price.find('%')
         start_index = percent + 2
         end_index = len(product_price)
-        product_price = product_price[start_index:end_index]
+        product_price = int(product_price[start_index:end_index].replace(',', ''))
     print(f'컨텐츠의 상품가격 : {product_price}')
     return product_price
 

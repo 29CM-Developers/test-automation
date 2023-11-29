@@ -91,6 +91,14 @@ def save_delivery_price(wd):
     return delivery_price
 
 
+def save_coupon_price(wd):
+    coupon_price = ial(wd,
+                       '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@index="1"]').text
+    coupon_price = re.findall(r'\d+', coupon_price)
+    coupon_price = int(''.join(coupon_price))
+    return coupon_price
+
+
 def check_purchase_price(wd, warning_texts, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
@@ -103,7 +111,24 @@ def check_purchase_price(wd, warning_texts, pdp_price):
     else:
         test_result = 'WARN'
         warning_texts.append('주문서 가격 확인 실패')
-        print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+        print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+    return test_result
+
+
+def check_cart_purchase_price(wd, warning_texts, cart_price):
+    order_price = save_purchase_price(wd)
+    btn_price = save_purchase_btn_price(wd)
+    delivery_price = save_delivery_price(wd)
+    coupon_price = save_coupon_price(wd)
+    compare_price = cart_price + delivery_price - coupon_price
+
+    if order_price == compare_price and btn_price == compare_price:
+        test_result = 'PASS'
+        print('주문서 가격 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('주문서 가격 확인 실패')
+        print(f'주문서 가격 확인 실패 - cart: {cart_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
     return test_result
 
 

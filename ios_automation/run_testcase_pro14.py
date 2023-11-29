@@ -53,6 +53,9 @@ class IOSTestAutomation(unittest.TestCase):
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
+        context = self.wd.contexts
+        print(f'context 최초 확인 : {context}')
+
     def tearDown(self):
         try:
             self.wd.terminate_app('kr.co.29cm.App29CM')
@@ -109,6 +112,16 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 장바구니 리스트
         self.result_data = Cart.test_cart_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 장바구니 상품 변경
+        self.result_data = Cart.test_change_cart_items(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 장바구니에서 구매 주문서로 이동
+        self.result_data = Cart.test_purchase_on_cart(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 

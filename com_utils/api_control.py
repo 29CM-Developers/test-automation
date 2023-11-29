@@ -108,9 +108,10 @@ def large_category_list():
 
 
 # rank : 확인하고자하는 상품 순위 작성 (1위일 경우, 1로 작성)
-def category_plp_product(large_category_code, medium_category_code, rank):
+# sort : 정렬 (new, popularity 등)
+def category_plp_product(large_category_code, medium_category_code, rank, sort):
     response = requests.get(
-        f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort=new')
+        f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort={sort}')
     category_products = {}
     if response.status_code == 200:
         category_products_data = response.json()
