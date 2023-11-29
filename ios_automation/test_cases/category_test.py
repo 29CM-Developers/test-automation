@@ -179,5 +179,5 @@ class Category:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '카테고리 핀메뉴의 Welove 진입하여 탐색')
+            # send_test_result(self, test_result, '카테고리 핀메뉴의 Welove 진입하여 탐색')
             return result_data
