@@ -69,7 +69,7 @@ def pro14_setup():
     iOS_options = AppiumOptions()
     iOS_options.set_capability("platformName", "iOS")
     iOS_options.set_capability("platformVersion", "16.6")
-    iOS_options.set_capability("deviceName", "mpark iPhone")
+    iOS_options.set_capability("deviceName", "iPhone14pro")
     iOS_options.set_capability("automationName", "XCUITest")
     iOS_options.set_capability("wdaLocalPort", "8101")
     iOS_options.set_capability("bundleId", "kr.co.29cm.App29CM")
