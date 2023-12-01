@@ -1,20 +1,33 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
-from com_utils.element_control import ialc
-
-
-def switch_context(wd, context):
-    native = wd.contexts[0]
-    webview = wd.contexts[-1]
-    if context == 'native':
-        wd.switch_to.context(native)
-    elif context == 'webview':
-        wd.switch_to.context(webview)
-    print(f'{wd.current_context} 전환 완료')
+from selenium.common import NoSuchElementException
+from com_utils.element_control import ialc, ial
+from ios_automation.page_action import context_change
 
 
 def click_back_btn(wd):
     ialc(wd, 'common back icon black')
+
+
+def clear_cart_list(wd):
+    wd.get('app29cm://order/cart')
+    sleep(3)
+    try:
+        ial(wd, '//XCUIElementTypeLink[@name="CONTINUE SHOPPING"]')
+        print('장바구니에 담긴 상품 없음.')
+        pass
+    except NoSuchElementException:
+        print('장바구니에 담긴 상품 있음.')
+        context_change.switch_context(wd, 'webview')
+        all_select = wd.find_element(AppiumBy.XPATH, '//label[contains(text(), "전체선택")]')
+        select_count = all_select.text
+        index = select_count.find('/')
+        if select_count[index - 1] != select_count[index + 1]:
+            all_select.click()
+        ialc(wd, '//button[contains(text(), "선택삭제")]')
+        print('장바구니 상품 삭제')
+        context_change.switch_context(wd, 'native')
+    click_back_btn(wd)
 
 
 def save_number_of_order_product(wd):
