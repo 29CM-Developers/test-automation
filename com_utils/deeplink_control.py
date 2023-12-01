@@ -11,6 +11,7 @@ def move_to_home_iOS(self, wd):
 
 def move_to_home(self, wd):
     wd.get(self.conf['deeplink']['home'])
+    find_icon_and_close_bottom_sheet(wd)
 
 
 def move_to_category(self, wd):

@@ -1,6 +1,9 @@
+import os
 import re
 from time import sleep
+import cv2
 
+from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import ial, ialc, scroll_control
 from selenium.common import NoSuchElementException
 
@@ -148,6 +151,22 @@ def click_virtual_account(wd):
         print('무통장 입금 옵션 미노출')
 
 
+def click_hyundai_card(wd):
+    virtual_account = False
+    for i in range(0, 5):
+        try:
+            element = ial(wd, 'c_현대카드 X PIN PAY')
+            if element.is_displayed():
+                virtual_account = True
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        scroll_control(wd, 'U', 50)
+    if not virtual_account:
+        print('현대카드 X PIN PAY 옵션 미노출')
+
+
 def click_all_agreement(wd):
     for i in range(0, 5):
         try:
@@ -162,6 +181,7 @@ def click_all_agreement(wd):
 
 def click_payment(wd):
     ialc(wd, 'c_결제하기')
+    sleep(3)
 
 
 def check_inipay_page(wd):
@@ -186,6 +206,71 @@ def click_virtual_account_payment(wd):
             pass
         scroll_control(wd, 'D', 50)
     sleep(3)
+
+
+def check_pinpay_page(wd):
+    try:
+        sleep(5)
+        ial(wd, '//XCUIElementTypeStaticText[@name="PIN Pay"]')
+        print('Pin Pay 페이지 진입')
+    except NoSuchElementException:
+        print('Pin Pay 페이지 진입 실패')
+
+
+def click_pinpay_payment(wd):
+    ialc(wd, '//XCUIElementTypeStaticText[@name="무신사 현대카드"]')
+    ialc(wd, 'c_결제하기')
+    sleep(3)
+
+
+def screenshot_password_page(wd):
+    directory = f'{os.getcwd()}/image/'
+    screenshot = f'screenshot.png'
+    wd.save_screenshot(directory + screenshot)
+
+
+def password_mapping(wd, pw, i):
+    # 저장한 이미지 흑백으로 불러 들이기 (디바이스 사이즈에 맞게 리사이즈)
+    device_size = wd.get_window_rect()
+    sourceimage = cv2.imread(f'{os.getcwd()}/image/screenshot.png', 0)
+    sourceimage = cv2.resize(sourceimage, (device_size['width'], device_size['height']))
+
+    # 찾고자 하는 이미지 흑백으로 불러 들이기 (디바이스 사이즈에 맞게 리사이즈)
+    element = ial(wd, '(//XCUIElementTypeImage[@name="키패드"])[5]').size
+    template = cv2.imread(f'{os.getcwd()}/image/{pw}.png', 0)
+    template = cv2.resize(template, (element['width'], element['height']))
+
+    # 찾는 이미지의 사이즈 저장하기
+    w, h = template.shape[::-1]
+
+    # opencv에서 이미지 매칭
+    method = eval('cv2.TM_CCOEFF_NORMED')
+    res = cv2.matchTemplate(sourceimage, template, method)
+
+    # max_loc : 찾으려는 이미지의 왼쪽 위 모서리 좌표와 오른쪽 아래 모서리 좌표를 확인
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+
+    # 중앙 좌표도 확인합니다. 중앙 좌표는 x, y이므로 튜플로 확인.
+    center = (max_loc[0] + int(w / 2), max_loc[1] + int(h / 2))
+
+    # # 찾으려는 이미지가 맞는지 원본인 스크린샷 이미지에 사각형으로 표시
+    # detectshot = f'detect.png'
+    # color = (0, 0, 255)
+    # cv2.rectangle(sourceimage, top_left, bottom_right, color, thickness=3)
+    # cv2.imwrite(detectshot, sourceimage)
+
+    # 찾은 버튼 위치의 중앙 선택
+    wd.tap([center])
+    print(f"{i}번째 비밀번호 선택")
+    sleep(1)
+
+
+def click_credit_password(self, wd, i=1):
+    password = self.pconf['credit_pw']
+    for pw in password:
+        password_mapping(wd, pw, i)
+        i += 1
+    sleep(5)
 
 
 def check_done_payment(wd, warning_texts):
@@ -233,3 +318,22 @@ def check_payment_type(wd, warning_texts, payment_type):
 def click_delivery_order_tracking(wd):
     ialc(wd, '//XCUIElementTypeStaticText[@name="주문조회"]')
     sleep(1)
+
+
+def check_api_order_cancel(self, order_no):
+    order_status = my_order_status(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
+    if order_status != '전체취소':
+        my_order_cancel(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
+        print('주문 취소 완료')
+        sleep(2)
+    elif order_status == '전체취소':
+        print('주문 취소 최종 확인')
+    else:
+        print('주문 취소 최종 확인 실패')
+
+
+def finally_order_cancel(self, order_no):
+    if order_no:
+        check_api_order_cancel(self, order_no)
+    else:
+        print('주문 전 Fail로 order_no 미존재')
