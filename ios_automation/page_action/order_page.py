@@ -249,15 +249,7 @@ def password_mapping(wd, pw, i):
 
     # max_loc : 찾으려는 이미지의 왼쪽 위 모서리 좌표와 오른쪽 아래 모서리 좌표를 확인
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-    # 중앙 좌표도 확인합니다. 중앙 좌표는 x, y이므로 튜플로 확인.
     center = (max_loc[0] + int(w / 2), max_loc[1] + int(h / 2))
-
-    # # 찾으려는 이미지가 맞는지 원본인 스크린샷 이미지에 사각형으로 표시
-    # detectshot = f'detect.png'
-    # color = (0, 0, 255)
-    # cv2.rectangle(sourceimage, top_left, bottom_right, color, thickness=3)
-    # cv2.imwrite(detectshot, sourceimage)
 
     # 찾은 버튼 위치의 중앙 선택
     wd.tap([center])
