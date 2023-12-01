@@ -5,10 +5,10 @@ import com_utils.deeplink_control
 
 from time import time, sleep
 from com_utils import values_control
-from com_utils.api_control import search_popular_keyword, search_result, product_detail
+from com_utils.api_control import search_popular_keyword, search_result, product_detail, order_product_random_no
 from com_utils.element_control import tap_control
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import product_detail_page, cart_page, order_page
+from ios_automation.page_action import product_detail_page, cart_page, order_page, context_change
 from com_utils.deeplink_control import move_to_home
 
 
@@ -20,8 +20,11 @@ class Cart:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            # 여성의류 베스트 중 품절 상태가 아닌 첫번째 상품의 상품 번호 확인
-            product_item_no = product_detail_page.save_no_soldout_product_no()
+            # 테스트 시작 전, 장바구니 비우기
+            cart_page.clear_cart_list(wd)
+
+            # 필터를 건 검색 결과 화면에서 랜덤으로 상품번호 저장
+            product_item_no = order_product_random_no()
 
             # 딥링크로 베스트 상품 PDP 진입
             com_utils.deeplink_control.move_to_pdp(wd, product_item_no)
@@ -80,13 +83,13 @@ class Cart:
             product_detail_page.click_move_to_cart(wd)
 
             # 웹뷰로 전환
-            cart_page.switch_context(wd, 'webview')
+            context_change.switch_context(wd, 'webview')
 
             # 장바구니에 담긴 상품명 비교 확인
             test_result = cart_page.check_cart_product_list(wd, warning_texts, best_pdp_name, keyword_pdp_name)
 
             # 네이티브로 전환
-            cart_page.switch_context(wd, 'native')
+            context_change.switch_context(wd, 'native')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -123,7 +126,7 @@ class Cart:
             print(f'[{test_name}] 테스트 시작')
 
             # 웹뷰로 전환
-            cart_page.switch_context(wd, 'webview')
+            context_change.switch_context(wd, 'webview')
 
             # 상품 가격 저장
             product_price = cart_page.save_product_price(wd)
@@ -158,7 +161,7 @@ class Cart:
                                                       delete_total_price, add_total_price, product_price)
 
             # 네이티브로 전환
-            cart_page.switch_context(wd, 'native')
+            context_change.switch_context(wd, 'native')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -184,7 +187,7 @@ class Cart:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '장바구니에 담긴 상품을 변경')
+            # send_test_result(self, test_result, '장바구니에 담긴 상품을 변경')
             return result_data
 
     def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -195,7 +198,7 @@ class Cart:
             print(f'[{test_name}] 테스트 시작')
 
             # 웹뷰로 전환
-            cart_page.switch_context(wd, 'webview')
+            context_change.switch_context(wd, 'webview')
 
             # 장바구니의 상품명과 상품 가격 저장
             product_name = cart_page.save_product_name(wd)
@@ -205,7 +208,7 @@ class Cart:
             cart_page.click_check_out_btn(wd)
 
             # 네이티브로 전환
-            cart_page.switch_context(wd, 'native')
+            context_change.switch_context(wd, 'native')
 
             # 주문서 진입 확인
             test_result = order_page.check_delivery_info(wd, warning_texts)
@@ -215,21 +218,6 @@ class Cart:
 
             # 주문서의 가격 비교 확인
             test_result = order_page.check_cart_purchase_price(wd, warning_texts, product_price)
-
-            # 딥링크 통해 장바구니로 이동
-            wd.get('app29cm://order/cart')
-
-            # 웹뷰로 전환
-            cart_page.switch_context(wd, 'webview')
-
-            # 첫번째 상품 삭제 버튼 선택
-            cart_page.click_delete_product(wd)
-
-            # 네이티브로 전환
-            cart_page.switch_context(wd, 'native')
-
-            # 딥링크로 Home 화면으로 이동
-            move_to_home(self, wd)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
