@@ -120,6 +120,11 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 신용카드로 구매하기
+        self.result_data = Payment.test_pay_with_credit_card(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 장바구니에서 구매 주문서로 이동
         self.result_data = Cart.test_purchase_on_cart(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
