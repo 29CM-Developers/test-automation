@@ -34,6 +34,9 @@ def change_webview_contexts(wd):
 
     # 웹뷰로 전환
     wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
+    print(wd.current_context)
+    print(wd.window_handles)
+    print(wd.current_window_handle)
 
     print("웹뷰로 전환 성공")
     sleep(2)
