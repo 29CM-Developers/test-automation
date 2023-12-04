@@ -56,7 +56,7 @@ def save_first_post_hashtag(wd):
 
 def click_first_post_hashtag(wd, post_hash_tag):
     aalc(wd, f'c_{post_hash_tag}')
-    sleep(4)
+    sleep(5)
 
 
 def check_hash_tag_title(wd, warning_texts, hash_tag):

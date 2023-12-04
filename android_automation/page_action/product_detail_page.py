@@ -37,9 +37,9 @@ def save_product_name(wd):
         element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
         pass
 
-    PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
-    print(f'PDP 상품명 : {PDP_product_title}')
-    return PDP_product_title
+    PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath)
+    print(f'PDP 상품명 : {PDP_product_title.text}')
+    return PDP_product_title.text
 
 
 def save_remove_prefix_product_name(product_name):
