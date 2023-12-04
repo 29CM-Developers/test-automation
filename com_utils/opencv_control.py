@@ -42,7 +42,9 @@ def return_keypad_text(num):
     image = cv2.imread(f'{os.getcwd()}/image/{num}.png')
     image = cv2.resize(image, (image.shape[1] * 2, image.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # 첫번째 변수에 임계값이 반환되고 해당 값을 사용하지 않아 _로 작성하여 무시
     _, binary_image = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+    # 두번째 변수에 계층 구조가 반환되고 해당 값을 사용하지 않아 _로 작성하여 무시
     contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     text = ''
