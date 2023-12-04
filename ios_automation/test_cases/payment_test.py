@@ -122,7 +122,7 @@ class Payment:
             order_page.click_pinpay_payment(wd)
 
             # 화면 저장
-            com_utils.opencv_control.screenshot_password_page(wd)
+            com_utils.opencv_control.screenshot_page(wd)
 
             # 키패드 저장
             com_utils.opencv_control.screenshot_keypad(wd)

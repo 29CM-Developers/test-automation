@@ -6,7 +6,7 @@ from time import sleep
 from com_utils.element_control import ial
 
 
-def screenshot_password_page(wd):
+def screenshot_page(wd):
     device_size = wd.get_window_rect()
     directory = f'{os.getcwd()}/image/'
     screenshot = f'screenshot.png'
@@ -20,6 +20,7 @@ def screenshot_password_page(wd):
 
 def screenshot_keypad(wd):
     num = 0
+    # 패스워드 입력 키패드의 index가 5부터 존재
     for i in range(5, 15):
         number = ial(wd, f'(//XCUIElementTypeImage[@name="키패드"])[{i}]')
         size = number.size
@@ -37,7 +38,7 @@ def screenshot_keypad(wd):
 
 
 # 저장된 이미지에서 텍스트 추출
-def text_mapping(num):
+def return_keypad_text(num):
     image = cv2.imread(f'{os.getcwd()}/image/{num}.png')
     image = cv2.resize(image, (image.shape[1] * 2, image.shape[0] * 2), interpolation=cv2.INTER_CUBIC)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -83,7 +84,7 @@ def click_credit_password(self, wd, i=1):
     password = self.pconf['credit_pw']
     for pw in password:
         for num in range(0, 10):
-            text = text_mapping(num)
+            text = return_keypad_text(num)
             if text == pw:
                 password_mapping(wd, num, i)
                 i += 1
