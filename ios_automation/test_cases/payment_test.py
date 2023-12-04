@@ -1,6 +1,7 @@
 import os
 import sys
 import traceback
+import com_utils.opencv_control
 
 from time import time
 from com_utils import values_control
@@ -121,10 +122,13 @@ class Payment:
             order_page.click_pinpay_payment(wd)
 
             # 화면 저장
-            order_page.screenshot_password_page(wd)
+            com_utils.opencv_control.screenshot_password_page(wd)
+
+            # 키패드 저장
+            com_utils.opencv_control.screenshot_keypad(wd)
 
             # 결제 비밀번호 선택
-            order_page.click_credit_password(self, wd)
+            com_utils.opencv_control.click_credit_password(self, wd)
 
             # 주문 완료 페이지 확인
             test_result = order_page.check_done_payment(wd, warning_texts)
