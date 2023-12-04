@@ -23,8 +23,10 @@ class Like:
         brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
         print(brands_of_interest)
         if len(brands_of_interest) == 0:
+            print('관심브랜드 화면 미노출')
             pass
         else:
+            print('관심브랜드 화면 노출')
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
 
         print(
@@ -77,13 +79,15 @@ class Like:
             wd.get('app29cm://like')
             # like 탭 선택
             Like.set_like_zero(self, self.wd)
-            sleep(1)
+            sleep(2)
             # 관심 브랜드 선택 화면 발생
             brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
             print(brands_of_interest)
             if len(brands_of_interest) == 0:
+                print('관심브랜드 화면 노출 안됨')
                 pass
             else:
+                print('관심브랜드 화면 노출')
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
 
             txtHeartCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtHeartCount').text
