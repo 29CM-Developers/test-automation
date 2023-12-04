@@ -66,12 +66,12 @@ class Category:
                 print('PDP 옵션 정보 API 불러오기 실패')
 
             # 대 카테고리, 중 카테고리 코드 번호 저장
-            large_category_info = api_control.large_category_info(self.conf["category_group"][0],
-                                                                  self.conf["large_category"][0])
-            large_category_code = large_category_info[0]
-            large_category_name = large_category_info[1]
-            medium_category_code = api_control.medium_category_code(large_category_code,
-                                                                    self.conf["medium_category"][0])
+            large_category_info = api_control.large_categories_info(self.conf["category_groups"]['women'],
+                                                                    self.conf["large_categories"]['shoes'])
+            large_category_code = large_category_info['large_category_code']
+            large_category_name = large_category_info['large_category_name']
+            medium_category_code = api_control.medium_categories_code(large_category_code,
+                                                                      self.conf["medium_categories"]['sandals'])
             print(f'{large_category_code}/{large_category_name}/{medium_category_code}')
 
             # 신발 > 여성 > 전체 순으로 카테고리 선택
@@ -132,11 +132,13 @@ class Category:
                 test_result = 'WARN'
                 warning_texts.append('중 카테고리 페이지 진입 확인 실패')
                 print('WARN : 중 카테고리 페이지 진입 확인 실패')
-            selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
-            selector = aal(selector_layer,
-                           '//android.view.View/android.view.View/android.view.View[2]/android.widget.TextView')
+            # selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+            # selector = aal(selector_layer,
+            #                '//android.view.View/android.view.View/android.view.View[2]/android.widget.TextView')
+            selector = aal(wd, 'plp_filter_sort')
+            aalc(wd, 'plp_filter_sort')
             # 필터링 버튼 선택
-            selector.click()
+            # selector.click()
             buttom_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
             new_product_order = buttom_layer.find_element(AppiumBy.XPATH,
                                                           '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.widget.TextView')
