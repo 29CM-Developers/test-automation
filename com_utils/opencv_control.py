@@ -82,11 +82,9 @@ def password_mapping(wd, pw, i):
 def click_credit_password(self, wd, i=1):
     password = self.pconf['credit_pw']
     for pw in password:
-        print(pw)
         for num in range(0, 10):
             text = text_mapping(num)
             if text == pw:
-                print(text)
                 password_mapping(wd, num, i)
                 i += 1
                 break
