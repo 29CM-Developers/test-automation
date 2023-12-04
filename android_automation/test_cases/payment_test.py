@@ -3,6 +3,7 @@ import sys
 import traceback
 
 from time import time
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control
 from com_utils.testrail_api import send_test_result
 from android_automation.page_action import order_page, delivery_order_page
@@ -37,6 +38,8 @@ class Payment:
             # 주문 완료 페이지 확인
             test_result = order_page.check_done_payment(wd, warning_texts)
 
+            close_bottom_sheet(wd)
+
             # 주문 완료 페이지에서 주문 번호 확인
             order_no = order_page.save_order_no(wd)
 
@@ -63,6 +66,8 @@ class Payment:
 
             # Home으로 이동
             delivery_order_page.click_move_to_home(wd)
+
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
