@@ -9,7 +9,7 @@ import com_utils.api_control
 from time import time
 from com_utils import values_control
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import welove_page, like_page, navigation_bar, product_detail_page
+from ios_automation.page_action import welove_page, like_page, navigation_bar, product_detail_page, context_change
 
 
 class Like:
@@ -115,7 +115,7 @@ class Like:
             # 그리드 뷰로 복귀
             like_page.click_change_view_type_to_grid(wd)
 
-            # Like 탭으로 복귀
+            # Brand 탭 선택
             like_page.click_brand_tab(wd)
 
             # 추천 리스트의 첫번째 브랜드명 저장 및 좋아요 선택
@@ -130,6 +130,15 @@ class Like:
 
             # 브랜드명 선택
             like_page.click_liked_brand_name(wd)
+
+            # webview 전환
+            context_change.switch_context(wd, 'webview')
+
+            # 브랜드 PLP에서 브랜드명 비교 확인
+            test_result = like_page.check_brand_page_name(wd, warning_texts, like_brand_name)
+
+            # native 전환
+            context_change.switch_context(wd, 'native')
 
             # 브랜드 PLP에서 좋아요 페이지로 복귀
             like_page.click_brand_back_btn(wd)
@@ -154,8 +163,14 @@ class Like:
             like_post_name = welove_page.save_first_post_title(wd)
             welove_page.click_first_post(wd)
 
+            # webview 전환
+            context_change.switch_context(wd, 'webview')
+
             # post 내 좋아요 버튼 선택
             welove_page.click_post_like_btn(wd)
+
+            # native 전환
+            context_change.switch_context(wd, 'native')
 
             # LIKE 탭으로 복귀
             welove_page.click_post_to_welove_back_btn(wd)

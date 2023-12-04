@@ -1,6 +1,8 @@
+import os
 import re
 from time import sleep
 
+from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import ial, ialc, scroll_control
 from selenium.common import NoSuchElementException
 
@@ -91,6 +93,14 @@ def save_delivery_price(wd):
     return delivery_price
 
 
+def save_coupon_price(wd):
+    coupon_price = ial(wd,
+                       '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@index="1"]').text
+    coupon_price = re.findall(r'\d+', coupon_price)
+    coupon_price = int(''.join(coupon_price))
+    return coupon_price
+
+
 def check_purchase_price(wd, warning_texts, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
@@ -103,7 +113,24 @@ def check_purchase_price(wd, warning_texts, pdp_price):
     else:
         test_result = 'WARN'
         warning_texts.append('주문서 가격 확인 실패')
-        print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+        print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+    return test_result
+
+
+def check_cart_purchase_price(wd, warning_texts, cart_price):
+    order_price = save_purchase_price(wd)
+    btn_price = save_purchase_btn_price(wd)
+    delivery_price = save_delivery_price(wd)
+    coupon_price = save_coupon_price(wd)
+    compare_price = cart_price + delivery_price - coupon_price
+
+    if order_price == compare_price and btn_price == compare_price:
+        test_result = 'PASS'
+        print('주문서 가격 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('주문서 가격 확인 실패')
+        print(f'주문서 가격 확인 실패 - cart: {cart_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
     return test_result
 
 
@@ -123,6 +150,22 @@ def click_virtual_account(wd):
         print('무통장 입금 옵션 미노출')
 
 
+def click_hyundai_card(wd):
+    virtual_account = False
+    for i in range(0, 5):
+        try:
+            element = ial(wd, 'c_현대카드 X PIN PAY')
+            if element.is_displayed():
+                virtual_account = True
+                element.click()
+                break
+        except NoSuchElementException:
+            pass
+        scroll_control(wd, 'U', 50)
+    if not virtual_account:
+        print('현대카드 X PIN PAY 옵션 미노출')
+
+
 def click_all_agreement(wd):
     for i in range(0, 5):
         try:
@@ -137,6 +180,7 @@ def click_all_agreement(wd):
 
 def click_payment(wd):
     ialc(wd, 'c_결제하기')
+    sleep(3)
 
 
 def check_inipay_page(wd):
@@ -160,6 +204,21 @@ def click_virtual_account_payment(wd):
         except NoSuchElementException:
             pass
         scroll_control(wd, 'D', 50)
+    sleep(3)
+
+
+def check_pinpay_page(wd):
+    try:
+        sleep(5)
+        ial(wd, '//XCUIElementTypeStaticText[@name="PIN Pay"]')
+        print('Pin Pay 페이지 진입')
+    except NoSuchElementException:
+        print('Pin Pay 페이지 진입 실패')
+
+
+def click_pinpay_payment(wd):
+    ialc(wd, '//XCUIElementTypeStaticText[@name="무신사 현대카드"]')
+    ialc(wd, 'c_결제하기')
     sleep(3)
 
 
@@ -208,3 +267,22 @@ def check_payment_type(wd, warning_texts, payment_type):
 def click_delivery_order_tracking(wd):
     ialc(wd, '//XCUIElementTypeStaticText[@name="주문조회"]')
     sleep(1)
+
+
+def check_api_order_cancel(self, order_no):
+    order_status = my_order_status(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
+    if order_status != '전체취소':
+        my_order_cancel(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
+        print('주문 취소 완료')
+        sleep(2)
+    elif order_status == '전체취소':
+        print('주문 취소 최종 확인')
+    else:
+        print('주문 취소 최종 확인 실패')
+
+
+def finally_order_cancel(self, order_no):
+    if order_no:
+        check_api_order_cancel(self, order_no)
+    else:
+        print('주문 전 Fail로 order_no 미존재')

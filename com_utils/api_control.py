@@ -1,3 +1,4 @@
+import json
 import random
 import requests
 import com_utils.cookies_control
@@ -108,9 +109,10 @@ def large_category_list():
 
 
 # rank : 확인하고자하는 상품 순위 작성 (1위일 경우, 1로 작성)
-def category_plp_product(large_category_code, medium_category_code, rank):
+# sort : 정렬 (new, popularity 등)
+def category_plp_product(large_category_code, medium_category_code, rank, sort):
     response = requests.get(
-        f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort=new')
+        f'https://search-api.29cm.co.kr/api/v4/products/category?categoryLargeCode={large_category_code}&categoryMediumCode={medium_category_code}&count=50&sort={sort}')
     category_products = {}
     if response.status_code == 200:
         category_products_data = response.json()
@@ -273,3 +275,84 @@ def order_product_random_no():
                 return item_no
     else:
         print('검색 결과 API 불러오기 실패')
+
+
+def my_order_status(id, password, order_serial_no):
+    order_status = ''
+    # response = requests.post('https://apihub.29cm.co.kr/qa/user/login/', data={"user_id":id, "user_password":password})
+    # cookies = response.cookies
+    # response = requests.get('https://apihub.29cm.co.kr/qa/order/orders/my-order/?limit=20&offset=0', cookies=cookies)
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+    response = requests.get('https://apihub.29cm.co.kr/order/orders/my-order/?limit=20&offset=0', cookies=cookies)
+    if response.status_code == 200:
+        order_data = response.json()
+        for i in range(0, order_data['count']):
+            order = order_data['results'][i]
+            order_serial = order['order_serial']
+            if order_serial == order_serial_no:
+                order_status = order['order_status_description']
+                print(f'주문 상태 : {order_status}')
+                break
+    else:
+        print('주문배송조회 API 불러오기 실패')
+    return order_status
+
+
+def my_order_info(id, password, order_serial_no):
+    my_order_data = {}
+    # response = requests.post('https://apihub.29cm.co.kr/qa/user/login/', data={"user_id":id, "user_password":password})
+    # cookies = response.cookies
+    # response = requests.get('https://apihub.29cm.co.kr/qa/order/orders/my-order/?limit=20&offset=0', cookies=cookies)
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+    response = requests.get('https://apihub.29cm.co.kr/order/orders/my-order/?limit=20&offset=0', cookies=cookies)
+    if response.status_code == 200:
+        order_data = response.json()
+        for i in range(0, order_data['count']):
+            order = order_data['results'][i]
+            order_serial = order['order_serial']
+            if order_serial == order_serial_no and order['manages'] != []:
+                my_order_data['order_no'] = order['order_no']
+                my_order_data['order_manage_no'] = order['manages'][0]['order_item_manage_no']
+                my_order_data['order_count'] = order['manages'][0]['order_count']
+                break
+        print(f'주문서 정보 : {my_order_data}')
+    else:
+        print('주문배송조회 API 불러오기 실패')
+    return my_order_data
+
+
+def my_order_cancel(id, password, order_serial_no):
+    my_order_data = my_order_info(id, password, order_serial_no)
+    order_no = my_order_data['order_no']
+    order_manage_no = my_order_data['order_manage_no']
+    order_count = my_order_data['order_count']
+
+    headers = {'Content-Type': 'application/json'}
+    # response = requests.post('https://apihub.29cm.co.kr/qa/user/login/', data={"user_id": id,"user_password": password})
+    # cookies = response.cookies
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+    data = json.dumps({
+        "cancelItemList": [
+            {
+                "orderItemManageId": order_manage_no,
+                "cancelCount": order_count
+            }
+        ],
+        "cancelReasonCode": "SIMPLE_REMORSE",
+        "cancelReasonMessage": None,
+        "orderNo": order_no,
+        "refundBankAccount": None
+    })
+    # response = requests.post('https://apihub.29cm.co.kr/qa/api/v1/order-cancel/user-cancel/', headers=headers,
+    #                          cookies=cookies, data=data)
+    response = requests.post('https://apihub.29cm.co.kr/api/v1/order-cancel/user-cancel/',
+                             headers=headers, cookies=cookies, data=data)
+    if response.status_code == 200:
+        cancel_data = response.json()
+        if cancel_data['result'] == 'SUCCESS':
+            print(f'{order_serial_no} API로 주문취소 완료')
+        else:
+            print(f'{order_serial_no} API로 주문취소 실패!!')
+    else:
+        print(response.status_code)
+        print('주문 취소 API 불러오기 실패')

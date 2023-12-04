@@ -11,7 +11,7 @@ from com_utils import values_control
 from com_utils.testrail_api import send_test_result
 from com_utils.api_control import large_category_list, large_categories_info, medium_categories_code, \
     category_plp_product
-from ios_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page
+from ios_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page, context_change
 
 
 class Category:
@@ -53,12 +53,21 @@ class Category:
             # API (large_categories_info)에서 받아온 카테고리명으로 확인
             test_result = category_page.check_category_page_title(wd, warning_texts, large_category_name)
 
-            # 카테고리 전체 리스트의 첫번째 상품 확인
-            # 해당 영역 WEBVIEW Element 잡히지 않아 추후 업데이트 필요
+            # 신발 전체 상품 중 1위 상품명 저장
+            api_name = category_plp_product(large_category_code, '', 1, '')['item_name']
+
+            # webview 전환
+            context_change.switch_context(wd, 'webview')
+
+            # 카테고리 전체 리스트의 첫번째 상품명이 api에서 호출한 상품명과 동일한지 확인
+            plp_name = category_page.save_webview_category_product_name(wd)
+            test_result = category_page.check_category_product_name(warning_texts, plp_name, api_name)
 
             # 중 카테고리 : 샌들 선택
-            category_page.click_category(wd, f'//XCUIElementTypeButton[@name="{large_category_name}"]')
-            category_page.click_category(wd, select_medium_category)
+            wd.find_element(AppiumBy.XPATH, f'//a[contains(text(), "{select_medium_category}")]').click()
+
+            # native 전환
+            context_change.switch_context(wd, 'native')
 
             # 타이틀명으로 중 카테고리 페이지 진입 확인
             test_result = category_page.check_category_page_title(wd, warning_texts, select_medium_category)
@@ -67,11 +76,12 @@ class Category:
             category_page.click_filter_by_new(wd)
 
             # 선택한 대 -> 중 카테고리에 해당하는 PLP API 호출
-            api_name = category_plp_product(large_category_code, medium_category_code, 1)['item_name']
+            api_name = category_plp_product(large_category_code, medium_category_code, 1, 'new')['item_name']
 
             # 카테고리 페이지에 첫번째 아이템 노출 확인
             plp_name = category_page.save_category_product_name(wd)
             test_result = category_page.check_category_product_name(warning_texts, plp_name, api_name)
+            plp_price = category_page.save_category_product_price(wd)
 
             # 첫번째 상품 PDP 진입 후, 상품 이름 저장
             category_page.click_category_product(wd)
@@ -79,6 +89,16 @@ class Category:
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             test_result = product_detail_page.check_product_name(warning_texts, pdp_name, plp_name)
+
+            # webview 전환
+            context_change.switch_context(wd, 'webview')
+
+            # pdp 가격 저장 후, 카테고리 plp의 가격과 비교 확인
+            pdp_price = product_detail_page.save_product_price(wd)
+            test_result = product_detail_page.check_product_price(warning_texts, pdp_price, plp_price)
+
+            # native 전환
+            context_change.switch_context(wd, 'native')
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             product_detail_page.click_home_btn(wd)

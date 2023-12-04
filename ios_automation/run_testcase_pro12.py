@@ -18,6 +18,7 @@ from ios_automation.test_cases.search_test import Search
 from ios_automation.test_cases.join_test import Join
 from ios_automation.test_cases.my_test import My
 from ios_automation.test_cases.category_test import Category
+from ios_automation.test_cases.pdp_test import Pdp
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils.testrail_api import *
 
@@ -52,6 +53,9 @@ class IOSTestAutomation(unittest.TestCase):
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
+
+        context = self.wd.contexts
+        print(f'context 최초 확인 : {context}')
 
     def tearDown(self):
         try:
@@ -139,6 +143,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # My -> 주문 건이 없을 경우, 상품 리뷰
         self.result_data = My.test_review_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # PDP에서 좋아요
+        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 

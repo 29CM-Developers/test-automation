@@ -1,3 +1,4 @@
+from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, element_scroll_control
@@ -187,6 +188,19 @@ def save_like_brand_name(wd):
     return like_brand_name
 
 
+def check_brand_page_name(wd, warning_texts, like_brand_name):
+    brand_page_name = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1uqcj9j ezghadi1"]').text
+    # 브랜드 PLP에서는 브랜드명이 대문자로 노출되어 변환
+    if brand_page_name == like_brand_name.upper():
+        test_result = 'PASS'
+        print('브랜드 PLP 진입 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('브랜드 PLP 진입 확인 실패')
+        print(f'브랜드 PLP 진입 확인 실패 : plp-{brand_page_name} / like-{like_brand_name.upper()}')
+    return test_result
+
+
 def click_brand_like_btn(wd):
     recommended_brand = wd.find_element(AppiumBy.XPATH,
                                         '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="3"]')
@@ -211,6 +225,7 @@ def check_brand_like(wd, warning_texts, like_brand_name):
 def click_liked_brand_name(wd):
     liked_brand = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_item')
     liked_brand.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').click()
+    sleep(2)
 
 
 def click_brand_back_btn(wd):

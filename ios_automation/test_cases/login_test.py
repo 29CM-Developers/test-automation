@@ -88,8 +88,8 @@ class UserLoginTest:
             my_page.find_login_btn(wd)
             test_result = my_page.check_login_btn(wd, warning_texts)
 
-            # Home 으로 복귀
-            navigation_bar.move_to_home(wd)
+            # Home 으로 복귀 후,온보딩 프로그램 확인
+            navigation_bar.logout_and_move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'

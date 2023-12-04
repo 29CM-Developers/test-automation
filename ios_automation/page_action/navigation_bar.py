@@ -1,11 +1,17 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet, close_bottom_sheet
 from com_utils.element_control import ialc
 from ios_automation.page_action import like_page
+from ios_automation.page_action.select_category_page import test_select_category
 
 
 def move_to_home(wd):
     ialc(wd, '**/XCUIElementTypeButton[`label == "HOME"`]')
+    find_icon_and_close_bottom_sheet(wd)
+
+
+def logout_and_move_to_home(wd):
+    ialc(wd, '**/XCUIElementTypeButton[`label == "HOME"`]')
+    test_select_category(wd)
     find_icon_and_close_bottom_sheet(wd)
 
 

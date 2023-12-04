@@ -69,6 +69,9 @@ class IOSTestAutomation(unittest.TestCase):
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
 
+        context = self.wd.contexts
+        print(f'context 최초 확인 : {context}')
+
     def tearDown(self):
         try:
             self.wd.terminate_app('kr.co.29cm.App29CM')
@@ -159,6 +162,11 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # PDP에서 좋아요
+        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -211,6 +219,21 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 장바구니 상품 변경
+        self.result_data = Cart.test_change_cart_items(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 장바구니에서 구매 주문서로 이동
+        self.result_data = Cart.test_purchase_on_cart(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 신용카드로 구매하기
+        self.result_data = Payment.test_pay_with_credit_card(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # PDP에서 선물 주문서로 이동
         self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -221,10 +244,10 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 무통장 입금으로 구매하기
-        self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # 무통장 입금으로 구매하기
+        # self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 쿠폰함
         self.result_data = My.test_coupons_list(self, self.wd)

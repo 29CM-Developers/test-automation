@@ -94,6 +94,12 @@ def save_category_product_name(wd):
     return plp_name
 
 
+def save_webview_category_product_name(wd):
+    product = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-j22x2q e13ypwtz2"]')
+    plp_name = product.find_element(AppiumBy.XPATH, '//h5').text
+    return plp_name
+
+
 def check_category_product_name(warning_texts, plp_name, compare_name):
     if plp_name == compare_name:
         test_result = 'PASS'
@@ -103,6 +109,20 @@ def check_category_product_name(warning_texts, plp_name, compare_name):
         warning_texts.append('카테고리 페이지의 상품 확인 실패')
         print('카테고리 페이지의 상품 확인 실패')
     return test_result
+
+
+def save_category_product_price(wd):
+    price = ial(wd, '//XCUIElementTypeOther[@name="product_price"]/XCUIElementTypeStaticText').text
+    if '%' in price:
+        percent = price.find('%')
+        start_index = percent + 2
+        end_index = len(price)
+        price = price[start_index:end_index].replace('원', '')
+    else:
+        price = price.replace('원', '')
+    price = int(price.replace(',', ''))
+    print(f'PLP 가격 : {price}')
+    return price
 
 
 def click_category_product(wd):

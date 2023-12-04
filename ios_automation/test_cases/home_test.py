@@ -9,7 +9,8 @@ from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page
+from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
+    context_change
 
 
 class Home:
@@ -58,6 +59,9 @@ class Home:
 
         try:
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+
+            # 라이프 탭 디폴트 선택 여부 확인 및 닫기
+            home_page.click_close_life_tab(wd)
 
             # 라이프 탭 선택
             home_page.click_tab_name(wd, '라이프')
@@ -152,17 +156,23 @@ class Home:
             for i in range(0, 3):
                 try:
                     wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
+                    sleep(3)
                     break
                 except NoSuchElementException:
                     dynamic_gate = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'dynamic_gate')
                     com_utils.element_control.swipe_control(wd, dynamic_gate, 'left', 30)
 
-            sleep(3)
-            print("!! 상단 타이틀 비교 진행 필요")
-
-            # 웹뷰 요소가 잡히지 않아 비교할 요소값 확인 불가
-            # 아래 뒤로가기 동작 안함
-            # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+            # 상단 타이틀과 선물하기 페이지 내부 타이틀 확인
+            try:
+                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기')
+                context_change.switch_context(wd, 'webview')
+                wd.find_element(AppiumBy.XPATH, '//span[contains(text(), "선물인가요")]')
+                print('다이나믹 게이트 타이틀 확인')
+                context_change.switch_context(wd, 'native')
+            except NoSuchElementException:
+                test_result = 'WARN'
+                warning_texts.append('다이나믹 게이트 타이틀 확인 실패')
+                print('다이나믹 게이트 타이틀 확인 실패')
 
             # 뒤로가기 버튼 동작하지 않아 딥링크 사용하여 Home으로 이동
             wd.get('app29cm://home')
@@ -235,11 +245,19 @@ class Home:
             contents_product_price = home_page.save_contents_product_price(wd)
             home_page.click_contents_product(wd)
 
-            # 상품명과 상품가격 비교 확인
+            # 상품명 비교 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            pdp_price = product_detail_page.save_product_price(wd)
             test_result = product_detail_page.check_product_name(warning_texts, pdp_name, contents_prodcut_name)
+
+            # webview 전환
+            context_change.switch_context(wd, 'webview')
+
+            # 상품 가격 비교 확인
+            pdp_price = product_detail_page.save_product_price(wd)
             test_result = product_detail_page.check_product_price(warning_texts, pdp_price, contents_product_price)
+
+            # native 전환
+            context_change.switch_context(wd, 'native')
 
             # Home으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
