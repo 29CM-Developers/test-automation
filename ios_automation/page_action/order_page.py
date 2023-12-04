@@ -1,7 +1,6 @@
 import os
 import re
 from time import sleep
-import cv2
 
 from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import ial, ialc, scroll_control
@@ -221,48 +220,6 @@ def click_pinpay_payment(wd):
     ialc(wd, '//XCUIElementTypeStaticText[@name="무신사 현대카드"]')
     ialc(wd, 'c_결제하기')
     sleep(3)
-
-
-def screenshot_password_page(wd):
-    directory = f'{os.getcwd()}/image/'
-    screenshot = f'screenshot.png'
-    wd.save_screenshot(directory + screenshot)
-
-
-def password_mapping(wd, pw, i):
-    # 저장한 이미지 흑백으로 불러 들이기 (디바이스 사이즈에 맞게 리사이즈)
-    device_size = wd.get_window_rect()
-    sourceimage = cv2.imread(f'{os.getcwd()}/image/screenshot.png', 0)
-    sourceimage = cv2.resize(sourceimage, (device_size['width'], device_size['height']))
-
-    # 찾고자 하는 이미지 흑백으로 불러 들이기 (디바이스 사이즈에 맞게 리사이즈)
-    element = ial(wd, '(//XCUIElementTypeImage[@name="키패드"])[5]').size
-    template = cv2.imread(f'{os.getcwd()}/image/{pw}.png', 0)
-    template = cv2.resize(template, (element['width'], element['height']))
-
-    # 찾는 이미지의 사이즈 저장하기
-    w, h = template.shape[::-1]
-
-    # opencv에서 이미지 매칭
-    method = eval('cv2.TM_CCOEFF_NORMED')
-    res = cv2.matchTemplate(sourceimage, template, method)
-
-    # max_loc : 찾으려는 이미지의 왼쪽 위 모서리 좌표와 오른쪽 아래 모서리 좌표를 확인
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-    center = (max_loc[0] + int(w / 2), max_loc[1] + int(h / 2))
-
-    # 찾은 버튼 위치의 중앙 선택
-    wd.tap([center])
-    print(f"{i}번째 비밀번호 선택")
-    sleep(1)
-
-
-def click_credit_password(self, wd, i=1):
-    password = self.pconf['credit_pw']
-    for pw in password:
-        password_mapping(wd, pw, i)
-        i += 1
-    sleep(5)
 
 
 def check_done_payment(wd, warning_texts):
