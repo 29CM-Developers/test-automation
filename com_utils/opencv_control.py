@@ -79,7 +79,7 @@ def password_mapping(wd, pw, i):
     # 찾은 버튼 위치의 중앙 선택
     wd.tap([center])
     print(f"{i}번째 비밀번호 선택")
-    sleep(1)
+    sleep(1.5)
 
 
 def click_credit_password(self, wd, i=1):

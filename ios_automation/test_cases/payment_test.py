@@ -6,7 +6,7 @@ import com_utils.opencv_control
 from time import time
 from com_utils import values_control
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import order_page, delivery_order_page
+from ios_automation.page_action import order_page, delivery_order_page, bottom_sheet
 from com_utils import deeplink_control
 
 
@@ -37,6 +37,9 @@ class Payment:
 
             # 무통장 입금 결제 관련 정보 선택 후 결제 버튼 선택
             order_page.click_virtual_account_payment(wd)
+
+            # 바텀시트 노출 여부 확인
+            bottom_sheet.close_bottom_sheet(wd)
 
             # 주문 완료 페이지 확인
             test_result = order_page.check_done_payment(wd, warning_texts)
@@ -129,6 +132,9 @@ class Payment:
 
             # 결제 비밀번호 선택
             com_utils.opencv_control.click_credit_password(self, wd)
+
+            # 바텀시트 노출 여부 확인
+            bottom_sheet.close_bottom_sheet(wd)
 
             # 주문 완료 페이지 확인
             test_result = order_page.check_done_payment(wd, warning_texts)
