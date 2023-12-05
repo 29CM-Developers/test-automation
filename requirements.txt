@@ -42,3 +42,5 @@ Werkzeug==2.2.3
 wsproto==1.2.0
 zope.event==4.6
 zope.interface==6.0
+openCV==4.8.1
+pytesseract==0.3.10

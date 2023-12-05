@@ -179,7 +179,6 @@ def my_coupon_list(id, password, coupon_type):
         else:
             for i in range(0, coupon_count):
                 coupon_name = coupon['data']['resultList'][i]['couponName']
-                print(f'coupon_name : {coupon_name}')
                 coupons.append(coupon_name)
             print(f'coupons : {coupons}')
         return coupons
