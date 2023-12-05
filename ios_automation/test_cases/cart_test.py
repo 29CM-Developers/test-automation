@@ -106,6 +106,7 @@ class Cart:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             move_to_home(self, wd)
 
         finally:
@@ -178,6 +179,7 @@ class Cart:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             move_to_home(self, wd)
 
         finally:
@@ -187,7 +189,7 @@ class Cart:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            # send_test_result(self, test_result, '장바구니에 담긴 상품을 변경')
+            send_test_result(self, test_result, '장바구니에 담긴 상품을 변경')
             return result_data
 
     def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -234,6 +236,7 @@ class Cart:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             move_to_home(self, wd)
 
         finally:
