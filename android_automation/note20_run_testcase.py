@@ -12,6 +12,7 @@ from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.like_test import Like
 from android_automation.test_cases.my_test import My
+from android_automation.test_cases.cart_test import Cart
 from android_setup import note20_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -95,6 +96,10 @@ class AndroidTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 -  장바구니 리스트
+        self.result_data = Cart.test_cart_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 실제 실행 -  장바구니에서 구매하기
         # 실제 실행 -  PDP에서 선물 주문서로 이동
         # 실제 실행 -  PDP에서 구매 주문서로 이동

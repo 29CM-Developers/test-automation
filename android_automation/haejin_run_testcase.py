@@ -1,6 +1,8 @@
 import unittest
 import os
 import sys
+from android_automation.test_cases.payment_test import Payment
+from android_automation.test_cases.pdp_test import Pdp
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 import requests
@@ -35,8 +37,8 @@ class AndroidTestAutomation(unittest.TestCase):
         cls.total_time = ''
         cls.slack_result = ''
 
-        cls.testcase_data = create_plan(cls, 'ANDROID', 'Zflip3', cls.pconf['s22_tc_ids'])
-        # cls.testcase_data = create_plan(cls, 'ANDROID', 'Zflip3', cls.pconf['Note20_tc_ids'])
+        cls.testcase_data = create_plan(cls, 'ANDROID', 'Zflip4', cls.pconf['s22_tc_ids'])
+        # cls.testcase_data = create_plan(cls, 'ANDROID', 'Zflip4', cls.pconf['Note20_tc_ids'])
         cls.testcases = get_tests(cls)
     def setUp(self):
 
@@ -136,6 +138,9 @@ class AndroidTestAutomation(unittest.TestCase):
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 -   PDP에서 좋아요
+        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
@@ -183,13 +188,30 @@ class AndroidTestAutomation(unittest.TestCase):
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
         # # 실제 실행 -  장바구니 리스트
-        # # 이거
+        # self.result_data = Cart.test_cart_list(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 -  장바구니에서 상품정보 변경하기
         # # 실제 실행 -  장바구니에서 구매하기
+        #
         # # 실제 실행 -  PDP에서 선물 주문서로 이동
+        # self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
         # # 실제 실행 -  PDP에서 구매 주문서로 이동
-        # # 실제 실행 -  구매하기
+        # self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 -  무통장 입금으로 구매하기
+        # # 실제 실행 -  신용카드로 구매하기
+        #
         # # 실제 실행 -  쿠폰함
-        # # 이거
+        # self.result_data = My.test_coupons_list(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
         # # 실제 실행 - 이메일 로그아웃 성공
         # self.result_data = LoginLogout.test_logout(self, self.wd)

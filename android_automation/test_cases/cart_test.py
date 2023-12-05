@@ -5,12 +5,18 @@ import logging
 from telnetlib import EC
 
 import requests
+import com_utils.deeplink_control
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from com_utils.api_control import search_popular_keyword, search_result, product_detail
+from com_utils.element_control import tap_control
+from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
+from com_utils.deeplink_control import move_to_home
 from com_utils.testrail_api import send_test_result
 from com_utils import values_control, element_control
+from com_utils.element_control import aalc, aal, aals
 from time import sleep, time
 
 
@@ -116,174 +122,212 @@ class Cart:
             pass
 
     def test_cart_list(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
-        # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
-        # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
-        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
+
         try:
-            print("[장바구니]CASE 시작")
-            sleep(2)
-            # 상품A 딥링크로 진입
-            # API 호출하여 itemNo 저장 > itemNo 사용하여 딥링크로 PDP 직행
-            response = requests.get(
-                'https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&periodSort=NOW&limit=100&offset=0')
-            if response.status_code == 200:
-                api_data = response.json()
-                # content 배열에서 isSoldOut이 false인 첫 번째 아이템 찾기
-                for item in api_data["data"]["content"]:
-                    if not item["isSoldOut"]:
-                        first_available_item_no = item["itemNo"]
-                        print(f'first_available_item_no : {first_available_item_no}')
-                        wd.get(f'app29cm://product/{first_available_item_no}')
-                        print('딥링크 이동')
-                        sleep(5)
-                        best_product = Cart.product_name(self, first_available_item_no)
-                        # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-                        # 스페셜 오더 상품 확인
-                        try:
-                            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-                            print('SPECIAL-ORDER 상품 발견')
-                        except NoSuchElementException:
-                            print('SPECIAL-ORDER 상품 미발견')
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-                            pass
+            print(f'[{test_name}] 테스트 시작')
 
-                        PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
-                        print(f"PDP_product_title : {PDP_product_title} ")
-                        if best_product in PDP_product_title:
-                            print("pdp 진입 확인 - 베스트 상품")
-                        else:
-                            print("pdp 진입 확인 실패 - 베스트 상품")
-                            test_result = 'WARN'
-                            warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-                        print(f"베스트 상품명 : {best_product} , PDP 상품명 : {PDP_product_title}  ")
-                        sleep(1)
+            # 여성의류 베스트 중 품절 상태가 아닌 첫번째 상품의 상품 번호 확인
+            product_item_no = product_detail_page.save_no_soldout_product_no()
 
-                        buy_button = wd.find_element(AppiumBy.XPATH, '//*[contains(@text,"구매하기")]')
-                        buy_button.click()
-                        sleep(2)
+            # 딥링크로 베스트 상품 PDP 진입
+            com_utils.deeplink_control.move_to_pdp(wd, product_item_no)
 
-                        # 옵션의 존재 여부 확인하여 옵션 선택
-                        # Cart.select_options(self, wd, first_available_item_no)
+            # PDP 상세 API 호출하여 상품명 확인
+            best_product = product_detail(product_item_no)['item_name']
 
-                        # 상품 장바구니에 담기
-                        wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
-                        sleep(2)
-                        # 쿠폰 이슈로 한번더 선택
-                        wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
-                        sleep(2)
-                        try:
-                            add_to_cart = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textAddToCart').text
-                            print(f"add_to_cart : {add_to_cart}")
-                            if add_to_cart == "장바구니에 상품이 담겼습니다.":
-                                print("상품 장바구니 담기 확인 - 베스트 상품")
-                            else:
-                                test_result = 'WARN'
-                                warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                                print('상품 장바구니 담기 확인 실패 - 베스트 상품11')
-                        except NoSuchElementException:
-                            test_result = 'WARN'
-                            warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                            print('상품 장바구니 담기 확인 실패 - 베스트 상품22')
-                        break
-            else:
-                print("API 호출에 실패했습니다.")
-            # B상품 추가
-            # 인기 검색어 1위 저장
-            popular_1st_keyword = ''
-            popular_response = requests.get(
-                'https://search-api.29cm.co.kr/api/v4/keyword/popular?limit=100&brandLimit=30')
-            if popular_response.status_code == 200:
-                popluar_keyword_data = popular_response.json()
-                popular_1st_keyword = popluar_keyword_data['data']['popularKeyword'][0]
-                print(f'인기검색어 1위 : {popular_1st_keyword}')
-            else:
-                print('베스트 PLP API 불러오기 실패')
-            # 1위 인기 검색어 검색 결과의 첫번째 상품 정보 불러오기
-            search_product_itemno = ''
-            search_response = requests.get(
-                f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={popular_1st_keyword}&excludeSoldOut=false')
-            if search_response.status_code == 200:
-                search_result_data = search_response.json()
-                search_product_itemno = search_result_data['data']['products'][0]['itemNo']
-                print(f'검색 싱픔 번호 : {search_product_itemno}')
-            else:
-                print('베스트 PLP API 불러오기 실패')
+            # PDP에 노출되는 상품명과 API 호출된 상품명 동일한 지 확인
+            pdp_name1 = product_detail_page.save_product_name(wd)
+            test_result = product_detail_page.check_product_name(warning_texts, pdp_name1, best_product)
 
-            search_product = Cart.product_name(self, search_product_itemno)
-            print(f'검색 상품 : {search_product}')
+            # 구매하기 버튼 선택
+            product_detail_page.click_purchase_btn(wd)
 
-            # 딥링크로 검색 상품 진입
-            wd.get(f'app29cm://product/{search_product_itemno}')
-            sleep(3)
-            # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-            # 스페셜 오더 상품 확인
-            try:
-                wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-                print('SPECIAL-ORDER 상품 발견')
-            except NoSuchElementException:
-                print('SPECIAL-ORDER 상품 미발견')
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-                pass
-
-            PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
-            print(f"PDP_product_title : {PDP_product_title} ")
-            if search_product in PDP_product_title:
-                print("pdp 진입 확인 - 베스트 상품")
-            else:
-                print("pdp 진입 확인 실패 - 베스트 상품")
-                test_result = 'WARN'
-                warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-            print(f"search_product : {search_product} , PDP 상품명 : {PDP_product_title}")
-            sleep(1)
-
-            buy_button = wd.find_element(AppiumBy.XPATH, '//*[contains(@text,"구매하기")]')
-            buy_button.click()
-            sleep(1)
+            sleep(5)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
-            #  Cart.select_options(self, wd, first_available_item_no)
+            product_detail_page.select_options(wd, product_item_no)
 
             # 상품 장바구니에 담기
-            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
-            sleep(2)
-            # 쿠폰 이슈로 한번더 선택
-            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '장바구니 담기')]").click()
-            sleep(2)
+            product_detail_page.click_put_in_cart_btn(wd)
+
+            # 상품 장바구니에 담기 완료 바텀시트 노출 확인
+            test_result = product_detail_page.check_add_product_to_cart(wd, warning_texts)
+
+            # 바텀시트 외의 영역 선택하여 바텀시트 닫기
+            tap_control(wd)
+
+            # 인기 검색어 1위 저장
+            popular_1st_keyword = search_popular_keyword()['api_1st_keyword_name']
+
+            # 1위 인기 검색어 검색 결과의 첫번째 상품 정보 불러오기
+            search_product_item_no = search_result(popular_1st_keyword, 1)['product_item_no']
+
+            # 딥링크로 검색 상품 진입
+            com_utils.deeplink_control.move_to_pdp(wd, search_product_item_no)
+
+            # PDP 상세 API 호출하여 상품명 확인
+            search_product = product_detail(search_product_item_no)['item_name']
+
+            # PDP 상품명과 API 호출된 상품명 동일한 지 확인
+            pdp_name2 = product_detail_page.save_product_name(wd)
+            test_result = product_detail_page.check_product_name(warning_texts, pdp_name2, search_product)
+
+            # 구매하기 버튼 선택
+            product_detail_page.click_purchase_btn(wd)
+
+            # 옵션의 존재 여부 확인하여 옵션 선택
+            product_detail_page.select_options(wd, search_product_item_no)
+
+            # 상품 장바구니에 담기
+            product_detail_page.click_put_in_cart_btn(wd)
+
+            # 상품 장바구니에 담기 완료 바텀시트 노출 확인
+            test_result = product_detail_page.check_add_product_to_cart(wd, warning_texts)
+
+            # 장바구니로 이동
+            product_detail_page.click_move_to_cart(wd)
+            # 웹뷰로 변경
+            cart_page.change_webview_contexts(wd)
+            wd.switch_to.window(wd.window_handles[0])
+            test_result = cart_page.check_product_name(wd, warning_texts, pdp_name1, pdp_name2)
+            # 네이티브로 변경
+            cart_page.change_native_contexts(wd)
+            # Home 탭으로 이동
+            move_to_home(self, wd)
+
+            print(f'[{test_name}] 테스트 종료')
+        except Exception:
+            # 오류 발생 시 테스트 결과를 실패로 한다
+            test_result = 'FAIL'
+            # 스크린샷
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            # 스크린샷 경로 추출
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            # 에러 메시지 추출
+            error_text = traceback.format_exc().split('\n')
             try:
-                add_to_cart = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textAddToCart').text
-                print(f"add_to_cart : {add_to_cart}")
-                if add_to_cart == "장바구니에 상품이 담겼습니다.":
-                    print("상품 장바구니 담기 확인 - 베스트 상품")
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                    print(f'상품 장바구니 담기 확인 실패 - 베스트 상품 : {add_to_cart}')
-                # 바로가기 버튼 선택, 확인 : 장바구니 리스트의 상품명과 PDP에서 저장한 상품명 비교 확인
-                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textShortcuts').click()
-                print("장바구니 바로가기 선택")
-                sleep(2)
-                print(f"PDP_product_title : {PDP_product_title}")
-                product_title = wd.find_elements(By.XPATH, f"//*[contains(@text, '{PDP_product_title}')]")
-                if len(product_title) != 0:
-                    print('상품 장바구니 담기 확인 - 베스트 상품')
-                    print(product_title[0].text)
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                    print('상품 장바구니 담기 확인 실패 - 베스트 상품 NoSuchElementException')
+                # 에러메시지 분류 시 예외처리
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
 
+        finally:
+            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
+            run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            # 값 재사용 용이성을 위해 dict로 반환한다
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
+            return result_data
 
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('상품 장바구니 담기 확인 실패 - 베스트 상품')
-                print('상품 장바구니 담기 확인 실패 - 베스트 상품 NoSuchElementException')
+    def test_change_cart_items(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
 
-            print("[장바구니]CASE 종료")
+        try:
+            print(f'[{test_name}] 테스트 시작')
+            navigation_bar.move_to_cart(wd)
+            sleep(3)
+            # 첫번째 상품 주문 금액 저장
+            # 웹뷰로 변경
+            cart_page.change_webview_contexts(wd)
+            delete_product_price = cart_page.save_product_price(wd)
+            # 토탈 금액 저장
+            before_delete_total_price = cart_page.save_total_price(wd)
+            # 첫번째 상품 삭제
+            cart_page.click_delete_btn_to_first_product(wd)
+            # 주문 상품 수 총 1개로 변경 확인
+            test_result = cart_page.check_change_in_number_of_products(wd, warning_texts)
+            # 삭제 후 토탈 금액 저장
+            after_delete_total_price = cart_page.save_total_price(wd)
+            # 총 주문금액이 해당 상품의 가격만큼 차감 확인
+            test_result = cart_page.check_total_order_amount(wd, warning_texts, delete_product_price,
+                                                             before_delete_total_price, after_delete_total_price)
 
+            # 첫번째 상품 주문 금액 저장
+            first_product_price = cart_page.save_product_price(wd)
+            # 남은 상품의 구매 개수 [+] 1번 선택
+            cart_page.click_to_increase_the_number_of_products(wd)
+            # 상품의 개수 정보 2로 변경 확인
+            test_result = cart_page.check_increase_in_product_count(wd, warning_texts)
+            change_total_price = cart_page.save_total_price(wd)
+            # 총 주문금액 변경 확인
+            test_result = cart_page.check_change_total_order_amount(wd, warning_texts, first_product_price,
+                                                                    change_total_price)
+            # 네이티브 변경
+            cart_page.change_native_contexts(wd)
+            # Home 탭으로 이동
+            move_to_home(self, wd)
+
+            print(f'[{test_name}] 테스트 종료')
+        except Exception:
+            # 오류 발생 시 테스트 결과를 실패로 한다
+            test_result = 'FAIL'
+            # 스크린샷
+            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
+            # 스크린샷 경로 추출
+            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
+            # 에러 메시지 추출
+            error_text = traceback.format_exc().split('\n')
+            try:
+                # 에러메시지 분류 시 예외처리
+                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+            except Exception:
+                pass
+            wd.get('app29cm://home')
+        finally:
+            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
+            run_time = f"{time() - start_time:.2f}"
+            # warning texts list를 가독성 좋도록 줄바꿈
+            warning = [str(i) for i in warning_texts]
+            warning_points = "\n".join(warning)
+            # 값 재사용 용이성을 위해 dict로 반환한다
+            result_data = {
+                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
+                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
+            return result_data
+
+    def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+            # 장바구니 화면 진입
+            navigation_bar.move_to_cart(wd)
+            sleep(3)
+
+            cart_page.change_webview_contexts(wd)
+            # 상품명 저장
+            product_name = cart_page.save_product_name_one(wd)
+            # 총 결제 금액 저장
+            total_price = cart_page.save_total_price(wd)
+
+            cart_page.change_native_contexts(wd)
+            # 1. [CHECK OUT] 버튼 선택
+            cart_page.click_check_out_btn(wd)
+            # 확인1 : 배송정보 타이틀 확인 - 구매하기 결제 화면 진입 확인
+            test_result = order_page.check_delivery_info(wd, warning_texts)
+            # 확인2 : 주문상품 정보 상품명 비교 확인 - 주문서 상품명 확인
+            # 주문 상품 정보 상품명 확인
+            order_page.check_order_product_name(wd, warning_texts, product_name)
+            # # 확인3 : 가격 정보 비교 (스크롤 최하단 결제금액, 결제 버튼의 금액) - 주문서 가격 확인
+            test_result = order_page.check_purchase_price(wd, warning_texts, total_price)
+            # cart_page.change_native_contexts(wd)
+            # Home 탭으로 이동
+            move_to_home(self, wd)
+
+            print(f'[{test_name}] 테스트 종료')
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'

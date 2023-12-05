@@ -173,10 +173,10 @@ class Home:
             try:
                 wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
-                close_bottom_sheet(self.wd)
-                close_like_bottom_sheet(self.wd)
             except NoSuchElementException:
                 pass
+            close_bottom_sheet(self.wd)
+            close_like_bottom_sheet(self.wd)
 
             try:
                 like_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtTitle').text

@@ -418,13 +418,20 @@ class Search:
                 warning_texts.append("검색어 검색 확인 실패")
             print(f"브랜드 이름 : {search_brand} ")
 
-            selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+            # selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+            # selector = selector_layer.find_element(AppiumBy.XPATH,
+            #                                        '//android.view.View/android.view.View/android.view.View[2]/android.widget.TextView')
+            # selector.click()
+            # bottom_sheet_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
+            # filter_by_sales = bottom_sheet_layer.find_element(AppiumBy.XPATH,
+            #                                                   '//android.view.View/android.view.View[8]/android.widget.TextView')
+            selector_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
             selector = selector_layer.find_element(AppiumBy.XPATH,
-                                                   '//android.view.View/android.view.View/android.view.View[2]/android.widget.TextView')
+                                                   '//android.view.View/android.view.View/android.view.View[1]/android.widget.TextView')
             selector.click()
             bottom_sheet_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/design_bottom_sheet')
-            filter_by_sales = bottom_sheet_layer.find_element(AppiumBy.XPATH,
-                                                              '//android.view.View/android.view.View[8]/android.widget.TextView')
+            filter_by_sales = aal(bottom_sheet_layer, 'c_판매순')
+
             filter_by_sales_name = filter_by_sales.text
             filter_by_sales.click()
             sleep(1)

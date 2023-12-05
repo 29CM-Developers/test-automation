@@ -13,7 +13,8 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from com_utils import values_control, element_control
+from android_automation.page_action import navigation_bar, category_page, best_product_list_page
+from com_utils import values_control, element_control, api_control
 from time import sleep, time
 from com_utils.testrail_api import send_test_result
 
@@ -48,6 +49,37 @@ class Plp:
                 test_result = 'WARN'
                 warning_texts.append("베스트 페이지 진입 확인 실패")
             print(f"타이틀 문구 : {best_page_title.text} ")
+
+            # 일간 필터 선택
+            best_product_list_page.click_period_sort(wd, '일간')
+
+            # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
+            api_oneday_product = api_control.best_plp_women_clothes(1, 'ONE_DAY')['item_name']
+            oneday_product = best_product_list_page.save_best_first_product_name(wd)
+            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneday_product,
+                                                                         oneday_product)
+
+            # 주간 필터 선택
+            best_product_list_page.click_period_sort(wd, '주간')
+
+            # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
+            api_oneweek_product = api_control.best_plp_women_clothes(1, 'ONE_WEEK')['item_name']
+            oneweek_product = best_product_list_page.save_best_first_product_name(wd)
+            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneweek_product,
+                                                                         oneweek_product)
+
+            # 월간 필터 선택
+            best_product_list_page.click_period_sort(wd, '월간')
+
+            # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
+            api_onemonth_product = api_control.best_plp_women_clothes(1, 'ONE_MONTH')['item_name']
+            onemonth_product = best_product_list_page.save_best_first_product_name(wd)
+            test_result = best_product_list_page.check_best_product_name(warning_texts, api_onemonth_product,
+                                                                         onemonth_product)
+
+            # 실시간 필터로 복귀
+            best_product_list_page.click_period_sort(wd, '실시간')
+
             # 하트 이미 선택되었는지 확인
             heart_element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like')
             is_selected = heart_element.is_selected()

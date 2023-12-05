@@ -24,3 +24,7 @@ def move_to_like(wd):
 
 def move_to_my(wd):
     aalc(wd, 'MY')
+
+
+def move_to_cart(wd):
+    aalc(wd, 'com.the29cm.app29cm:id/imgCart')
