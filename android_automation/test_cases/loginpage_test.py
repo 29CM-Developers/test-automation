@@ -358,7 +358,7 @@ class LoginLogout:
             close_bottom_sheet(wd)
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == self.pconf['NAME']:
+            if login_name.text == self.pconf['MASKING_NAME']:
                 pass
             else:
                 print("로그인 문구 실패")
@@ -520,7 +520,7 @@ class LoginLogout:
 
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == self.pconf['NAME'] :
+            if login_name.text == self.pconf['MASKING_NAME']:
                 pass
             else:
                 print("로그인 문구 실패")
