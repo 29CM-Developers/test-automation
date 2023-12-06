@@ -187,6 +187,7 @@ def my_coupon_list(id, password, coupon_type):
         print('보유 중인 쿠폰 목록 불러오기 실패')
 
 
+# 전체 기준 인기 브랜드 순위
 def search_total_popular_brand_name():
     search_popular_brand_name = {}
     response = requests.get(
@@ -197,13 +198,12 @@ def search_total_popular_brand_name():
         search_popular_brand_name['category_name'] = api_data['data']['brand']['results'][0]['categoryName']
         search_popular_brand_name['api_1st_brand_name'] = brands[0]['keyword']
         search_popular_brand_name['api_30th_brand_name'] = brands[29]['keyword']
-        print(
-            f"api_1st_brand_name : {search_popular_brand_name['api_1st_brand_name']}, api 30th_brand_name : {search_popular_brand_name['api_30th_brand_name']}, category_name : {search_popular_brand_name['category_name']}")
         return search_popular_brand_name
     else:
         print('베스트 PLP API 불러오기 실패')
 
 
+# 여성 기준 인기 브랜드 순위
 def search_woman_popular_brand_name():
     response = requests.get(
         'https://search-api.29cm.co.kr/api/v4/popular?gender=female&keywordLimit=100&brandLimit=30')
@@ -211,7 +211,6 @@ def search_woman_popular_brand_name():
         api_data = response.json()
         brands = api_data['data']['brand']['results'][0]['keywords']
         api_1st_brand_name = brands[0]['keyword']
-        print(f"api 1st_brand_name : {api_1st_brand_name}")
         return api_1st_brand_name
     else:
         print('여성 인기 브랜드 API 불러오기 실패')
@@ -228,6 +227,18 @@ def search_popular_keyword():
         return search_popular_keyword
     else:
         print('인기 검색어 API 불러오기 실패')
+
+
+# 검색 결과 페이지의 연관 검색어 호출
+def search_relate_keyword(api_keyword_1st):
+    response = requests.get(
+        f'https://search-api.29cm.co.kr/api/v4/keyword/related?keyword={api_keyword_1st}')
+    if response.status_code == 200:
+        relate_keyword_data = response.json()
+        relate_keyword_list = relate_keyword_data['data']['relatedKeywords']
+        return relate_keyword_list
+    else:
+        print('연관 검색어 API 호출 실패')
 
 
 # keyword : 검색어 / order : 노출 순서
