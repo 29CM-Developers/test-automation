@@ -61,6 +61,7 @@ def click_first_post_hashtag(wd, post_hash_tag):
 
 def check_hash_tag_title(wd, warning_texts, hash_tag):
     print("check_hash_tag_title")
+    sleep(2)
     hash_tag_title = aal(wd, hash_tag).text
     if hash_tag_title == hash_tag:
         test_result = 'PASS'

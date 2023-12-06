@@ -568,7 +568,6 @@ class Home:
                 # 좋아요 선택
                 # 앱평가 발생 시 팝업 제거
                 app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
-                print(app_evaluation)
                 if len(app_evaluation) == 0:
                     pass
                 else:
