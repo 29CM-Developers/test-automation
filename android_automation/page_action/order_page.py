@@ -251,14 +251,15 @@ def check_order_product_name(wd, warning_texts, product_name):
     return test_result
 
 
-def check_purchase_price(wd, warning_texts, pdp_price):
+def check_cart_purchase_price(wd, warning_texts, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
     # 쿠폰할인금액
     coupon_discount_price = save_coupon_discount_price(wd)
+    print(
+        f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 쿠폰 할인 금액 : {coupon_discount_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} ')
     compare_price = pdp_price + delivery_price - coupon_discount_price
-    # compare_price = pdp_price + delivery_price
     if order_price == compare_price and btn_price == compare_price:
         test_result = 'PASS'
         print('주문서 가격 확인')
@@ -270,6 +271,27 @@ def check_purchase_price(wd, warning_texts, pdp_price):
     sleep(3)
 
     return test_result
+
+
+def check_pdp_purchase_price(wd, warning_texts, pdp_price):
+    order_price = save_purchase_price(wd)
+    btn_price = save_purchase_btn_price(wd)
+    delivery_price = save_delivery_price(wd)
+    compare_price = pdp_price + delivery_price
+    if order_price == compare_price and btn_price == compare_price:
+        test_result = 'PASS'
+        print('주문서 가격 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('주문서 가격 확인 실패')
+        print(
+            f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+
+    change_native(wd)
+    sleep(5)
+    return test_result
+
+
 def check_inipay_page(wd):
     try:
         sleep(3)
@@ -277,6 +299,8 @@ def check_inipay_page(wd):
         print('이니시스 페이지 진입')
     except NoSuchElementException:
         print('이니시스 페이지 진입 실패')
+
+
 def check_done_payment(wd, warning_texts):
     try:
         aal(wd, 'c_주문이 완료되었습니다.')
