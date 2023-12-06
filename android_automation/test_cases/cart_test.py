@@ -190,7 +190,7 @@ class Cart:
             product_detail_page.click_move_to_cart(wd)
             # 웹뷰로 변경
             cart_page.change_webview_contexts(wd)
-            wd.switch_to.window(wd.window_handles[1])
+            wd.switch_to.window(wd.window_handles[0])
             print(wd.current_window_handle)
             test_result = cart_page.check_product_name(wd, warning_texts, pdp_name1, pdp_name2)
             # 네이티브로 변경
