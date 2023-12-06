@@ -100,7 +100,6 @@ class Plp:
             # 좋아요 선택
             # 앱평가 발생 시 팝업 제거
             app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
-            print(app_evaluation)
             if len(app_evaluation) == 0:
                 pass
             else:
@@ -168,7 +167,6 @@ class Plp:
                 sleep(2)
                 api_data_title = re.sub(r'\s+', ' ', api_data)
                 PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data_title}')]")
-                print(f"PDP_title_elements:{PDP_title_elements}")
                 for PDP_title in PDP_title_elements:
                     print(PDP_title.text)
                     if api_data_title in PDP_title.text:
@@ -223,4 +221,5 @@ class Plp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, 'PLP 기능 확인')
+            wd.get('app29cm://home')
             return result_data

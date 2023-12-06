@@ -13,7 +13,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from com_utils.api_control import search_popular_keyword, search_result, product_detail
 from com_utils.element_control import tap_control
 from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
-from com_utils.deeplink_control import move_to_home
+from com_utils.deeplink_control import move_to_home_Android
 from com_utils.testrail_api import send_test_result
 from com_utils import values_control, element_control
 from com_utils.element_control import aalc, aal, aals
@@ -191,11 +191,12 @@ class Cart:
             # 웹뷰로 변경
             cart_page.change_webview_contexts(wd)
             wd.switch_to.window(wd.window_handles[0])
+            print(wd.current_window_handle)
             test_result = cart_page.check_product_name(wd, warning_texts, pdp_name1, pdp_name2)
             # 네이티브로 변경
             cart_page.change_native_contexts(wd)
             # Home 탭으로 이동
-            move_to_home(self, wd)
+            move_to_home_Android(self, wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
@@ -265,7 +266,7 @@ class Cart:
             # 네이티브 변경
             cart_page.change_native_contexts(wd)
             # Home 탭으로 이동
-            move_to_home(self, wd)
+            move_to_home_Android(self, wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
@@ -322,10 +323,10 @@ class Cart:
             # 주문 상품 정보 상품명 확인
             order_page.check_order_product_name(wd, warning_texts, product_name)
             # # 확인3 : 가격 정보 비교 (스크롤 최하단 결제금액, 결제 버튼의 금액) - 주문서 가격 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, total_price)
+            test_result = order_page.check_cart_purchase_price(wd, warning_texts, total_price)
             # cart_page.change_native_contexts(wd)
             # Home 탭으로 이동
-            move_to_home(self, wd)
+            move_to_home_Android(self, wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:

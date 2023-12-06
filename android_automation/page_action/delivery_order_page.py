@@ -1,7 +1,8 @@
 from time import sleep
+import re
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import aal, aalc, scroll_control
+from com_utils.element_control import aal, aalc, scroll_control, aals
 from android_automation.page_action import bottom_sheet
 
 
@@ -36,18 +37,20 @@ def check_delivery_order(wd, warning_texts, order_no):
 
 def check_order_detail_price(wd, warning_texts, payment_type, order_price):
     for i in range(0, 3):
-        try:
-            element = aal(wd, f'c_{payment_type}')
-            if element.is_displayed():
-                break
-        except NoSuchElementException:
-            pass
-        scroll_control(wd, 'D', 50)
-
-    find_element = wd.find_elements(AppiumBy.XPATH, f'//*[contains(@text, "{payment_type}")]/../..')
-    # price = find_element[0].find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[2]/XCUIElementTypeStaticText').text
-    price = aal(find_element[0], '').text
-    price = int(price.replace(',', ''))
+        element = aal(wd, f'c_{payment_type}')
+        if element == None:
+            scroll_control(wd, 'D', 50)
+        elif element.is_displayed():
+            break
+    find_element = wd.find_element(AppiumBy.XPATH, f'//*[contains(@text, "{payment_type}")]/../..')
+    p1 = aals(find_element, '//android.widget.TextView')
+    for j in range(len(p1)):
+        print(f'element : {p1[j].text}')
+        if p1[j].text == '결제금액':
+            price = p1[j + 1].text
+            price = re.sub(r'[^0-9]', '', price)
+            price = int(price)
+            break
 
     if price == order_price:
         test_result = 'PASS'
@@ -80,4 +83,4 @@ def check_order_cancel(wd, warning_texts):
 
 def click_move_to_home(wd):
     aalc(wd, 'c_홈으로 가기')
-    bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+    bottom_sheet.close_bottom_sheet(wd)

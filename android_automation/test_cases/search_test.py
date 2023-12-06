@@ -4,6 +4,7 @@ import traceback
 import logging
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from com_utils import values_control, element_control, api_control
 from time import sleep, time
@@ -144,7 +145,6 @@ class Search:
             sleep(2)
             # 최근 검색어 있는 경우 모두 지우기로 삭제
             delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '모두 지우기')]")
-            print(delete_all)
             if len(delete_all) == 0:
                 pass
             else:
@@ -502,7 +502,6 @@ class Search:
             sleep(2)
             # 최근 검색어 있는 경우 모두 지우기로 삭제
             delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
-            print(delete_all)
             if len(delete_all) == 0:
                 pass
             else:
@@ -547,4 +546,5 @@ class Search:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '검색 결과 화면 확인')
+            wd.get('app29cm://home')
             return result_data

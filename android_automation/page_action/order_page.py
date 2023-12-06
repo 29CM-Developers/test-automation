@@ -55,15 +55,16 @@ def click_payment(wd):
 def click_virtual_account_payment(wd):
     aalc(wd, 'c_전체 동의')
     aalc(wd, 'c_토스뱅크')
-    for i in range(0, 3):
-        try:
-            element = aal(wd, 'c_다음')
-            if element.is_displayed():
-                element.click()
+    scroll_control(wd, 'D', 50)
+    try:
+        elements = aals(wd, 'c_다음')
+        for i in range(len(elements)):
+            print(f'elements[i].text : {elements[i].text}')
+            if elements[i].text == '다음':
+                elements[i].click()
                 break
-        except NoSuchElementException:
-            pass
-        scroll_control(wd, 'D', 50)
+    except NoSuchElementException:
+        pass
     sleep(3)
 
 
@@ -101,7 +102,7 @@ def save_purchase_btn_price(wd):
     print(f'save_purchase_btn_price : {price}')
     return price
 def save_delivery_price(wd):
-    parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제금액")]/../..')
+    parent_elements = wd.find_element(By.XPATH, '//*[contains(@text, "결제금액")]/../..')
     com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(parent_elements, '//android.widget.Button')
     com_utils.element_control.scroll_control(wd, 'D', 100)
@@ -185,8 +186,9 @@ def save_coupon_discount_price(wd):
 
 
 def save_order_no(wd):
-    order_no = aal(wd, 'c_ORD').text
-    print(f'주문번호 : {order_no}')
+    order_no = aal(wd, 'c_주문번호 ORD').text
+    order_no = re.sub(re.escape('주문번호 '), "", order_no)
+    print(f'주문번호 문구 제거 후: {order_no}')
     return order_no
 
 
@@ -249,14 +251,15 @@ def check_order_product_name(wd, warning_texts, product_name):
     return test_result
 
 
-def check_purchase_price(wd, warning_texts, pdp_price):
+def check_cart_purchase_price(wd, warning_texts, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
     # 쿠폰할인금액
     coupon_discount_price = save_coupon_discount_price(wd)
+    print(
+        f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 쿠폰 할인 금액 : {coupon_discount_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} ')
     compare_price = pdp_price + delivery_price - coupon_discount_price
-
     if order_price == compare_price and btn_price == compare_price:
         test_result = 'PASS'
         print('주문서 가격 확인')
@@ -268,6 +271,27 @@ def check_purchase_price(wd, warning_texts, pdp_price):
     sleep(3)
 
     return test_result
+
+
+def check_pdp_purchase_price(wd, warning_texts, pdp_price):
+    order_price = save_purchase_price(wd)
+    btn_price = save_purchase_btn_price(wd)
+    delivery_price = save_delivery_price(wd)
+    compare_price = pdp_price + delivery_price
+    if order_price == compare_price and btn_price == compare_price:
+        test_result = 'PASS'
+        print('주문서 가격 확인')
+    else:
+        test_result = 'WARN'
+        warning_texts.append('주문서 가격 확인 실패')
+        print(
+            f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+
+    change_native(wd)
+    sleep(5)
+    return test_result
+
+
 def check_inipay_page(wd):
     try:
         sleep(3)
@@ -275,6 +299,8 @@ def check_inipay_page(wd):
         print('이니시스 페이지 진입')
     except NoSuchElementException:
         print('이니시스 페이지 진입 실패')
+
+
 def check_done_payment(wd, warning_texts):
     try:
         aal(wd, 'c_주문이 완료되었습니다.')
@@ -286,18 +312,20 @@ def check_done_payment(wd, warning_texts):
         print('주문 완료 페이지 확인 실패 - 타이틀')
     return test_result
 def check_payment_type(wd, warning_texts, payment_type):
+    sleep(2)
     payment_info = ''
-    for i in range(0, 3):
-        try:
-            element = aal(wd, 'c_결제정보"]')
-            if element.is_displayed():
-                index = int(element.get_attribute('index'))
-                payment_info = aal(wd,
-                                   f'//XCUIElementTypeOther[@index="{index + 2}"]/XCUIElementTypeOther[1]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText').text
+    try:
+        parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제방법")]/../..')
+        print(f'parent_elements:{parent_elements}')
+        p1 = aals(parent_elements, '//android.view.View')
+        for i in range(len(p1)):
+            print(f'element : {p1[i].text}')
+            if p1[i].text == payment_type:
+                payment_info = p1[i].text
                 break
-        except NoSuchElementException:
-            pass
-        scroll_control(wd, 'D', 50)
+    except NoSuchElementException:
+        scroll_control(wd, 'D', 100)
+        pass
 
     if payment_info == payment_type:
         test_result = 'PASS'

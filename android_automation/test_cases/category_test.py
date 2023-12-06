@@ -42,7 +42,6 @@ class Category:
                 for i in range(0, len(large_category_data['data'])):
                     api_large_category = large_category_data['data'][i]['categoryName']
                     api_large_list.append(api_large_category)
-                print(f'api_large_list : {api_large_list}')
 
                 # api에서 호출한 리스트 길이와 비교하여 노출되는 대 카테고리 리스트 저장
                 large_list = []
@@ -54,7 +53,6 @@ class Category:
                 large_list.append(
                     aal(category_layer, '//android.view.View/android.view.View[2]/android.widget.TextView[3]').text)
 
-                print(f'large_list : {large_list}')
 
                 if set(large_list).intersection(api_large_list):
                     print('대 카테고리 리스트 확인')

@@ -390,9 +390,17 @@ class Home:
             else:
                 print("API 호출에 실패했습니다.")
 
+            # 큐레이션 확인
+            sleep(1)
+            curation = aal(wd, 'com.the29cm.app29cm:id/frontItems')
+            if curation == None:
+                pass
+            else:
+                swipe_control(wd, curation, 'left', 50)
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
             dynamic_layer = aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
+
             try:
                 dynamic_button_title = aal(wd, 'dynamic_button_gift')
             except NoSuchElementException:
@@ -560,7 +568,6 @@ class Home:
                 # 좋아요 선택
                 # 앱평가 발생 시 팝업 제거
                 app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
-                print(app_evaluation)
                 if len(app_evaluation) == 0:
                     pass
                 else:
