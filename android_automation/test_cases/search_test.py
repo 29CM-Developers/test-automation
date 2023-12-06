@@ -397,7 +397,7 @@ class Search:
                 self.conf['keyword']['knit'])
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchImg').click()
             relatedKeyword = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
-            print(relatedKeyword)
+            print(f'relatedKeyword : {relatedKeyword}')
             if self.conf['keyword']['knit'] in relatedKeyword:
                 print("검색어 검색 확인 - 확인1. 검색 셀렉트박스에 카테고리 태그 노출 확인")
             else:
