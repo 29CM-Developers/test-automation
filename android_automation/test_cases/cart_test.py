@@ -323,7 +323,7 @@ class Cart:
             # 주문 상품 정보 상품명 확인
             order_page.check_order_product_name(wd, warning_texts, product_name)
             # # 확인3 : 가격 정보 비교 (스크롤 최하단 결제금액, 결제 버튼의 금액) - 주문서 가격 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, total_price)
+            test_result = order_page.check_cart_purchase_price(wd, warning_texts, total_price)
             # cart_page.change_native_contexts(wd)
             # Home 탭으로 이동
             move_to_home_Android(self, wd)
