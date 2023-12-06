@@ -43,16 +43,13 @@ def check_order_detail_price(wd, warning_texts, payment_type, order_price):
         elif element.is_displayed():
             break
     find_element = wd.find_element(AppiumBy.XPATH, f'//*[contains(@text, "{payment_type}")]/../..')
-    print('ddddddd')
     p1 = aals(find_element, '//android.widget.TextView')
     for j in range(len(p1)):
         print(f'element : {p1[j].text}')
         if p1[j].text == '결제금액':
             price = p1[j + 1].text
-            print(f'price : {price}')
             price = re.sub(r'[^0-9]', '', price)
             price = int(price)
-            print(f'price : {price}')
             break
 
     if price == order_price:
