@@ -188,6 +188,7 @@ def check_product_like(wd, warning_texts, like_product_name):
 def click_product_name(wd):
     liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
     liked_product.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').click()
+    sleep(3)
 
 
 def click_liked_product_cart_btn(wd):
