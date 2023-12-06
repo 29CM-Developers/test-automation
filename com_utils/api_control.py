@@ -66,7 +66,6 @@ def large_categories_info(category, large_category_name):
                         pass
             else:
                 pass
-        print(f'대 카테고리 정보 : {category_info}')
     else:
         print('카테고리 그룹 API 호출 실패')
     return category_info
@@ -87,7 +86,6 @@ def medium_categories_code(large_category_code, medium_category_name):
                 break
             else:
                 pass
-        print(f'중 카테고리 정보 : {medium_category_code}')
     else:
         print('중 카테고리 리스트 API 호출 실패')
     return medium_category_code
@@ -102,7 +100,6 @@ def large_category_list():
         for i in range(0, len(large_category_data['data'])):
             api_large_category = large_category_data['data'][i]['categoryName']
             api_large_list.append(api_large_category)
-        print(f'API 대카테고리 : {api_large_list}')
     else:
         print('대 카테고리 API 불러오기 실패')
     return api_large_list
@@ -136,7 +133,6 @@ def best_plp_women_clothes(rank, period):
         best_product['item_name'] = best_product_info['itemName']
         best_product['item_prefix'] = best_product_info['subjectDescriptions']
         best_product['item_soldout'] = best_product_info['isSoldOut']
-        print(f'여성 의류 베스트 상품 : {best_product}')
         return best_product
     else:
         print('베스트 PLP API 불러오기 실패')
@@ -180,7 +176,6 @@ def my_coupon_list(id, password, coupon_type):
             for i in range(0, coupon_count):
                 coupon_name = coupon['data']['resultList'][i]['couponName']
                 coupons.append(coupon_name)
-            print(f'coupons : {coupons}')
         return coupons
 
     else:
@@ -264,7 +259,6 @@ def product_detail(product_item_no):
         product_detail['option_items_list'] = product_data['option_items']['list']
         if product_data['option_items']['list']:
             product_detail['option_items_layout'] = product_data['option_items']['layout']
-        print(f'product_detail : {product_detail}')
         return product_detail
     else:
         print('PDP 상세 정보 API 불러오기 실패')
@@ -278,7 +272,6 @@ def order_product_random_no():
         while True:
             item_count = product_data['data']['products']
             random_no = random.randint(0, len(item_count) - 1)
-            print(f'랜덤 숫자 : {random_no}')
             item_no = product_data['data']['products'][random_no]['itemNo']
             item_soldout = product_data['data']['products'][random_no]['isSoldOut']
             if not item_soldout:
@@ -301,7 +294,6 @@ def my_order_status(id, password, order_serial_no):
             order_serial = order['order_serial']
             if order_serial == order_serial_no:
                 order_status = order['order_status_description']
-                print(f'주문 상태 : {order_status}')
                 break
     else:
         print('주문배송조회 API 불러오기 실패')
@@ -325,7 +317,6 @@ def my_order_info(id, password, order_serial_no):
                 my_order_data['order_manage_no'] = order['manages'][0]['order_item_manage_no']
                 my_order_data['order_count'] = order['manages'][0]['order_count']
                 break
-        print(f'주문서 정보 : {my_order_data}')
     else:
         print('주문배송조회 API 불러오기 실패')
     return my_order_data
