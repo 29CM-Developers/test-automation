@@ -8,9 +8,10 @@ from com_utils import values_control
 from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from com_utils.api_control import search_total_popular_brand_name
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
-    context_change
+    context_change, search_page
 
 
 class Home:
@@ -323,52 +324,25 @@ class Home:
             # SEARCH 탭 진입
             navigation_bar.move_to_search(wd)
 
-            # 첫번째 인기 브랜드 카테고리 타이틀 확인
-            first_brand_category = ''
-            response = requests.get(
-                'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
-            if response.status_code == 200:
-                brand_data = response.json()
-                first_brand_category = brand_data['data']['brand']['results'][0]
-                first_brand_category = first_brand_category['categoryName']
-                print(f'첫번째 브랜드 카테고리 : {first_brand_category}')
-            else:
-                print('인기 검색어 API 호출 실패')
+            # 첫번째 인기 브랜드 카테고리 타이틀 저장
+            first_brand_category = search_total_popular_brand_name()['category_name']
 
             # 첫번째 인기 브랜드 카테고리 확인
-            brand_category_name = wd.find_element(AppiumBy.XPATH,
-                                                  '//XCUIElementTypeStaticText[@name="first_popular_brand_title"]').text
-            if f'지금 많이 찾는 {first_brand_category} 브랜드' in brand_category_name:
-                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 브랜드 타이틀')
-            else:
-                test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
-                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 브랜드 타이틀')
+            test_result = search_page.check_first_popular_brand_category(wd, warning_texts, first_brand_category)
 
             # 인기 브랜드 타이틀 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '지금 많이 찾는 검색어')
-                print('HOME 탭에서 SEARCH 탭 이동 확인 - 인기 검색어 타이틀')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
-                print('HOME 탭에서 SEARCH 탭 이동 확인 실패 - 인기 검색어 타이틀')
+            test_result = search_page.check_popular_keyword_title(wd, warning_texts)
 
             # HOME으로 이동하여 29CM 로고 확인
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
+            search_page.click_back_btn(wd)
             bottom_sheet.close_bottom_sheet(wd)
             home_page.check_home_logo(wd)
 
             # LIKE 탭 진입
             navigation_bar.move_to_like(wd)
 
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_total_count')
-                print('HOME 탭에서 LIKE 탭 이동 확인')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 LIKE 탭 이동 확인 실패')
-                print('HOME 탭에서 LIKE 탭 이동 확인 실패')
+            # LIKE 탭 상단 문구 확인
+            test_result = like_page.check_like_phases(wd, warning_texts)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
