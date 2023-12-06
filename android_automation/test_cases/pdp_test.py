@@ -54,7 +54,7 @@ class Pdp:
             order_page.check_order_product_name(wd, warning_texts, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, pdp_price)
+            test_result = order_page.check_pdp_purchase_price(wd, warning_texts, pdp_price)
 
             # Home으로 복귀
             order_page.click_back_btn(wd)
@@ -128,7 +128,7 @@ class Pdp:
             order_page.check_order_product_name(wd, warning_texts, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, pdp_price)
+            test_result = order_page.check_pdp_purchase_price(wd, warning_texts, pdp_price)
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
