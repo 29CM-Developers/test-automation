@@ -136,6 +136,7 @@ class Home:
                     search_container_title = aal(wd, 'search_popular_search')
                     if search_container_title == None:
                         scroll_control(wd, 'D', 20)
+                        search_container_title = aal(wd, 'search_popular_search')
                     elif search_container_title.text == '지금 많이 찾는 검색어':
                         print("지금 많이 찾는 검색어 타이틀 노출 확인")
                     else:
