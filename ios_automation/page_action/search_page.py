@@ -1,3 +1,4 @@
+from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, swipe_control, scroll_control, ials
@@ -95,6 +96,7 @@ def check_popular_brand_name(test_result, warning_texts, api_brand_name, brand_n
 
 def click_first_popular_brand_name(wd):
     ialc(wd, '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[1]')
+    sleep(2)
 
 
 def click_30th_popular_brand_name(wd):
@@ -165,3 +167,4 @@ def click_popular_keyword(wd, keyword):
 def enter_keyword_and_click_search_btn(wd, keyword):
     wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').send_keys(keyword)
     ialc(wd, 'search_btn')
+    sleep(2)

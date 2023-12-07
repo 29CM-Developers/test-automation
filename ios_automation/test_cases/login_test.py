@@ -39,8 +39,8 @@ class UserLoginTest:
 
             # 회원 정보 수정 페이지의 타이틀과 닉네임 확인
             test_result = my_edit_user_info_page.check_edit_page_title(wd, test_result, warning_texts)
-            test_result = my_edit_user_info_page.check_edit_page_id(wd, test_result.warning_texts,
-                                                                    self.pconf['id_29cm'])
+            test_result = my_edit_user_info_page.check_edit_page_id(wd, test_result, warning_texts,
+                                                                    self.pconf['masking_id'])
 
             # Home 으로 복귀
             my_edit_user_info_page.click_back_btn(wd)

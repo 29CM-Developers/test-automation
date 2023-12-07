@@ -138,7 +138,7 @@ class Search:
             api_keyword_25th = popular_keyword['api_25th_keyword_name']
 
             # 인기 검색어 타이틀 확인
-            search_page.check_popular_keyword_title(wd, test_result, warning_texts)
+            test_result = search_page.check_popular_keyword_title(wd, test_result, warning_texts)
 
             # 첫번째 인기 검색어 저장
             keyword_1st = search_page.save_popular_keyword(wd, '1')
@@ -150,7 +150,7 @@ class Search:
             search_page.click_popular_keyword(wd, keyword_1st)
 
             # 연관 검색어 없을 경우, 검색 필드 확인 / 있을 경우, 첫번째 연관 검색어 확인
-            search_result_page.check_relate_keyword(wd, test_result, warning_texts, api_keyword_1st)
+            test_result = search_result_page.check_relate_keyword(wd, test_result, warning_texts, api_keyword_1st)
 
             # 검색 화면으로 복귀
             search_result_page.click_back_btn(wd)
@@ -210,10 +210,10 @@ class Search:
             search_page.enter_keyword_and_click_search_btn(wd, keyword)
 
             # 검색 결과 화면의 입력란의 검색어 확인
-            search_result_page.check_input_field(wd, test_result, warning_texts, keyword)
+            test_result = search_result_page.check_input_field(wd, test_result, warning_texts, keyword)
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            search_result_page.check_relate_brand_name(wd, test_result, warning_texts, keyword)
+            test_result = search_result_page.check_relate_brand_name(wd, test_result, warning_texts, keyword)
 
             # 선택할 필터 정보 저장
             sort = self.conf["sort"]["order"]
