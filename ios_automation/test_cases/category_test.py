@@ -28,7 +28,8 @@ class Category:
             api_large_categoty_list = large_category_list()
 
             # api에서 호출한 리스트 길이와 비교하여 노출되는 대 카테고리 리스트 저장
-            test_result = category_page.check_large_category_list(wd, warning_texts, api_large_categoty_list)
+            test_result = category_page.check_large_category_list(wd, test_result, warning_texts,
+                                                                  api_large_categoty_list)
 
             # 대 카테고리 리스트 상단으로 스크롤
             category_page.scroll_up_large_category(wd)
@@ -51,7 +52,7 @@ class Category:
 
             # 타이틀명으로 카테고리 전체 페이지 진입 확인
             # API (large_categories_info)에서 받아온 카테고리명으로 확인
-            test_result = category_page.check_category_page_title(wd, warning_texts, large_category_name)
+            test_result = category_page.check_category_page_title(wd, test_result, warning_texts, large_category_name)
 
             # 신발 전체 상품 중 1위 상품명 저장
             api_name = category_plp_product(large_category_code, '', 1, '')['item_name']
@@ -61,7 +62,7 @@ class Category:
 
             # 카테고리 전체 리스트의 첫번째 상품명이 api에서 호출한 상품명과 동일한지 확인
             plp_name = category_page.save_webview_category_product_name(wd)
-            test_result = category_page.check_category_product_name(warning_texts, plp_name, api_name)
+            test_result = category_page.check_category_product_name(test_result, warning_texts, plp_name, api_name)
 
             # 중 카테고리 : 샌들 선택
             wd.find_element(AppiumBy.XPATH, f'//a[contains(text(), "{select_medium_category}")]').click()
@@ -70,7 +71,8 @@ class Category:
             context_change.switch_context(wd, 'native')
 
             # 타이틀명으로 중 카테고리 페이지 진입 확인
-            test_result = category_page.check_category_page_title(wd, warning_texts, select_medium_category)
+            test_result = category_page.check_category_page_title(wd, test_result, warning_texts,
+                                                                  select_medium_category)
 
             # 정렬 신상품 순으로 변경
             category_page.click_filter_by_new(wd)
@@ -80,7 +82,7 @@ class Category:
 
             # 카테고리 페이지에 첫번째 아이템 노출 확인
             plp_name = category_page.save_category_product_name(wd)
-            test_result = category_page.check_category_product_name(warning_texts, plp_name, api_name)
+            test_result = category_page.check_category_product_name(test_result, warning_texts, plp_name, api_name)
             plp_price = category_page.save_category_product_price(wd)
 
             # 첫번째 상품 PDP 진입 후, 상품 이름 저장
@@ -88,7 +90,7 @@ class Category:
             pdp_name = product_detail_page.save_product_name(wd)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, plp_name)
+            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, plp_name)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
@@ -146,16 +148,16 @@ class Category:
             welove_page.click_first_post_hashtag(wd)
 
             # 해시태그 페이지 타이틀과 저장한 해시태그 비교 확인
-            test_result = welove_page.check_hash_tag_title(wd, warning_texts, post_hash_tag)
+            test_result = welove_page.check_hash_tag_title(wd, test_result, warning_texts, post_hash_tag)
 
             # welove 페이지에서 저장한 포스트가 해시태그 페이지에 노출되는지 확인
-            test_result = welove_page.check_hash_tag_post(wd, warning_texts, post_title)
+            test_result = welove_page.check_hash_tag_post(wd, test_result, warning_texts, post_title)
 
             # welove 페이지로 복귀
             welove_page.click_hash_tag_back_btn(wd)
 
             # 포스트 추가 노출 확인
-            test_result = welove_page.find_and_save_third_post(wd, warning_texts)
+            test_result = welove_page.find_and_save_third_post(wd, test_result, warning_texts)
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
