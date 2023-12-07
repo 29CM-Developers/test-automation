@@ -123,7 +123,7 @@ class NotLoginUserTest:
 
             # My 탭 진입하여 로그인,회원가입 문구 노출 확인
             deeplink_control.move_to_my(self, wd)
-            test_result = my_page.check_login_btn(wd, warning_texts)
+            test_result = my_page.check_login_btn(wd, test_result, warning_texts)
 
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
