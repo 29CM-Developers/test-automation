@@ -26,15 +26,13 @@ def find_login_btn(wd):
         wd.execute_script('mobile:swipe', {'direction': 'down'})
 
 
-def check_login_btn(wd, test_result, warning_texts):
+def check_login_btn(wd):
     try:
         wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]')
         print('My 탭 로그인 문구 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('My 탭 로그인 문구 확인 실패')
         print('My 탭 로그인 문구 확인 실패')
-    return test_result
+        raise Exception('My 탭 로그인 문구 확인 실패')
 
 
 def check_nickname(self, wd, test_result, warning_texts):

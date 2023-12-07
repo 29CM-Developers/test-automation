@@ -61,15 +61,13 @@ def check_entry_recommended_tab(self, wd, test_result, warning_texts):
     return test_result
 
 
-def check_not_login_user_recommended_tab(wd, test_result, warning_texts):
+def check_not_login_user_recommended_tab(wd):
     try:
         ial(wd, '당신을 위한 추천 상품')
         print('비로그인 유저 홈화면 추천 탭 타이틀 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
         print('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
-    return test_result
+        raise Exception('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
 
 
 def scroll_to_feed_contents(wd, test_result, warning_texts, feed_title):

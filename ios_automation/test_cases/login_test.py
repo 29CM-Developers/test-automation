@@ -87,7 +87,7 @@ class UserLoginTest:
 
             # 로그아웃 완료 > 로그인,회원가입 문구 확인
             my_page.find_login_btn(wd)
-            test_result = my_page.check_login_btn(wd, test_result, warning_texts)
+            my_page.check_login_btn(wd)
 
             # Home 으로 복귀 후,온보딩 프로그램 확인
             navigation_bar.logout_and_move_to_home(wd)
@@ -127,7 +127,7 @@ class UserLoginTest:
 
             # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
             login_page.input_id_password(wd, self.pconf['id_29cm'], self.pconf['error_password_29cm'])
-            test_result = login_page.check_login_error_text(self, wd, test_result, warning_texts)
+            login_page.check_login_error_text(self, wd)
 
             # 이메일, 비밀번호 입력값 제거
             login_page.clear_id_password(wd)

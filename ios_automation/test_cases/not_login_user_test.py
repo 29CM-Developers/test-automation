@@ -38,7 +38,7 @@ class NotLoginUserTest:
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="확인"]').click()
 
             # 로그인 페이지 진입 및 확인
-            test_result = login_page.check_login_page(wd, test_result, warning_texts)
+            login_page.check_login_page(wd)
 
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
@@ -51,6 +51,7 @@ class NotLoginUserTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
@@ -93,7 +94,7 @@ class NotLoginUserTest:
 
             # Home > 추천 탭 상단의 타이틀 비교 (비로그인 유저 : 당신)
             home_page.click_tab_name(wd, '추천')
-            test_result = home_page.check_not_login_user_recommended_tab(wd, test_result, warning_texts)
+            home_page.check_not_login_user_recommended_tab(wd)
 
             # 상단 검색 버튼 선택하여 인기 브랜드 6위 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_search_btn').click()
@@ -123,7 +124,7 @@ class NotLoginUserTest:
 
             # My 탭 진입하여 로그인,회원가입 문구 노출 확인
             deeplink_control.move_to_my(self, wd)
-            test_result = my_page.check_login_btn(wd, test_result, warning_texts)
+            my_page.check_login_btn(wd)
 
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
@@ -136,6 +137,7 @@ class NotLoginUserTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             # 실패 시, 딥링크 home 탭으로 이동
@@ -163,15 +165,15 @@ class NotLoginUserTest:
 
             # 상단 네비게이션 알림 버튼 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarNotiWhite').click()
-            login_page.check_login_page(wd, test_result, warning_texts)
+            login_page.check_login_page(wd)
 
             # 상단 네비게이션 장바구니 버튼 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
-            login_page.check_login_page(wd, test_result, warning_texts)
+            login_page.check_login_page(wd)
 
             # LIKE 탭 선택
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LIKE"]').click()
-            login_page.check_login_page(wd, test_result, warning_texts)
+            login_page.check_login_page(wd)
 
             # PDP > 구매하기 선택
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
@@ -188,7 +190,7 @@ class NotLoginUserTest:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
             except NoSuchElementException:
                 pass
-            login_page.check_login_page(wd, test_result, warning_texts)
+            login_page.check_login_page(wd)
 
             # Home 탭으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
