@@ -40,25 +40,21 @@ def save_tab_names(wd):
 
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'
 # tab_list : 비교할 탭 이름 리스트
-def check_tab_names(self, test_result, warning_texts, tab, tab_list):
+def check_tab_names(self, tab, tab_list):
     if self.conf['compare_home_tab'][tab] in tab_list:
         print('홈 상단 탭 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('홈 상단 탭 확인 실패')
         print('홈 상단 탭 확인 실패')
-    return test_result
+        raise Exception('홈 상단 탭 확인 실패')
 
 
-def check_entry_recommended_tab(self, wd, test_result, warning_texts):
+def check_entry_recommended_tab(self, wd):
     try:
         ial(wd, f'{self.pconf["nickname"]}님을 위한 추천 상품')
         print('홈화면 추천 탭 타이틀 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('홈화면 추천 탭 타이틀 확인 실패')
         print('홈화면 추천 탭 타이틀 확인 실패')
-    return test_result
+        raise Exception('홈화면 추천 탭 타이틀 확인 실패')
 
 
 def check_not_login_user_recommended_tab(wd):
@@ -70,7 +66,7 @@ def check_not_login_user_recommended_tab(wd):
         raise Exception('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
 
 
-def scroll_to_feed_contents(wd, test_result, warning_texts, feed_title):
+def scroll_to_feed_contents(wd, feed_title):
     find_contents = False
     for i in range(0, 10):
         try:
@@ -87,10 +83,8 @@ def scroll_to_feed_contents(wd, test_result, warning_texts, feed_title):
         if find_contents:
             break
     if not find_contents:
-        test_result = 'WARN'
-        warning_texts.append('피드 컨텐츠 노출 확인 실패')
         print('피드 컨텐츠 노출 확인 실패')
-    return test_result
+        raise Exception('피드 컨텐츠 노출 확인 실패')
 
 
 def save_contents_like_count(wd):
@@ -108,24 +102,20 @@ def click_contents_like_btn(wd):
     ialc(wd, 'home_content_like_btn')
 
 
-def check_increase_like_count(test_result, warning_texts, heart_count, heart_select):
+def check_increase_like_count(heart_count, heart_select):
     if heart_select == heart_count + 1:
         print('피드 아이템 좋아요 개수 증가 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('피드 아이템 좋아요 개수 증가 확인 실패')
         print(f'피드 아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
-    return test_result
+        raise Exception('피드 아이템 좋아요 개수 증가 확인 실패')
 
 
-def check_decrease_like_count(test_result, warning_texts, heart_count, heart_unselect):
+def check_decrease_like_count(heart_count, heart_unselect):
     if heart_unselect == heart_count:
         print('피드 아이템 좋아요 개수 차감 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('피드 아이템 좋아요 개수 차감 확인 실패')
         print(f'피드 아이템 좋아요 개수 차감 확인 실패: {heart_count} / {heart_unselect}')
-    return test_result
+        raise Exception('피드 아이템 좋아요 개수 차감 확인 실패')
 
 
 def save_contents_product_name(wd):
