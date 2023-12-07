@@ -38,9 +38,8 @@ class UserLoginTest:
             my_edit_user_info_page.click_next_btn(wd)
 
             # 회원 정보 수정 페이지의 타이틀과 닉네임 확인
-            test_result = my_edit_user_info_page.check_edit_page_title(wd, test_result, warning_texts)
-            test_result = my_edit_user_info_page.check_edit_page_id(wd, test_result, warning_texts,
-                                                                    self.pconf['masking_id'])
+            my_edit_user_info_page.check_edit_page_title(wd)
+            my_edit_user_info_page.check_edit_page_id(wd, self.pconf['masking_id'])
 
             # Home 으로 복귀
             my_edit_user_info_page.click_back_btn(wd)
@@ -57,6 +56,7 @@ class UserLoginTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -100,6 +100,7 @@ class UserLoginTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -152,6 +153,7 @@ class UserLoginTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
