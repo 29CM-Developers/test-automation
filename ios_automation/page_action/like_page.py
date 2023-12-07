@@ -53,10 +53,9 @@ def set_like_zero(self, wd):
         refresh_post_like_tab(wd)
 
 
-def check_like_phases(wd, warning_texts):
+def check_like_phases(wd, test_result, warning_texts):
     try:
         ial(wd, 'like_total_count')
-        test_result = 'PASS'
         print('LIKE 탭 진입 확인')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -66,10 +65,9 @@ def check_like_phases(wd, warning_texts):
 
 
 # 비교하는 like 수를 like_count에 작성
-def check_like_total_count(wd, warning_texts, like_count):
+def check_like_total_count(wd, test_result, warning_texts, like_count):
     like_total_count = ial(wd, 'like_total_count')
     if like_total_count.text == like_count:
-        test_result = 'PASS'
         print('총 LIKE 개수 확인')
     else:
         test_result = 'WARN'
@@ -90,10 +88,9 @@ def click_post_tab(wd):
     ialc(wd, 'like_post_tab')
 
 
-def check_no_product_like(wd, warning_texts):
+def check_no_product_like(wd, test_result, warning_texts):
     try:
         ial(wd, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
-        test_result = 'PASS'
         print('PRODUCT 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -102,10 +99,9 @@ def check_no_product_like(wd, warning_texts):
     return test_result
 
 
-def check_no_brand_like(wd, warning_texts):
+def check_no_brand_like(wd, test_result, warning_texts):
     try:
         ial(wd, '좋아요한 브랜드가 없어요.')
-        test_result = 'PASS'
         print('BRAND 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -114,10 +110,9 @@ def check_no_brand_like(wd, warning_texts):
     return test_result
 
 
-def check_no_post_like(wd, warning_texts):
+def check_no_post_like(wd, test_result, warning_texts):
     try:
         ial(wd, '좋아요한 게시물이 없습니다. 다시 보고 싶은 게시물에 하트를 눌러보세요.')
-        test_result = 'PASS'
         print('POST 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -171,12 +166,11 @@ def click_product_like_btn(wd):
 
 
 # like_product_name = 좋아요 상품 목록의 상품명과 비교할 상품명
-def check_product_like(wd, warning_texts, like_product_name):
+def check_product_like(wd, test_result, warning_texts, like_product_name):
     liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
     liked_product_name = liked_product.find_element(AppiumBy.XPATH,
                                                     '//XCUIElementTypeStaticText[@index="1"]').text
     if like_product_name == liked_product_name:
-        test_result = 'PASS'
         print('좋아요 상품 노출 확인')
     else:
         test_result = 'WARN'
@@ -205,11 +199,10 @@ def save_like_brand_name(wd):
     return like_brand_name
 
 
-def check_brand_page_name(wd, warning_texts, like_brand_name):
+def check_brand_page_name(wd, test_result, warning_texts, like_brand_name):
     brand_page_name = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1uqcj9j ezghadi1"]').text
     # 브랜드 PLP에서는 브랜드명이 대문자로 노출되어 변환
     if brand_page_name == like_brand_name.upper():
-        test_result = 'PASS'
         print('브랜드 PLP 진입 확인')
     else:
         test_result = 'WARN'
@@ -226,11 +219,10 @@ def click_brand_like_btn(wd):
 
 
 # like_brand_name = 좋아요 상품 목록의 브랜드명과 비교할 브랜드명
-def check_brand_like(wd, warning_texts, like_brand_name):
+def check_brand_like(wd, test_result, warning_texts, like_brand_name):
     liked_brand = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_item')
     liked_brand_name = liked_brand.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').text
     if like_brand_name == liked_brand_name:
-        test_result = 'PASS'
         print('좋아요 브랜드 노출 확인')
     else:
         test_result = 'WARN'
@@ -265,11 +257,10 @@ def move_to_welove_page(wd):
 
 
 # like_post_name = 좋아요 상품 목록의 포스트 제목과 비교할 포스트 제목
-def check_post_like(wd, warning_texts, like_post_name):
+def check_post_like(wd, test_result, warning_texts, like_post_name):
     liked_post = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_item')
     liked_post_name = liked_post.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
     if like_post_name == liked_post_name:
-        test_result = 'PASS'
         print('좋아요 게시물 노출 확인')
     else:
         test_result = 'WARN'
@@ -298,9 +289,8 @@ def click_change_view_type_to_grid(wd):
     ialc(wd, 'ic like grid')
 
 
-def check_veiw_image_size(warning_texts, grid_height, grid_width, list_height, list_width):
+def check_veiw_image_size(test_result, warning_texts, grid_height, grid_width, list_height, list_width):
     if grid_height != list_height and grid_width != list_width:
-        test_result = 'PASS'
         print("좋아요 상품 탭의 뷰 정렬 변경 확인")
     else:
         test_result = 'WARN'

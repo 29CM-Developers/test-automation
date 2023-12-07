@@ -347,7 +347,7 @@ class Home:
             navigation_bar.move_to_like(wd)
 
             # LIKE 탭 상단 문구 확인
-            test_result = like_page.check_like_phases(wd, warning_texts)
+            test_result = like_page.check_like_phases(wd, test_result, warning_texts)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)

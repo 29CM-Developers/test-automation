@@ -66,10 +66,9 @@ def close_purchase_modal(wd):
     wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView').click()
 
 
-def check_open_to_purchase_modal(wd, warning_texts):
+def check_open_to_purchase_modal(wd, test_result, warning_texts):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기')
-        test_result = 'PASS'
         print('PDP 구매하기 모달 노출 확인')
     except NoSuchElementException:
         test_result = 'WARN'
