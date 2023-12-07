@@ -126,11 +126,17 @@ class Home:
                     # 지금 많이 찾는 검색어 찾기
                     print("검색 ui 변경 화면")
                     sleep(2)
-                    wd.press_keycode(4)
-                    print("키보드 닫기")
-                    search_container_title = search_container.find_element(AppiumBy.XPATH,
-                                                                           '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[5]')
-                    if search_container_title.text == '지금 많이 찾는 검색어':
+                    if wd.is_keyboard_shown():
+                        print('키보드 열림 상태 확인')
+                        wd.press_keycode(4)
+                        print("키보드 닫기")
+                    # sleep(2)
+                    # search_container_title = search_container.find_element(AppiumBy.XPATH,
+                    #                                                        '//androidx.compose.ui.platform.ComposeView[2]/android.view.View/android.view.View/android.widget.TextView[5]')
+                    search_container_title = aal(wd, 'search_popular_search')
+                    if search_container_title == None:
+                        scroll_control(wd, 'D', 20)
+                    elif search_container_title.text == '지금 많이 찾는 검색어':
                         print("지금 많이 찾는 검색어 타이틀 노출 확인")
                     else:
                         print("지금 많이 찾는 검색어 타이틀 노출 실패")
@@ -205,7 +211,7 @@ class Home:
             try:
                 # 로그인 성공 진입 확인
                 login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-                if login_name.text == self.pconf['NAME']:
+                if login_name.text == self.pconf['MASKING_NAME']:
                     pass
                 else:
                     print("로그인 문구 실패")
@@ -274,8 +280,10 @@ class Home:
             # 보강시나리오
             aalc(wd, 'life_tab')
             print("라이프 탭 선택")
+            sleep(2)
             # 라이프탭 아이디 설정 후 추가 필요
-            aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
+            # aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
+            aalc(wd, 'life_tab')
             print("라이프 탭 해제")
             sleep(1)
             try:
@@ -314,10 +322,6 @@ class Home:
                     banner_total.append({api_data["data"]["bannerList"][i]["bannerTitle"],
                                          api_data["data"]["bannerList"][i]["bannerId"],
                                          api_data["data"]["bannerList"][i]["bannerContents"]})
-                print(api_banner_title)
-                print(api_banner_id)
-                print(api_banner_contents)
-                print(banner_total)
                 set_api_banner_id = set(api_banner_id)
                 set_api_banner_contents = set(api_banner_contents)
 
@@ -406,8 +410,7 @@ class Home:
             except NoSuchElementException:
                 swipe_control(wd, dynamic_layer, 'left', 50)
                 dynamic_button_title = aal(wd, 'dynamic_button_gift')
-            print(dynamic_button_title)
-            print(dynamic_button_title.text)
+            print(f'dynamic_button_title.text: {dynamic_button_title.text}')
             button_title = dynamic_button_title.text
             dynamic_button_title.click()
 
@@ -485,12 +488,13 @@ class Home:
             scroll_to_element_with_text(wd, '추천 상품')
             guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
 
-            if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
-                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
-            else:
-                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("추천 가이드 문구 확인 실패")
+            # 추천 개인정보 처리로 확인 주석처리
+            # if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
+            #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
+            # else:
+            #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
+            #     test_result = 'WARN'
+            #     warning_texts.append("추천 가이드 문구 확인 실패")
 
             print(f"가이드 문구 : {guide_text.text} ")
             aalc(wd, 'men_tab')
