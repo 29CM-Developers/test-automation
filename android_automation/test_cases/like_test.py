@@ -107,6 +107,16 @@ class Like:
                 warning_texts.append('PRODUCT 좋아요 없음 문구 노출 확인 실패')
                 print('WARN : PRODUCT 좋아요 없음 문구 노출 확인 실패')
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
+
+            # 관심 브랜드 선택 화면 발생
+            brands_of_interest = aal(wd, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
+            if brands_of_interest == None:
+                print('관심브랜드 화면 노출 안됨')
+                pass
+            else:
+                print('관심브랜드 화면 노출')
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
+
             txtBrandCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandCount').text
             print(f"text info : {txtBrandCount}")
             txtInfo = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtInfo').text
