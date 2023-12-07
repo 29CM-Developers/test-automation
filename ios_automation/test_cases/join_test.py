@@ -32,7 +32,7 @@ class Join:
             join_page.input_email(wd, self.pconf['id_29cm'])
 
             # 기가입 이메일 가입 불가 에러
-            test_result = join_page.check_same_email_join_error(wd, warning_texts)
+            test_result = join_page.check_same_email_join_error(wd, test_result, warning_texts)
 
             # My 탭으로 복귀
             join_page.click_back_btn(wd)

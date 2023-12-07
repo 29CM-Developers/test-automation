@@ -20,10 +20,9 @@ def input_email(wd, email):
     wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').send_keys(email)
 
 
-def check_same_email_join_error(wd, warning_texts):
+def check_same_email_join_error(wd, test_result, warning_texts):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '동일한 이메일 주소로 가입된 계정이 있습니다. 기존 계정으로 로그인해주세요.')
-        test_result = 'PASS'
         print('기가입된 계정으로 회원가입 실패 확인')
     except NoSuchElementException:
         test_result = 'WARN'
