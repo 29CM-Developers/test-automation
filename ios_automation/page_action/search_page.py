@@ -27,10 +27,9 @@ def clear_recent_keyword(wd):
         pass
 
 
-def check_recent_keyword(wd, keyword):
+def check_recent_keyword(wd, test_result, keyword):
     recent_keyword = ial(wd, '//XCUIElementTypeOther[@name="recent_keyword"]/XCUIElementTypeStaticText').text
     if keyword == recent_keyword:
-        test_result = 'PASS'
         print('최근 검색어 노출 확인')
     else:
         test_result = 'WARN'
@@ -55,10 +54,9 @@ def change_criteria_to_women(wd):
     ialc(wd, 'gender_filter_female')
 
 
-def check_filter_criteria(wd, warning_texts):
+def check_filter_criteria(wd, test_result, warning_texts):
     brand_filter = ial(wd, 'keyword_filter').text
     if brand_filter == '여성 기준':
-        test_result = 'PASS'
         print('필터 적용 확인 - 필터 기준 문구')
     else:
         test_result = 'WARN'
@@ -67,10 +65,9 @@ def check_filter_criteria(wd, warning_texts):
     return test_result
 
 
-def check_first_popular_brand_category(wd, warning_texts, first_brand_category_name):
+def check_first_popular_brand_category(wd, test_result, warning_texts, first_brand_category_name):
     brand_category_name = ial(wd, '//XCUIElementTypeStaticText[@name="first_popular_brand_title"]').text
     if f'지금 많이 찾는 {first_brand_category_name} 브랜드' in brand_category_name:
-        test_result = 'PASS'
         print('첫번째 인기 브랜드 타이틀 확인')
     else:
         test_result = 'WARN'
@@ -86,9 +83,8 @@ def save_popular_brand_name(wd, num):
     return brand_1st_name
 
 
-def check_popular_brand_name(warning_texts, api_brand_name, brand_name):
+def check_popular_brand_name(test_result, warning_texts, api_brand_name, brand_name):
     if api_brand_name == brand_name:
-        test_result = 'PASS'
         print(f'인기 브랜드 {brand_name} 확인')
     else:
         test_result = 'WARN'
@@ -110,12 +106,11 @@ def swipe_brand_area(wd):
     swipe_control(wd, popular_brand, 'left', 30)
 
 
-def check_popular_keyword_title(wd, warning_texts):
+def check_popular_keyword_title(wd, test_result, warning_texts):
     for i in range(0, 3):
         try:
             keyword_title = ial(wd, '지금 많이 찾는 검색어')
             if keyword_title.is_displayed():
-                test_result = 'PASS'
                 print('인기 검색어 타이틀 확인')
                 break
             else:
@@ -153,9 +148,8 @@ def save_popular_keyword(wd, ranking):
     return keyword
 
 
-def check_popular_keyword(warning_texts, popular_keyword, api_keyword):
+def check_popular_keyword(test_result, warning_texts, popular_keyword, api_keyword):
     if popular_keyword == api_keyword:
-        test_result = 'PASS'
         print(f'인기 검색어 {popular_keyword} 노출 확인')
     else:
         test_result = 'WARN'

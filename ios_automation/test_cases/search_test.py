@@ -30,7 +30,8 @@ class Search:
             api_30th_brand = first_popular_brand['api_30th_brand_name']
 
             # 첫번째 인기 브랜드 카테고리 확인
-            test_result = search_page.check_first_popular_brand_category(wd, warning_texts, first_brand_category_name)
+            test_result = search_page.check_first_popular_brand_category(wd, test_result, warning_texts,
+                                                                         first_brand_category_name)
 
             # 필터가 전체 기준인지 확인
             search_page.change_criteria_to_all(wd)
@@ -39,16 +40,17 @@ class Search:
             brand_1st_name = search_page.save_popular_brand_name(wd, '1')
 
             # 인기 브랜드 1위 확인
-            test_result = search_page.check_popular_brand_name(warning_texts, api_1st_brand, brand_1st_name)
+            test_result = search_page.check_popular_brand_name(test_result, warning_texts, api_1st_brand,
+                                                               brand_1st_name)
 
             # 인기 브랜드 1위 선택
             search_page.click_first_popular_brand_name(wd)
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            test_result = search_result_page.check_relate_brand_name(wd, warning_texts, brand_1st_name)
+            test_result = search_result_page.check_relate_brand_name(wd, test_result, warning_texts, brand_1st_name)
 
             # 검색 결과 첫번째 상품의 브랜드명과 1위 브랜드명 비교
-            search_result_page.check_product_brand_name(wd, warning_texts, brand_1st_name)
+            test_result = search_result_page.check_product_brand_name(wd, test_result, warning_texts, brand_1st_name)
 
             # 검색 화면으로 복귀
             search_result_page.click_back_btn(wd)
@@ -63,13 +65,14 @@ class Search:
             brand_30th_name = search_page.save_popular_brand_name(wd, '6')
 
             # 인기 브랜드 30위 확인
-            test_result = search_page.check_popular_brand_name(warning_texts, api_30th_brand, brand_30th_name)
+            test_result = search_page.check_popular_brand_name(test_result, warning_texts, api_30th_brand,
+                                                               brand_30th_name)
 
             # 인기 브랜드 30위 선택
             search_page.click_30th_popular_brand_name(wd)
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            test_result = search_result_page.check_relate_brand_name(wd, warning_texts, brand_30th_name)
+            test_result = search_result_page.check_relate_brand_name(wd, test_result, warning_texts, brand_30th_name)
 
             # 검색 화면으로 복귀
             search_result_page.click_back_btn(wd)
@@ -81,14 +84,15 @@ class Search:
             search_page.change_criteria_to_women(wd)
 
             # 변경된 기준 문구 확인
-            test_result = search_page.check_filter_criteria(wd, warning_texts)
+            test_result = search_page.check_filter_criteria(wd, test_result, warning_texts)
 
             # 변경된 필터 기준
             api_filter_brand_name = search_woman_popular_brand_name()
 
             # 변경된 기준의 인기브랜드 1위 확인
             filter_brand_name = search_page.save_popular_brand_name(wd, '1')
-            test_result = search_page.check_popular_brand_name(warning_texts, api_filter_brand_name, filter_brand_name)
+            test_result = search_page.check_popular_brand_name(test_result, warning_texts, api_filter_brand_name,
+                                                               filter_brand_name)
 
             # 필터를 전체 기준으로 재변경
             search_page.change_criteria_to_all(wd)
@@ -134,26 +138,26 @@ class Search:
             api_keyword_25th = popular_keyword['api_25th_keyword_name']
 
             # 인기 검색어 타이틀 확인
-            search_page.check_popular_keyword_title(wd, warning_texts)
+            search_page.check_popular_keyword_title(wd, test_result, warning_texts)
 
             # 첫번째 인기 검색어 저장
             keyword_1st = search_page.save_popular_keyword(wd, '1')
 
             # API에서 호출한 1위 검색어와 노출되는 검색어가 동일한지 비교 확인
-            test_result = search_page.check_popular_keyword(warning_texts, keyword_1st, api_keyword_1st)
+            test_result = search_page.check_popular_keyword(test_result, warning_texts, keyword_1st, api_keyword_1st)
 
             # 인기 검색어 1위 검색어 선택
             search_page.click_popular_keyword(wd, keyword_1st)
 
             # 연관 검색어 없을 경우, 검색 필드 확인 / 있을 경우, 첫번째 연관 검색어 확인
-            search_result_page.check_relate_keyword(wd, warning_texts, api_keyword_1st)
+            search_result_page.check_relate_keyword(wd, test_result, warning_texts, api_keyword_1st)
 
             # 검색 화면으로 복귀
             search_result_page.click_back_btn(wd)
 
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
             search_page.find_recent_keyword(wd)
-            test_result = search_page.check_recent_keyword(wd, api_keyword_1st)
+            test_result = search_page.check_recent_keyword(wd, test_result, api_keyword_1st)
 
             # 최근 검색어 모두 지우기
             search_page.clear_recent_keyword(wd)
@@ -162,7 +166,7 @@ class Search:
             keyword_25th = search_page.save_popular_keyword(wd, '25')
 
             # API에서 호출한 25위 검색어와 노출되는 검색어가 동일한지 비교 확인
-            test_result = search_page.check_popular_keyword(warning_texts, keyword_25th, api_keyword_25th)
+            test_result = search_page.check_popular_keyword(test_result, warning_texts, keyword_25th, api_keyword_25th)
 
             # 뒤로가기
             search_page.click_back_btn(wd)
@@ -206,10 +210,10 @@ class Search:
             search_page.enter_keyword_and_click_search_btn(wd, keyword)
 
             # 검색 결과 화면의 입력란의 검색어 확인
-            search_result_page.check_input_field(wd, warning_texts, keyword)
+            search_result_page.check_input_field(wd, test_result, warning_texts, keyword)
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
-            search_result_page.check_relate_brand_name(wd, warning_texts, keyword)
+            search_result_page.check_relate_brand_name(wd, test_result, warning_texts, keyword)
 
             # 선택할 필터 정보 저장
             sort = self.conf["sort"]["order"]
@@ -236,14 +240,14 @@ class Search:
             filter_list = search_result_page.save_filter_info(wd)
 
             # 필터 적용 확인
-            test_result = search_result_page.check_filter_info(warning_texts, [color, category, product_info],
-                                                               filter_list)
+            test_result = search_result_page.check_filter_info(test_result, warning_texts,
+                                                               [color, category, product_info], filter_list)
 
             # 검색 화면으로 복귀
             search_result_page.click_back_btn(wd)
 
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
-            test_result = search_page.check_recent_keyword(wd, keyword)
+            test_result = search_page.check_recent_keyword(wd, test_result, keyword)
 
             # 최근 검색어 모두 지우기
             search_page.clear_recent_keyword(wd)
