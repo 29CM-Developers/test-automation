@@ -290,10 +290,10 @@ class LoginLogout:
                     warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
                     print(f"가이드 문구 : {edit_member_information.text} ")
                 try:
-                    user_email = aal(wd, f'c_{self.pconf["LOGIN_SUCCESS_ID"]}')
+                    user_email = aal(wd, f'c_{self.pconf["MASKING_EMAIL"]}')
                     print("로그인한 유저 이메일 확인")
 
-                    if user_email.text == self.pconf['LOGIN_SUCCESS_ID']:
+                    if user_email.text == self.pconf['MASKING_EMAIL']:
                         print("회원정보 수정 페이지 확인")
                     else:
                         print("회원정보 수정 페이지 확인 실패")
@@ -480,7 +480,7 @@ class LoginLogout:
             # 로그인 회원가입 버튼 선택
             wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').click()
             print("로그인 버튼 선택")
-            sleep(4)
+            sleep(5)
 
             # 로그인 화면 진입 확인
             login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
