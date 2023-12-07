@@ -119,13 +119,13 @@ class Pdp:
             product_detail_page.click_direct_gift_btn(wd)
 
             # 선물 받는 분 정보 타이틀 확인
-            order_page.check_receiver_info(wd, warning_texts)
+            order_page.check_receiver_info(wd, test_result, warning_texts)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, pdp_name)
+            order_page.check_order_product_name(wd, test_result, warning_texts, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, pdp_price)
+            test_result = order_page.check_purchase_price(wd, test_result, warning_texts, pdp_price)
 
             # Home으로 복귀
             order_page.click_back_btn(wd)
@@ -191,13 +191,13 @@ class Pdp:
             product_detail_page.click_direct_purchase_btn(wd)
 
             # 배송정보 타이틀 확인
-            test_result = order_page.check_delivery_info(wd, warning_texts)
+            test_result = order_page.check_delivery_info(wd, test_result, warning_texts)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, pdp_name)
+            order_page.check_order_product_name(wd, test_result, warning_texts, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, pdp_price)
+            test_result = order_page.check_purchase_price(wd, test_result, warning_texts, pdp_price)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다

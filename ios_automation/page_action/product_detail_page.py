@@ -147,10 +147,9 @@ def select_options(wd, product_item_no):
     sleep(1)
 
 
-def check_add_product_to_cart(wd, warning_texts):
+def check_add_product_to_cart(wd, test_result, warning_texts):
     try:
         ial(wd, 'c_장바구니에 상품')
-        test_result = 'PASS'
         print('상품 장바구니 담기 확인')
     except NoSuchElementException:
         test_result = 'WARN'

@@ -85,10 +85,9 @@ def click_add_product(wd):
     sleep(2)
 
 
-def check_cart_product_list(wd, warning_texts, best_pdp_name, keyword_pdp_name):
+def check_cart_product_list(wd, test_result, warning_texts, best_pdp_name, keyword_pdp_name):
     cart_product_list = save_product_name_list(wd)
     if best_pdp_name in cart_product_list and keyword_pdp_name in cart_product_list:
-        test_result = 'PASS'
         print('장바구니 리스트 확인')
     else:
         test_result = 'WARN'
@@ -97,9 +96,9 @@ def check_cart_product_list(wd, warning_texts, best_pdp_name, keyword_pdp_name):
     return test_result
 
 
-def check_delete_product(warning_texts, before_count, after_count, before_price, after_price, product_price):
+def check_delete_product(test_result, warning_texts, before_count, after_count, before_price, after_price,
+                         product_price):
     if after_count == before_count - 1 and after_price == before_price - product_price:
-        test_result = 'PASS'
         print('장바구니 상품 제거 확인')
     else:
         test_result = 'WARN'
@@ -108,9 +107,8 @@ def check_delete_product(warning_texts, before_count, after_count, before_price,
     return test_result
 
 
-def check_add_product(warning_texts, before_count, after_count, before_price, after_price, product_price):
+def check_add_product(test_result, warning_texts, before_count, after_count, before_price, after_price, product_price):
     if after_count == before_count + 1 and after_price == before_price + product_price:
-        test_result = 'PASS'
         print('장바구니 상품 추가 확인')
     else:
         test_result = 'WARN'

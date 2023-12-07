@@ -42,13 +42,13 @@ class Payment:
             bottom_sheet.close_bottom_sheet(wd)
 
             # 주문 완료 페이지 확인
-            test_result = order_page.check_done_payment(wd, warning_texts)
+            test_result = order_page.check_done_payment(wd, test_result, warning_texts)
 
             # 주문 완료 페이지에서 주문 번호 확인
             order_no = order_page.save_order_no(wd)
 
             # 주문 완료 페이지의 결제방법 확인
-            test_result = order_page.check_payment_type(wd, warning_texts, '무통장입금 (가상계좌)')
+            test_result = order_page.check_payment_type(wd, test_result, warning_texts, '무통장입금 (가상계좌)')
 
             # 주문 배송 조회 페이지 진입 버튼 선택
             order_page.click_delivery_order_tracking(wd)
@@ -138,13 +138,13 @@ class Payment:
             bottom_sheet.close_bottom_sheet(wd)
 
             # 주문 완료 페이지 확인
-            test_result = order_page.check_done_payment(wd, warning_texts)
+            test_result = order_page.check_done_payment(wd, test_result, warning_texts)
 
             # 주문 완료 페이지에서 주문 번호 확인
             order_no = order_page.save_order_no(wd)
 
             # 주문 완료 페이지의 결제방법 확인
-            test_result = order_page.check_payment_type(wd, warning_texts, '현대카드')
+            test_result = order_page.check_payment_type(wd, test_result, warning_texts, '현대카드')
 
             # 주문 배송 조회 페이지 진입 버튼 선택
             order_page.click_delivery_order_tracking(wd)
