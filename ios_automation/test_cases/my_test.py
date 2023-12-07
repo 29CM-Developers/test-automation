@@ -27,7 +27,7 @@ class My:
             my_page.enter_setting_page(wd)
 
             # 세팅 페이지 내 알림 문구 확인
-            my_setting_page.check_notification(wd, warning_texts)
+            test_result = my_setting_page.check_notification(wd, test_result, warning_texts)
 
             # Home 탭으로 보구기
             my_setting_page.click_back_btn(wd)
@@ -135,7 +135,7 @@ class My:
 
             my_page.click_delivery_order_menu(wd)
 
-            test_result = delivery_order_page.check_no_delivery_order(wd, warning_texts)
+            test_result = delivery_order_page.check_no_delivery_order(wd, test_result, warning_texts)
 
             delivery_order_page.click_back_btn(wd)
 
@@ -177,11 +177,11 @@ class My:
             my_page.click_review_menu(wd)
 
             # 작성 가능한 리뷰 없음 확인
-            test_result = product_review_page.check_no_reviews_available(wd, warning_texts)
+            test_result = product_review_page.check_no_reviews_available(wd, test_result, warning_texts)
 
             # 내 리뷰 탭 진입하여 작성한 리뷰 없음 확인
             product_review_page.click_my_review_tab(wd)
-            test_result = product_review_page.check_no_written_reviews(wd, warning_texts)
+            test_result = product_review_page.check_no_written_reviews(wd, test_result, warning_texts)
 
             # Home 탭으로 복귀
             # product_review_page.click_back_btn(wd)
@@ -231,7 +231,8 @@ class My:
             api_coupon_list = my_coupon_list(self.pconf['id_29cm'], self.pconf['password_29cm'], 'CART')
             coupon_list = my_coupon_page.save_my_coupon_list(wd)
 
-            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '장바구니')
+            test_result = my_coupon_page.check_coupon_list(wd, test_result, warning_texts,
+                                                           api_coupon_list, coupon_list, '장바구니')
 
             # 상품 쿠폰 타입 선택
             my_coupon_page.click_coupon_type(wd)
@@ -241,7 +242,8 @@ class My:
             api_coupon_list = my_coupon_list(self.pconf['id_29cm'], self.pconf['password_29cm'], 'PRODUCT')
             coupon_list = my_coupon_page.save_my_coupon_list(wd)
 
-            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '상품')
+            test_result = my_coupon_page.check_coupon_list(wd, test_result, warning_texts,
+                                                           api_coupon_list, coupon_list, '상품')
 
             my_coupon_page.click_back_btn(wd)
             navigation_bar.move_to_home(wd)

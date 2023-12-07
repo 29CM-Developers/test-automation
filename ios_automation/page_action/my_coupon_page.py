@@ -37,18 +37,16 @@ def save_my_coupon_list(wd):
     return coupon_list
 
 
-def check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, coupon_type):
+def check_coupon_list(wd, test_result, warning_texts, api_coupon_list, coupon_list, coupon_type):
     if not coupon_list:
         try:
             ial(wd, '발급 받은 쿠폰이 없습니다.')
-            test_result = 'PASS'
             print(f'{coupon_type} 쿠폰 목록 없음 확인')
         except NoSuchElementException:
             test_result = 'WARN'
             warning_texts.append(f'{coupon_type} 쿠폰 목록 확인 실패')
             print(f'{coupon_type} 쿠폰 목록 확인 실패')
     elif coupon_list == api_coupon_list:
-        test_result = 'PASS'
         print(f'{coupon_type} 쿠폰 목록 확인')
     else:
         test_result = 'WARN'
