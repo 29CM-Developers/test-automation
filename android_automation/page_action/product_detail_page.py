@@ -140,12 +140,9 @@ def select_options(wd, product_item_no):
             # aalc(wd, f'c_{option_layout[i]}"]')
             opthios_layer = aal(wd,
                                 '//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View')
-            print(f'opthins_layer', opthios_layer)
             opthios_layer1 = aal(opthios_layer, '//android.widget.Button')
             aalc(opthios_layer, "//android.widget.Button")
             sleep(5)
-            print(f'opthins_layer1 : {opthios_layer1}')
-
             print(f'항목 : {option_layout[i]}')
 
             if i < len(option_layout) - 1:
@@ -156,10 +153,8 @@ def select_options(wd, product_item_no):
                 for option in option_item_list:
                     if option['limited_qty'] != 0:
                         option_name = option["title"].strip()
-
                         print(f'옵션2 : {option_name}')
                         opthios_layer2 = aals(opthios_layer, '//android.widget.Button[@index=1]')
-                        print(f'opthios_layer2 : {opthios_layer2}')
                         # aalc(opthios_layer, '//android.widget.Button[2]')
                         aalc(wd, f'c_{option_name}')
                         break
