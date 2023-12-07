@@ -85,6 +85,18 @@ class Like:
             # 좋아요 한 상품의 상품명 비교
             test_result = like_page.check_product_like(wd, warning_texts, like_product_name)
 
+            # 좋아요 한 상품의 상품명 선택
+            like_page.click_product_name(wd)
+
+            # PDP 상품 이름 저장
+            pdp_product_name = product_detail_page.save_product_name(wd)
+
+            # 좋아요 한 상품명과 PDP의 상품명 비교
+            test_result = product_detail_page.check_product_name(warning_texts, pdp_product_name, like_product_name)
+
+            # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
+            product_detail_page.click_pdp_back_btn(wd)
+
             # 좋아요 상품의 [장바구니 담기] 버튼 선택
             like_page.click_liked_product_cart_btn(wd)
 
@@ -199,6 +211,9 @@ class Like:
             like_page.click_to_unlike_product(wd)
             like_page.refresh_product_like_tab(wd)
 
+            # 상단 Like 개수 확인
+            test_result = like_page.check_like_total_count(wd, warning_texts, "0")
+
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
 
@@ -221,5 +236,6 @@ class Like:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+            context_change.switch_context(wd, 'native')
             send_test_result(self, test_result, '좋아요 존재하는 LIKE 화면 확인')
             return result_data

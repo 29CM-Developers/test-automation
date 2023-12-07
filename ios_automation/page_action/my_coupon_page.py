@@ -1,5 +1,7 @@
+from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials
+from ios_automation.page_action.context_change import switch_context
 
 
 def click_back_btn(wd):
@@ -21,15 +23,17 @@ def click_option_product(wd):
 
 
 def save_my_coupon_list(wd):
+    switch_context(wd, 'webview')
     coupon_list = []
     try:
-        coupon = ials(wd,
-                      '//XCUIElementTypeOther[@name="쿠폰 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeOther')
+        coupon = wd.find_elements(AppiumBy.CSS_SELECTOR, '[class="e1muu87i6 css-196r6f0 e1bnten30"]')
         for name in coupon:
-            coupon_name = ial(name, '//XCUIElementTypeStaticText[@index="3"]').text
+            coupon_name = name.text
             coupon_list.append(coupon_name)
     except NoSuchElementException:
         pass
+    switch_context(wd, 'native')
+    print(f'쿠폰 목록 : {coupon_list}')
     return coupon_list
 
 

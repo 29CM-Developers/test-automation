@@ -9,7 +9,7 @@ def close_brand_recommended_page(wd):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
-        print('브랜드 추천 페이지 노출')
+        print('브랜드 추천 페이지 노출 확인')
     except NoSuchElementException:
         pass
 
@@ -18,7 +18,7 @@ def close_noti_bottom_sheet(wd):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'liked_item_sale_notification_guide')
         ialc(wd, '닫기')
-        print('알림 바텀시트 노출')
+        print('알림 바텀시트 노출 확인')
     except NoSuchElementException:
         pass
 
@@ -51,6 +51,18 @@ def set_like_zero(self, wd):
         click_to_unlike_post(wd)
         # 좋아요 해제 후 새로고침
         refresh_post_like_tab(wd)
+
+
+def check_like_phases(wd, warning_texts):
+    try:
+        ial(wd, 'like_total_count')
+        test_result = 'PASS'
+        print('LIKE 탭 진입 확인')
+    except NoSuchElementException:
+        test_result = 'WARN'
+        warning_texts.append('LIKE 탭 진입 확인 실패')
+        print('LIKE 탭 진입 확인 실패')
+    return test_result
 
 
 # 비교하는 like 수를 like_count에 작성
@@ -173,6 +185,12 @@ def check_product_like(wd, warning_texts, like_product_name):
     return test_result
 
 
+def click_product_name(wd):
+    liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
+    liked_product.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').click()
+    sleep(3)
+
+
 def click_liked_product_cart_btn(wd):
     liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
     liked_product.find_element(AppiumBy.IOS_CLASS_CHAIN,
@@ -184,7 +202,6 @@ def save_like_brand_name(wd):
                                         '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="3"]')
     like_brand_name = recommended_brand.find_element(AppiumBy.XPATH,
                                                      '//XCUIElementTypeStaticText[@index="1"]').text
-    print(f'좋아요 브랜드명 : {like_brand_name}')
     return like_brand_name
 
 
@@ -235,7 +252,6 @@ def click_brand_back_btn(wd):
 def save_liked_brand_product_name(wd):
     brand_product_name = ial(wd,
                              '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText').text
-    print(f'좋아요 브랜드의 상품: {brand_product_name}')
     return brand_product_name
 
 

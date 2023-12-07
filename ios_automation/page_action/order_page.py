@@ -223,6 +223,7 @@ def click_pinpay_payment(wd):
 
 
 def check_done_payment(wd, warning_texts):
+    sleep(3)
     try:
         ial(wd, '//XCUIElementTypeStaticText[@name="주문이 완료되었습니다."]')
         test_result = 'PASS'
