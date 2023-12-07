@@ -332,11 +332,10 @@ class Home:
             first_brand_category = search_total_popular_brand_name()['category_name']
 
             # 첫번째 인기 브랜드 카테고리 확인
-            test_result = search_page.check_first_popular_brand_category(wd, test_result, warning_texts,
-                                                                         first_brand_category)
+            search_page.check_first_popular_brand_category(wd, first_brand_category)
 
             # 인기 브랜드 타이틀 확인
-            test_result = search_page.check_popular_keyword_title(wd, test_result, warning_texts)
+            search_page.check_popular_keyword_title(wd)
 
             # HOME으로 이동하여 29CM 로고 확인
             search_page.click_back_btn(wd)

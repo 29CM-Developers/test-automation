@@ -8,18 +8,16 @@ def click_back_btn(wd):
     ialc(wd, 'navi_back_btn')
 
 
-def check_input_field(wd, test_result, warning_texts, keyword):
+def check_input_field(wd, keyword):
     search_input_field = ial(wd, 'input_keyword').text
     if search_input_field == keyword:
         print('인기 검색어 검색 확인 - 입력란')
     else:
-        test_result = 'WARN'
-        warning_texts.append('인기 브랜드 검색 결과 확인 실패')
         print(f'인기 브랜드 검색 결과 확인 실패 : {search_input_field}')
-    return test_result
+        raise Exception(f'인기 브랜드 검색 결과 확인 실패')
 
 
-def check_relate_brand_name(wd, test_result, warning_texts, compare_brand_name):
+def check_relate_brand_name(wd, compare_brand_name):
     relate_brand_name = ials(wd, '//XCUIElementTypeStaticText[@name="releate_brand_name"]')
     relate_name = ''
     relate_break = False
@@ -32,13 +30,11 @@ def check_relate_brand_name(wd, test_result, warning_texts, compare_brand_name):
         else:
             pass
     if not relate_break:
-        test_result = 'WARN'
-        warning_texts.append('인기 브랜드 검색 확인 실패 - 연관 브랜드')
         print(f'인기 브랜드 검색 확인 실패 - 연관 브랜드 : {relate_name}')
-    return test_result
+        raise Exception(f'인기 브랜드 검색 확인 실패 - 연관 브랜드')
 
 
-def check_product_brand_name(wd, test_result, warning_texts, compare_brand_name):
+def check_product_brand_name(wd, compare_brand_name):
     product_brand_name = ''
     for i in range(0, 3):
         try:
@@ -53,13 +49,11 @@ def check_product_brand_name(wd, test_result, warning_texts, compare_brand_name)
     if compare_brand_name == product_brand_name:
         print('인기 브랜드 검색 상품 확인 - 상품 브랜드')
     else:
-        test_result = 'WARN'
-        warning_texts.append('인기 브랜드 검색 상품 확인 실패 - 상품 브랜드')
         print(f'인기 브랜드 검색 상품 확인 실패: 검색어-{compare_brand_name} / 상품 브랜드-{product_brand_name}')
-    return test_result
+        raise Exception(f'인기 브랜드 검색 상품 확인 실패')
 
 
-def check_relate_keyword(wd, test_result, warning_texts, api_keyword_1st):
+def check_relate_keyword(wd, api_keyword_1st):
     # 연관 검색어 리스트 API 호출
     relate_keyword_list = search_relate_keyword(api_keyword_1st)
 
@@ -68,9 +62,8 @@ def check_relate_keyword(wd, test_result, warning_texts, api_keyword_1st):
         if search_input_field == api_keyword_1st:
             print('인기 검색어 검색 확인 - 입력란')
         else:
-            test_result = 'WARN'
-            warning_texts.append('인기 검색어 검색 결과 확인 실패')
             print(f'인기 검색어 검색 결과 확인 실패 : {api_keyword_1st} / {search_input_field}')
+            raise Exception('인기 검색어 검색 결과 확인 실패')
     else:
         relate_keyword_api = relate_keyword_list[0]
         relate_keyword = ials(wd, 'related_keyword')[0]
@@ -78,10 +71,8 @@ def check_relate_keyword(wd, test_result, warning_texts, api_keyword_1st):
         if relate_keyword_api == relate_keyword_1st:
             print('인기 검색어 검색 확인 - 연관 검색어')
         else:
-            test_result = 'WARN'
-            warning_texts.append('인기 검색어 검색 결과 확인 실패')
             print(f'인기 검색어 검색 결과 확인 실패 : {relate_keyword_1st} / {relate_keyword_api}')
-    return test_result
+            raise Exception('인기 검색어 검색 결과 확인 실패')
 
 
 def click_sort_filter_btn(wd, sort):
@@ -141,14 +132,12 @@ def save_filter_info(wd):
     return filter_list
 
 
-def check_filter_info(test_result, warning_texts, filter_info_list, compare_filter_list):
+def check_filter_info(filter_info_list, compare_filter_list):
     filter_check = filter_info_list
     for filter in filter_check:
         if filter in set(compare_filter_list):
             print(f'{filter} 필터 적용 확인')
         else:
-            test_result = 'WARN'
-            warning_texts.append('인기 검색어 검색 결과 확인 실패')
             print(f'{filter} 필터 적용 확인 실패: {set(compare_filter_list)}')
+            raise Exception('인기 검색어 검색 결과 확인 실패')
     sleep(2)
-    return test_result

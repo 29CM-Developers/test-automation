@@ -28,15 +28,13 @@ def clear_recent_keyword(wd):
         pass
 
 
-def check_recent_keyword(wd, test_result, keyword):
+def check_recent_keyword(wd, keyword):
     recent_keyword = ial(wd, '//XCUIElementTypeOther[@name="recent_keyword"]/XCUIElementTypeStaticText').text
     if keyword == recent_keyword:
         print('최근 검색어 노출 확인')
     else:
-        test_result = 'WARN'
-        keyword.append('최근 검색어 노출 확인 실패')
         print(f'최근 검색어 노출 확인 실패 : recent-{recent_keyword} / search-{keyword}')
-    return test_result
+        raise Exception('최근 검색어 노출 확인 실패')
 
 
 def change_criteria_to_all(wd):
@@ -55,26 +53,22 @@ def change_criteria_to_women(wd):
     ialc(wd, 'gender_filter_female')
 
 
-def check_filter_criteria(wd, test_result, warning_texts):
+def check_filter_criteria(wd):
     brand_filter = ial(wd, 'keyword_filter').text
     if brand_filter == '여성 기준':
         print('필터 적용 확인 - 필터 기준 문구')
     else:
-        test_result = 'WARN'
-        warning_texts.append('필터 적용 확인 실패')
         print(f'필터 적용 확인 실패 : {brand_filter.text}')
-    return test_result
+        raise Exception(f'필터 적용 확인 실패 : {brand_filter.text}')
 
 
-def check_first_popular_brand_category(wd, test_result, warning_texts, first_brand_category_name):
+def check_first_popular_brand_category(wd, first_brand_category_name):
     brand_category_name = ial(wd, '//XCUIElementTypeStaticText[@name="first_popular_brand_title"]').text
     if f'지금 많이 찾는 {first_brand_category_name} 브랜드' in brand_category_name:
         print('첫번째 인기 브랜드 타이틀 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('인기 브랜드 타이틀 확인 실패')
         print('첫번째 인기 브랜드 타이틀 확인 실패')
-    return test_result
+        raise Exception('첫번째 인기 브랜드 타이틀 확인 실패')
 
 
 # num : 검색어 위치 입력 (좌측 첫번째 : 1, 우측 세번째 : 6)
@@ -84,14 +78,12 @@ def save_popular_brand_name(wd, num):
     return brand_1st_name
 
 
-def check_popular_brand_name(test_result, warning_texts, api_brand_name, brand_name):
+def check_popular_brand_name(api_brand_name, brand_name):
     if api_brand_name == brand_name:
         print(f'인기 브랜드 {brand_name} 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('인기 브랜드 확인 실패')
         print(f'인기 브랜드 확인 실패 : api-{api_brand_name} / search-{brand_name}')
-    return test_result
+        raise Exception(f'인기 브랜드 확인 실패 : api-{api_brand_name} / search-{brand_name}')
 
 
 def click_first_popular_brand_name(wd):
@@ -108,7 +100,7 @@ def swipe_brand_area(wd):
     swipe_control(wd, popular_brand, 'left', 30)
 
 
-def check_popular_keyword_title(wd, test_result, warning_texts):
+def check_popular_keyword_title(wd):
     for i in range(0, 3):
         try:
             keyword_title = ial(wd, '지금 많이 찾는 검색어')
@@ -120,10 +112,8 @@ def check_popular_keyword_title(wd, test_result, warning_texts):
         except NoSuchElementException:
             scroll_control(wd, 'D', 50)
     else:
-        test_result = 'WARN'
-        warning_texts.append('인기 검색어 타이틀 확인 실패')
         print('인기 검색어 타이틀 확인 실패')
-    return test_result
+        raise Exception('인기 검색어 타이틀 확인 실패')
 
 
 def save_popular_keyword(wd, ranking):
@@ -150,14 +140,12 @@ def save_popular_keyword(wd, ranking):
     return keyword
 
 
-def check_popular_keyword(test_result, warning_texts, popular_keyword, api_keyword):
+def check_popular_keyword(popular_keyword, api_keyword):
     if popular_keyword == api_keyword:
         print(f'인기 검색어 {popular_keyword} 노출 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('인기 검색어 노출 확인 실패')
         print(f'인기 검색어 노출 확인 실패 : search-{popular_keyword} / api-{api_keyword}')
-    return test_result
+        raise Exception('인기 검색어 노출 확인 실패')
 
 
 def click_popular_keyword(wd, keyword):
