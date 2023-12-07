@@ -95,7 +95,7 @@ class Category:
 
             # pdp 가격 저장 후, 카테고리 plp의 가격과 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
-            test_result = product_detail_page.check_product_price(warning_texts, pdp_price, plp_price)
+            test_result = product_detail_page.check_product_price(test_result, warning_texts, pdp_price, plp_price)
 
             # native 전환
             context_change.switch_context(wd, 'native')

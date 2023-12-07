@@ -23,7 +23,7 @@ class Plp:
             category_page.click_best_category(wd)
 
             # 베스트 PLP 진입 확인
-            test_result = best_product_list_page.check_entry_best_plp(wd, warning_texts)
+            test_result = best_product_list_page.check_entry_best_plp(wd, test_result, warning_texts)
 
             # 일간 필터 선택
             best_product_list_page.click_period_sort(wd, '일간')
@@ -31,8 +31,8 @@ class Plp:
             # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
             api_oneday_product = api_control.best_plp_women_clothes(1, 'ONE_DAY')['item_name']
             oneday_product = best_product_list_page.save_best_first_product_name(wd)
-            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneday_product,
-                                                                         oneday_product)
+            test_result = best_product_list_page.check_best_product_name(test_result, warning_texts,
+                                                                         api_oneday_product, oneday_product)
 
             # 주간 필터 선택
             best_product_list_page.click_period_sort(wd, '주간')
@@ -40,8 +40,8 @@ class Plp:
             # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
             api_oneweek_product = api_control.best_plp_women_clothes(1, 'ONE_WEEK')['item_name']
             oneweek_product = best_product_list_page.save_best_first_product_name(wd)
-            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneweek_product,
-                                                                         oneweek_product)
+            test_result = best_product_list_page.check_best_product_name(test_result, warning_texts,
+                                                                         api_oneweek_product, oneweek_product)
 
             # 월간 필터 선택
             best_product_list_page.click_period_sort(wd, '월간')
@@ -49,8 +49,8 @@ class Plp:
             # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
             api_onemonth_product = api_control.best_plp_women_clothes(1, 'ONE_MONTH')['item_name']
             onemonth_product = best_product_list_page.save_best_first_product_name(wd)
-            test_result = best_product_list_page.check_best_product_name(warning_texts, api_onemonth_product,
-                                                                         onemonth_product)
+            test_result = best_product_list_page.check_best_product_name(test_result, warning_texts,
+                                                                         api_onemonth_product, onemonth_product)
 
             # 실시간 필터로 복귀
             best_product_list_page.click_period_sort(wd, '실시간')
@@ -63,14 +63,16 @@ class Plp:
             heart_select = best_product_list_page.save_best_product_like_count(wd)
 
             # 좋아요 수 증가 확인
-            test_result = best_product_list_page.check_increase_like_count(warning_texts, heart_count, heart_select)
+            test_result = best_product_list_page.check_increase_like_count(test_result, warning_texts, heart_count,
+                                                                           heart_select)
 
             # 좋아요 버튼 선택 -> 찜하기 해제
             best_product_list_page.click_best_product_like_btn(wd)
             heart_deselect = best_product_list_page.save_best_product_like_count(wd)
 
             # 좋아요 수 차감 확인
-            test_result = best_product_list_page.check_decrease_like_count(warning_texts, heart_count, heart_deselect)
+            test_result = best_product_list_page.check_decrease_like_count(test_result, warning_texts, heart_count,
+                                                                           heart_deselect)
 
             # 실시간 여성 의류 베스트 1위 상품명과 금액 저장 및 선택
             now_1st_product = api_control.best_plp_women_clothes(1, 'NOW')['item_name']
@@ -79,13 +81,14 @@ class Plp:
 
             # PDP 상품명 비교
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, now_1st_product)
+            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, now_1st_product)
 
             # context_change.switch_context(wd, 'webveiw')
             #
             # # PDP 상품가격 비교
             # pdp_price = product_detail_page.save_product_price(wd)
-            # test_result = product_detail_page.check_product_price(warning_texts, pdp_price, now_1st_product_price)
+            # test_result = product_detail_page.check_product_price(test_result, warning_texts, pdp_price,
+            #                                                       now_1st_product_price)
             #
             # context_change.switch_context(wd, 'native')
 
@@ -100,7 +103,8 @@ class Plp:
 
             # 실시간 10위 상품 노출 확인
             best_product_list_page.find_scroll_and_find_product_rank(wd, '10')
-            test_result = best_product_list_page.check_additional_product(wd, warning_texts, now_10th_product_name)
+            test_result = best_product_list_page.check_additional_product(wd, test_result, warning_texts,
+                                                                          now_10th_product_name)
 
             # Home으로 복귀
             best_product_list_page.click_back_btn(wd)
