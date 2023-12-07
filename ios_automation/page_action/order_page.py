@@ -107,7 +107,7 @@ def check_purchase_price(wd, pdp_price):
         raise Exception('주문서 가격 확인 실패')
 
 
-def check_cart_purchase_price(wd, test_result, warning_texts, cart_price):
+def check_cart_purchase_price(wd, cart_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
@@ -117,10 +117,8 @@ def check_cart_purchase_price(wd, test_result, warning_texts, cart_price):
     if order_price == compare_price and btn_price == compare_price:
         print('주문서 가격 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문서 가격 확인 실패')
         print(f'주문서 가격 확인 실패 - cart: {cart_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
-    return test_result
+        raise Exception('주문서 가격 확인 실패')
 
 
 def click_virtual_account(wd):
@@ -211,16 +209,14 @@ def click_pinpay_payment(wd):
     sleep(3)
 
 
-def check_done_payment(wd, test_result, warning_texts):
+def check_done_payment(wd):
     sleep(3)
     try:
         ial(wd, '//XCUIElementTypeStaticText[@name="주문이 완료되었습니다."]')
         print('주문 완료 페이지 확인 - 타이틀')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 완료 페이지 확인 실패 - 타이틀')
         print('주문 완료 페이지 확인 실패 - 타이틀')
-    return test_result
+        raise Exception('주문 완료 페이지 확인 실패 - 타이틀')
 
 
 def save_order_no(wd):
@@ -229,7 +225,7 @@ def save_order_no(wd):
     return order_no
 
 
-def check_payment_type(wd, test_result, warning_texts, payment_type):
+def check_payment_type(wd, payment_type):
     payment_info = ''
     for i in range(0, 3):
         try:
@@ -246,10 +242,8 @@ def check_payment_type(wd, test_result, warning_texts, payment_type):
     if payment_info == payment_type:
         print('주문 완료 페이지 확인 - 결제방법')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문 완료 페이지 확인 실패 - 결제방법')
         print(f'주문 완료 페이지 확인 실패 - 결제방법 : {payment_info}')
-    return test_result
+        raise Exception('주문 완료 페이지 확인 실패 - 결제방법')
 
 
 def click_delivery_order_tracking(wd):

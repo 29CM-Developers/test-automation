@@ -221,7 +221,7 @@ class Cart:
             order_page.check_order_product_name(wd, product_name)
 
             # 주문서의 가격 비교 확인
-            test_result = order_page.check_cart_purchase_price(wd, test_result, warning_texts, product_price)
+            order_page.check_cart_purchase_price(wd, product_price)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
