@@ -16,6 +16,7 @@ def click_period_sort(wd, period):
 
 def save_best_first_product_name(wd):
     product_name = aal(wd, 'best_item_title').text
+    print(f'{product_name} 필터링 설정 확인')
     return product_name
 
 

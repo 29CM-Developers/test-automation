@@ -27,15 +27,42 @@ def click_check_out_btn(wd):
     sleep(5)
 
 
+def click_back_btn(wd):
+    aalc(wd, 'com.the29cm.app29cm:id/imgBack')
+    print('뒤로가기 선택')
+    sleep(1)
+
+
+def click_delete_btn_to_all_product(wd):
+    # 웹 뷰에서 장바구니 첫번째 상품 삭제
+    delete_btn = aal(wd, 'c_선택삭제')
+    if delete_btn == None:
+        print("장바구니에 담긴 상품 없음")
+    else:
+        print("장바구니에 담긴 상품 존재")
+        aalc(wd, 'c_선택삭제')
+        sleep(3)
+        print('전체상품삭제')
+    click_back_btn(wd)
+
+
+def click_cart_btn(wd):
+    # 웹 뷰에서 장바구니 첫번째 상품 삭제
+    aalc(wd, 'com.the29cm.app29cm:id/imgCart')
+    print('장바구니 아이콘 선택')
+    sleep(2)
+
+
 def change_webview_contexts(wd):
     # 앱에서 웹뷰로 전환
     webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
     print("Available Contexts:", webview_contexts)
-
     # 웹뷰로 전환
     wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
+    print(f'wd.current_window_handle : {wd.current_window_handle}')
+    print(f'wd.window_handles : {wd.window_handles}')
     print("웹뷰로 전환 성공")
-    sleep(2)
+    sleep(4)
 
 
 def change_native_contexts(wd):
@@ -50,7 +77,6 @@ def save_product_price(wd):
     print('save_product_price 진입성공')
     try:
         product_price = aal(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[4]/div[1]/span')
-        print(f'product_price : {product_price}')
         product_price = product_price.text
         print(f'product_price : {product_price}')
         price = int(product_price.replace(',', ''))

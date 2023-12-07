@@ -149,23 +149,14 @@ class Plp:
             response = requests.get("https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&limit=100&offset=0&periodSort=NOW")
             if response.status_code == 200:
                 api_data = response.json()
-                api_data = api_data['data']['content'][9]['itemName']
-                print(f"api_data :{api_data}")
-
-                best_item_10th = element_control.scroll_to_element_with_text(wd,api_data)
-                if api_data in best_item_10th.text :
-                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인")
-                else:
-                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
-                print(f"api호출 10번째 아이템명 : {api_data} , 베스트 10위 아이템명 : {best_item_10th.text}")
-
-                best_product_title = best_item_10th.text
-                print(f"베스트 상품명 : {best_product_title} ")
-                best_item_10th.click()
+                api_data_first = api_data['data']['content'][0]['itemName']
+                api_data_10th = api_data['data']['content'][9]['itemName']
+                print(f"api_data_10th :{api_data_10th}")
+                # 1위 상품 선택
+                best_item_first = element_control.scroll_to_element_with_text(wd, api_data_first)
+                best_item_first.click()
                 sleep(2)
-                api_data_title = re.sub(r'\s+', ' ', api_data)
+                api_data_title = re.sub(r'\s+', ' ', api_data_first)
                 PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data_title}')]")
                 for PDP_title in PDP_title_elements:
                     print(PDP_title.text)
@@ -185,6 +176,20 @@ class Plp:
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
                 print("뒤로가기 선택")
                 sleep(2)
+
+                # 10위 상품
+                best_item_10th = element_control.scroll_to_element_with_text(wd, api_data_10th)
+                if api_data_10th in best_item_10th.text:
+                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인")
+                else:
+                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
+                print(f"api호출 10번째 아이템명 : {api_data_10th} , 베스트 10위 아이템명 : {best_item_10th.text}")
+
+                best_product_title = best_item_10th.text
+                print(f"베스트 상품명 : {best_product_title} ")
+
                 # 뒤로가기로 카테고리 진입 확인
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
                 print("뒤로가기 선택")

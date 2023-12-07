@@ -61,7 +61,7 @@ class Category:
                     warning_texts.append('카테고리 리스트 확인 실패')
                     print('대 카테고리 리스트 확인 실패')
             else:
-                print('PDP 옵션 정보 API 불러오기 실패')
+                print('대 카테고리 정보 API 불러오기 실패')
 
             # 대 카테고리, 중 카테고리 코드 번호 저장
             large_category_info = api_control.large_categories_info(self.conf["category_groups"]['women'],
