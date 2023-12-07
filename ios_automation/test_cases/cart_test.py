@@ -86,8 +86,7 @@ class Cart:
             context_change.switch_context(wd, 'webview')
 
             # 장바구니에 담긴 상품명 비교 확인
-            test_result = cart_page.check_cart_product_list(wd, test_result, warning_texts, best_pdp_name,
-                                                            keyword_pdp_name)
+            cart_page.check_cart_product_list(wd, best_pdp_name, keyword_pdp_name)
 
             # 네이티브로 전환
             context_change.switch_context(wd, 'native')
@@ -105,6 +104,7 @@ class Cart:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             context_change.switch_context(wd, 'native')
@@ -145,9 +145,8 @@ class Cart:
             delete_total_price = cart_page.save_total_order_price(wd)
 
             # 상품 삭제 확인
-            test_result = cart_page.check_delete_product(test_result, warning_texts, cart_total_count,
-                                                         delete_total_count, cart_total_price, delete_total_price,
-                                                         product_price)
+            cart_page.check_delete_product(cart_total_count, delete_total_count, cart_total_price,
+                                           delete_total_price, product_price)
 
             # 상품 가격과 상품 개수 저장
             product_price = cart_page.save_product_price(wd)
@@ -160,8 +159,8 @@ class Cart:
             sleep(3)
 
             # 상품 추가 확인
-            test_result = cart_page.check_add_product(test_result, warning_texts, product_count, add_product_count,
-                                                      delete_total_price, add_total_price, product_price)
+            cart_page.check_add_product(product_count, add_product_count, delete_total_price,
+                                        add_total_price, product_price)
 
             # 네이티브로 전환
             context_change.switch_context(wd, 'native')
@@ -179,6 +178,7 @@ class Cart:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             context_change.switch_context(wd, 'native')
@@ -236,6 +236,7 @@ class Cart:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             context_change.switch_context(wd, 'native')
