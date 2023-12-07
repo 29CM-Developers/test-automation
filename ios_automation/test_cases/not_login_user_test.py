@@ -38,7 +38,7 @@ class NotLoginUserTest:
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="확인"]').click()
 
             # 로그인 페이지 진입 및 확인
-            test_result = login_page.check_login_page(wd, warning_texts)
+            test_result = login_page.check_login_page(wd, test_result, warning_texts)
 
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
@@ -163,15 +163,15 @@ class NotLoginUserTest:
 
             # 상단 네비게이션 알림 버튼 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarNotiWhite').click()
-            login_page.check_login_page(wd, warning_texts)
+            login_page.check_login_page(wd, test_result, warning_texts)
 
             # 상단 네비게이션 장바구니 버튼 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
-            login_page.check_login_page(wd, warning_texts)
+            login_page.check_login_page(wd, test_result, warning_texts)
 
             # LIKE 탭 선택
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LIKE"]').click()
-            login_page.check_login_page(wd, warning_texts)
+            login_page.check_login_page(wd, test_result, warning_texts)
 
             # PDP > 구매하기 선택
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
@@ -188,7 +188,7 @@ class NotLoginUserTest:
                 wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
             except NoSuchElementException:
                 pass
-            login_page.check_login_page(wd, warning_texts)
+            login_page.check_login_page(wd, test_result, warning_texts)
 
             # Home 탭으로 복귀
             wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()

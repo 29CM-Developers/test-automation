@@ -76,7 +76,7 @@ class My:
             com_utils.deeplink_control.move_to_my(self, wd)
 
             # 최근 본 상품 영역 확인
-            test_result = my_page.check_recent_title(wd, warning_texts, '상품', recent_product_name)
+            test_result = my_page.check_recent_title(wd, test_result, warning_texts, '상품', recent_product_name)
 
             # welove 페이지 이동
             com_utils.deeplink_control.move_to_welove(self, wd)
@@ -89,13 +89,13 @@ class My:
             com_utils.deeplink_control.move_to_my(self, wd)
 
             # 최근 본 상품 영역 확인
-            test_result = my_page.check_recent_title(wd, warning_texts, "컨텐츠", post_title)
+            test_result = my_page.check_recent_title(wd, test_result, warning_texts, "컨텐츠", post_title)
 
             # 최근 본 상품 영역 확장
             my_page.expand_recent_contents(wd)
 
             # 최근 본 상품 히스토리 확인
-            test_result = my_page.check_recent_history(wd, warning_texts, recent_product_name, post_title)
+            test_result = my_page.check_recent_history(wd, test_result, warning_texts, recent_product_name, post_title)
 
             # 최근 본 상품 영역 축소 후 Home 탭으로 이동
             my_page.close_recent_contents(wd)

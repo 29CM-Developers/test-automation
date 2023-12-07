@@ -15,10 +15,9 @@ def click_back_btn(wd):
     ialc(wd, 'common back icon black')
 
 
-def check_edit_page_title(wd, warning_texts):
+def check_edit_page_title(wd, test_result, warning_texts):
     try:
         ial(wd, '//XCUIElementTypeStaticText[@name="회원정보 수정"]')
-        test_result = 'PASS'
         print('회원 정보 수정 페이지 확인 - 타이틀')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -27,10 +26,9 @@ def check_edit_page_title(wd, warning_texts):
     return test_result
 
 
-def check_edit_page_id(wd, warning_texts, id):
+def check_edit_page_id(wd, test_result, warning_texts, id):
     try:
         ial(wd, id)
-        test_result = 'PASS'
         print('회원 정보 수정 페이지 확인 - 이메일')
     except NoSuchElementException:
         test_result = 'WARN'

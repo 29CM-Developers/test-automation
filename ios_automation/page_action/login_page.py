@@ -1,6 +1,5 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
-
 from selenium.common import NoSuchElementException
 
 
@@ -26,11 +25,10 @@ def clear_id_password(wd):
                     '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeSecureTextField[@index="1"]').clear()
 
 
-def check_login_error_text(self, wd, warning_texts):
+def check_login_error_text(self, wd, test_result, warning_texts):
     error_text = wd.find_element(AppiumBy.XPATH,
                                  '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
     if self.conf['login_error_text'] in error_text or self.conf['login_exceeded_text'] in error_text:
-        test_result = 'PASS'
         print("이메일 로그인 실패 확인")
     else:
         test_result = 'WARN'
@@ -39,11 +37,10 @@ def check_login_error_text(self, wd, warning_texts):
     return test_result
 
 
-def check_login_page(wd, warning_texts):
+def check_login_page(wd, test_result, warning_texts):
     sleep(2)
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '로그인하기')
-        test_result = 'PASS'
         print('로그인 페이지 진입 확인')
     except NoSuchElementException:
         test_result = 'WARN'

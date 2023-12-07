@@ -351,7 +351,7 @@ class Home:
 
             # MY 탭 진입하여 닉네임 확인
             navigation_bar.move_to_my(wd)
-            test_result = my_page.check_nickname(self, wd, warning_texts)
+            test_result = my_page.check_nickname(self, wd, test_result, warning_texts)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
