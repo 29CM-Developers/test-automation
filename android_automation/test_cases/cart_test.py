@@ -128,6 +128,10 @@ class Cart:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 장바구니 진입하여 기존 상품 지우기
+            cart_page.click_cart_btn(wd)
+            cart_page.click_delete_btn_to_all_product(wd)
+
             # 여성의류 베스트 중 품절 상태가 아닌 첫번째 상품의 상품 번호 확인
             product_item_no = product_detail_page.save_no_soldout_product_no()
 
@@ -190,6 +194,7 @@ class Cart:
             product_detail_page.click_move_to_cart(wd)
             # 웹뷰로 변경
             cart_page.change_webview_contexts(wd)
+            print(wd.window_handles)
             wd.switch_to.window(wd.window_handles[0])
             print(wd.current_window_handle)
             test_result = cart_page.check_product_name(wd, warning_texts, pdp_name1, pdp_name2)
