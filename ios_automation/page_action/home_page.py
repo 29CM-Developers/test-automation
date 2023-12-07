@@ -40,22 +40,19 @@ def save_tab_names(wd):
 
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'
 # tab_list : 비교할 탭 이름 리스트
-def check_tab_names(self, warning_texts, tab, tab_list):
+def check_tab_names(self, test_result, warning_texts, tab, tab_list):
     if self.conf['compare_home_tab'][tab] in tab_list:
-        test_result = 'PASS'
         print('홈 상단 탭 확인')
     else:
         test_result = 'WARN'
         warning_texts.append('홈 상단 탭 확인 실패')
-        print(self.conf['compare_home_tab'][tab])
         print('홈 상단 탭 확인 실패')
     return test_result
 
 
-def check_entry_recommended_tab(self, wd, warning_texts):
+def check_entry_recommended_tab(self, wd, test_result, warning_texts):
     try:
         ial(wd, f'{self.pconf["nickname"]}님을 위한 추천 상품')
-        test_result = 'PASS'
         print('홈화면 추천 탭 타이틀 확인')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -64,10 +61,9 @@ def check_entry_recommended_tab(self, wd, warning_texts):
     return test_result
 
 
-def check_not_login_user_recommended_tab(wd, warning_texts):
+def check_not_login_user_recommended_tab(wd, test_result, warning_texts):
     try:
         ial(wd, '당신을 위한 추천 상품')
-        test_result = 'PASS'
         print('비로그인 유저 홈화면 추천 탭 타이틀 확인')
     except NoSuchElementException:
         test_result = 'WARN'
@@ -76,24 +72,23 @@ def check_not_login_user_recommended_tab(wd, warning_texts):
     return test_result
 
 
-def scroll_to_feed_contents(wd, warning_texts, feed_title):
-    test_result = 'WARN'
+def scroll_to_feed_contents(wd, test_result, warning_texts, feed_title):
+    find_contents = False
     for i in range(0, 10):
         try:
             feed_contents = wd.find_elements(AppiumBy.ACCESSIBILITY_ID, 'home_content_title')
             for title in feed_contents:
                 if title.is_displayed() and feed_title == title.text:
                     find_contents = True
-                    test_result = 'PASS'
                     print('피드 컨텐츠 노출 확인')
                     break
             else:
                 scroll_control(wd, 'D', 40)
         except NoSuchElementException:
             scroll_control(wd, 'D', 60)
-        if test_result == 'PASS':
+        if find_contents:
             break
-    if test_result == 'WARN':
+    if not find_contents:
         test_result = 'WARN'
         warning_texts.append('피드 컨텐츠 노출 확인 실패')
         print('피드 컨텐츠 노출 확인 실패')
@@ -115,9 +110,8 @@ def click_contents_like_btn(wd):
     ialc(wd, 'home_content_like_btn')
 
 
-def check_increase_like_count(warning_texts, heart_count, heart_select):
+def check_increase_like_count(test_result, warning_texts, heart_count, heart_select):
     if heart_select == heart_count + 1:
-        test_result = 'PASS'
         print('피드 아이템 좋아요 개수 증가 확인')
     else:
         test_result = 'WARN'
@@ -126,9 +120,8 @@ def check_increase_like_count(warning_texts, heart_count, heart_select):
     return test_result
 
 
-def check_decrease_like_count(warning_texts, heart_count, heart_unselect):
+def check_decrease_like_count(test_result, warning_texts, heart_count, heart_unselect):
     if heart_unselect == heart_count:
-        test_result = 'PASS'
         print('피드 아이템 좋아요 개수 차감 확인')
     else:
         test_result = 'WARN'

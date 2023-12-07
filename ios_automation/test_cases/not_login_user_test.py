@@ -86,14 +86,14 @@ class NotLoginUserTest:
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(wd, pdp_name, plp_name)
+            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, plp_name)
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             product_detail_page.click_pdp_back_btn(wd)
 
             # Home > 추천 탭 상단의 타이틀 비교 (비로그인 유저 : 당신)
             home_page.click_tab_name(wd, '추천')
-            test_result = home_page.check_not_login_user_recommended_tab(wd, warning_texts)
+            test_result = home_page.check_not_login_user_recommended_tab(wd, test_result, warning_texts)
 
             # 상단 검색 버튼 선택하여 인기 브랜드 6위 선택
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_search_btn').click()
