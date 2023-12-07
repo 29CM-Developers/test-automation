@@ -62,7 +62,7 @@ def change_webview_contexts(wd):
     print(f'wd.current_window_handle : {wd.current_window_handle}')
     print(f'wd.window_handles : {wd.window_handles}')
     print("웹뷰로 전환 성공")
-    sleep(2)
+    sleep(4)
 
 
 def change_native_contexts(wd):
