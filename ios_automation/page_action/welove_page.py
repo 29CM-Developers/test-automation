@@ -60,18 +60,16 @@ def click_first_post_hashtag(wd):
     sleep(3)
 
 
-def check_hash_tag_title(wd, test_result, warning_texts, hash_tag):
+def check_hash_tag_title(wd, hash_tag):
     hash_tag_title = ial(wd, '//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeStaticText').text
     if hash_tag_title == hash_tag:
         print('포스트 해시태그 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('포스트 해시태그 확인 실패')
         print(f'포스트 해시태그 확인 실패 : {hash_tag} / {hash_tag_title}')
-    return test_result
+        raise Exception('포스트 해시태그 확인 실패')
 
 
-def check_hash_tag_post(wd, test_result, warning_texts, post_title):
+def check_hash_tag_post(wd, post_title):
     tag_break = False
     for i in range(0, 5):
         try:
@@ -84,13 +82,11 @@ def check_hash_tag_post(wd, test_result, warning_texts, post_title):
             pass
         com_utils.element_control.scroll_control(wd, "D", 50)
     if not tag_break:
-        test_result = 'WARN'
-        warning_texts.append('포스트 해시태그 확인 실패 - 포스트 타이틀')
         print('포스트 해시태그 확인 실패 - 포스트 타이틀')
-    return test_result
+        raise Exception('포스트 해시태그 확인 실패 - 포스트 타이틀')
 
 
-def find_and_save_third_post(wd, test_result, warning_texts):
+def find_and_save_third_post(wd):
     post_title = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[3]/XCUIElementTypeStaticText[2]').text
     print(post_title)
     find_break = False
@@ -105,6 +101,5 @@ def find_and_save_third_post(wd, test_result, warning_texts):
             pass
         com_utils.element_control.scroll_control(wd, "D", 40)
     if not find_break:
-        warning_texts.append('포스트 추가 노출 확인 실패')
         print('포스트 추가 노출 확인 실패')
-    return test_result
+        raise Exception('포스트 추가 노출 확인 실패')
