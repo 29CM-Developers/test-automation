@@ -104,7 +104,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             # 선물하기 버튼 선택
             product_detail_page.click_gift_btn(wd)
@@ -176,7 +176,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             # 구매하기 버튼 선택
             product_detail_page.click_purchase_btn(wd)

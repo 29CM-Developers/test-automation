@@ -33,14 +33,12 @@ def save_remove_prefix_product_name(product_name):
 
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
-def check_product_name(test_result, warning_texts, product_name, compare_name):
+def check_product_name(product_name, compare_name):
     if compare_name in product_name:
         print('PDP 진입 확인 - 상품명')
     else:
-        test_result = 'WARN'
-        warning_texts.append('PDP 진입 확인 실패 - 상품명')
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
-    return test_result
+        raise Exception('PDP 진입 확인 실패 - 상품명')
 
 
 def save_product_price(wd):
@@ -52,14 +50,12 @@ def save_product_price(wd):
 
 # product_price : pdp 상품 가격
 # compare_name: pdp 상품 가격과 비교할 상품 가격
-def check_product_price(test_result, warning_texts, product_price, compare_price):
+def check_product_price(product_price, compare_price):
     if compare_price == product_price:
         print('PDP 진입 확인 - 상품가격')
     else:
-        test_result = 'WARN'
-        warning_texts.append('PDP 진입 확인 실패 - 상품가격')
         print(f'PDP 진입 확인 실패 - pdp: {product_price} / 비교: {compare_price}')
-    return test_result
+        raise Exception('PDP 진입 확인 실패 - 상품가격')
 
 
 def close_purchase_modal(wd):

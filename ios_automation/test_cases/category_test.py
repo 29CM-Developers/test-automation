@@ -90,14 +90,14 @@ class Category:
             pdp_name = product_detail_page.save_product_name(wd)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, plp_name)
+            product_detail_page.check_product_name(pdp_name, plp_name)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
 
             # pdp 가격 저장 후, 카테고리 plp의 가격과 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
-            test_result = product_detail_page.check_product_price(test_result, warning_texts, pdp_price, plp_price)
+            product_detail_page.check_product_price(pdp_price, plp_price)
 
             # native 전환
             context_change.switch_context(wd, 'native')

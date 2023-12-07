@@ -92,8 +92,7 @@ class Like:
             pdp_product_name = product_detail_page.save_product_name(wd)
 
             # 좋아요 한 상품명과 PDP의 상품명 비교
-            test_result = product_detail_page.check_product_name(test_result, warning_texts,
-                                                                 pdp_product_name, like_product_name)
+            product_detail_page.check_product_name(pdp_product_name, like_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -109,8 +108,7 @@ class Like:
             pdp_product_name = product_detail_page.save_product_name(wd)
 
             # 좋아요 한 상품명과 PDP의 상품명 비교
-            test_result = product_detail_page.check_product_name(test_result, warning_texts,
-                                                                 pdp_product_name, like_product_name)
+            product_detail_page.check_product_name(pdp_product_name, like_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -162,8 +160,7 @@ class Like:
             liked_brand_product_name = like_page.save_liked_brand_product_name(wd)
             like_page.click_liked_brand_porduct_name(wd)
             pdp_product_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_product_name,
-                                                                 liked_brand_product_name)
+            product_detail_page.check_product_name(pdp_product_name, liked_brand_product_name)
 
             # Like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)

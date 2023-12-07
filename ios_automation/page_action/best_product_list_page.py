@@ -14,15 +14,13 @@ def click_period_sort(wd, period):
     ialc(wd, f'//XCUIElementTypeButton[@name="{period}"]')
 
 
-def check_entry_best_plp(wd, test_result, warning_texts):
+def check_entry_best_plp(wd):
     try:
         ial(wd, '//XCUIElementTypeStaticText[@name="베스트"]')
         print('베스트 PLP 진입 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('베스트 PLP 진입 확인 실패')
         print('베스트 PLP 진입 확인 실패')
-    return test_result
+        raise Exception('베스트 PLP 진입 확인 실패')
 
 
 def save_best_first_product_name(wd):
@@ -39,14 +37,12 @@ def save_api_product_name(prefix, product_name):
     return best_product_name
 
 
-def check_best_product_name(test_result, warning_texts, compare_name, product_name):
+def check_best_product_name(compare_name, product_name):
     if compare_name in product_name:
         print('베스트 PLP 상품명 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('베스트 PLP 상품명 확인 실패')
         print(f'베스트 PLP 상품명 확인 실패 : {compare_name} / {product_name}')
-    return test_result
+        raise Exception('베스트 PLP 상품명 확인 실패')
 
 
 def save_plp_price(wd):
@@ -77,15 +73,13 @@ def find_scroll_and_find_product_rank(wd, find_rank):
         scroll_control(wd, "D", 50)
 
 
-def check_additional_product(wd, test_result, warning_texts, product_name):
+def check_additional_product(wd, product_name):
     try:
         wd.find_element(AppiumBy.IOS_PREDICATE, f'label == "{product_name}"')
         print('베스트 PLP 상품 추가 노출 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('베스트 PLP 상품 추가 노출 확인 실패')
-        print(f'베스트 PLP 상품 추가 노출 확인 실패')
-    return test_result
+        print('베스트 PLP 상품 추가 노출 확인 실패')
+        raise Exception('베스트 PLP 상품 추가 노출 확인 실패')
 
 
 def click_best_first_product(wd):
@@ -104,21 +98,17 @@ def click_best_product_like_btn(wd):
     sleep(1)
 
 
-def check_increase_like_count(test_result, warning_texts, heart_count, heart_select):
+def check_increase_like_count(heart_count, heart_select):
     if heart_select == heart_count + 1:
         print('아이템 좋아요 개수 증가 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('아이템 좋아요 개수 증가 확인 실패')
         print(f'아이템 좋아요 개수 증가 확인 실패: {heart_count} / {heart_select}')
-    return test_result
+        raise Exception('아이템 좋아요 개수 증가 확인 실패')
 
 
-def check_decrease_like_count(test_result, warning_texts, heart_count, heart_unselect):
+def check_decrease_like_count(heart_count, heart_unselect):
     if heart_unselect == heart_count:
         print('아이템 좋아요 개수 차감 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('아이템 좋아요 개수 차감 확인 실패')
         print(f'아이템 좋아요 개수 차감 확인 실패: {heart_count} / {heart_unselect}')
-    return test_result
+        raise Exception('아이템 좋아요 개수 차감 확인 실패')

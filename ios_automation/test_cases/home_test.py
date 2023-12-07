@@ -250,16 +250,14 @@ class Home:
 
             # 상품명 비교 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name,
-                                                                 contents_prodcut_name)
+            product_detail_page.check_product_name(pdp_name, contents_prodcut_name)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
 
             # 상품 가격 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
-            test_result = product_detail_page.check_product_price(test_result, warning_texts, pdp_price,
-                                                                  contents_product_price)
+            product_detail_page.check_product_price(pdp_price, contents_product_price)
 
             # native 전환
             context_change.switch_context(wd, 'native')
