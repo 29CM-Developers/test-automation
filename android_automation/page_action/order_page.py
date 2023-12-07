@@ -53,6 +53,7 @@ def click_payment(wd):
 
 
 def click_virtual_account_payment(wd):
+    sleep(1)
     aalc(wd, 'c_전체 동의')
     aalc(wd, 'c_토스뱅크')
     scroll_control(wd, 'D', 50)
@@ -111,9 +112,7 @@ def save_delivery_price(wd):
 
     # 웹뷰에서 작업 수행 (예: 웹 요소 찾기, 클릭 등)
     delivery_price_parents = wd.find_element(By.XPATH, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
-    print(f'delivery_price_parents : {delivery_price_parents}')
     delivery_price_element = delivery_price_parents.find_elements(By.XPATH, '*')
-    print(f'delivery_price_element : {delivery_price_element}')
     for i in range(len(delivery_price_element)):
         print(f'delivery_price_element : {delivery_price_element[i].text}')
         if delivery_price_element[i].text == '배송비':
@@ -153,9 +152,9 @@ def change_webview(wd):
 def change_native(wd):
     # 네이티브로 전환
     webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
-    print("Available Contexts:", webview_contexts)
-    print(f'wd.current_context : {wd.current_context}')
-    print(f'wd.current_window_handle : {wd.current_window_handle}')
+    # print("Available Contexts:", webview_contexts)
+    # print(f'wd.current_context : {wd.current_context}')
+    # print(f'wd.current_window_handle : {wd.current_window_handle}')
     print(f'wd.window_handles : {wd.window_handles}')
     wd.switch_to.context('NATIVE_APP')
     print("네이티브 변환 성공")
@@ -164,9 +163,7 @@ def change_native(wd):
 def save_coupon_discount_price(wd):
     coupon_discount_price_parents = wd.find_element(By.XPATH,
                                                     '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
-    print(f'coupon_discount_price_parents : {coupon_discount_price_parents}')
     coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
-    print(f'coupon_discount_price_element : {coupon_discount_price_element}')
 
     for i in range(len(coupon_discount_price_element)):
         print(f'coupon_discount_price_element : {coupon_discount_price_element[i].text}')
@@ -316,7 +313,6 @@ def check_payment_type(wd, warning_texts, payment_type):
     payment_info = ''
     try:
         parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제방법")]/../..')
-        print(f'parent_elements:{parent_elements}')
         p1 = aals(parent_elements, '//android.view.View')
         for i in range(len(p1)):
             print(f'element : {p1[i].text}')
