@@ -167,7 +167,7 @@ def click_all_agreement(wd):
 
 def click_payment(wd):
     ialc(wd, 'c_결제하기')
-    sleep(3)
+    sleep(5)
 
 
 def check_inipay_page(wd):
