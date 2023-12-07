@@ -185,11 +185,10 @@ def move_bottom_sheet(wd, direction):
     element_scroll_control(wd, element, direction, 40)
 
 
-def check_like_bottom_sheet(wd, warning_texts):
+def check_like_bottom_sheet(wd, test_result, warning_texts):
     try:
         ial(wd, 'c_함께 보면 좋은 상품')
         ial(wd, 'c_다른 고객이 함께 구매한 상품')
-        test_result = 'PASS'
         print('추천 상품 바텀 시트 노출 확인')
     except NoSuchElementException:
         test_result = 'WARN'

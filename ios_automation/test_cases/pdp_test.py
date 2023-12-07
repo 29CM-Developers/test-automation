@@ -41,7 +41,7 @@ class Pdp:
 
             # 바텀시트 최대로 확장하여 바텀시트 내 타이틀 확인 > 바텀 시트 닫기
             product_detail_page.move_bottom_sheet(wd, 'D')
-            test_result = product_detail_page.check_like_bottom_sheet(wd, warning_texts)
+            test_result = product_detail_page.check_like_bottom_sheet(wd, test_result, warning_texts)
             product_detail_page.move_bottom_sheet(wd, 'U')
             product_detail_page.move_bottom_sheet(wd, 'U')
 
@@ -104,7 +104,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, search_product)
 
             # 선물하기 버튼 선택
             product_detail_page.click_gift_btn(wd)
@@ -119,10 +119,10 @@ class Pdp:
             product_detail_page.click_direct_gift_btn(wd)
 
             # 선물 받는 분 정보 타이틀 확인
-            order_page.check_receiver_info(wd, test_result, warning_texts)
+            test_result = order_page.check_receiver_info(wd, test_result, warning_texts)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, test_result, warning_texts, pdp_name)
+            test_result = order_page.check_order_product_name(wd, test_result, warning_texts, pdp_name)
 
             # 주문서 가격 비교 확인
             test_result = order_page.check_purchase_price(wd, test_result, warning_texts, pdp_price)
@@ -176,7 +176,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            test_result = product_detail_page.check_product_name(test_result, warning_texts, pdp_name, search_product)
 
             # 구매하기 버튼 선택
             product_detail_page.click_purchase_btn(wd)
@@ -194,7 +194,7 @@ class Pdp:
             test_result = order_page.check_delivery_info(wd, test_result, warning_texts)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, test_result, warning_texts, pdp_name)
+            test_result = order_page.check_order_product_name(wd, test_result, warning_texts, pdp_name)
 
             # 주문서 가격 비교 확인
             test_result = order_page.check_purchase_price(wd, test_result, warning_texts, pdp_price)
