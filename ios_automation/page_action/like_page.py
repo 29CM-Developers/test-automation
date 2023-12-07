@@ -166,17 +166,15 @@ def click_product_like_btn(wd):
 
 
 # like_product_name = 좋아요 상품 목록의 상품명과 비교할 상품명
-def check_product_like(wd, test_result, warning_texts, like_product_name):
+def check_product_like(wd, like_product_name):
     liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
     liked_product_name = liked_product.find_element(AppiumBy.XPATH,
                                                     '//XCUIElementTypeStaticText[@index="1"]').text
     if like_product_name == liked_product_name:
         print('좋아요 상품 노출 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('좋아요 상품 노출 확인 실패')
         print(f'좋아요 상품 노출 확인 실패: 좋아요 전-{like_product_name} / 좋아요 후-{liked_product_name}')
-    return test_result
+        raise Exception('좋아요 상품 노출 확인 실패')
 
 
 def click_product_name(wd):

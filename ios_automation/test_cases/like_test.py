@@ -83,7 +83,7 @@ class Like:
             like_page.refresh_product_like_tab(wd)
 
             # 좋아요 한 상품의 상품명 비교
-            test_result = like_page.check_product_like(wd, test_result, warning_texts, like_product_name)
+            like_page.check_product_like(wd, like_product_name)
 
             # 좋아요 한 상품의 상품명 선택
             like_page.click_product_name(wd)
@@ -101,7 +101,7 @@ class Like:
             like_page.click_liked_product_cart_btn(wd)
 
             # PDP의 구매하기 모달 확인 후 닫기
-            test_result = product_detail_page.check_open_to_purchase_modal(wd, test_result, warning_texts)
+            product_detail_page.check_open_to_purchase_modal(wd)
             product_detail_page.close_purchase_modal(wd)
 
             # PDP 상품 이름 저장

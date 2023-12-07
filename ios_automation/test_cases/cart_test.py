@@ -46,7 +46,7 @@ class Cart:
             product_detail_page.click_put_in_cart_btn(wd)
 
             # 상품 장바구니에 담기 완료 바텀시트 노출 확인
-            test_result = product_detail_page.check_add_product_to_cart(wd, test_result, warning_texts)
+            product_detail_page.check_add_product_to_cart(wd)
 
             # 바텀시트 외의 영역 선택하여 바텀시트 닫기
             tap_control(wd)
@@ -77,7 +77,7 @@ class Cart:
             product_detail_page.click_put_in_cart_btn(wd)
 
             # 상품 장바구니에 담기 완료 바텀시트 노출 확인
-            test_result = product_detail_page.check_add_product_to_cart(wd, test_result, warning_texts)
+            product_detail_page.check_add_product_to_cart(wd)
 
             # 장바구니로 이동
             product_detail_page.click_move_to_cart(wd)
@@ -215,10 +215,10 @@ class Cart:
             context_change.switch_context(wd, 'native')
 
             # 주문서 진입 확인
-            test_result = order_page.check_delivery_info(wd, test_result, warning_texts)
+            order_page.check_delivery_info(wd)
 
             # 주문서의 상품명 비교 확인
-            test_result = order_page.check_order_product_name(wd, test_result, warning_texts, product_name)
+            order_page.check_order_product_name(wd, product_name)
 
             # 주문서의 가격 비교 확인
             test_result = order_page.check_cart_purchase_price(wd, test_result, warning_texts, product_price)

@@ -11,18 +11,16 @@ def click_back_btn(wd):
     ialc(wd, 'common back icon black')
 
 
-def check_delivery_info(wd, test_result, warning_texts):
+def check_delivery_info(wd):
     try:
         ial(wd, 'c_배송 정보')
         print('구매하기 결제 화면 진입 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('구매하기 결제 화면 진입 확인 실패')
         print('구매하기 결제 화면 진입 확인 실패')
-    return test_result
+        raise Exception('구매하기 결제 화면 진입 확인 실패')
 
 
-def check_receiver_info(wd, test_result, warning_texts):
+def check_receiver_info(wd):
     info_break = False
     for i in range(0, 5):
         try:
@@ -35,13 +33,11 @@ def check_receiver_info(wd, test_result, warning_texts):
             pass
         scroll_control(wd, 'D', 50)
     if not info_break:
-        test_result = 'WARN'
-        warning_texts.append('선물하기 결제 화면 진입 확인 실패')
         print('선물하기 결제 화면 진입 확인 실패')
-    return test_result
+        raise Exception('선물하기 결제 화면 진입 확인 실패')
 
 
-def check_order_product_name(wd, test_result, warning_texts, product_name):
+def check_order_product_name(wd, product_name):
     name_break = False
     order_name = ''
     for i in range(0, 5):
@@ -56,10 +52,8 @@ def check_order_product_name(wd, test_result, warning_texts, product_name):
             pass
         scroll_control(wd, 'D', 50)
     if not name_break:
-        test_result = 'WARN'
-        warning_texts.append('주문서 상품명 확인 실패')
         print(f'주문서 상품명 확인 실패: pdp-{product_name} / 주문서-{order_name}')
-    return test_result
+        raise Exception('주문서 상품명 확인 실패')
 
 
 def save_purchase_price(wd):
@@ -100,7 +94,7 @@ def save_coupon_price(wd):
     return coupon_price
 
 
-def check_purchase_price(wd, test_result, warning_texts, pdp_price):
+def check_purchase_price(wd, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
@@ -109,10 +103,8 @@ def check_purchase_price(wd, test_result, warning_texts, pdp_price):
     if order_price == compare_price and btn_price == compare_price:
         print('주문서 가격 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문서 가격 확인 실패')
         print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
-    return test_result
+        raise Exception('주문서 가격 확인 실패')
 
 
 def check_cart_purchase_price(wd, test_result, warning_texts, cart_price):
