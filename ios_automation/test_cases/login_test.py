@@ -28,7 +28,7 @@ class UserLoginTest:
             login_page.input_id_password(wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
 
             # 프로필 이름 확인
-            test_result = my_page.check_nickname(self, wd, test_result, warning_texts)
+            my_page.check_nickname(self, wd)
 
             # 회원 정보 수정 페이지 진입
             my_page.click_edit_user_info_menu(wd)
@@ -136,7 +136,7 @@ class UserLoginTest:
             login_page.input_id_password(wd, self.pconf['id2_29cm'], self.pconf['password_29cm'])
 
             # 프로필 이름 확인
-            test_result = my_page.check_nickname(self, wd, test_result, warning_texts)
+            my_page.check_nickname(self, wd)
 
             # Home 으로 복귀
             navigation_bar.move_to_home(wd)

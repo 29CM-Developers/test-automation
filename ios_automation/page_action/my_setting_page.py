@@ -6,13 +6,11 @@ def click_back_btn(wd):
     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
 
 
-def check_notification(wd, test_result, warning_texts):
+def check_notification(wd):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '쇼핑 알림')
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '재입고 알림')
         print('설정 화면 진입 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('설정 화면 진입 확인 실패')
         print('설정 화면 진입 확인 실패')
-    return test_result
+        raise Exception('설정 화면 진입 확인 실패')

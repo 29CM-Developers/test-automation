@@ -10,15 +10,13 @@ def click_back_btn(wd):
     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
 
-def check_no_delivery_order(wd, test_result, warning_texts):
+def check_no_delivery_order(wd):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '주문내역이 없습니다')
         print("주문 건이 없을 경우, 주문 배송 조회 확인")
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 건이 없을 경우, 주문 배송 조회 확인 실패')
         print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
-    return test_result
+        raise Exception('주문 건이 없을 경우, 주문 배송 조회 확인 실패')
 
 
 def check_delivery_order(wd, order_no):
