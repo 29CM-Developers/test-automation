@@ -258,7 +258,7 @@ class NotLogin:
         #
         # sleep(1)
         # 우먼탭으로 선택 ui 변경
-        tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+        # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
 
         # 6. Home 상단 네비게이션 검색 아이콘 선택
