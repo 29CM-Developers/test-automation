@@ -212,7 +212,7 @@ class Home:
             try:
                 # 로그인 성공 진입 확인
                 login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-                if login_name.text == self.pconf['MASKING_NAME']:
+                if login_name.text == self.pconf['NAME']:
                     pass
                 else:
                     print("로그인 문구 실패")
@@ -472,6 +472,7 @@ class Home:
         try:
             print("[홈화면 컨텐츠 확인]CASE 시작")
             sleep(5)
+
             # # 이굿위크 여부 확인
             # try:
             #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
@@ -482,25 +483,27 @@ class Home:
             # print("추천 탭 선택")
             # sleep(1)
 
+            # 추천 개인정보 처리로 확인 주석처리
             # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             # # 2. 홈 > 피드 > 추천 탭선택
             # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
             # print('홈 > 피드 > 추천 탭선택 ')
-            scroll_to_element_with_text(wd, '추천 상품')
-            guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
 
-            # 추천 개인정보 처리로 확인 주석처리
-            # if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
-            #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
-            # else:
-            #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
-            #     test_result = 'WARN'
-            #     warning_texts.append("추천 가이드 문구 확인 실패")
-
-            print(f"가이드 문구 : {guide_text.text} ")
             aalc(wd, 'men_tab')
             print('홈 > 피드 > 맨 탭선택 ')
             sleep(1)
+
+            # 추천 확인 추가
+            scroll_to_element_with_text(wd, '추천 상품')
+            guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
+            print(f"가이드 문구 : {guide_text.text} ")
+            if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
+                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
+            else:
+                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
+                test_result = 'WARN'
+                warning_texts.append("추천 가이드 문구 확인 실패")
+
             aalc(wd, 'women_tab')
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
