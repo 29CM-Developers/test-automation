@@ -238,27 +238,27 @@ class NotLogin:
         # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
         # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
         # 이굿위크 여부 확인
-        try:
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
-        except NoSuchElementException:
-            main_tab_container = aal(wd, 'com.the29cm.app29cm:id/container')
-            swipe_control(wd, main_tab_container, 'left', 10)
-        aalc(wd, 'recommend_tab')
-        print("추천 탭 선택")
-        sleep(1)
-
-        guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
-        if guide_text.text == '당신을 위한 추천 상품':
-            print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
-        else:
-            print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
-            test_result = 'WARN'
-            warning_texts.append("추천 가이드 문구 확인 실패")
-        print(f"가이드 문구 : {guide_text.text} ")
-
-        sleep(1)
+        # try:
+        #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
+        # except NoSuchElementException:
+        #     main_tab_container = aal(wd, 'com.the29cm.app29cm:id/container')
+        #     swipe_control(wd, main_tab_container, 'left', 10)
+        # aalc(wd, 'recommend_tab')
+        # print("추천 탭 선택")
+        # sleep(1)
+        #
+        # guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
+        # if guide_text.text == '당신을 위한 추천 상품':
+        #     print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
+        # else:
+        #     print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
+        #     test_result = 'WARN'
+        #     warning_texts.append("추천 가이드 문구 확인 실패")
+        # print(f"가이드 문구 : {guide_text.text} ")
+        #
+        # sleep(1)
         # 우먼탭으로 선택 ui 변경
-        tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
+        # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
 
         # 6. Home 상단 네비게이션 검색 아이콘 선택

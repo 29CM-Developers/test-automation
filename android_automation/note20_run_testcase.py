@@ -1,21 +1,16 @@
 import unittest
 import os
 import sys
-
-from android_automation.test_cases.payment_test import Payment
-from android_automation.test_cases.pdp_test import Pdp
-
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
-import requests
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.loginpage_test import LoginLogout
-from android_automation.test_cases.not_login_user_test import NotLogin
 from android_automation.test_cases.home_test import Home
-from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.like_test import Like
 from android_automation.test_cases.my_test import My
 from android_automation.test_cases.cart_test import Cart
+from android_automation.test_cases.payment_test import Payment
+from android_automation.test_cases.pdp_test import Pdp
 from android_setup import note20_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException

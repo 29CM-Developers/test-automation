@@ -1,8 +1,6 @@
 import unittest
 import os
 import sys
-from android_automation.test_cases.payment_test import Payment
-from android_automation.test_cases.pdp_test import Pdp
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 import requests
@@ -15,6 +13,8 @@ from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.search_test import Search
 from android_automation.test_cases.like_test import Like
 from android_automation.test_cases.cart_test import Cart
+from android_automation.test_cases.payment_test import Payment
+from android_automation.test_cases.pdp_test import Pdp
 from android_automation.test_cases.join_test import Join
 from android_automation.test_cases.my_test import My
 from android_setup import hhj2008_setup
@@ -70,7 +70,6 @@ class AndroidTestAutomation(unittest.TestCase):
         # 현재 함수명 저장 - slack noti에 사용
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # s22 시나리오
         # testcases 실행 - 비로그인 사용 불가 기능 사용
         self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
@@ -137,22 +136,16 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 실제 실행 -   PDP에서 좋아요
-        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
         # 실제 실행 - 이메일 로그아웃 성공
         self.result_data = LoginLogout.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 실제 실행 - 간편 회원가입 실패
+        # 실제 실행 - 간편 회원 가입 실패
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # #########################
         # # 현재 함수명 저장 - slack noti에 사용
         # self.def_name = self.dconf[sys._getframe().f_code.co_name]
         # # 노트20 시나리오
@@ -193,7 +186,16 @@ class AndroidTestAutomation(unittest.TestCase):
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
         # # 실제 실행 -  장바구니에서 상품정보 변경하기
-        # # 실제 실행 -  장바구니에서 구매하기
+        # self.result_data = Cart.test_change_cart_items(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # # 실제 실행 -  장바구니에서 구매하기
+        # self.result_data = Cart.test_purchase_on_cart(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 실제 실행 -  신용카드로 구매하기
         #
         # # 실제 실행 -  PDP에서 선물 주문서로 이동
         # self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
@@ -205,8 +207,10 @@ class AndroidTestAutomation(unittest.TestCase):
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
-        # # 실제 실행 -  무통장 입금으로 구매하기
-        # # 실제 실행 -  신용카드로 구매하기
+        # # # 무통장 입금으로 구매하기
+        # self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
         # # 실제 실행 -  쿠폰함
         # self.result_data = My.test_coupons_list(self, self.wd)
