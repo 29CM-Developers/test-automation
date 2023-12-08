@@ -1,9 +1,9 @@
 import unittest
 import os
 import sys
+import requests
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
-import requests
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.loginpage_test import LoginLogout
 from android_automation.test_cases.not_login_user_test import NotLogin
