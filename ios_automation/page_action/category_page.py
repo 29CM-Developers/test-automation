@@ -22,7 +22,7 @@ def click_pin_menu(wd, find_menu):
             break
 
 
-def check_large_category_list(wd, warning_texts, api_large_categoty_list):
+def check_large_category_list(wd, api_large_categoty_list):
     large_category_list = []
     for i in range(0, 3):
         # 대 카테고리 리스트 저장
@@ -40,13 +40,10 @@ def check_large_category_list(wd, warning_texts, api_large_categoty_list):
     print(f'대카테고리 리스트 : {large_category_list}')
 
     if api_large_categoty_list == large_category_list:
-        test_result = 'PASS'
         print('대 카테고리 리스트 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('카테고리 리스트 확인 실패')
         print('대 카테고리 리스트 확인 실패')
-    return test_result
+        raise Exception('카테고리 리스트 확인 실패')
 
 
 def scroll_up_large_category(wd):
@@ -62,17 +59,14 @@ def click_category(wd, category_name):
     ialc(wd, category_name)
 
 
-def check_category_page_title(wd, warning_texts, category_name):
+def check_category_page_title(wd, category_name):
     sleep(3)
     try:
         ial(wd, f'//XCUIElementTypeButton[@name="{category_name}"]')
-        test_result = 'PASS'
         print(f'{category_name} 카테고리 PLP 진입 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append(f'{category_name} 카테고리 PLP 진입 확인 실패')
         print(f'{category_name} 카테고리 PLP 진입 확인 실패')
-    return test_result
+        raise Exception(f'{category_name} 카테고리 PLP 진입 확인 실패')
 
 
 def click_filter_by_new(wd):
@@ -100,15 +94,12 @@ def save_webview_category_product_name(wd):
     return plp_name
 
 
-def check_category_product_name(warning_texts, plp_name, compare_name):
+def check_category_product_name(plp_name, compare_name):
     if plp_name == compare_name:
-        test_result = 'PASS'
         print('카테고리 페이지의 상품 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('카테고리 페이지의 상품 확인 실패')
         print('카테고리 페이지의 상품 확인 실패')
-    return test_result
+        raise Exception('카테고리 페이지의 상품 확인 실패')
 
 
 def save_category_product_price(wd):

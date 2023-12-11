@@ -10,32 +10,26 @@ def click_back_btn(wd):
     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
 
 
-def check_no_delivery_order(wd, warning_texts):
+def check_no_delivery_order(wd):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '주문내역이 없습니다')
-        test_result = 'PASS'
         print("주문 건이 없을 경우, 주문 배송 조회 확인")
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 건이 없을 경우, 주문 배송 조회 확인 실패')
         print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
-    return test_result
+        raise Exception('주문 건이 없을 경우, 주문 배송 조회 확인 실패')
 
 
-def check_delivery_order(wd, warning_texts, order_no):
+def check_delivery_order(wd, order_no):
     try:
         ialc(wd, f'c_{order_no}')
         sleep(2)
-        test_result = 'PASS'
         print('주문 배송 조회 확인 - 주문번호')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 배송 조회 확인 실패 - 주문번호')
         print('주문 배송 조회 확인 실패 - 주문번호')
-    return test_result
+        raise Exception('주문 배송 조회 확인 실패 - 주문번호')
 
 
-def check_order_detail_price(wd, warning_texts, payment_type, order_price):
+def check_order_detail_price(wd, payment_type, order_price):
     for i in range(0, 3):
         try:
             element = ial(wd, f'c_{payment_type}')
@@ -50,13 +44,10 @@ def check_order_detail_price(wd, warning_texts, payment_type, order_price):
     price = int(price.replace(',', ''))
 
     if price == order_price:
-        test_result = 'PASS'
         print('주문 상세 내역 확인 - 결제금액')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문 상세 내역 확인 실패 - 결제금액')
         print(f'주문 상세 내역 확인 실패 - 결제금액 : 주문서-{order_price} / 주문 내역-{price}')
-    return test_result
+        raise Exception('주문 상세 내역 확인 실패 - 결제금액')
 
 
 def click_order_cancel_btn(wd):
@@ -66,16 +57,13 @@ def click_order_cancel_btn(wd):
     sleep(3)
 
 
-def check_order_cancel(wd, warning_texts):
+def check_order_cancel(wd):
     try:
         ial(wd, '//XCUIElementTypeStaticText[@name="주문 취소가 완료되었습니다."]')
-        test_result = 'PASS'
         print('주문 취소 완료 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 취소 완료 확인 실패')
         print('주문 취소 완료 확인 실패')
-    return test_result
+        raise Exception('주문 취소 완료 확인 실패')
 
 
 def click_move_to_home(wd):

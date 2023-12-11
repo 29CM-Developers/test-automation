@@ -27,19 +27,19 @@ class Like:
             like_page.set_like_zero(self, wd)
 
             # 상단 Like 개수 확인
-            test_result = like_page.check_like_total_count(wd, warning_texts, '0')
+            like_page.check_like_total_count(wd, '0')
 
             # Product 선택 및 탭 확인
             like_page.click_product_tab(wd)
-            test_result = like_page.check_no_product_like(wd, warning_texts)
+            like_page.check_no_product_like(wd)
 
             # Brand 탭 선택 및 확인
             like_page.click_brand_tab(wd)
-            test_result = like_page.check_no_brand_like(wd, warning_texts)
+            like_page.check_no_brand_like(wd)
 
             # POST 탭 선택 및 확인
             like_page.click_post_tab(wd)
-            test_result = like_page.check_no_post_like(wd, warning_texts)
+            like_page.check_no_post_like(wd)
 
             navigation_bar.move_to_home(wd)
 
@@ -51,6 +51,7 @@ class Like:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -83,7 +84,7 @@ class Like:
             like_page.refresh_product_like_tab(wd)
 
             # 좋아요 한 상품의 상품명 비교
-            test_result = like_page.check_product_like(wd, warning_texts, like_product_name)
+            like_page.check_product_like(wd, like_product_name)
 
             # 좋아요 한 상품의 상품명 선택
             like_page.click_product_name(wd)
@@ -92,7 +93,7 @@ class Like:
             pdp_product_name = product_detail_page.save_product_name(wd)
 
             # 좋아요 한 상품명과 PDP의 상품명 비교
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_product_name, like_product_name)
+            product_detail_page.check_product_name(pdp_product_name, like_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -101,14 +102,14 @@ class Like:
             like_page.click_liked_product_cart_btn(wd)
 
             # PDP의 구매하기 모달 확인 후 닫기
-            test_result = product_detail_page.check_open_to_purchase_modal(wd, warning_texts)
+            product_detail_page.check_open_to_purchase_modal(wd)
             product_detail_page.close_purchase_modal(wd)
 
             # PDP 상품 이름 저장
             pdp_product_name = product_detail_page.save_product_name(wd)
 
             # 좋아요 한 상품명과 PDP의 상품명 비교
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_product_name, like_product_name)
+            product_detail_page.check_product_name(pdp_product_name, like_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -121,8 +122,8 @@ class Like:
 
             # 리스트 뷰 상태에서 이미지 사이즈 저장
             list_size = like_page.save_list_image_size(wd)
-            test_result = like_page.check_veiw_image_size(
-                warning_texts, grid_size['height'], grid_size['width'], list_size['height'], list_size['width'])
+            like_page.check_veiw_image_size(grid_size['height'], grid_size['width'], list_size['height'],
+                                            list_size['width'])
 
             # 그리드 뷰로 복귀
             like_page.click_change_view_type_to_grid(wd)
@@ -138,7 +139,7 @@ class Like:
             like_page.refresh_brand_like_tab(wd)
 
             # 좋아요 한 브랜드명 비교
-            test_result = like_page.check_brand_like(wd, warning_texts, like_brand_name)
+            like_page.check_brand_like(wd, like_brand_name)
 
             # 브랜드명 선택
             like_page.click_liked_brand_name(wd)
@@ -147,7 +148,7 @@ class Like:
             context_change.switch_context(wd, 'webview')
 
             # 브랜드 PLP에서 브랜드명 비교 확인
-            test_result = like_page.check_brand_page_name(wd, warning_texts, like_brand_name)
+            like_page.check_brand_page_name(wd, like_brand_name)
 
             # native 전환
             context_change.switch_context(wd, 'native')
@@ -159,8 +160,7 @@ class Like:
             liked_brand_product_name = like_page.save_liked_brand_product_name(wd)
             like_page.click_liked_brand_porduct_name(wd)
             pdp_product_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_product_name,
-                                                                 liked_brand_product_name)
+            product_detail_page.check_product_name(pdp_product_name, liked_brand_product_name)
 
             # Like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -192,10 +192,10 @@ class Like:
             like_page.refresh_post_like_tab(wd)
 
             # 좋아요 한 게시물명 확인
-            test_result = like_page.check_post_like(wd, warning_texts, like_post_name)
+            like_page.check_post_like(wd, like_post_name)
 
             # 상단 Like 개수 확인
-            test_result = like_page.check_like_total_count(wd, warning_texts, "3")
+            like_page.check_like_total_count(wd, "3")
 
             # 포스트 좋아요 해제
             like_page.click_to_unlike_post(wd)
@@ -212,7 +212,7 @@ class Like:
             like_page.refresh_product_like_tab(wd)
 
             # 상단 Like 개수 확인
-            test_result = like_page.check_like_total_count(wd, warning_texts, "0")
+            like_page.check_like_total_count(wd, "0")
 
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
@@ -225,6 +225,7 @@ class Like:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)

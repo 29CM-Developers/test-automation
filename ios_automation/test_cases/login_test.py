@@ -28,7 +28,7 @@ class UserLoginTest:
             login_page.input_id_password(wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
 
             # 프로필 이름 확인
-            test_result = my_page.check_nickname(self, wd, warning_texts)
+            my_page.check_nickname(self, wd)
 
             # 회원 정보 수정 페이지 진입
             my_page.click_edit_user_info_menu(wd)
@@ -38,8 +38,8 @@ class UserLoginTest:
             my_edit_user_info_page.click_next_btn(wd)
 
             # 회원 정보 수정 페이지의 타이틀과 닉네임 확인
-            test_result = my_edit_user_info_page.check_edit_page_title(wd, warning_texts)
-            test_result = my_edit_user_info_page.check_edit_page_id(wd, warning_texts, self.pconf['id_29cm'])
+            my_edit_user_info_page.check_edit_page_title(wd)
+            my_edit_user_info_page.check_edit_page_id(wd, self.pconf['masking_id'])
 
             # Home 으로 복귀
             my_edit_user_info_page.click_back_btn(wd)
@@ -56,6 +56,7 @@ class UserLoginTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -86,7 +87,7 @@ class UserLoginTest:
 
             # 로그아웃 완료 > 로그인,회원가입 문구 확인
             my_page.find_login_btn(wd)
-            test_result = my_page.check_login_btn(wd, warning_texts)
+            my_page.check_login_btn(wd)
 
             # Home 으로 복귀 후,온보딩 프로그램 확인
             navigation_bar.logout_and_move_to_home(wd)
@@ -99,6 +100,7 @@ class UserLoginTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -126,7 +128,7 @@ class UserLoginTest:
 
             # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
             login_page.input_id_password(wd, self.pconf['id_29cm'], self.pconf['error_password_29cm'])
-            test_result = login_page.check_login_error_text(self, wd, warning_texts)
+            login_page.check_login_error_text(self, wd)
 
             # 이메일, 비밀번호 입력값 제거
             login_page.clear_id_password(wd)
@@ -135,7 +137,7 @@ class UserLoginTest:
             login_page.input_id_password(wd, self.pconf['id2_29cm'], self.pconf['password_29cm'])
 
             # 프로필 이름 확인
-            test_result = my_page.check_nickname(self, wd, warning_texts)
+            my_page.check_nickname(self, wd)
 
             # Home 으로 복귀
             navigation_bar.move_to_home(wd)
@@ -151,6 +153,7 @@ class UserLoginTest:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)

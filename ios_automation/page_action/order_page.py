@@ -11,56 +11,49 @@ def click_back_btn(wd):
     ialc(wd, 'common back icon black')
 
 
-def check_delivery_info(wd, warning_texts):
+def check_delivery_info(wd):
     try:
         ial(wd, 'c_배송 정보')
-        test_result = 'PASS'
         print('구매하기 결제 화면 진입 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('구매하기 결제 화면 진입 확인 실패')
         print('구매하기 결제 화면 진입 확인 실패')
-    return test_result
+        raise Exception('구매하기 결제 화면 진입 확인 실패')
 
 
-def check_receiver_info(wd, warning_texts):
-    test_result = 'WARN'
+def check_receiver_info(wd):
+    info_break = False
     for i in range(0, 5):
         try:
             element = ial(wd, 'c_선물 받는 분 정보')
             if element.is_displayed():
-                test_result = 'PASS'
+                info_break = True
                 print('선물하기 결제 화면 진입 확인')
                 break
         except NoSuchElementException:
             pass
         scroll_control(wd, 'D', 50)
-    if test_result == 'WARN':
-        test_result = 'WARN'
-        warning_texts.append('선물하기 결제 화면 진입 확인 실패')
+    if not info_break:
         print('선물하기 결제 화면 진입 확인 실패')
-    return test_result
+        raise Exception('선물하기 결제 화면 진입 확인 실패')
 
 
-def check_order_product_name(wd, warning_texts, product_name):
-    test_result = 'WARN'
+def check_order_product_name(wd, product_name):
+    name_break = False
     order_name = ''
     for i in range(0, 5):
         try:
             element = ial(wd, f'c_{product_name}')
             order_name = element.text
             if element.is_displayed() and order_name == product_name:
-                test_result = 'PASS'
+                name_break = True
                 print('주문서 상품명 확인')
                 break
         except NoSuchElementException:
             pass
         scroll_control(wd, 'D', 50)
-    if test_result == 'WARN':
-        test_result = 'WARN'
-        warning_texts.append('주문서 상품명 확인 실패')
+    if not name_break:
         print(f'주문서 상품명 확인 실패: pdp-{product_name} / 주문서-{order_name}')
-    return test_result
+        raise Exception('주문서 상품명 확인 실패')
 
 
 def save_purchase_price(wd):
@@ -101,23 +94,20 @@ def save_coupon_price(wd):
     return coupon_price
 
 
-def check_purchase_price(wd, warning_texts, pdp_price):
+def check_purchase_price(wd, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
     compare_price = pdp_price + delivery_price
 
     if order_price == compare_price and btn_price == compare_price:
-        test_result = 'PASS'
         print('주문서 가격 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문서 가격 확인 실패')
         print(f'주문서 가격 확인 실패 - pdp: {pdp_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
-    return test_result
+        raise Exception('주문서 가격 확인 실패')
 
 
-def check_cart_purchase_price(wd, warning_texts, cart_price):
+def check_cart_purchase_price(wd, cart_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
@@ -125,13 +115,10 @@ def check_cart_purchase_price(wd, warning_texts, cart_price):
     compare_price = cart_price + delivery_price - coupon_price
 
     if order_price == compare_price and btn_price == compare_price:
-        test_result = 'PASS'
         print('주문서 가격 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문서 가격 확인 실패')
         print(f'주문서 가격 확인 실패 - cart: {cart_price} / 비교 : {compare_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
-    return test_result
+        raise Exception('주문서 가격 확인 실패')
 
 
 def click_virtual_account(wd):
@@ -180,7 +167,7 @@ def click_all_agreement(wd):
 
 def click_payment(wd):
     ialc(wd, 'c_결제하기')
-    sleep(3)
+    sleep(5)
 
 
 def check_inipay_page(wd):
@@ -222,17 +209,14 @@ def click_pinpay_payment(wd):
     sleep(3)
 
 
-def check_done_payment(wd, warning_texts):
+def check_done_payment(wd):
     sleep(3)
     try:
         ial(wd, '//XCUIElementTypeStaticText[@name="주문이 완료되었습니다."]')
-        test_result = 'PASS'
         print('주문 완료 페이지 확인 - 타이틀')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 완료 페이지 확인 실패 - 타이틀')
         print('주문 완료 페이지 확인 실패 - 타이틀')
-    return test_result
+        raise Exception('주문 완료 페이지 확인 실패 - 타이틀')
 
 
 def save_order_no(wd):
@@ -241,7 +225,7 @@ def save_order_no(wd):
     return order_no
 
 
-def check_payment_type(wd, warning_texts, payment_type):
+def check_payment_type(wd, payment_type):
     payment_info = ''
     for i in range(0, 3):
         try:
@@ -256,13 +240,10 @@ def check_payment_type(wd, warning_texts, payment_type):
         scroll_control(wd, 'D', 50)
 
     if payment_info == payment_type:
-        test_result = 'PASS'
         print('주문 완료 페이지 확인 - 결제방법')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문 완료 페이지 확인 실패 - 결제방법')
         print(f'주문 완료 페이지 확인 실패 - 결제방법 : {payment_info}')
-    return test_result
+        raise Exception('주문 완료 페이지 확인 실패 - 결제방법')
 
 
 def click_delivery_order_tracking(wd):

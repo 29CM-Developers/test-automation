@@ -41,7 +41,7 @@ class Pdp:
 
             # 바텀시트 최대로 확장하여 바텀시트 내 타이틀 확인 > 바텀 시트 닫기
             product_detail_page.move_bottom_sheet(wd, 'D')
-            test_result = product_detail_page.check_like_bottom_sheet(wd, warning_texts)
+            product_detail_page.check_like_bottom_sheet(wd)
             product_detail_page.move_bottom_sheet(wd, 'U')
             product_detail_page.move_bottom_sheet(wd, 'U')
 
@@ -49,7 +49,7 @@ class Pdp:
             move_to_like(self, wd)
 
             # Like 탭에서 좋아요 한 상품 노출 확인 > 좋아요 해제
-            test_result = like_page.check_product_like(wd, warning_texts, pdp_name)
+            like_page.check_product_like(wd, pdp_name)
             like_page.click_to_unlike_product(wd)
             like_page.refresh_product_like_tab(wd)
 
@@ -69,6 +69,7 @@ class Pdp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get(self.conf['deeplink']['home'])
@@ -104,7 +105,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             # 선물하기 버튼 선택
             product_detail_page.click_gift_btn(wd)
@@ -119,13 +120,13 @@ class Pdp:
             product_detail_page.click_direct_gift_btn(wd)
 
             # 선물 받는 분 정보 타이틀 확인
-            order_page.check_receiver_info(wd, warning_texts)
+            order_page.check_receiver_info(wd)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, pdp_name)
+            order_page.check_order_product_name(wd, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, pdp_price)
+            order_page.check_purchase_price(wd, pdp_price)
 
             # Home으로 복귀
             order_page.click_back_btn(wd)
@@ -144,6 +145,7 @@ class Pdp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get(self.conf['deeplink']['home'])
@@ -176,7 +178,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             # 구매하기 버튼 선택
             product_detail_page.click_purchase_btn(wd)
@@ -191,13 +193,13 @@ class Pdp:
             product_detail_page.click_direct_purchase_btn(wd)
 
             # 배송정보 타이틀 확인
-            test_result = order_page.check_delivery_info(wd, warning_texts)
+            order_page.check_delivery_info(wd)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, pdp_name)
+            order_page.check_order_product_name(wd, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_purchase_price(wd, warning_texts, pdp_price)
+            order_page.check_purchase_price(wd, pdp_price)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -212,6 +214,7 @@ class Pdp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get(self.conf['deeplink']['home'])
