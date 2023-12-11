@@ -193,9 +193,33 @@ def search_total_popular_brand_name():
         search_popular_brand_name['category_name'] = api_data['data']['brand']['results'][0]['categoryName']
         search_popular_brand_name['api_1st_brand_name'] = brands[0]['keyword']
         search_popular_brand_name['api_30th_brand_name'] = brands[29]['keyword']
+
+        brand_names = []
+        for i in range(0, len(brands)):
+            brand_name = brands[i]['keyword']
+            brand_names.append(brand_name)
+            search_popular_brand_name['brand_names'] = brand_names
+
         return search_popular_brand_name
     else:
         print('베스트 PLP API 불러오기 실패')
+
+
+def search_brand_by_related_brand():
+    brand_list = search_total_popular_brand_name()['brand_names']
+
+    brand_name = ''
+    for brand_name in brand_list:
+        response = requests.get(
+            f'https://search-api.29cm.co.kr/api/v4/products/brand/keyword/?keyword={brand_name}')
+        if response.status_code == 200:
+            brand_data = response.json()
+            front_brand_count = len(brand_data['data'])
+            if front_brand_count == 1:
+                break
+        else:
+            print('검색 브랜드 정보 API 불러오기 실패')
+    return brand_name
 
 
 # 여성 기준 인기 브랜드 순위
@@ -244,6 +268,37 @@ def search_result(keyword, order):
     if search_response.status_code == 200:
         search_result_data = search_response.json()
         result['product_item_no'] = search_result_data['data']['products'][order - 1]['itemNo']
+        return result
+    else:
+        print('검색 결과 API 불러오기 실패')
+
+
+def search_brand_category_info(keyword):
+    category_no = {}
+    category_response = requests.get(f'https://search-api.29cm.co.kr/api/v4/filters/product?keyword={keyword}')
+    if category_response.status_code == 200:
+        category_data = category_response.json()
+        categories = category_data['data']['categories']
+        category_no['large'] = categories[0]['categoryCode']
+        category_no['medium'] = categories[0]['categories'][0]['categoryCode']
+        category_no['small'] = categories[0]['categories'][0]['categories'][0]['categoryCode']
+        print(category_no)
+        return category_no
+    else:
+        print('검색 결과 브랜드 정보 API 불러오기 실패')
+
+
+def filter_brand_search_results_by_category(keyword):
+    categories = com_utils.api_control.search_brand_category_info(keyword)
+
+    filter_result = {}
+    search_response = requests.get(
+        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}'
+        f'&categoryLargeCode={categories["large"]}&categoryMediumCode{categories["medium"]}=&categorySmallCode={categories["small"]}')
+    if search_response.status_code == 200:
+        search_result_data = search_response.json()
+        filter_brand = search_result_data['data']['products']
+        filter_result['item_name'] = filter_brand[0]['itemName']
         return result
     else:
         print('검색 결과 API 불러오기 실패')
