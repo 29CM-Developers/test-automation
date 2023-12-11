@@ -42,7 +42,7 @@ class Search:
             search_page.check_popular_brand_name(api_1st_brand, brand_1st_name)
 
             # 인기 브랜드 1위 선택
-            search_page.click_first_popular_brand_name(wd)
+            search_page.click_popular_brand_name(wd, 1)
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
             search_result_page.check_relate_brand_name(wd, brand_1st_name)
@@ -66,7 +66,7 @@ class Search:
             search_page.check_popular_brand_name(api_30th_brand, brand_30th_name)
 
             # 인기 브랜드 30위 선택
-            search_page.click_30th_popular_brand_name(wd)
+            search_page.click_popular_brand_name(wd, '6')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
             search_result_page.check_relate_brand_name(wd, brand_30th_name)

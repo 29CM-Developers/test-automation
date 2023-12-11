@@ -210,9 +210,11 @@ class Home:
             # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
-            # # 로그인한 유저의 추천 탭 타이틀 확인
-            # home_page.click_tab_name(wd, '추천')
-            # home_page.check_entry_recommended_tab(self, wd)
+            # 맨 카테고리 탭 선택
+            home_page.click_tab_name(wd, '맨')
+
+            # 추천 상품 영역 확인
+            home_page.check_scroll_to_recommended_contents(wd)
 
             # 우먼 카테고리 탭 선택
             home_page.click_tab_name(wd, '우먼')

@@ -4,6 +4,10 @@ from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials, swipe_control, element_scroll_control, scroll_control
 
 
+def click_back_btn(wd):
+    ialc(wd, 'navi_back_btn')
+
+
 def click_pin_menu(wd, find_menu):
     pin_menu_list = ial(wd, '//XCUIElementTypeOther[2]/XCUIElementTypeCollectionView')
     click_break = False
@@ -51,12 +55,36 @@ def scroll_up_large_category(wd):
     element_scroll_control(wd, large_field, 'U', 30)
 
 
+def click_for_you_category(wd):
+    ialc(wd, 'for_you')
+
+
 def click_best_category(wd):
     ialc(wd, 'best')
 
 
 def click_category(wd, category_name):
     ialc(wd, category_name)
+
+
+'''
+카테고리 PLP
+'''
+
+
+def check_not_login_user_recommended_tab(wd):
+    try:
+        ial(wd, 'c_당신을 위한 추천상품')
+        print('비로그인 유저 추천 페이지 타이틀 확인')
+    except NoSuchElementException:
+        print('비로그인 유저 추천 페이지 타이틀 확인 실패')
+        raise Exception('비로그인 유저 추천 페이지 타이틀 확인 실패')
+
+
+def save_webview_category_product_name(wd):
+    product = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-j22x2q e13ypwtz2"]')
+    plp_name = product.find_element(AppiumBy.XPATH, '//h5').text
+    return plp_name
 
 
 def check_category_page_title(wd, category_name):
@@ -88,12 +116,6 @@ def save_category_product_name(wd):
     return plp_name
 
 
-def save_webview_category_product_name(wd):
-    product = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-j22x2q e13ypwtz2"]')
-    plp_name = product.find_element(AppiumBy.XPATH, '//h5').text
-    return plp_name
-
-
 def check_category_product_name(plp_name, compare_name):
     if plp_name == compare_name:
         print('카테고리 페이지의 상품 확인')
@@ -118,3 +140,8 @@ def save_category_product_price(wd):
 
 def click_category_product(wd):
     ialc(wd, 'product_name')
+
+
+def click_not_login_user_product_like_btn(wd):
+    ialc(wd, 'like_btn')
+    ialc(wd, '//XCUIElementTypeButton[@name="확인"]')

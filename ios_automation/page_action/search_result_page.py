@@ -13,7 +13,7 @@ def check_input_field(wd, keyword):
     if search_input_field == keyword:
         print('인기 검색어 검색 확인 - 입력란')
     else:
-        print(f'인기 브랜드 검색 결과 확인 실패 : {search_input_field}')
+        print(f'인기 브랜드 검색 결과 확인 실패 : 입력-{keyword} / 노출-{search_input_field}')
         raise Exception(f'인기 브랜드 검색 결과 확인 실패')
 
 
@@ -30,7 +30,7 @@ def check_relate_brand_name(wd, compare_brand_name):
         else:
             pass
     if not relate_break:
-        print(f'인기 브랜드 검색 확인 실패 - 연관 브랜드 : {relate_name}')
+        print(f'인기 브랜드 검색 확인 실패 - 연관 브랜드 : 입력-{compare_brand_name} / 노출-{relate_name}')
         raise Exception(f'인기 브랜드 검색 확인 실패 - 연관 브랜드')
 
 
