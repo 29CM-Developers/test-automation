@@ -149,15 +149,21 @@ def slack_thread_notification(self):
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"실패 쓰레드 테스트: *{self.result_data.get('test_name')}*"
         attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
-        if len(self.result_data['error_texts']) > 1:
-            code_attachment = {
-                "type": "section",
-                "text": {
-                    "type": "mrkdwn",
-                    "text": f"error reason: *{self.result_data['error_texts'][1]}*"
-                }
+
+        error_texts = self.result_data['error_texts']
+        if len(error_texts) > 1 and error_texts[1] is not None:
+            index = 1
+        else:
+            index = 2
+        code_attachment = {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"error reason: *{error_texts[index]}*"
             }
-            attachment["attachments"][0]["blocks"].append(code_attachment)
+        }
+        attachment["attachments"][0]["blocks"].append(code_attachment)
+
         attachment["attachments"][0]["blocks"].append(reason_attachment)
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)

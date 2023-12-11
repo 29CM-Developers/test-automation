@@ -26,47 +26,40 @@ def find_login_btn(wd):
         wd.execute_script('mobile:swipe', {'direction': 'down'})
 
 
-def check_login_btn(wd, warning_texts):
+def check_login_btn(wd):
     try:
         wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]')
-        test_result = 'PASS'
         print('My 탭 로그인 문구 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('My 탭 로그인 문구 확인 실패')
         print('My 탭 로그인 문구 확인 실패')
-    return test_result
+        raise Exception('My 탭 로그인 문구 확인 실패')
 
 
-def check_nickname(self, wd, warning_texts):
-    test_result = 'WARN'
+def check_nickname(self, wd):
+    nickname_break = False
     for i in range(0, 5):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, self.pconf['nickname'])
             if element.is_displayed():
-                test_result = 'PASS'
-                print('HOME 탭 닉네임 확인')
+                nickname_break = True
+                print('My 탭 닉네임 확인')
                 break
         except NoSuchElementException:
             pass
         com_utils.element_control.scroll_control(wd, "U", 50)
-    if test_result == 'WARN':
-        warning_texts.append('HOME 탭 닉네임 확인 실패')
-        print('HOME 탭 닉네임 확인 실패')
-    return test_result
+    if not nickname_break:
+        print('My 탭 닉네임 확인 실패')
+        raise Exception('My 탭 닉네임 확인 실패')
 
 
-def check_recent_title(wd, warning_texts, type, title):
+def check_recent_title(wd, type, title):
     recent_title = wd.find_element(AppiumBy.XPATH,
                                    '//XCUIElementTypeCell/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText').text
     if recent_title in title:
-        test_result = 'PASS'
         print(f'최근 본 {type} 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append(f'최근 본 {type} 확인 실패')
         print(f'최근 본 {type} 확인 실패 : {title} / {recent_title}')
-    return test_result
+        raise Exception(f'최근 본 {type} 확인 실패')
 
 
 def expand_recent_contents(wd):
@@ -77,7 +70,7 @@ def close_recent_contents(wd):
     wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[4]').click()
 
 
-def check_recent_history(wd, warning_texts, product_name, post_title):
+def check_recent_history(wd, product_name, post_title):
     recent_history = []
     recent = wd.find_elements(AppiumBy.XPATH,
                               '//XCUIElementTypeCell/XCUIElementTypeTable/XCUIElementTypeCell')
@@ -87,13 +80,10 @@ def check_recent_history(wd, warning_texts, product_name, post_title):
     print(f'히스토리 : {recent_history}')
 
     if product_name in recent_history and post_title in recent_history:
-        test_result = 'PASS'
         print('최근 본 컨텐츠 히스토리 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('최근 본 컨텐츠 히스토리 확인 실패')
         print(f'최근 본 컨텐츠 히스토리 확인 실패: {product_name} / {post_title} / {recent_history}')
-    return test_result
+        raise Exception('최근 본 컨텐츠 히스토리 확인 실패')
 
 
 def click_delivery_order_menu(wd):

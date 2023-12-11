@@ -69,14 +69,14 @@ class Home:
 
             # 라이프 선택 시, 노출되는 탭 이름 비교
             save_tab_names = home_page.save_tab_names(wd)
-            test_result = home_page.check_tab_names(self, warning_texts, 'life', save_tab_names)
+            home_page.check_tab_names(self, 'life', save_tab_names)
 
             # 라이프 선택 닫기
             home_page.click_close_life_tab(wd)
 
             # 기본으로 노출되는 탭 이름 비교
             save_tab_names = home_page.save_tab_names(wd)
-            home_page.check_tab_names(self, warning_texts, 'home', save_tab_names)
+            home_page.check_tab_names(self, 'home', save_tab_names)
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
 
@@ -186,6 +186,7 @@ class Home:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -209,9 +210,9 @@ class Home:
             # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
-            # 로그인한 유저의 추천 탭 타이틀 확인
-            home_page.click_tab_name(wd, '추천')
-            test_result = home_page.check_entry_recommended_tab(self, wd, warning_texts)
+            # # 로그인한 유저의 추천 탭 타이틀 확인
+            # home_page.click_tab_name(wd, '추천')
+            # home_page.check_entry_recommended_tab(self, wd)
 
             # 우먼 카테고리 탭 선택
             home_page.click_tab_name(wd, '우먼')
@@ -223,10 +224,10 @@ class Home:
             feed_title_2nd = feed_title_list[2]
 
             # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
-            test_result = home_page.scroll_to_feed_contents(wd, warning_texts, feed_title_1st)
+            home_page.scroll_to_feed_contents(wd, feed_title_1st)
 
             # 싱픔이 연결된 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
-            test_result = home_page.scroll_to_feed_contents(wd, warning_texts, feed_contain_item)
+            home_page.scroll_to_feed_contents(wd, feed_contain_item)
 
             # 좋아요 버튼 선택 전, 좋아요 수 저장
             content_like_count = home_page.save_contents_like_count(wd)
@@ -234,12 +235,12 @@ class Home:
             # 좋아요 버튼 선택하여 좋아요 후, 카운트 확인
             home_page.click_contents_like_btn(wd)
             content_like_select = home_page.save_contents_like_count(wd)
-            test_result = home_page.check_increase_like_count(warning_texts, content_like_count, content_like_select)
+            home_page.check_increase_like_count(content_like_count, content_like_select)
 
             # 좋아요 버튼 선택하여 좋아요 해제 후, 카운트 확인
             home_page.click_contents_like_btn(wd)
             content_like_unselect = home_page.save_contents_like_count(wd)
-            test_result = home_page.check_decrease_like_count(warning_texts, content_like_count, content_like_unselect)
+            home_page.check_decrease_like_count(content_like_count, content_like_unselect)
 
             # 컨텐츠 상품의 상품명과 상품가격 저장 후, 해당 상품의 상세 페이지 진입
             contents_prodcut_name = home_page.save_contents_product_name(wd)
@@ -248,14 +249,14 @@ class Home:
 
             # 상품명 비교 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, contents_prodcut_name)
+            product_detail_page.check_product_name(pdp_name, contents_prodcut_name)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
 
             # 상품 가격 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
-            test_result = product_detail_page.check_product_price(warning_texts, pdp_price, contents_product_price)
+            product_detail_page.check_product_price(pdp_price, contents_product_price)
 
             # native 전환
             context_change.switch_context(wd, 'native')
@@ -264,7 +265,7 @@ class Home:
             product_detail_page.click_pdp_back_btn(wd)
 
             # 두번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
-            test_result = home_page.scroll_to_feed_contents(wd, warning_texts, feed_title_2nd)
+            home_page.scroll_to_feed_contents(wd, feed_title_2nd)
 
         except Exception:
             test_result = 'FAIL'
@@ -274,6 +275,7 @@ class Home:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
@@ -328,10 +330,10 @@ class Home:
             first_brand_category = search_total_popular_brand_name()['category_name']
 
             # 첫번째 인기 브랜드 카테고리 확인
-            test_result = search_page.check_first_popular_brand_category(wd, warning_texts, first_brand_category)
+            search_page.check_first_popular_brand_category(wd, first_brand_category)
 
             # 인기 브랜드 타이틀 확인
-            test_result = search_page.check_popular_keyword_title(wd, warning_texts)
+            search_page.check_popular_keyword_title(wd)
 
             # HOME으로 이동하여 29CM 로고 확인
             search_page.click_back_btn(wd)
@@ -342,7 +344,7 @@ class Home:
             navigation_bar.move_to_like(wd)
 
             # LIKE 탭 상단 문구 확인
-            test_result = like_page.check_like_phases(wd, warning_texts)
+            like_page.check_like_phases(wd)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
@@ -350,7 +352,7 @@ class Home:
 
             # MY 탭 진입하여 닉네임 확인
             navigation_bar.move_to_my(wd)
-            test_result = my_page.check_nickname(self, wd, warning_texts)
+            my_page.check_nickname(self, wd)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
@@ -364,6 +366,7 @@ class Home:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)

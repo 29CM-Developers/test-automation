@@ -33,15 +33,12 @@ def save_remove_prefix_product_name(product_name):
 
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
-def check_product_name(warning_texts, product_name, compare_name):
+def check_product_name(product_name, compare_name):
     if compare_name in product_name:
-        test_result = 'PASS'
         print('PDP 진입 확인 - 상품명')
     else:
-        test_result = 'WARN'
-        warning_texts.append('PDP 진입 확인 실패 - 상품명')
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
-    return test_result
+        raise Exception('PDP 진입 확인 실패 - 상품명')
 
 
 def save_product_price(wd):
@@ -53,31 +50,25 @@ def save_product_price(wd):
 
 # product_price : pdp 상품 가격
 # compare_name: pdp 상품 가격과 비교할 상품 가격
-def check_product_price(warning_texts, product_price, compare_price):
+def check_product_price(product_price, compare_price):
     if compare_price == product_price:
-        test_result = 'PASS'
         print('PDP 진입 확인 - 상품가격')
     else:
-        test_result = 'WARN'
-        warning_texts.append('PDP 진입 확인 실패 - 상품가격')
         print(f'PDP 진입 확인 실패 - pdp: {product_price} / 비교: {compare_price}')
-    return test_result
+        raise Exception('PDP 진입 확인 실패 - 상품가격')
 
 
 def close_purchase_modal(wd):
     wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView').click()
 
 
-def check_open_to_purchase_modal(wd, warning_texts):
+def check_open_to_purchase_modal(wd):
     try:
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기')
-        test_result = 'PASS'
         print('PDP 구매하기 모달 노출 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('PDP 구매하기 모달 노출 확인 실패')
         print('PDP 구매하기 모달 노출 확인')
-    return test_result
+        raise Exception('PDP 구매하기 모달 노출 확인 실패')
 
 
 def click_purchase_btn(wd):
@@ -150,16 +141,13 @@ def select_options(wd, product_item_no):
     sleep(1)
 
 
-def check_add_product_to_cart(wd, warning_texts):
+def check_add_product_to_cart(wd):
     try:
         ial(wd, 'c_장바구니에 상품')
-        test_result = 'PASS'
         print('상품 장바구니 담기 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('상품 장바구니 담기 확인 실패')
         print('상품 장바구니 담기 확인 실패')
-    return test_result
+        raise Exception('상품 장바구니 담기 확인 실패')
 
 
 def save_no_soldout_product_no():
@@ -189,14 +177,11 @@ def move_bottom_sheet(wd, direction):
     element_scroll_control(wd, element, direction, 40)
 
 
-def check_like_bottom_sheet(wd, warning_texts):
+def check_like_bottom_sheet(wd):
     try:
         ial(wd, 'c_함께 보면 좋은 상품')
         ial(wd, 'c_다른 고객이 함께 구매한 상품')
-        test_result = 'PASS'
         print('추천 상품 바텀 시트 노출 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('추천 상품 바텀 시트 노출 확인 실패')
         print('추천 상품 바텀 시트 노출 확인 실패')
-    return test_result
+        raise Exception('추천 상품 바텀 시트 노출 확인 실패')

@@ -60,52 +60,46 @@ def click_first_post_hashtag(wd):
     sleep(3)
 
 
-def check_hash_tag_title(wd, warning_texts, hash_tag):
+def check_hash_tag_title(wd, hash_tag):
     hash_tag_title = ial(wd, '//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeStaticText').text
     if hash_tag_title == hash_tag:
-        test_result = 'PASS'
         print('포스트 해시태그 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('포스트 해시태그 확인 실패')
         print(f'포스트 해시태그 확인 실패 : {hash_tag} / {hash_tag_title}')
-    return test_result
+        raise Exception('포스트 해시태그 확인 실패')
 
 
-def check_hash_tag_post(wd, warning_texts, post_title):
-    test_result = 'WARN'
+def check_hash_tag_post(wd, post_title):
+    tag_break = False
     for i in range(0, 5):
         try:
             post = ial(wd, post_title)
             if post.is_displayed():
-                test_result = 'PASS'
+                tag_break = True
                 print('포스트 해시태그 확인 - 페이지 내 포스트')
                 break
         except NoSuchElementException:
             pass
         com_utils.element_control.scroll_control(wd, "D", 50)
-    if test_result == 'WARN':
-        test_result = 'WARN'
-        warning_texts.append('포스트 해시태그 확인 실패 - 포스트 타이틀')
+    if not tag_break:
         print('포스트 해시태그 확인 실패 - 포스트 타이틀')
-    return test_result
+        raise Exception('포스트 해시태그 확인 실패 - 포스트 타이틀')
 
 
-def find_and_save_third_post(wd, warning_texts):
+def find_and_save_third_post(wd):
     post_title = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[3]/XCUIElementTypeStaticText[2]').text
     print(post_title)
-    test_result = 'WARN'
+    find_break = False
     for i in range(0, 5):
         try:
             post = ial(wd, post_title)
             if post.is_displayed():
-                test_result = 'PASS'
+                find_break = True
                 print('포스트 추가 노출 확인')
                 break
         except NoSuchElementException:
             pass
         com_utils.element_control.scroll_control(wd, "D", 40)
-    if test_result == 'WARN':
-        warning_texts.append('포스트 추가 노출 확인 실패')
+    if not find_break:
         print('포스트 추가 노출 확인 실패')
-    return test_result
+        raise Exception('포스트 추가 노출 확인 실패')

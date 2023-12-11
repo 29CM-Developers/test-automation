@@ -32,7 +32,7 @@ class Join:
             join_page.input_email(wd, self.pconf['id_29cm'])
 
             # 기가입 이메일 가입 불가 에러
-            test_result = join_page.check_same_email_join_error(wd, warning_texts)
+            join_page.check_same_email_join_error(wd)
 
             # My 탭으로 복귀
             join_page.click_back_btn(wd)
@@ -49,6 +49,7 @@ class Join:
             try:
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
