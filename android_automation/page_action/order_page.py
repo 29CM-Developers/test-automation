@@ -2,10 +2,11 @@ import re
 from time import sleep
 from appium import webdriver
 from selenium.webdriver.common.by import By
-
 import com_utils.element_control
+from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import aal, aalc, aals, scroll_control
 from selenium.common import NoSuchElementException
+from ios_automation.page_action import order_page
 
 
 def click_back_btn(wd):
@@ -40,6 +41,7 @@ def click_all_agreement(wd):
                 print("NOSUCH")
                 scroll_control(wd, 'D', 50)
             elif element.is_displayed():
+                print('동의 선택')
                 element.click()
                 break
         except NoSuchElementException:
@@ -72,6 +74,42 @@ def click_virtual_account_payment(wd):
 def click_delivery_order_tracking(wd):
     aalc(wd, 'c_주문조회')
     sleep(3)
+
+
+def click_hyundai_card(wd):
+    virtual_account = False
+    for i in range(0, 5):
+        try:
+            element = aal(wd, 'c_혜택 현대카드 X PIN PAY')
+            if element == None:
+                print('엘리멘트 없음')
+                scroll_control(wd, 'U', 50)
+            elif element.is_displayed():
+                print('엘리멘트 발견')
+                virtual_account = True
+                element.click()
+                break
+        except NoSuchElementException:
+            print('노서치')
+            pass
+        scroll_control(wd, 'U', 50)
+    if not virtual_account:
+        print('현대카드 X PIN PAY 옵션 미노출')
+
+
+def check_pinpay_page(wd):
+    try:
+        sleep(6)
+        aal(wd, 'c_현대카드')
+        print('Pin Pay 페이지 진입')
+    except NoSuchElementException:
+        print('Pin Pay 페이지 진입 실패')
+
+
+def click_pinpay_payment(wd):
+    # aalc(wd, 'c_현대')
+    aalc(wd, 'c_결제하기')
+    sleep(5)
 
 
 def save_purchase_price(wd):
@@ -298,17 +336,15 @@ def check_inipay_page(wd):
         print('이니시스 페이지 진입 실패')
 
 
-def check_done_payment(wd, warning_texts):
+def check_done_payment(wd):
     try:
         aal(wd, 'c_주문이 완료되었습니다.')
-        test_result = 'PASS'
         print('주문 완료 페이지 확인 - 타이틀')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 완료 페이지 확인 실패 - 타이틀')
         print('주문 완료 페이지 확인 실패 - 타이틀')
-    return test_result
-def check_payment_type(wd, warning_texts, payment_type):
+
+
+def check_payment_type(wd, payment_type):
     sleep(2)
     payment_info = ''
     try:
@@ -324,10 +360,26 @@ def check_payment_type(wd, warning_texts, payment_type):
         pass
 
     if payment_info == payment_type:
-        test_result = 'PASS'
         print('주문 완료 페이지 확인 - 결제방법')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문 완료 페이지 확인 실패 - 결제방법')
         print(f'주문 완료 페이지 확인 실패 - 결제방법 : {payment_info}')
-    return test_result
+        raise Exception('주문 완료 페이지 확인 실패 - 결제방법')
+
+
+def check_api_order_cancel(self, order_no):
+    order_status = my_order_status(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
+    if order_status != '전체취소':
+        my_order_cancel(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
+        print('주문 취소 완료')
+        sleep(2)
+    elif order_status == '전체취소':
+        print('주문 취소 최종 확인')
+    else:
+        print('주문 취소 최종 확인 실패')
+
+
+def finally_order_cancel(self, order_no):
+    if order_no:
+        check_api_order_cancel(self, order_no)
+    else:
+        print('주문 전 Fail로 order_no 미존재')
