@@ -205,6 +205,7 @@ def search_total_popular_brand_name():
         print('베스트 PLP API 불러오기 실패')
 
 
+# 연관 브랜드가 1개인 브랜드명
 def search_brand_by_related_brand():
     brand_list = search_total_popular_brand_name()['brand_names']
 
@@ -279,10 +280,12 @@ def search_brand_category_info(keyword):
     if category_response.status_code == 200:
         category_data = category_response.json()
         categories = category_data['data']['categories']
-        category_no['large'] = categories[0]['categoryCode']
-        category_no['medium'] = categories[0]['categories'][0]['categoryCode']
-        category_no['small'] = categories[0]['categories'][0]['categories'][0]['categoryCode']
-        print(category_no)
+        category_no['large_code'] = categories[0]['categoryCode']
+        category_no['large_name'] = categories[0]['categoryName']
+        category_no['medium_code'] = categories[0]['categories'][0]['categoryCode']
+        category_no['medium_name'] = categories[0]['categories'][0]['categoryName']
+        category_no['small_code'] = categories[0]['categories'][0]['categories'][0]['categoryCode']
+        category_no['small_name'] = categories[0]['categories'][0]['categories'][0]['categoryName']
         return category_no
     else:
         print('검색 결과 브랜드 정보 API 불러오기 실패')
@@ -294,12 +297,13 @@ def filter_brand_search_results_by_category(keyword):
     filter_result = {}
     search_response = requests.get(
         f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}'
-        f'&categoryLargeCode={categories["large"]}&categoryMediumCode{categories["medium"]}=&categorySmallCode={categories["small"]}')
+        f'&categoryLargeCode={categories["large_code"]}&categoryMediumCode={categories["medium_code"]}'
+        f'&categorySmallCode={categories["small_code"]}')
     if search_response.status_code == 200:
         search_result_data = search_response.json()
         filter_brand = search_result_data['data']['products']
         filter_result['item_name'] = filter_brand[0]['itemName']
-        return result
+        return filter_result
     else:
         print('검색 결과 API 불러오기 실패')
 

@@ -1,5 +1,5 @@
 from time import sleep
-from com_utils.api_control import search_relate_keyword
+from com_utils.api_control import search_relate_keyword, search_brand_category_info
 from com_utils.element_control import ial, ialc, ials, scroll_control, element_scroll_control, swipe_control
 from selenium.common import NoSuchElementException
 
@@ -51,6 +51,24 @@ def check_product_brand_name(wd, compare_brand_name):
     else:
         print(f'인기 브랜드 검색 상품 확인 실패: 검색어-{compare_brand_name} / 상품 브랜드-{product_brand_name}')
         raise Exception(f'인기 브랜드 검색 상품 확인 실패')
+
+
+def check_search_product_name(wd, compare_name):
+    product_name = ''
+    for i in range(0, 3):
+        try:
+            product_name = ial(wd, 'product_name')
+            if product_name.is_displayed():
+                product_name = product_name.text
+                break
+        except NoSuchElementException:
+            scroll_control(wd, 'D', 30)
+
+    if product_name == compare_name:
+        print('카테고리 필터 적용으로 상품 노출 확인')
+    else:
+        print('카테고리 필터 적용으로 상품 노출 확인 실패')
+        raise Exception('카테고리 필터 적용으로 상품 노출 확인 실패')
 
 
 def check_relate_keyword(wd, api_keyword_1st):
@@ -141,3 +159,16 @@ def check_filter_info(filter_info_list, compare_filter_list):
             print(f'{filter} 필터 적용 확인 실패: {set(compare_filter_list)}')
             raise Exception('인기 검색어 검색 결과 확인 실패')
     sleep(2)
+
+
+def click_brand_category(wd, keyword):
+    category_name = search_brand_category_info(keyword)
+
+    large = category_name['large_name']
+    ialc(wd, f'//XCUIElementTypeButton[@name="{large}"]')
+
+    medium = category_name['medium_name']
+    ialc(wd, f'//XCUIElementTypeButton[@name="{medium}"]')
+
+    small = category_name['small_name']
+    ialc(wd, f'//XCUIElementTypeButton[@name="{small}"]')
