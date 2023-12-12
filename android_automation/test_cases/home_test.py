@@ -497,10 +497,17 @@ class Home:
             scroll_to_element_with_text(wd, '추천 상품')
             guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
             print(f"가이드 문구 : {guide_text.text} ")
-            if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
-                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
+            # if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
+            #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
+            # else:
+            #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
+            #     test_result = 'WARN'
+            #     warning_texts.append("추천 가이드 문구 확인 실패")
+
+            if guide_text.text == '당신을 위한 추천 상품':
+                print('당신을 위한 추천 상품 가이드 문구 노출 확인')
             else:
-                print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인 실패")
+                print('당신을 위한 추천 상품 가이드 문구 노출 확인 실패')
                 test_result = 'WARN'
                 warning_texts.append("추천 가이드 문구 확인 실패")
 
