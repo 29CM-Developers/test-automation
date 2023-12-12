@@ -14,15 +14,6 @@ def click_home_btn(wd):
 
 
 def save_product_name(wd):
-    # 스페셜 오더 상품 확인
-    try:
-        wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-        print('SPECIAL-ORDER 상품 발견')
-    except NoSuchElementException:
-        print('SPECIAL-ORDER 상품 미발견')
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-        pass
     # 이굿 위크 상품 확인
     try:
         sale_tag = aal(wd, '이굿위크 할인 상품')
@@ -34,6 +25,16 @@ def save_product_name(wd):
             print('sale_tag 상품 발견')
     except NoSuchElementException:
         print('sale_tag 상품 미발견')
+        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+        pass
+
+    # 스페셜 오더 상품 확인
+    try:
+        wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+        print('SPECIAL-ORDER 상품 발견')
+    except NoSuchElementException:
+        print('SPECIAL-ORDER 상품 미발견')
         element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
         pass
 
@@ -146,7 +147,8 @@ def select_options(wd, product_item_no):
             print(f'항목 : {option_layout[i]}')
 
             if i < len(option_layout) - 1:
-                aalc(opthios_layer1, f'c_{option_item_list[0]["title"]}"]')
+                print(f'option_item_list[0]["title"] : {option_item_list[0]["title"]}')
+                aalc(opthios_layer, f'c_{option_item_list[0]["title"]}"]')
                 print(f'옵션1 : {option_item_list[0]["title"]}')
                 option_item_list = option_item_list[0].get('list', [])
             else:
