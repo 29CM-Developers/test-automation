@@ -73,9 +73,15 @@ def check_first_popular_brand_category(wd, first_brand_category_name):
 
 # num : 검색어 위치 입력 (좌측 첫번째 : 1, 우측 세번째 : 6)
 def save_popular_brand_name(wd, num):
-    brand_1st = ial(wd, f'(//XCUIElementTypeOther[@name="first_popular_brand_name"])[{num}]')
-    brand_1st_name = ial(brand_1st, '//XCUIElementTypeStaticText').text
-    return brand_1st_name
+    brand = ial(wd, f'(//XCUIElementTypeOther[@name="first_popular_brand_name"])[{num}]')
+    brand_name = ial(brand, '//XCUIElementTypeStaticText').text
+    return brand_name
+
+
+# num : 검색어 위치 입력 (좌측 첫번째 : 1, 우측 세번째 : 6)
+def click_popular_brand_name(wd, num):
+    ialc(wd, f'(//XCUIElementTypeOther[@name="first_popular_brand_name"])[{num}]')
+    sleep(2)
 
 
 def check_popular_brand_name(api_brand_name, brand_name):
@@ -84,15 +90,6 @@ def check_popular_brand_name(api_brand_name, brand_name):
     else:
         print(f'인기 브랜드 확인 실패 : api-{api_brand_name} / search-{brand_name}')
         raise Exception(f'인기 브랜드 확인 실패 : api-{api_brand_name} / search-{brand_name}')
-
-
-def click_first_popular_brand_name(wd):
-    ialc(wd, '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[1]')
-    sleep(2)
-
-
-def click_30th_popular_brand_name(wd):
-    ialc(wd, '(//XCUIElementTypeOther[@name="first_popular_brand_name"])[6]')
 
 
 def swipe_brand_area(wd):

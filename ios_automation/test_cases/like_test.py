@@ -228,6 +228,7 @@ class Like:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:

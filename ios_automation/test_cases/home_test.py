@@ -210,9 +210,11 @@ class Home:
             # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
-            # # 로그인한 유저의 추천 탭 타이틀 확인
-            # home_page.click_tab_name(wd, '추천')
-            # home_page.check_entry_recommended_tab(self, wd)
+            # 맨 카테고리 탭 선택
+            home_page.click_tab_name(wd, '맨')
+
+            # 추천 상품 영역 확인
+            home_page.check_scroll_to_recommended_contents(wd)
 
             # 우먼 카테고리 탭 선택
             home_page.click_tab_name(wd, '우먼')
@@ -243,13 +245,13 @@ class Home:
             home_page.check_decrease_like_count(content_like_count, content_like_unselect)
 
             # 컨텐츠 상품의 상품명과 상품가격 저장 후, 해당 상품의 상세 페이지 진입
-            contents_prodcut_name = home_page.save_contents_product_name(wd)
+            contents_product_name = home_page.save_contents_product_name(wd)
             contents_product_price = home_page.save_contents_product_price(wd)
             home_page.click_contents_product(wd)
 
             # 상품명 비교 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            product_detail_page.check_product_name(pdp_name, contents_prodcut_name)
+            product_detail_page.check_product_name(pdp_name, contents_product_name)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
@@ -278,6 +280,7 @@ class Home:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
