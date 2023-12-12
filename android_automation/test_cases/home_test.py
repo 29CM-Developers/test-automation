@@ -634,11 +634,8 @@ class Home:
                 print(f'첫번째 상품가격 : {first_product_price[0].text}')
 
                 first_product_price_text = first_product_price[0].text
-                print(f'첫번째 상품가격 : {first_product_price_text}')
                 first_product_price = first_product_price_text.replace(",", "")
-                print(f'첫번째 상품가격 : {first_product_price}')
                 first_product_price = int(first_product_price)
-                print(f'첫번째 상품가격 : {first_product_price}')
 
                 first_product_title[0].click()
                 print("첫번째 상품 클릭")
@@ -661,11 +658,8 @@ class Home:
                 print(f'PDP_price : {PDP_price.text}')
 
                 PDP_price = PDP_price.text
-                print(f'PDP 상품가격 : {PDP_price}')
                 PDP_price = PDP_price.replace(",", "")
-                print(f'PDP 상품가격 : {PDP_price}')
                 PDP_price = int(PDP_price)
-                print(f'PDP 상품가격 : {PDP_price}')
 
                 PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
                 print(f"PDP_product_title : {PDP_product_title}")
