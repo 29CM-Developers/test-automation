@@ -415,3 +415,19 @@ def al_click(wd, xpath, text):
 
     return find_element
 
+
+# 키보드 상태 확인 함수
+def is_keyboard_displayed(wd):
+    try:
+        return wd.is_keyboard_shown()
+    except Exception as e:
+        print(f"Error checking keyboard state: {e}")
+        return False
+
+
+# 키보드 닫기 함수
+def close_keyboard(wd):
+    try:
+        wd.hide_keyboard()
+    except Exception as e:
+        print(f"Error hiding keyboard: {e}")
