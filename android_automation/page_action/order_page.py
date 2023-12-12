@@ -68,7 +68,7 @@ def click_virtual_account_payment(wd):
                 break
     except NoSuchElementException:
         pass
-    sleep(3)
+    sleep(5)
 
 
 def click_delivery_order_tracking(wd):
