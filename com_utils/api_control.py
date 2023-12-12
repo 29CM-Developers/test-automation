@@ -198,7 +198,7 @@ def search_total_popular_brand_name():
         for i in range(0, len(brands)):
             brand_name = brands[i]['keyword']
             brand_names.append(brand_name)
-            search_popular_brand_name['brand_names'] = brand_names
+        search_popular_brand_name['brand_names'] = brand_names
 
         return search_popular_brand_name
     else:
@@ -215,8 +215,7 @@ def search_brand_by_related_brand():
             f'https://search-api.29cm.co.kr/api/v4/products/brand/keyword/?keyword={brand_name}')
         if response.status_code == 200:
             brand_data = response.json()
-            front_brand_count = len(brand_data['data'])
-            if front_brand_count == 1:
+            if len(brand_data['data']) == 1:
                 break
         else:
             print('검색 브랜드 정보 API 불러오기 실패')
