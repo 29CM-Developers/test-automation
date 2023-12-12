@@ -245,13 +245,13 @@ class Home:
             home_page.check_decrease_like_count(content_like_count, content_like_unselect)
 
             # 컨텐츠 상품의 상품명과 상품가격 저장 후, 해당 상품의 상세 페이지 진입
-            contents_prodcut_name = home_page.save_contents_product_name(wd)
+            contents_product_name = home_page.save_contents_product_name(wd)
             contents_product_price = home_page.save_contents_product_price(wd)
             home_page.click_contents_product(wd)
 
             # 상품명 비교 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            product_detail_page.check_product_name(pdp_name, contents_prodcut_name)
+            product_detail_page.check_product_name(pdp_name, contents_product_name)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
@@ -280,6 +280,7 @@ class Home:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:

@@ -38,7 +38,6 @@ def save_tab_names(wd):
         tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther/XCUIElementTypeStaticText').text
         tab_name_list.append(tab_name)
     tab_name_list = ', '.join(tab_name_list)
-    print(tab_name_list)
     return tab_name_list
 
 
@@ -48,7 +47,7 @@ def check_tab_names(self, tab, tab_list):
     if self.conf['compare_home_tab'][tab] in tab_list:
         print('홈 상단 탭 확인')
     else:
-        print('홈 상단 탭 확인 실패')
+        print(f'홈 상단 탭 확인 실패 - {tab_list}')
         raise Exception('홈 상단 탭 확인 실패')
 
 
@@ -126,7 +125,6 @@ def save_contents_product_name(wd):
     product_name = ial(wd,
                        '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[2]').text
     product_name = product_name.strip()
-    print(f'컨텐츠의 상품명 : {product_name}')
     return product_name
 
 
@@ -138,7 +136,8 @@ def save_contents_product_price(wd):
         start_index = percent + 2
         end_index = len(product_price)
         product_price = int(product_price[start_index:end_index].replace(',', ''))
-    print(f'컨텐츠의 상품가격 : {product_price}')
+    else:
+        product_price = int(product_price.replace(',', ''))
     return product_price
 
 
