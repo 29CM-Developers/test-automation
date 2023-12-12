@@ -11,6 +11,10 @@ def check_home_logo(wd):
         print('HOME 탭으로 이동 확인 실패')
 
 
+def click_search_btn(wd):
+    ialc(wd, 'navi_search_btn')
+
+
 def click_close_life_tab(wd):
     select_tab = ial(wd,
                      '//XCUIElementTypeOther[3]/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeStaticText').text
@@ -34,7 +38,6 @@ def save_tab_names(wd):
         tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther/XCUIElementTypeStaticText').text
         tab_name_list.append(tab_name)
     tab_name_list = ', '.join(tab_name_list)
-    print(tab_name_list)
     return tab_name_list
 
 
@@ -44,26 +47,26 @@ def check_tab_names(self, tab, tab_list):
     if self.conf['compare_home_tab'][tab] in tab_list:
         print('홈 상단 탭 확인')
     else:
-        print('홈 상단 탭 확인 실패')
+        print(f'홈 상단 탭 확인 실패 - {tab_list}')
         raise Exception('홈 상단 탭 확인 실패')
 
 
-def check_entry_recommended_tab(self, wd):
-    try:
-        ial(wd, f'{self.pconf["nickname"]}님을 위한 추천 상품')
-        print('홈화면 추천 탭 타이틀 확인')
-    except NoSuchElementException:
-        print('홈화면 추천 탭 타이틀 확인 실패')
-        raise Exception('홈화면 추천 탭 타이틀 확인 실패')
-
-
-def check_not_login_user_recommended_tab(wd):
-    try:
-        ial(wd, '당신을 위한 추천 상품')
-        print('비로그인 유저 홈화면 추천 탭 타이틀 확인')
-    except NoSuchElementException:
-        print('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
-        raise Exception('비로그인 유저 홈화면 추천 탭 타이틀 확인 실패')
+def check_scroll_to_recommended_contents(wd):
+    find_contents = False
+    for i in range(0, 5):
+        try:
+            recommend_text = ial(wd, 'c_위한 추천')
+            if recommend_text.is_displayed():
+                find_contents = True
+                print('홈화면 추천 타이틀 확인')
+                break
+            else:
+                scroll_control(wd, 'D', 50)
+        except NoSuchElementException:
+            scroll_control(wd, 'D', 60)
+    if not find_contents:
+        print('홈화면 추천 타이틀 확인 실패')
+        raise Exception('홈화면 추천 타이틀 확인 실패')
 
 
 def scroll_to_feed_contents(wd, feed_title):
@@ -122,7 +125,6 @@ def save_contents_product_name(wd):
     product_name = ial(wd,
                        '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[2]').text
     product_name = product_name.strip()
-    print(f'컨텐츠의 상품명 : {product_name}')
     return product_name
 
 
@@ -134,7 +136,8 @@ def save_contents_product_price(wd):
         start_index = percent + 2
         end_index = len(product_price)
         product_price = int(product_price[start_index:end_index].replace(',', ''))
-    print(f'컨텐츠의 상품가격 : {product_price}')
+    else:
+        product_price = int(product_price.replace(',', ''))
     return product_price
 
 

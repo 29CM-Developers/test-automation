@@ -42,7 +42,7 @@ class Search:
             search_page.check_popular_brand_name(api_1st_brand, brand_1st_name)
 
             # 인기 브랜드 1위 선택
-            search_page.click_first_popular_brand_name(wd)
+            search_page.click_popular_brand_name(wd, 1)
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
             search_result_page.check_relate_brand_name(wd, brand_1st_name)
@@ -66,7 +66,7 @@ class Search:
             search_page.check_popular_brand_name(api_30th_brand, brand_30th_name)
 
             # 인기 브랜드 30위 선택
-            search_page.click_30th_popular_brand_name(wd)
+            search_page.click_popular_brand_name(wd, '6')
 
             # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
             search_result_page.check_relate_brand_name(wd, brand_30th_name)
@@ -201,7 +201,7 @@ class Search:
             # SEARCH 탭 진입
             navigation_bar.move_to_search(wd)
 
-            # 테스트할 검색어
+            # 테스트 할 검색어
             keyword = self.conf["keyword"]["knit"]
 
             # 니트 검색
@@ -243,8 +243,22 @@ class Search:
             # 검색 화면으로 복귀
             search_result_page.click_back_btn(wd)
 
+            # 인기 브랜드 리스트에서 연관 브랜드 1개인 브랜드 검색 필드에 입력 후 검색
+            brand_keyword = com_utils.api_control.search_brand_by_related_brand()
+            search_page.enter_keyword_and_click_search_btn(wd, brand_keyword)
+
+            # 브랜드 필터링에 카테고리 첫번째 카테고리 (대,중,소) 선택
+            search_result_page.click_brand_category(wd, brand_keyword)
+
+            # 선택한 필터링으로 검색 결과 1위 상품명 비교
+            api_product_name = com_utils.api_control.filter_brand_search_results_by_category(brand_keyword)['item_name']
+            search_result_page.check_search_product_name(wd, api_product_name)
+
+            # 검색 화면으로 복귀
+            search_result_page.click_back_btn(wd)
+
             # 최근 검색어에 최근에 선택한 검색어 노출 여부 확인
-            search_page.check_recent_keyword(wd, keyword)
+            search_page.check_recent_keyword(wd, brand_keyword)
 
             # 최근 검색어 모두 지우기
             search_page.clear_recent_keyword(wd)
