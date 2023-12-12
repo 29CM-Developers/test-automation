@@ -405,10 +405,8 @@ class Home:
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
             dynamic_layer = aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
-
-            try:
-                dynamic_button_title = aal(wd, 'dynamic_button_gift')
-            except NoSuchElementException:
+            dynamic_button_title = aal(wd, 'dynamic_button_gift')
+            if dynamic_button_title == None:
                 swipe_control(wd, dynamic_layer, 'left', 50)
                 dynamic_button_title = aal(wd, 'dynamic_button_gift')
             print(f'dynamic_button_title.text: {dynamic_button_title.text}')
