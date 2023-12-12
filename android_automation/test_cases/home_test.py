@@ -17,7 +17,7 @@ from android_automation.page_action.bottom_sheet import close_bottom_sheet, clos
 from com_utils import values_control
 from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, swipe_control, \
-    scroll_to_element_with_text, scroll, swipe_control
+    scroll_to_element_with_text, scroll, swipe_control, aals
 from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
@@ -627,6 +627,69 @@ class Home:
                     test_result = 'WARN'
                     warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
                 sleep(2)
+
+                # 우먼 탭의 첫번째 피드의 첫번째 상품 선택
+                first_product_title = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/productName"]')
+                first_product_price = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/lastSalePrice"]')
+                print(f'첫번째 상품명 : {first_product_title[0].text}')
+                first_product_title_text = first_product_title[0].text
+                print(f'첫번째 상품가격 : {first_product_price[0].text}')
+
+                first_product_price_text = first_product_price[0].text
+                print(f'첫번째 상품가격 : {first_product_price_text}')
+                first_product_price = first_product_price_text.replace(",", "")
+                print(f'첫번째 상품가격 : {first_product_price}')
+                first_product_price = int(first_product_price)
+                print(f'첫번째 상품가격 : {first_product_price}')
+
+                first_product_title[0].click()
+                print("첫번째 상품 클릭")
+                sleep(2)
+                # 확인2 : 상품 상세 페이지의 상품명과 상품가격 비교 확인
+                # - 피드 컨텐츠 확인
+                # 스페셜 오더 상품 확인
+                try:
+                    wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+                    element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                    print('SPECIAL-ORDER 상품 발견')
+                except NoSuchElementException:
+                    print('SPECIAL-ORDER 상품 미발견')
+                    element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                    pass
+
+                PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[3]/android.view.View[1]/android.widget.TextView'
+
+                PDP_price = aal(wd, PDP_price_xpath)
+                print(f'PDP_price : {PDP_price.text}')
+
+                PDP_price = PDP_price.text
+                print(f'PDP 상품가격 : {PDP_price}')
+                PDP_price = PDP_price.replace(",", "")
+                print(f'PDP 상품가격 : {PDP_price}')
+                PDP_price = int(PDP_price)
+                print(f'PDP 상품가격 : {PDP_price}')
+
+                PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+                print(f"PDP_product_title : {PDP_product_title}")
+                PDP_product_title = PDP_product_title.replace("_", " ")
+                best_product_title = first_product_title_text.replace("_", " ")
+                print(f"PDP_product_title : {PDP_product_title} ")
+                print(f"first_product_title_text : {best_product_title} ")
+                if PDP_product_title in best_product_title and PDP_price == first_product_price:
+                    print("피드 컨텐츠 확인 확인")
+                else:
+                    print("피드 컨텐츠 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("베스트 상품 PDP 정상 확인 실패")
+                print(f"첫번째 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_title}  ")
+                print(f"첫번째 상품 가격 : {first_product_price} , PDP 상품 가격 : {PDP_price}  ")
+                sleep(3)
+                # 상단 뒤로가기로 홈화면 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+                print("상단 뒤로가기 선택")
+
+                # 8. 홈 > 피드 > 추천 탭선택
+                sleep(1)
                 found_element = None
                 for _ in range(20):
                     try:
