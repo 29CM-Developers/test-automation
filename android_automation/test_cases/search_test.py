@@ -513,10 +513,6 @@ class Search:
                     search_container.find_element(AppiumBy.XPATH,
                                                   '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
             sleep(2)
-            # 뒤로가기로 카테고리 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            sleep(2)
             # 보강시나리오
             # 인기 브랜드 리스트에서 연관 브랜드 1개인 브랜드 검색 필드에 입력 후 검색
             # 9. 인기 브랜드 리스트에서 연관 브랜드 1개인 브랜드 검색필드에 입력
