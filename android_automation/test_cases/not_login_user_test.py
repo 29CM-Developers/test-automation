@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
-from com_utils.element_control import aal, aalk, aalc, swipe_control
+from com_utils.element_control import aal, aalk, aalc, aals, swipe_control, is_keyboard_displayed, close_keyboard
 from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
@@ -189,9 +189,26 @@ class NotLogin:
 
             print(f"베스트 상품명 : {best_product_title[0].text} ")
             best_product_list_title = best_product_title[0].text
+            best_product_price = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/lastSalePrice"]')
+
+            print(f"베스트 상품 가격 : {best_product_price[0].text} ")
+            best_product_list_price = best_product_price[0].text
+
             best_product_title[0].click()
             sleep(1)
-
+        # 이굿 위크 상품 확인
+        try:
+            sale_tag = aal(wd, '이굿위크 할인 상품')
+            if sale_tag == None:
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                print('sale_tag 상품 미발견')
+            else:
+                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
+                print('sale_tag 상품 발견')
+        except NoSuchElementException:
+            print('sale_tag 상품 미발견')
+            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+            pass
         # 스페셜 오더 상품 확인
         try:
             wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
@@ -199,19 +216,6 @@ class NotLogin:
             print('SPECIAL-ORDER 상품 발견')
         except NoSuchElementException:
             print('SPECIAL-ORDER 상품 미발견')
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-            pass
-        # 이굿 위크 상품 확인
-        try:
-            sale_tag = aal(wd, '이굿위크 할인 상품')
-            if sale_tag == None:
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-                print('sale_tag 상품 ㅁㅣ발견')
-            else:
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-                print('sale_tag 상품 발견')
-        except NoSuchElementException:
-            print('sale_tag 상품 미발견')
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
             pass
 
@@ -260,11 +264,40 @@ class NotLogin:
         # 우먼탭으로 선택 ui 변경
         # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
         wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
+        sleep(1)
+        # 카테고리 탭 진입 for you 탭 선택
+        aalc(wd, 'CATEGORY')
+        aalc(wd, 'for_you_title')
+        sleep(1)
+        # 추천 확인 추가
+        top_menu = aal(wd, 'com.the29cm.app29cm:id/topMenu')
+        recommend_title = aal(top_menu, '//android.view.View/android.widget.TextView')
+        print(f"타이틀 문구 : {recommend_title.text} ")
+
+        if recommend_title.text == '당신을 위한 추천 상품':
+            print('타이틀 문구 당신을 위한 추천 문구 확인')
+        else:
+            print('타이틀 문구 당신을 위한 추천 문구 확인 실패')
+            test_result = 'WARN'
+            warning_texts.append(" 비로그인 유저 추천 페이지 타이틀 확인 실패")
+
+        # 뒤로가기로 카테고리 화면 진입
+        aalc(top_menu, '//android.view.View/android.view.View')
+        aalc(wd, 'HOME')
 
         # 6. Home 상단 네비게이션 검색 아이콘 선택
         wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
         print("상단 검색 아이콘 선택")
         sleep(2)
+
+        # 키보드가 올라가 있는지 확인하고, 올라가 있다면 닫기
+        if is_keyboard_displayed(wd):
+            print("키패드 열림 확인")
+            close_keyboard(wd)
+            print("키패드 닫기")
+        else:
+            print("키패드 미노출")
+
         search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
 
         try:
