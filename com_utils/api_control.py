@@ -4,6 +4,83 @@ import requests
 import com_utils.cookies_control
 
 
+def home_banner_info(self):
+    banner_data = {}
+    response = requests.get(
+        f'https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf["gender"]}')
+    if response.status_code == 200:
+        banner_api_data = response.json()
+        banner_count = int(banner_api_data['data']['count'])
+
+        # 배너 ID 모두 저장
+        banner_ids = []
+        for i in range(0, banner_count):
+            banner_id_api = banner_api_data['data']['bannerList'][i]['bannerId']
+            banner_ids.append(banner_id_api)
+        banner_data['banner_ids'] = banner_ids
+
+        # 배너 컨텐츠 모두 저장
+        banner_contents = []
+        for i in range(0, banner_count):
+            banner_contents_api = banner_api_data['data']['bannerList'][i]['bannerContents']
+            banner_contents.append(banner_contents_api)
+        banner_data['banner_contents'] = banner_contents
+
+        # 배너 타이틀 모두 저장
+        banner_titles = []
+        for i in range(0, banner_count):
+            banner_title_api = banner_api_data['data']['bannerList'][i]['bannerTitle']
+            if banner_title_api == 'ㅤ':
+                pass
+            else:
+                banner_title_api = banner_title_api.replace('\n', " ")
+                banner_titles.append(banner_title_api)
+        banner_data['banner_titles'] = banner_titles
+    else:
+        print('홈 배너 API 불러오기 실패')
+    return banner_data
+
+
+def feed_contents_info():
+    feed_contents_titles = {}
+    # 우먼 탭 컨텐츠 API 호출
+    response = requests.get(
+        'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0')
+    if response.status_code == 200:
+        contents_api_data = response.json()
+        feed_item_contents = contents_api_data['data']['results']
+
+        first_feed_title = ''
+        second_feed_title = ''
+        first_title_with_item = ''
+
+        for i in range(0, 10):
+            feed_contents_type = feed_item_contents[i]['feedType']
+            related_feed_item = feed_item_contents[i]['relatedFeedItemList']
+
+            # feedType이 contents인 첫번째, 두번째 컨텐츠의 타이틀 저장
+            if feed_contents_type == 'contents':
+                if not first_feed_title:
+                    first_feed_title = feed_item_contents[i]['feedTitle']
+                    feed_contents_titles['first_feed_title'] = first_feed_title
+                elif not second_feed_title and first_title_with_item:
+                    second_feed_title = feed_item_contents[i]['feedTitle']
+                    feed_contents_titles['second_feed_title'] = second_feed_title
+
+            # 연결된 상품이 있는 첫번째 컨텐츠의 타이틀 저장
+            if related_feed_item and not first_title_with_item:
+                first_title_with_item = feed_item_contents[i]['feedTitle']
+                feed_contents_titles['first_title_with_item'] = first_title_with_item
+
+            # 모든 컨텐츠 타이틀명이 저장되었을 때, break
+            if first_feed_title and first_title_with_item and second_feed_title:
+                break
+    else:
+        print('피드 컨텐츠 API 불러오기 실패')
+
+    return feed_contents_titles
+
+
 def large_category_info(category, large_category_text):
     large_category_code = ''
     large_category_name = ''
