@@ -558,7 +558,7 @@ class Home:
 
                 # 스크롤
                 scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
-                scroll(wd)
+                scroll_control(wd, 'D', 50)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
 
                 # 하트 이미 선택되었는지 확인
