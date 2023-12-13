@@ -1,6 +1,9 @@
+from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, scroll_control
+from com_utils.api_control import home_banner_info
+from com_utils.element_control import ial, ialc, scroll_control, swipe_control
+from ios_automation.page_action import context_change
 
 
 def check_home_logo(wd):
@@ -45,10 +48,87 @@ def save_tab_names(wd):
 # tab_list : 비교할 탭 이름 리스트
 def check_tab_names(self, tab, tab_list):
     if self.conf['compare_home_tab'][tab] in tab_list:
-        print('홈 상단 탭 확인')
+        print(f'홈 상단 {tab} 탭 확인')
     else:
-        print(f'홈 상단 탭 확인 실패 - {tab_list}')
-        raise Exception('홈 상단 탭 확인 실패')
+        print(f'홈 상단 {tab} 탭 확인 실패 - {tab_list}')
+        raise Exception(f'홈 상단 {tab} 탭 확인 실패')
+
+
+def click_dynamic_gate(wd):
+    # 다이나믹 게이트 -> 센스있는 선물하기 선택
+    for i in range(0, 3):
+        try:
+            ialc(wd, '센스있는 선물하기')
+            sleep(3)
+            break
+        except NoSuchElementException:
+            dynamic_gate = ial(wd, 'dynamic_gate')
+            swipe_control(wd, dynamic_gate, 'left', 30)
+
+
+def check_dynamic_gate_gift_page(wd):
+    try:
+        ial(wd, '센스있는 선물하기')
+        context_change.switch_context(wd, 'webview')
+        ial(wd, '//span[contains(text(), "선물인가요")]')
+        print('다이나믹 게이트 타이틀 확인')
+        context_change.switch_context(wd, 'native')
+    except NoSuchElementException:
+        print('다이나믹 게이트 타이틀 확인 실패')
+        raise Exception('다이나믹 게이트 타이틀 확인 실패')
+
+
+def check_for_duplicate_banner_contents(self):
+    # 홈화면 배너 API 호출
+    banner_data = home_banner_info(self)
+    banner_ids = banner_data['banner_ids']
+    banner_contents = banner_data['banner_contents']
+
+    # 모든 홈 배너의 id와 contents의 중복 여부를 확인
+    check_id = len(banner_ids) != len(set(banner_ids))
+    check_contents = len(banner_contents) != len(set(banner_contents))
+
+    if not check_id:
+        if not check_contents:
+            print('중복된 홈 배너 id와 컨텐츠 없음 확인')
+        else:
+            print('중복된 홈 배너 id는 없으나, 동일한 컨텐츠 있음 확인')
+    else:
+        print(f'중복된 홈 배너 없음 확인 실패')
+        raise Exception('중복된 홈 배너 없음 확인 실패')
+
+
+def save_banner_title(wd):
+    banner_titles = []
+    for i in range(0, 3):
+        sleep(2)
+        try:
+            banner_title = ial(wd, '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
+            banner_titles.append(banner_title)
+            print(banner_title)
+        except NoSuchElementException:
+            print("타이틀 없는 배너")
+            pass
+        except Exception:
+            # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
+            banner = ial(wd, 'home_banner')
+            swipe_control(wd, banner, 'right', 30)
+            banner_title = ial(wd, '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
+            banner_titles.append(banner_title)
+            print(banner_title)
+    return banner_titles
+
+
+def check_home_banner_title(self, home_banner_title):
+    # 홈화면 배너 api 호출하여 타이틀 저장
+    api_banner_title = home_banner_info(self)['banner_titles']
+
+    # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
+    if any(banner in api_banner_title for banner in home_banner_title):
+        print('홈 배너 확인')
+    else:
+        print(f'홈 배너 확인 실패: {set(home_banner_title).difference(set(api_banner_title))}')
+        raise Exception('홈 배너 확인 실패')
 
 
 def check_scroll_to_recommended_contents(wd):
