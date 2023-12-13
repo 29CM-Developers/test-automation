@@ -80,10 +80,11 @@ def click_hyundai_card(wd):
     virtual_account = False
     for i in range(0, 5):
         try:
-            element = aal(wd, 'c_혜택 현대카드 X PIN PAY')
+            element = aal(wd, 'c_현대카드 X PIN PAY')
             if element == None:
                 print('엘리멘트 없음')
                 scroll_control(wd, 'U', 50)
+                sleep(0.5)
             elif element.is_displayed():
                 print('엘리멘트 발견')
                 virtual_account = True
@@ -286,15 +287,15 @@ def check_order_product_name(wd, warning_texts, product_name):
     return test_result
 
 
-def check_cart_purchase_price(wd, warning_texts, pdp_price):
+def check_cart_purchase_price(wd, warning_texts, cart_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
     # 쿠폰할인금액
     coupon_discount_price = save_coupon_discount_price(wd)
     print(
-        f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 쿠폰 할인 금액 : {coupon_discount_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} ')
-    compare_price = pdp_price + delivery_price - coupon_discount_price
+        f'주문서 가격 확인 - cart_price: {cart_price} / 배송비 : {delivery_price} / 쿠폰 할인 금액 : {coupon_discount_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} ')
+    compare_price = cart_price - coupon_discount_price
     if order_price == compare_price and btn_price == compare_price:
         test_result = 'PASS'
         print('주문서 가격 확인')
@@ -302,7 +303,7 @@ def check_cart_purchase_price(wd, warning_texts, pdp_price):
         test_result = 'WARN'
         warning_texts.append('주문서 가격 확인 실패')
         print(
-            f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} / 쿠폰 할인 금액 : {coupon_discount_price}')
+            f'주문서 가격 확인 실패 - pdp: {cart_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} / 쿠폰 할인 금액 : {coupon_discount_price}')
     sleep(3)
 
     return test_result
