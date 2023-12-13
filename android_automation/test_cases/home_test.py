@@ -278,21 +278,28 @@ class Home:
             aalc(wd, 'HOME')
             print("홈 탭 선택")
 
-            # 보강시나리오
-            # aalc(wd, 'life_tab')
-            # print("라이프 탭 선택")
-            # sleep(2)
-            # 라이프탭 아이디 설정 후 추가 필요
-            # aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
-            aalc(wd, 'life_tab')
-            print("라이프 탭 해제")
-            sleep(1)
+            # 디폴트 선택 화면 확인
             try:
-                aal(wd, 'women_tab')
-                aal(wd, 'men_tab')
-                aal(wd, 'life_tab')
-                aal(wd, 'best_tab')
-                aal(wd, 'recommend_tab')
+                culture_tab = aal(wd,
+                                  '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[5]')
+                print("컬처 탭 존재")
+                aalc(wd, 'life_tab')
+                print("라이프 탭 해제")
+            except Exception:
+                print('라이프 탭 디폴트 아님')
+                pass
+            sleep(3)
+            try:
+                women_tab = aal(wd, 'women_tab')
+                men_tab = aal(wd, 'men_tab')
+                life_tab = aal(wd, 'life_tab')
+                best_tab = aal(wd, 'best_tab')
+                if women_tab != None and men_tab != None and life_tab != None and best_tab != None:
+                    print("홈 상단 탭 확인 성공")
+                else:
+                    print("홈 상단 탭 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("홈 상단 탭 확인 실패")
             except NoSuchElementException:
                 print("홈 상단 탭 확인 실패")
                 test_result = 'WARN'
@@ -639,7 +646,7 @@ class Home:
 
                 first_product_title[0].click()
                 print("첫번째 상품 클릭")
-                sleep(2)
+                sleep(5)
                 # 확인2 : 상품 상세 페이지의 상품명과 상품가격 비교 확인
                 # - 피드 컨텐츠 확인
                 # 스페셜 오더 상품 확인
@@ -652,7 +659,7 @@ class Home:
                     element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                     pass
 
-                PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[3]/android.view.View[1]/android.widget.TextView'
+                PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[4]/android.view.View[1]/android.widget.TextView[3]'
 
                 PDP_price = aal(wd, PDP_price_xpath)
                 print(f'PDP_price : {PDP_price.text}')
