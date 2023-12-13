@@ -1,6 +1,8 @@
+from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc, aals
 from time import sleep
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 
 
 def click_back_btn(wd):
@@ -33,7 +35,7 @@ def click_option_product(wd):
     aalc(wd, '확인')
 
 
-def save_my_coupon_list(wd):
+def save_my_coupon_list(wd, api_coupon_list):
     coupon_list = []
     sleep(3)
     try:
@@ -41,21 +43,23 @@ def save_my_coupon_list(wd):
         if no_coupon != None:
             print("발급 받은 쿠폰이 없습니다 단어를 찾을 수 없습니다.")
             return coupon_list
-        coupon = aal(wd, '//android.widget.TextView[@index=3]')
-        print(f'coupon = {coupon}')
-        if coupon == None:
-            print('쿠폰명 찾기 실패 ')
-        else:
-            print(f'coupon명 = {coupon.text}')
-            full_coupon_name = coupon.text
-            index = full_coupon_name.find('쿠폰')
-            if index != -1:  # target_word를 찾은 경우
-                coupon_name = full_coupon_name[:index + len('쿠폰')]
-                print(f'coupon_name : {coupon_name}')
+        for i in range(len(api_coupon_list)):
+            coupon = aal(wd,
+                         f'//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[{i + 1}]/android.view.View/android.view.View/android.view.View/android.widget.TextView[4]')
+            print(f'coupon = {coupon.text}')
+            if coupon == None:
+                print('쿠폰명 찾기 실패 ')
             else:
-                print("대상 단어를 찾을 수 없습니다.")
-                coupon_name = full_coupon_name
-            coupon_list.append(coupon_name)
+                print(f'coupon명 = {coupon.text}')
+                full_coupon_name = coupon.text
+                index = full_coupon_name.find('최대')
+                if index != -1:  # target_word를 찾은 경우
+                    coupon_name = full_coupon_name[:index]
+                    print(f'coupon_name : {coupon_name}')
+                else:
+                    print("대상 단어를 찾을 수 없습니다.")
+                    coupon_name = full_coupon_name
+                coupon_list.append(coupon_name)
     except NoSuchElementException:
         print('쿠폰명 찾기 실패 ')
         pass
