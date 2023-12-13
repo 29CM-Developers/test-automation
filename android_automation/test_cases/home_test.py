@@ -538,7 +538,7 @@ class Home:
                 sleep(5)
 
                 found_element = None
-                for _ in range(10):
+                for _ in range(15):
                     try:
                         # 첫번째 피드 타이틀와 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedTitle')
