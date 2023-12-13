@@ -64,6 +64,7 @@ def check_product_name(warning_texts, product_name, compare_name):
         test_result = 'WARN'
         warning_texts.append('PDP 진입 확인 실패')
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
+        sleep(1)
     return test_result
 
 
@@ -130,40 +131,41 @@ def select_options(wd, product_item_no):
     sleep(5)
     exist = option_exist(product_item_no)
     if exist == '옵션 있음':
-        option_layout = product_detail(product_item_no)['option_items_layout']
-        option_item_list = product_detail(product_item_no)['option_items_list']
-        option_name = ''
-        print(f'option_layout : {option_layout}')
+        sleep(2)
+        fake_exist = aal(wd, ':r0:')
+        if fake_exist != None:
+            print("화면에 fake_exist 엘리먼트 있어 화면에 옵션 없음")
+            pass
+        else:
+            option_layout = product_detail(product_item_no)['option_items_layout']
+            option_item_list = product_detail(product_item_no)['option_items_list']
+            option_name = ''
+            print(f'option_layout : {option_layout}')
+            print(f'option_item_list : {option_item_list}')
 
-        for i in range(len(option_layout)):
-            print(f'{i + 1}/{len(option_layout)}')
-            sleep(2)
-            # aalc(wd, f'c_{option_layout[i]}"]')
-            opthios_layer = aal(wd,
-                                '//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View')
-            opthios_layer1 = aal(opthios_layer, '//android.widget.Button')
-            aalc(opthios_layer, "//android.widget.Button")
-            sleep(5)
-            print(f'항목 : {option_layout[i]}')
-
-            if i < len(option_layout) - 1:
-                print(f'option_item_list[0]["title"] : {option_item_list[0]["title"]}')
-                aalc(opthios_layer, f'c_{option_item_list[0]["title"]}"]')
-                print(f'옵션1 : {option_item_list[0]["title"]}')
-                option_item_list = option_item_list[0].get('list', [])
-            else:
-                for option in option_item_list:
-                    if option['limited_qty'] != 0:
-                        option_name = option["title"].strip()
-                        print(f'옵션2 : {option_name}')
-                        opthios_layer2 = aals(opthios_layer, '//android.widget.Button[@index=1]')
-                        # aalc(opthios_layer, '//android.widget.Button[2]')
-                        aalc(wd, f'c_{option_name}')
-                        break
-                    else:
-                        print(f'{option_name} 옵션 품절')
-                        pass
-    sleep(1)
+            for i in range(len(option_layout)):
+                print(f'{i + 1}/{len(option_layout)}')
+                sleep(2)
+                opthios_layer = aal(wd,
+                                    f'//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[{i + 1}]')
+                aalc(opthios_layer, "//android.widget.Button")
+                sleep(2)
+                print(f'항목 : {option_layout[i]}')
+                if i < len(option_layout) - 1:
+                    aalc(wd, f'c_{option_item_list[0]["title"]}')
+                    print(f'옵션1 : {option_item_list[0]["title"]}')
+                    option_item_list = option_item_list[0].get('list', [])
+                else:
+                    for option in option_item_list:
+                        if option['limited_qty'] != 0:
+                            option_name = option["title"].strip()
+                            print(f'옵션2 : {option_name}')
+                            aalc(wd, f'c_{option_name}')
+                            break
+                        else:
+                            print(f'{option_name} 옵션 품절')
+                            pass
+        sleep(1)
 
 
 def check_add_product_to_cart(wd, warning_texts):
