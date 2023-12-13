@@ -12,29 +12,26 @@ def home_banner_info(self):
         banner_api_data = response.json()
         banner_count = int(banner_api_data['data']['count'])
 
-        # 배너 ID 모두 저장
+        # 배너 ID, 컨텐츠, 타이틀 모두 저장
         banner_ids = []
+        banner_contents = []
+        banner_titles = []
         for i in range(0, banner_count):
             banner_id_api = banner_api_data['data']['bannerList'][i]['bannerId']
             banner_ids.append(banner_id_api)
-        banner_data['banner_ids'] = banner_ids
 
-        # 배너 컨텐츠 모두 저장
-        banner_contents = []
-        for i in range(0, banner_count):
             banner_contents_api = banner_api_data['data']['bannerList'][i]['bannerContents']
             banner_contents.append(banner_contents_api)
-        banner_data['banner_contents'] = banner_contents
 
-        # 배너 타이틀 모두 저장
-        banner_titles = []
-        for i in range(0, banner_count):
             banner_title_api = banner_api_data['data']['bannerList'][i]['bannerTitle']
             if banner_title_api == 'ㅤ':
                 pass
             else:
-                banner_title_api = banner_title_api.replace('\n', " ")
+                banner_title_api = banner_title_api.replace('\n', ' ')
                 banner_titles.append(banner_title_api)
+
+        banner_data['banner_ids'] = banner_ids
+        banner_data['banner_contents'] = banner_contents
         banner_data['banner_titles'] = banner_titles
     else:
         print('홈 배너 API 불러오기 실패')

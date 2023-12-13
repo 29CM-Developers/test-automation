@@ -105,10 +105,6 @@ def save_banner_title(wd):
         try:
             banner_title = ial(wd, '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
             banner_titles.append(banner_title)
-            print(banner_title)
-        except NoSuchElementException:
-            print("타이틀 없는 배너")
-            pass
         except Exception:
             # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
             banner = ial(wd, 'home_banner')

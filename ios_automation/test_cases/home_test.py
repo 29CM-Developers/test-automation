@@ -1,12 +1,10 @@
 import os
 import sys
 import traceback
-import requests
 import com_utils.element_control
 
 from com_utils import values_control
 from time import time
-from appium.webdriver.common.appiumby import AppiumBy
 from com_utils.api_control import search_total_popular_brand_name, feed_contents_info
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
