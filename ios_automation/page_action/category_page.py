@@ -94,7 +94,7 @@ def click_category(wd, category_name):
 
 def check_not_login_user_recommended_tab(wd):
     try:
-        ial(wd, 'c_당신을 위한 추천상품')
+        ial(wd, 'c_당신을 위한 추천')
         print('비로그인 유저 추천 페이지 타이틀 확인')
     except NoSuchElementException:
         print('비로그인 유저 추천 페이지 타이틀 확인 실패')

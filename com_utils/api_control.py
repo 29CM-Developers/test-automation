@@ -285,11 +285,14 @@ def search_brand_by_related_brand():
 
     brand_name = ''
     for brand_name in brand_list:
-        response = requests.get(
+        brand_response = requests.get(
             f'https://search-api.29cm.co.kr/api/v4/products/brand/keyword/?keyword={brand_name}')
-        if response.status_code == 200:
-            brand_data = response.json()
-            if len(brand_data['data']) == 1:
+        search_response = requests.get(f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={brand_name}')
+        if brand_response.status_code == 200 and search_response.status_code == 200:
+            brand_data = brand_response.json()
+            search_data = search_response.json()
+            keyword_type = search_data['data']['keywordTypes']
+            if len(brand_data['data']) == 1 and keyword_type == ['brand']:
                 break
         else:
             print('검색 브랜드 정보 API 불러오기 실패')

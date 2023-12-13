@@ -3,6 +3,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import product_detail, best_plp_women_clothes
+from ios_automation.page_action import context_change
 
 
 def click_pdp_back_btn(wd):
@@ -103,42 +104,39 @@ def click_like_btn(wd):
     ialc(wd, '//span[contains(text(), "찜하기")]')
 
 
-# 옵션 존재 여부 확인
-def option_exist(product_item_no):
-    option_items_list = product_detail(product_item_no)['option_items_list']
-    options = '옵션 있음' if option_items_list else '옵션 없음'
-    print(options)
-    return options
-
-
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
-    exist = option_exist(product_item_no)
-    if exist == '옵션 있음':
+    context_change.switch_context(wd, 'webview')
+
+    try:
+        ial(wd, '//label[contains(text(), "수량")]')
+        options = '옵션 없음'
+    except NoSuchElementException:
+        options = '옵션 있음'
+    print(f'{options} 확인')
+
+    if options == '옵션 있음':
         option_layout = product_detail(product_item_no)['option_items_layout']
         option_item_list = product_detail(product_item_no)['option_items_list']
         option_name = ''
 
         for i in range(len(option_layout)):
-            print(f'{i + 1}/{len(option_layout)}')
-            ialc(wd, f'//XCUIElementTypeButton[@name="{option_layout[i]}"]')
-            print(f'항목 : {option_layout[i]}')
+            ialc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
 
             if i < len(option_layout) - 1:
-                ialc(wd, f'//XCUIElementTypeButton[@name="{option_item_list[0]["title"]}"]')
-                print(f'옵션 : {option_item_list[0]["title"]}')
+                ialc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
                 option_item_list = option_item_list[0].get('list', [])
             else:
                 for option in option_item_list:
                     if option['limited_qty'] != 0:
                         option_name = option["title"].strip()
-                        print(f'옵션 : {option_name}')
-                        ialc(wd, f'//XCUIElementTypeButton[@name="{option_name}"]')
+                        ialc(wd, f'//li[contains(text(), "{option_name}")]')
                         break
                     else:
-                        print(f'{option_name} 옵션 품절')
+                        print(f'{option_name} 옵션 품절 확인')
                         pass
     sleep(1)
+    context_change.switch_context(wd, 'native')
 
 
 def check_add_product_to_cart(wd):

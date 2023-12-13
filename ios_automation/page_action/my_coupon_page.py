@@ -26,14 +26,13 @@ def save_my_coupon_list(wd):
     switch_context(wd, 'webview')
     coupon_list = []
     try:
-        coupon = wd.find_elements(AppiumBy.CSS_SELECTOR, '[class="e1muu87i6 css-196r6f0 e1bnten30"]')
+        coupon = ials(wd, '//span[contains(@class, "e1muu87i6")]')
         for name in coupon:
             coupon_name = name.text
             coupon_list.append(coupon_name)
     except NoSuchElementException:
         pass
     switch_context(wd, 'native')
-    print(f'쿠폰 목록 : {coupon_list}')
     return coupon_list
 
 
