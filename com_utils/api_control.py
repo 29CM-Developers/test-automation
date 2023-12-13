@@ -288,7 +288,7 @@ def search_brand_by_related_brand():
         brand_response = requests.get(
             f'https://search-api.29cm.co.kr/api/v4/products/brand/keyword/?keyword={brand_name}')
         search_response = requests.get(f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={brand_name}')
-        if brand_response.status_code == 200 and search_response == 200:
+        if brand_response.status_code == 200 and search_response.status_code == 200:
             brand_data = brand_response.json()
             search_data = search_response.json()
             keyword_type = search_data['data']['keywordTypes']
