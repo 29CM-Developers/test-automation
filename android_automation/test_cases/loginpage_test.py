@@ -290,10 +290,10 @@ class LoginLogout:
                     warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
                     print(f"가이드 문구 : {edit_member_information.text} ")
                 try:
-                    user_email = aal(wd, f'c_{self.pconf["LOGIN_SUCCESS_ID"]}')
+                    user_email = aal(wd, f'c_{self.pconf["MASKING_EMAIL"]}')
                     print("로그인한 유저 이메일 확인")
 
-                    if user_email.text == self.pconf['LOGIN_SUCCESS_ID']:
+                    if user_email.text == self.pconf['MASKING_EMAIL']:
                         print("회원정보 수정 페이지 확인")
                     else:
                         print("회원정보 수정 페이지 확인 실패")
@@ -520,7 +520,7 @@ class LoginLogout:
 
             # 로그인 성공 진입 확인
             login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == self.pconf['NAME']:
+            if login_name.text == self.pconf['MASKING_NAME']:
                 pass
             else:
                 print("로그인 문구 실패")
