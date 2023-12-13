@@ -72,6 +72,16 @@ def change_native_contexts(wd):
     wd.switch_to.context('NATIVE_APP')
     print("네이티브 변환 성공")
 
+def change_pinpay_webview_contexts(wd):
+    # 앱에서 웹뷰로 전환
+    webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
+    print("Available Contexts:", webview_contexts)
+    # 웹뷰로 전환
+    wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
+    print(f'wd.current_window_handle : {wd.current_window_handle}')
+    print(f'wd.window_handles : {wd.window_handles}')
+    print("웹뷰로 전환 성공")
+    sleep(4)
 
 def save_product_price(wd):
     print('save_product_price 진입성공')

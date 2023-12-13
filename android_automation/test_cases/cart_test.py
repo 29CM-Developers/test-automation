@@ -17,6 +17,7 @@ from com_utils.deeplink_control import move_to_home_Android
 from com_utils.testrail_api import send_test_result
 from com_utils import values_control, element_control
 from com_utils.element_control import aalc, aal, aals
+from com_utils.api_control import search_popular_keyword, search_result, product_detail, order_product_random_no
 from time import sleep, time
 
 
@@ -132,8 +133,8 @@ class Cart:
             cart_page.click_cart_btn(wd)
             cart_page.click_delete_btn_to_all_product(wd)
 
-            # 여성의류 베스트 중 품절 상태가 아닌 첫번째 상품의 상품 번호 확인
-            product_item_no = product_detail_page.save_no_soldout_product_no()
+            # 필터를 건 검색 결과 화면에서 랜덤으로 상품번호 저장
+            product_item_no = order_product_random_no()
 
             # 딥링크로 베스트 상품 PDP 진입
             com_utils.deeplink_control.move_to_pdp(wd, product_item_no)
@@ -329,9 +330,9 @@ class Cart:
             order_page.check_order_product_name(wd, warning_texts, product_name)
             # # 확인3 : 가격 정보 비교 (스크롤 최하단 결제금액, 결제 버튼의 금액) - 주문서 가격 확인
             test_result = order_page.check_cart_purchase_price(wd, warning_texts, total_price)
-            # cart_page.change_native_contexts(wd)
+
             # Home 탭으로 이동
-            move_to_home_Android(self, wd)
+            # move_to_home_Android(self, wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:

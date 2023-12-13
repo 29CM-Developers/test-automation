@@ -124,15 +124,6 @@ class My:
                         else:
                             print('PDP 옵션 정보 API 불러오기 실패')
                         # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-                        # 스페셜 오더 상품 확인
-                        try:
-                            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-                            print('SPECIAL-ORDER 상품 발견')
-                        except NoSuchElementException:
-                            print('SPECIAL-ORDER 상품 미발견')
-                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-                            pass
                         # 이굿 위크 상품 확인
                         try:
                             sale_tag = aal(wd, '이굿위크 할인 상품')
@@ -146,7 +137,15 @@ class My:
                             print('sale_tag 상품 미발견')
                             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                             pass
-
+                        # 스페셜 오더 상품 확인
+                        try:
+                            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                            print('SPECIAL-ORDER 상품 발견')
+                        except NoSuchElementException:
+                            print('SPECIAL-ORDER 상품 미발견')
+                            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                            pass
                         sleep(4)
                         PDP_product_title = aal(wd, f'{element_xpath}').text
                         sleep(2)

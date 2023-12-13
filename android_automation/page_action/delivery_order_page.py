@@ -22,20 +22,17 @@ def check_no_delivery_order(wd, warning_texts):
     return test_result
 
 
-def check_delivery_order(wd, warning_texts, order_no):
+def check_delivery_order(wd, order_no):
     try:
         aalc(wd, f'c_{order_no}')
         sleep(3)
-        test_result = 'PASS'
         print('주문 배송 조회 확인 - 주문번호')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 배송 조회 확인 실패 - 주문번호')
         print('주문 배송 조회 확인 실패 - 주문번호')
-    return test_result
+        raise Exception('주문 배송 조회 확인 실패 - 주문번호')
 
 
-def check_order_detail_price(wd, warning_texts, payment_type, order_price):
+def check_order_detail_price(wd, payment_type, order_price):
     for i in range(0, 3):
         element = aal(wd, f'c_{payment_type}')
         if element == None:
@@ -53,13 +50,10 @@ def check_order_detail_price(wd, warning_texts, payment_type, order_price):
             break
 
     if price == order_price:
-        test_result = 'PASS'
         print('주문 상세 내역 확인 - 결제금액')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문 상세 내역 확인 실패 - 결제금액')
         print(f'주문 상세 내역 확인 실패 - 결제금액 : 주문서-{order_price} / 주문 내역-{price}')
-    return test_result
+        raise Exception('주문 상세 내역 확인 실패 - 결제금액')
 
 
 def click_order_cancel_btn(wd):

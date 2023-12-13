@@ -3,7 +3,7 @@ import pytesseract
 import os
 
 from time import sleep
-from com_utils.element_control import ial
+from com_utils.element_control import ial, aal
 
 
 def screenshot_page(wd):
@@ -28,6 +28,40 @@ def screenshot_keypad(wd):
 
         # 디바이스 사이즈 기준으로 resize 및 밝기 조절해서 저장
         image = cv2.imread(f'{os.getcwd()}/image/{num}.png')
+        image = cv2.resize(image, (size['width'], size['height']))
+
+        brightness_factor = 1.5
+        image = cv2.convertScaleAbs(image, alpha=brightness_factor, beta=0)
+        cv2.imwrite(f'{os.getcwd()}/image/{num}.png', image)
+
+        num += 1
+
+
+def screenshot_keypad_Android(wd):
+    num = 0
+    # 패스워드 입력 키패드의 index가 5부터 존재
+    for i in range(5, 15):
+        number = aal(wd, f'//div[@id="nppfs-keypad-stlmPwdBase"]/div/div/img[{i}]')
+        # 엘리먼트의 좌표와 크기 얻기
+        location = number.location
+        size = number.size
+
+        screenshot_path = f'{os.getcwd()}/image/{num}.png'
+
+        # 엘리먼트 영역 크롭 및 저장
+        left = location['x']
+        top = location['y']
+        right = left + size['width']
+        bottom = top + size['height']
+
+        from PIL import Image
+
+        screenshot = Image.open(f'{os.getcwd()}/image/screenshot.png')
+        element_screenshot = screenshot.crop((left, top, right, bottom))
+        element_screenshot.save(screenshot_path)
+
+        # 디바이스 사이즈 기준으로 resize 및 밝기 조절해서 저장
+        image = cv2.imread(screenshot_path)
         image = cv2.resize(image, (size['width'], size['height']))
 
         brightness_factor = 1.5

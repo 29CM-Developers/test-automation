@@ -17,7 +17,7 @@ from android_automation.page_action.bottom_sheet import close_bottom_sheet, clos
 from com_utils import values_control
 from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, swipe_control, \
-    scroll_to_element_with_text, scroll, swipe_control
+    scroll_to_element_with_text, scroll, swipe_control, aals
 from com_utils.testrail_api import send_test_result
 
 logger = logging.getLogger(name='Log')
@@ -212,7 +212,7 @@ class Home:
             try:
                 # 로그인 성공 진입 확인
                 login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-                if login_name.text == self.pconf['MASKING_NAME']:
+                if login_name.text == self.pconf['NAME']:
                     pass
                 else:
                     print("로그인 문구 실패")
@@ -279,9 +279,9 @@ class Home:
             print("홈 탭 선택")
 
             # 보강시나리오
-            aalc(wd, 'life_tab')
-            print("라이프 탭 선택")
-            sleep(2)
+            # aalc(wd, 'life_tab')
+            # print("라이프 탭 선택")
+            # sleep(2)
             # 라이프탭 아이디 설정 후 추가 필요
             # aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
             aalc(wd, 'life_tab')
@@ -405,10 +405,8 @@ class Home:
             # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
             sleep(1)
             dynamic_layer = aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
-
-            try:
-                dynamic_button_title = aal(wd, 'dynamic_button_gift')
-            except NoSuchElementException:
+            dynamic_button_title = aal(wd, 'dynamic_button_gift')
+            if dynamic_button_title == None:
                 swipe_control(wd, dynamic_layer, 'left', 50)
                 dynamic_button_title = aal(wd, 'dynamic_button_gift')
             print(f'dynamic_button_title.text: {dynamic_button_title.text}')
@@ -472,6 +470,7 @@ class Home:
         try:
             print("[홈화면 컨텐츠 확인]CASE 시작")
             sleep(5)
+
             # # 이굿위크 여부 확인
             # try:
             #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
@@ -482,14 +481,20 @@ class Home:
             # print("추천 탭 선택")
             # sleep(1)
 
+            # 추천 개인정보 처리로 확인 주석처리
             # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
             # # 2. 홈 > 피드 > 추천 탭선택
             # wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab').click()
             # print('홈 > 피드 > 추천 탭선택 ')
+
+            aalc(wd, 'men_tab')
+            print('홈 > 피드 > 맨 탭선택 ')
+            sleep(1)
+
+            # 추천 확인 추가
             scroll_to_element_with_text(wd, '추천 상품')
             guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
-
-            # 추천 개인정보 처리로 확인 주석처리
+            print(f"가이드 문구 : {guide_text.text} ")
             # if guide_text.text == self.pconf['NAME'] + '님을 위한 추천 상품':
             #     print(f"'{self.pconf['NAME']}님을 위한 추천 상품’ 가이드 문구 노출 확인")
             # else:
@@ -497,10 +502,13 @@ class Home:
             #     test_result = 'WARN'
             #     warning_texts.append("추천 가이드 문구 확인 실패")
 
-            print(f"가이드 문구 : {guide_text.text} ")
-            aalc(wd, 'men_tab')
-            print('홈 > 피드 > 맨 탭선택 ')
-            sleep(1)
+            if guide_text.text == '당신을 위한 추천 상품':
+                print('당신을 위한 추천 상품 가이드 문구 노출 확인')
+            else:
+                print('당신을 위한 추천 상품 가이드 문구 노출 확인 실패')
+                test_result = 'WARN'
+                warning_texts.append("추천 가이드 문구 확인 실패")
+
             aalc(wd, 'women_tab')
             print('홈 > 피드 > 우먼 탭선택 ')
             sleep(1)
@@ -550,7 +558,7 @@ class Home:
 
                 # 스크롤
                 scroll_to_element_id(wd, 'com.the29cm.app29cm:id/products')
-                scroll(wd)
+                scroll_control(wd, 'D', 50)
                 products_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/products')
 
                 # 하트 이미 선택되었는지 확인
@@ -617,6 +625,63 @@ class Home:
                     test_result = 'WARN'
                     warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
                 sleep(2)
+
+                # 우먼 탭의 첫번째 피드의 첫번째 상품 선택
+                first_product_title = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/productName"]')
+                first_product_price = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/lastSalePrice"]')
+                print(f'첫번째 상품명 : {first_product_title[0].text}')
+                first_product_title_text = first_product_title[0].text
+                print(f'첫번째 상품가격 : {first_product_price[0].text}')
+
+                first_product_price_text = first_product_price[0].text
+                first_product_price = first_product_price_text.replace(",", "")
+                first_product_price = int(first_product_price)
+
+                first_product_title[0].click()
+                print("첫번째 상품 클릭")
+                sleep(2)
+                # 확인2 : 상품 상세 페이지의 상품명과 상품가격 비교 확인
+                # - 피드 컨텐츠 확인
+                # 스페셜 오더 상품 확인
+                try:
+                    wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+                    element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+                    print('SPECIAL-ORDER 상품 발견')
+                except NoSuchElementException:
+                    print('SPECIAL-ORDER 상품 미발견')
+                    element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+                    pass
+
+                PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[3]/android.view.View[1]/android.widget.TextView'
+
+                PDP_price = aal(wd, PDP_price_xpath)
+                print(f'PDP_price : {PDP_price.text}')
+
+                PDP_price = PDP_price.text
+                PDP_price = PDP_price.replace(",", "")
+                PDP_price = int(PDP_price)
+
+                PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
+                print(f"PDP_product_title : {PDP_product_title}")
+                PDP_product_title = PDP_product_title.replace("_", " ")
+                best_product_title = first_product_title_text.replace("_", " ")
+                print(f"PDP_product_title : {PDP_product_title} ")
+                print(f"first_product_title_text : {best_product_title} ")
+                if PDP_product_title in best_product_title and PDP_price == first_product_price:
+                    print("피드 컨텐츠 확인 확인")
+                else:
+                    print("피드 컨텐츠 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("베스트 상품 PDP 정상 확인 실패")
+                print(f"첫번째 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_title}  ")
+                print(f"첫번째 상품 가격 : {first_product_price} , PDP 상품 가격 : {PDP_price}  ")
+                sleep(3)
+                # 상단 뒤로가기로 홈화면 진입 확인
+                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+                print("상단 뒤로가기 선택")
+
+                # 8. 홈 > 피드 > 추천 탭선택
+                sleep(1)
                 found_element = None
                 for _ in range(20):
                     try:
