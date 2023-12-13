@@ -279,9 +279,9 @@ class Home:
             print("홈 탭 선택")
 
             # 보강시나리오
-            aalc(wd, 'life_tab')
-            print("라이프 탭 선택")
-            sleep(2)
+            # aalc(wd, 'life_tab')
+            # print("라이프 탭 선택")
+            # sleep(2)
             # 라이프탭 아이디 설정 후 추가 필요
             # aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
             aalc(wd, 'life_tab')
