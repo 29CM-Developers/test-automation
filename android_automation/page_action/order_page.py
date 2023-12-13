@@ -84,7 +84,7 @@ def click_hyundai_card(wd):
             if element == None:
                 print('엘리멘트 없음')
                 scroll_control(wd, 'U', 50)
-                sleep(0.5)
+                sleep(1)
             elif element.is_displayed():
                 print('엘리멘트 발견')
                 virtual_account = True
@@ -295,7 +295,7 @@ def check_cart_purchase_price(wd, warning_texts, cart_price):
     coupon_discount_price = save_coupon_discount_price(wd)
     print(
         f'주문서 가격 확인 - cart_price: {cart_price} / 배송비 : {delivery_price} / 쿠폰 할인 금액 : {coupon_discount_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} ')
-    compare_price = cart_price - coupon_discount_price
+    compare_price = cart_price + delivery_price - coupon_discount_price
     if order_price == compare_price and btn_price == compare_price:
         test_result = 'PASS'
         print('주문서 가격 확인')
