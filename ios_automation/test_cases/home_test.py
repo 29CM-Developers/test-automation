@@ -10,7 +10,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from com_utils.api_control import search_total_popular_brand_name, feed_contents_info
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
-    context_change, search_page
+    context_change, search_page, category_page
 
 
 class Home:
@@ -187,24 +187,11 @@ class Home:
             # CATEGORY 탭 진입
             navigation_bar.move_to_category(wd)
 
-            wd.find_element(AppiumBy.XPATH,
-                            '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="0"]').click()
+            # 첫번째 대 카테고리 선택
+            category_page.click_first_large_category(wd)
 
-            # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
-            check_category = ['all', 'for_you', 'best', 'new']
-            category_list = []
-            for medium in check_category:
-                category_cell = wd.find_element(AppiumBy.ACCESSIBILITY_ID, medium)
-                category_text = category_cell.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
-                category_list.append(category_text)
-            category_list = ', '.join(category_list)
-
-            if self.conf['compare_category_list'] == category_list:
-                print('HOME 탭에서 CATEGORY 탭 이동 확인')
-            else:
-                test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 CATEGORY 탭 이동 확인 실패')
-                print(f'HOME 탭에서 CATEGORY 탭 이동 확인 실패 : {category_list}')
+            # 중 카테고리 리스트 중 상단 4개의 카테고리명 확인
+            category_page.check_unique_medium_category(self, wd)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)
