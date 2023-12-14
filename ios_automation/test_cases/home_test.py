@@ -1,57 +1,17 @@
 import os
 import sys
 import traceback
-import requests
 import com_utils.element_control
 
 from com_utils import values_control
-from time import time, sleep
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.common import NoSuchElementException
-from com_utils.api_control import search_total_popular_brand_name
+from time import time
+from com_utils.api_control import search_total_popular_brand_name, feed_contents_info
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
-    context_change, search_page
+    context_change, search_page, category_page
 
 
 class Home:
-    def check_feed_title(self):
-
-        first_feed_title = ''
-        first_relate_item_feed_title = ''
-        second_feed_title = ''
-
-        # 우먼 탭 컨텐츠 API 호출
-        response = requests.get(
-            'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0')
-        if response.status_code == 200:
-            contents_api_data = response.json()
-            feed_item_contents = contents_api_data['data']['results']
-
-            for i in range(0, 10):
-                feed_contents_type = feed_item_contents[i]['feedType']
-                related_feed_item = feed_item_contents[i]['relatedFeedItemList']
-
-                # feedType이 contents인 첫번째, 두번째 컨텐츠의 타이틀 저장
-                if feed_contents_type == 'contents':
-                    if not first_feed_title:
-                        first_feed_title = feed_item_contents[i]['feedTitle']
-                    elif not second_feed_title:
-                        second_feed_title = feed_item_contents[i]['feedTitle']
-
-                # 연결된 상품이 있는 첫번째 컨텐츠의 타이틀 저장
-                if related_feed_item and not first_relate_item_feed_title:
-                    first_relate_item_feed_title = feed_item_contents[i]['feedTitle']
-
-                if first_feed_title and first_relate_item_feed_title and second_feed_title:
-                    break
-
-            print(
-                f'첫번째 피드 : {first_feed_title}\n연결된 상품이 있는 첫번째 피드 : {first_relate_item_feed_title}\n두번째 피드 : {second_feed_title}')
-        else:
-            print('피드 컨텐츠 API 불러오기 실패')
-
-        return first_feed_title, first_relate_item_feed_title, second_feed_title
 
     def test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
         test_name = self.dconf[sys._getframe().f_code.co_name]
@@ -78,105 +38,26 @@ class Home:
             save_tab_names = home_page.save_tab_names(wd)
             home_page.check_tab_names(self, 'home', save_tab_names)
 
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '우먼').click()
+            # 우먼 탭 선택
+            home_page.click_tab_name(wd, '우먼')
 
-            # 홈화면 배너 API 호출
-            response = requests.get(
-                f'https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={self.pconf["gender"]}')
-            if response.status_code == 200:
-                # 호출한 API의 모든 배너 타이틀 저장
-                banner_api_data = response.json()
-                banner_count = int(banner_api_data['data']['count'])
+            # 홈화면 배너 중복 여부 확인
+            home_page.check_for_duplicate_banner_contents(self)
 
-                # 모든 홈 배너의 id와 contents를 저장해서 중복 여부를 확인
-                banner_id = []
-                for i in range(0, banner_count):
-                    banner_id_api = banner_api_data['data']['bannerList'][i]['bannerId']
-                    banner_id.append(banner_id_api)
-                id_duplicate = set()
-                check_id = [x for x in banner_id if x in id_duplicate or (id_duplicate.add(x) or False)]
+            # 홈화면 배너 타이틀 3개 저장
+            home_banner_title = home_page.save_banner_title(wd)
 
-                banner_contents = []
-                for i in range(0, banner_count):
-                    banner_contents_api = banner_api_data['data']['bannerList'][i]['bannerId']
-                    banner_contents.append(banner_contents_api)
-                contents_duplicate = set()
-                check_contents = [x for x in banner_contents if
-                                  x in contents_duplicate or (contents_duplicate.add(x) or False)]
-
-                if not check_id and not check_contents:
-                    print('중복된 홈 배너 없음 확인')
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('중복된 홈 배너 없음 확인 실패')
-                    print(f'중복된 홈 배너 없음 확인 실패: {check_id} / {check_contents}')
-
-                banner_title = []
-                for i in range(0, banner_count):
-                    banner_title_api = banner_api_data['data']['bannerList'][i]['bannerTitle']
-                    if banner_title_api == 'ㅤ':
-                        pass
-                    else:
-                        banner_title_api = banner_title_api.replace('\n', " ")
-                        banner_title.append(banner_title_api)
-
-                # 홈화면 배너 타이틀 3개 저장
-                banner_home = []
-                for i in range(0, 3):
-                    sleep(2)
-                    try:
-                        banner_title_text = wd.find_element(AppiumBy.XPATH,
-                                                            '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
-                        banner_home.append(banner_title_text)
-                        print(banner_title_text)
-                    except NoSuchElementException:
-                        print("타이틀 없는 배너")
-                        pass
-                    except Exception:
-                        # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
-                        banner = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'home_banner')
-                        com_utils.element_control.swipe_control(wd, banner, 'right', 30)
-                        banner_title_text = wd.find_element(AppiumBy.XPATH,
-                                                            '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
-                        banner_home.append(banner_title_text)
-                        print(banner_title_text)
-
-                # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
-                if any(banner in banner_title for banner in banner_home):
-                    print('홈 배너 확인')
-                else:
-                    test_result = 'WARN'
-                    warning_texts.append('홈 배너 확인 실패')
-                    print(f'홈 배너 확인 실패: {set(banner_home).difference(set(banner_title))}')
-            else:
-                test_result = 'WARN'
-                warning_texts.append('피드 컨텐츠 API 불러오기 실패')
-                print('피드 컨텐츠 API 불러오기 실패')
+            # 홈화면 배너 api와 저장된 배너 타이틀 비교 확인
+            home_page.check_home_banner_title(self, home_banner_title)
 
             # 다이나믹 게이트 -> 센스있는 선물하기 선택
-            for i in range(0, 3):
-                try:
-                    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기').click()
-                    sleep(3)
-                    break
-                except NoSuchElementException:
-                    dynamic_gate = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'dynamic_gate')
-                    com_utils.element_control.swipe_control(wd, dynamic_gate, 'left', 30)
+            home_page.click_dynamic_gate(wd)
 
             # 상단 타이틀과 선물하기 페이지 내부 타이틀 확인
-            try:
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '센스있는 선물하기')
-                context_change.switch_context(wd, 'webview')
-                wd.find_element(AppiumBy.XPATH, '//span[contains(text(), "선물인가요")]')
-                print('다이나믹 게이트 타이틀 확인')
-                context_change.switch_context(wd, 'native')
-            except NoSuchElementException:
-                test_result = 'WARN'
-                warning_texts.append('다이나믹 게이트 타이틀 확인 실패')
-                print('다이나믹 게이트 타이틀 확인 실패')
+            home_page.check_dynamic_gate_gift_page(wd)
 
             # 뒤로가기 버튼 동작하지 않아 딥링크 사용하여 Home으로 이동
-            wd.get('app29cm://home')
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -189,6 +70,7 @@ class Home:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
@@ -220,10 +102,10 @@ class Home:
             home_page.click_tab_name(wd, '우먼')
 
             # 피드 정보 불러오기
-            feed_title_list = Home.check_feed_title(self)
-            feed_title_1st = feed_title_list[0]
-            feed_contain_item = feed_title_list[1]
-            feed_title_2nd = feed_title_list[2]
+            feed_title_list = feed_contents_info()
+            feed_title_1st = feed_title_list['first_feed_title']
+            feed_contain_item = feed_title_list['first_title_with_item']
+            feed_title_2nd = feed_title_list['second_feed_title']
 
             # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
             home_page.scroll_to_feed_contents(wd, feed_title_1st)
@@ -303,24 +185,11 @@ class Home:
             # CATEGORY 탭 진입
             navigation_bar.move_to_category(wd)
 
-            wd.find_element(AppiumBy.XPATH,
-                            '//XCUIElementTypeCollectionView[@index="2"]/XCUIElementTypeCell[@index="0"]').click()
+            # 첫번째 대 카테고리 선택
+            category_page.click_first_large_category(wd)
 
-            # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
-            check_category = ['all', 'for_you', 'best', 'new']
-            category_list = []
-            for medium in check_category:
-                category_cell = wd.find_element(AppiumBy.ACCESSIBILITY_ID, medium)
-                category_text = category_cell.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
-                category_list.append(category_text)
-            category_list = ', '.join(category_list)
-
-            if self.conf['compare_category_list'] == category_list:
-                print('HOME 탭에서 CATEGORY 탭 이동 확인')
-            else:
-                test_result = 'WARN'
-                warning_texts.append('HOME 탭에서 CATEGORY 탭 이동 확인 실패')
-                print(f'HOME 탭에서 CATEGORY 탭 이동 확인 실패 : {category_list}')
+            # 중 카테고리 리스트 중 상단 4개의 카테고리명 확인
+            category_page.check_unique_medium_category(self, wd)
 
             # HOME 탭으로 이동하여 29CM 로고 확인
             navigation_bar.move_to_home(wd)

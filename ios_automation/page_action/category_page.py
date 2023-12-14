@@ -55,6 +55,26 @@ def scroll_up_large_category(wd):
     element_scroll_control(wd, large_field, 'U', 30)
 
 
+def click_first_large_category(wd):
+    ialc(wd, '//XCUIElementTypeCell[@name="large_category"]')
+
+
+def check_unique_medium_category(self, wd):
+    check_category = ['all', 'for_you', 'best', 'new']
+    category_list = []
+    for medium in check_category:
+        category_cell = ial(wd, medium)
+        category_text = ial(category_cell, '//XCUIElementTypeStaticText').text
+        category_list.append(category_text)
+    category_list = ', '.join(category_list)
+
+    if self.conf['compare_category_list'] == category_list:
+        print('Unique 카테고리 확인')
+    else:
+        print(f'Unique 카테고리 확인 실패 : {category_list}')
+        raise Exception('Unique 카테고리 확인 실패')
+
+
 def click_for_you_category(wd):
     ialc(wd, 'for_you')
 
@@ -74,7 +94,7 @@ def click_category(wd, category_name):
 
 def check_not_login_user_recommended_tab(wd):
     try:
-        ial(wd, 'c_당신을 위한 추천상품')
+        ial(wd, 'c_당신을 위한 추천')
         print('비로그인 유저 추천 페이지 타이틀 확인')
     except NoSuchElementException:
         print('비로그인 유저 추천 페이지 타이틀 확인 실패')
