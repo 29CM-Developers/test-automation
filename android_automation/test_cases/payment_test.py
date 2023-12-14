@@ -84,6 +84,7 @@ class Payment:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')
