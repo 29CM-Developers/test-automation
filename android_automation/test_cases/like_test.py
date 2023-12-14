@@ -255,7 +255,9 @@ class Like:
             change_webview_contexts(wd)
             original_string = BrandName
             uppercase_string = original_string.upper()
-            if uppercase_string in brand_name:
+            brand_name = aal(wd, '//*[@id="__next"]/section[1]/div[1]/div[1]/h3')
+            print(f'brand_name : {brand_name.text}')
+            if uppercase_string in brand_name.text:
                 print('좋아요 브랜드 노출 확인')
             else:
                 test_result = 'WARN'
