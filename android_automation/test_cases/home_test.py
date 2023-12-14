@@ -280,8 +280,9 @@ class Home:
 
             # 디폴트 선택 화면 확인
             try:
-                culture_tab = aal(wd,
-                                  '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[5]')
+                top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
+                culture_tab = aal(top_tabs,
+                                  '//android.view.View/android.view.View/android.view.View[@index=4]')
                 print("컬처 탭 존재")
                 aalc(wd, 'life_tab')
                 print("라이프 탭 해제")
