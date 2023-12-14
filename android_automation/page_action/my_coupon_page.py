@@ -45,11 +45,10 @@ def save_my_coupon_list(wd, api_coupon_list):
             return coupon_list
         coupon_layer = aals(wd, f'//*[@resource-id[contains(., "-slide01")]]')
         for coupon_layer_item in coupon_layer:
-            coupon = aal(coupon_layer_item, '//android.view.View/android.view.View/android.widget.TextView[4]')
+            coupon = aal(coupon_layer_item, '//android.widget.TextView[@index=3]')
             if coupon == None:
                 print('쿠폰명 찾기 실패 ')
             else:
-                print(f'coupon명 = {coupon.text}')
                 full_coupon_name = coupon.text
                 index = full_coupon_name.find('최대')
                 if index != -1:  # target_word를 찾은 경우
