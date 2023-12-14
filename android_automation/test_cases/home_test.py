@@ -279,22 +279,22 @@ class Home:
             print("홈 탭 선택")
 
             # 디폴트 선택 화면 확인
-            try:
-                top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
-                culture_tab = aal(top_tabs, '//android.view.View[@index=4]')
+            top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
+            culture_tab = aal(top_tabs, '//android.view.View[@index=4]')
+            if culture_tab == None:
+                print('라이프 탭 디폴트 아님')
+                pass
+            else:
                 print("컬처 탭 존재")
                 aalc(wd, 'life_tab')
                 print("라이프 탭 해제")
-            except Exception:
-                print('라이프 탭 디폴트 아님')
-                pass
             sleep(3)
             try:
                 women_tab = aal(wd, 'women_tab')
                 men_tab = aal(wd, 'men_tab')
                 life_tab = aal(wd, 'life_tab')
                 best_tab = aal(wd, 'best_tab')
-                if women_tab != None and men_tab != None and life_tab != None and best_tab != None:
+                if all(tab is not None for tab in [women_tab, men_tab, life_tab, best_tab]):
                     print("홈 상단 탭 확인 성공")
                 else:
                     print("홈 상단 탭 확인 실패")
