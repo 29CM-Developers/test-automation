@@ -5,6 +5,7 @@ import com_utils.opencv_control
 
 from time import time
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils import values_control
 from com_utils.testrail_api import send_test_result
 from android_automation.page_action import order_page, delivery_order_page, bottom_sheet, cart_page
@@ -123,7 +124,7 @@ class Payment:
             order_page.check_pinpay_page(wd)
             order_page.click_pinpay_payment(wd)
 
-            order_page.change_webview(wd)
+            change_webview_contexts(wd)
             # 화면 저장
             com_utils.opencv_control.screenshot_page(wd)
 
@@ -134,7 +135,7 @@ class Payment:
             com_utils.opencv_control.click_credit_password(self, wd)
 
             # 네이티브 변경
-            order_page.change_native(wd)
+            change_native_contexts(wd)
 
             # 바텀시트 노출 여부 확인
             bottom_sheet.close_bottom_sheet(wd)
