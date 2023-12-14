@@ -43,10 +43,9 @@ def save_my_coupon_list(wd, api_coupon_list):
         if no_coupon != None:
             print("발급 받은 쿠폰이 없습니다 단어를 찾을 수 없습니다.")
             return coupon_list
-        for i in range(len(api_coupon_list)):
-            coupon = aal(wd,
-                         f'//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[{i + 1}]/android.view.View/android.view.View/android.view.View/android.widget.TextView[4]')
-            print(f'coupon = {coupon.text}')
+        coupon_layer = aals(wd, f'//*[@resource-id[contains(., "-slide01")]]')
+        for coupon_layer_item in coupon_layer:
+            coupon = aal(coupon_layer_item, '//android.view.View/android.view.View/android.widget.TextView[4]')
             if coupon == None:
                 print('쿠폰명 찾기 실패 ')
             else:
