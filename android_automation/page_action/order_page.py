@@ -3,6 +3,7 @@ from time import sleep
 from appium import webdriver
 from selenium.webdriver.common.by import By
 import com_utils.element_control
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import aal, aalc, aals, scroll_control
 from selenium.common import NoSuchElementException
@@ -146,9 +147,9 @@ def save_delivery_price(wd):
     com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(parent_elements, '//android.widget.Button')
     com_utils.element_control.scroll_control(wd, 'D', 100)
-    # 웹뷰로 전환
-    change_webview(wd)
-
+    # 앱에서 웹뷰로 전환
+    webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
+    wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
     # 웹뷰에서 작업 수행 (예: 웹 요소 찾기, 클릭 등)
     delivery_price_parents = wd.find_element(By.XPATH, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
     delivery_price_element = delivery_price_parents.find_elements(By.XPATH, '*')
@@ -323,7 +324,7 @@ def check_pdp_purchase_price(wd, warning_texts, pdp_price):
         print(
             f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
 
-    change_native(wd)
+    change_native_contexts(wd)
     sleep(5)
     return test_result
 

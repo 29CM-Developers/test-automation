@@ -10,6 +10,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils.api_control import search_popular_keyword, search_result, product_detail
 from com_utils.element_control import tap_control
 from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
@@ -194,13 +195,13 @@ class Cart:
             # 장바구니로 이동
             product_detail_page.click_move_to_cart(wd)
             # 웹뷰로 변경
-            cart_page.change_webview_contexts(wd)
-            print(wd.window_handles)
-            wd.switch_to.window(wd.window_handles[0])
-            print(wd.current_window_handle)
+            change_webview_contexts(wd)
+            # print(wd.window_handles)
+            # wd.switch_to.window(wd.window_handles[0])
+            # print(wd.current_window_handle)
             test_result = cart_page.check_product_name(wd, warning_texts, pdp_name1, pdp_name2)
             # 네이티브로 변경
-            cart_page.change_native_contexts(wd)
+            change_native_contexts(wd)
             # Home 탭으로 이동
             move_to_home_Android(self, wd)
 
@@ -247,7 +248,8 @@ class Cart:
             sleep(3)
             # 첫번째 상품 주문 금액 저장
             # 웹뷰로 변경
-            cart_page.change_webview_contexts(wd)
+            change_webview_contexts(wd)
+
             delete_product_price = cart_page.save_product_price(wd)
             # 토탈 금액 저장
             before_delete_total_price = cart_page.save_total_price(wd)
@@ -272,7 +274,7 @@ class Cart:
             test_result = cart_page.check_change_total_order_amount(wd, warning_texts, first_product_price,
                                                                     change_total_price)
             # 네이티브 변경
-            cart_page.change_native_contexts(wd)
+            change_native_contexts(wd)
             # Home 탭으로 이동
             move_to_home_Android(self, wd)
 
@@ -317,14 +319,14 @@ class Cart:
             # 장바구니 화면 진입
             navigation_bar.move_to_cart(wd)
             sleep(3)
-
-            cart_page.change_webview_contexts(wd)
+            # 웹뷰 전환
+            change_webview_contexts(wd)
             # 상품명 저장
             product_name = cart_page.save_product_name_one(wd)
             # 총 결제 금액 저장
             total_price = cart_page.save_total_price(wd)
-
-            cart_page.change_native_contexts(wd)
+            # 네이티브 전환
+            change_native_contexts(wd)
             # 1. [CHECK OUT] 버튼 선택
             cart_page.click_check_out_btn(wd)
             # 확인1 : 배송정보 타이틀 확인 - 구매하기 결제 화면 진입 확인
