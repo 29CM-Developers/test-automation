@@ -99,7 +99,13 @@ def save_product_price(wd):
 def save_total_price(wd):
     for i in (0, 3):
         try:
-            total_order_amount_title = aal(wd, '//*[@id="__next"]/div/section[2]/dl/dt[2]')
+            total_order_amount_title_layer = aals(wd, '//*[@id="__next"]/div/section[2]/dl/dt')
+            for total_order_amount_title in total_order_amount_title_layer:
+                print(f'total_order_amount_title : {total_order_amount_title.text}')
+                if total_order_amount_title.text == '총 주문금액':
+                    print('총 주문금액 엘리먼트 확인')
+                    total_order_amount_title = total_order_amount_title
+                    break
             print(f'total_order_amount_title : {total_order_amount_title.text}')
             if total_order_amount_title == None:
                 print('요소 발견 못함')
@@ -107,9 +113,6 @@ def save_total_price(wd):
             else:
                 print('요소 발견')
                 total_order_price = aal(total_order_amount_title, '//../dd[2]/strong').text
-                # print(f'total_order_price : {total_order_price}')
-                # total_order_price = aal(total_order_amount_title,
-                #                         '//*[@id="__next"]/div/section[2]/dl/dd[2]/strong').text
                 print(f'total_order_price : {total_order_price}')
 
                 total_order_price = int(total_order_price.replace(',', ''))
