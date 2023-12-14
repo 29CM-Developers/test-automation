@@ -41,13 +41,12 @@ def check_large_category_list(wd, api_large_categoty_list):
             element_scroll_control(wd, large_field, 'D', 30)
         else:
             break
-    print(f'대카테고리 리스트 : {large_category_list}')
 
     if api_large_categoty_list == large_category_list:
         print('대 카테고리 리스트 확인')
     else:
-        print('대 카테고리 리스트 확인 실패')
-        raise Exception('카테고리 리스트 확인 실패')
+        print(f'대 카테고리 리스트 확인 실패 - {large_category_list}')
+        raise Exception('대 카테고리 리스트 확인 실패')
 
 
 def scroll_up_large_category(wd):
@@ -102,7 +101,7 @@ def check_not_login_user_recommended_tab(wd):
 
 
 def save_webview_category_product_name(wd):
-    product = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-j22x2q e13ypwtz2"]')
+    product = wd.find_element(AppiumBy.XPATH, '//div[contains(@class, "css-1rcys17")]')
     plp_name = product.find_element(AppiumBy.XPATH, '//h5').text
     return plp_name
 
