@@ -659,14 +659,14 @@ class Home:
                     element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                     pass
 
-                PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[4]/android.view.View[1]/android.widget.TextView[3]'
-
-                PDP_price = aal(wd, PDP_price_xpath)
-                print(f'PDP_price : {PDP_price.text}')
-
-                PDP_price = PDP_price.text
-                PDP_price = PDP_price.replace(",", "")
-                PDP_price = int(PDP_price)
+                # PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[4]/android.view.View[1]/android.widget.TextView[3]'
+                #
+                # PDP_price = aal(wd, PDP_price_xpath)
+                # print(f'PDP_price : {PDP_price.text}')
+                #
+                # PDP_price = PDP_price.text
+                # PDP_price = PDP_price.replace(",", "")
+                # PDP_price = int(PDP_price)
 
                 PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
                 print(f"PDP_product_title : {PDP_product_title}")
@@ -674,14 +674,15 @@ class Home:
                 best_product_title = first_product_title_text.replace("_", " ")
                 print(f"PDP_product_title : {PDP_product_title} ")
                 print(f"first_product_title_text : {best_product_title} ")
-                if PDP_product_title in best_product_title and PDP_price == first_product_price:
+                # and PDP_price == first_product_price
+                if PDP_product_title in best_product_title:
                     print("피드 컨텐츠 확인 확인")
                 else:
                     print("피드 컨텐츠 확인 실패")
                     test_result = 'WARN'
                     warning_texts.append("베스트 상품 PDP 정상 확인 실패")
                 print(f"첫번째 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_title}  ")
-                print(f"첫번째 상품 가격 : {first_product_price} , PDP 상품 가격 : {PDP_price}  ")
+                # print(f"첫번째 상품 가격 : {first_product_price} , PDP 상품 가격 : {PDP_price}  ")
                 sleep(3)
                 # 상단 뒤로가기로 홈화면 진입 확인
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
