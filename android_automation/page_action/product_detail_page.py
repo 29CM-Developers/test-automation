@@ -129,14 +129,9 @@ def option_exist(product_item_no):
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
     sleep(5)
-    exist = option_exist(product_item_no)
-    if exist == '옵션 있음':
-        sleep(2)
-        fake_exist = aal(wd, ':r0:')
-        if fake_exist != None:
-            print("화면에 fake_exist 엘리먼트 있어 화면에 옵션 없음")
-            pass
-        else:
+    try:
+        exist = option_exist(product_item_no)
+        if exist == '옵션 있음':
             option_layout = product_detail(product_item_no)['option_items_layout']
             option_item_list = product_detail(product_item_no)['option_items_list']
             option_name = ''
@@ -147,13 +142,13 @@ def select_options(wd, product_item_no):
                 print(f'{i + 1}/{len(option_layout)}')
                 sleep(2)
                 opthios_layer = aal(wd,
-                                    f'//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[{i + 1}]')
+                                    f'//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[@index={i}]')
+
                 aalc(opthios_layer, "//android.widget.Button")
-                sleep(2)
                 print(f'항목 : {option_layout[i]}')
+                sleep(2)
                 if i < len(option_layout) - 1:
-                    aalc(wd, f'c_{option_item_list[0]["title"]}')
-                    print(f'옵션1 : {option_item_list[0]["title"]}')
+                    aalc(opthios_layer, f'c_{option_item_list[0]["title"]}')
                     option_item_list = option_item_list[0].get('list', [])
                 else:
                     for option in option_item_list:
@@ -165,7 +160,9 @@ def select_options(wd, product_item_no):
                         else:
                             print(f'{option_name} 옵션 품절')
                             pass
-        sleep(1)
+    except Exception:
+        print("화면에 옵션 없음")
+    sleep(1)
 
 
 def check_add_product_to_cart(wd, warning_texts):
