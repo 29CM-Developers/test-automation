@@ -21,7 +21,7 @@ def click_to_increase_the_number_of_products(wd):
 
 
 def click_check_out_btn(wd):
-    sleep(3)
+    sleep(5)
     aalc(wd, 'c_CHECK OUT')
     print('CHECK OUT 선택')
     sleep(5)

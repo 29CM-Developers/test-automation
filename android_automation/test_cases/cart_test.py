@@ -220,6 +220,8 @@ class Cart:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            # 네이티브로 변경
+            cart_page.change_native_contexts(wd)
             wd.get('app29cm://home')
 
         finally:
@@ -290,6 +292,8 @@ class Cart:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            # 네이티브로 변경
+            cart_page.change_native_contexts(wd)
             wd.get('app29cm://home')
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
