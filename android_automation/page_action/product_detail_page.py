@@ -1,6 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils.element_control import aal, aalc, aals
 from com_utils.api_control import product_detail, best_plp_women_clothes
 
@@ -90,7 +91,7 @@ def click_purchase_btn(wd):
 
 def click_gift_btn(wd):
     aalc(wd, 'c_선물하기')
-    sleep(1)
+    sleep(3)
 
 
 def click_put_in_cart_btn(wd):
@@ -128,42 +129,34 @@ def option_exist(product_item_no):
 
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
-    sleep(5)
-    try:
-        exist = option_exist(product_item_no)
-        if exist == '옵션 있음':
-            option_layout = product_detail(product_item_no)['option_items_layout']
-            option_item_list = product_detail(product_item_no)['option_items_list']
-            option_name = ''
-            print(f'option_layout : {option_layout}')
-            print(f'option_item_list : {option_item_list}')
-
-            for i in range(len(option_layout)):
-                print(f'{i + 1}/{len(option_layout)}')
-                sleep(2)
-                opthios_layer = aal(wd,
-                                    f'//androidx.drawerlayout.widget.DrawerLayout/android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View/android.view.View[@index={i}]')
-
-                aalc(opthios_layer, "//android.widget.Button")
-                print(f'항목 : {option_layout[i]}')
-                sleep(2)
-                if i < len(option_layout) - 1:
-                    aalc(opthios_layer, f'c_{option_item_list[0]["title"]}')
-                    option_item_list = option_item_list[0].get('list', [])
-                else:
-                    for option in option_item_list:
-                        if option['limited_qty'] != 0:
-                            option_name = option["title"].strip()
-                            print(f'옵션2 : {option_name}')
-                            aalc(wd, f'c_{option_name}')
-                            break
-                        else:
-                            print(f'{option_name} 옵션 품절')
-                            pass
-    except Exception:
-        print("화면에 옵션 없음")
+    change_webview_contexts(wd)
+    element = aal(wd, '//label[contains(text(), "수량")]')
+    if element == None:
+        options = '옵션 있음'
+    else:
+        options = '옵션 없음'
+    print(f'{options} 확인')
+    if options == '옵션 있음':
+        option_layout = product_detail(product_item_no)['option_items_layout']
+        option_item_list = product_detail(product_item_no)['option_items_list']
+        option_name = ''
+        print(f'option_layout : {option_layout}')
+        for i in range(len(option_layout)):
+            aalc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
+            if i < len(option_layout) - 1:
+                aalc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
+                option_item_list = option_item_list[0].get('list', [])
+            else:
+                for option in option_item_list:
+                    if option['limited_qty'] != 0:
+                        option_name = option["title"].strip()
+                        aalc(wd, f'//li[contains(text(), "{option_name}")]')
+                        break
+                    else:
+                        print(f'{option_name} 옵션 품절 확인')
+                        pass
     sleep(1)
-
+    change_native_contexts(wd)
 
 def check_add_product_to_cart(wd, warning_texts):
     try:
