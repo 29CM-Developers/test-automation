@@ -1,6 +1,6 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import aal, aalc
+from com_utils.element_control import aal, aalc, tap_control
 from time import sleep
 
 
