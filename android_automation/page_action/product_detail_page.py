@@ -115,7 +115,7 @@ def click_move_to_cart(wd):
 
 
 def click_like_btn(wd):
-    sleep(1)
+    sleep(2)
     aalc(wd, 'c_찜하기')
     sleep(5)
 

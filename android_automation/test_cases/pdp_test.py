@@ -1,7 +1,7 @@
 import os
 import sys
 import traceback
-from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
 from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
@@ -180,6 +180,8 @@ class Pdp:
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
             test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+
+            close_pdp_bottom_sheet(wd)
 
             # CTA영역 > 좋아요 아이콘 선택
             product_detail_page.click_like_btn(wd)
