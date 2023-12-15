@@ -188,7 +188,6 @@ def category_plp_product(large_category_code, medium_category_code, rank, sort):
     if response.status_code == 200:
         category_products_data = response.json()
         category_products['item_name'] = category_products_data['data']['products'][rank - 1]['itemName']
-        print(category_products)
     else:
         print('피드 컨텐츠 API 불러오기 실패')
     return category_products
