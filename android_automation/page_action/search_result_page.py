@@ -40,11 +40,11 @@ def check_search_product_name(wd, compare_name):
     product_name = ''
     for i in range(0, 3):
         try:
-            product_name = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+            product_name = aal(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
             if product_name == None:
                 scroll_control(wd, 'D', 30)
             else:
-                product_name = product_name[0].text
+                product_name = product_name.text
                 break
         except NoSuchElementException:
             scroll_control(wd, 'D', 30)
