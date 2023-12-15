@@ -41,8 +41,10 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # Appium Service
         self.appium = AppiumService()
+        # self.appium.start(args=['-p', '4734', '--base-path', '/wd/hub', '--default-capabilities',
+        #                         '{"appium:chromedriverExecutable": "/usr/local/bin/chromedriver"}'])
         self.appium.start(args=['-p', '4734', '--base-path', '/wd/hub', '--default-capabilities',
-                                '{"appium:chromedriverExecutable": "/usr/local/bin/chromedriver"}'])
+                                '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
         self.wd, self.and_cap = s22_setup()
