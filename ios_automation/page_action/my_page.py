@@ -23,7 +23,7 @@ def find_login_btn(wd):
                 break
         except NoSuchElementException:
             pass
-        wd.execute_script('mobile:swipe', {'direction': 'down'})
+        com_utils.element_control.scroll_control(wd, "U", 40)
 
 
 def check_login_btn(wd):
@@ -142,7 +142,7 @@ def find_logout_btn(wd):
                 break
         except NoSuchElementException:
             pass
-        wd.execute_script('mobile:swipe', {'direction': 'up'})
+        com_utils.element_control.scroll_control(wd, "D", 50)
 
 
 def click_logout_btn(wd):
