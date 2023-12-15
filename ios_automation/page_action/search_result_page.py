@@ -61,13 +61,15 @@ def check_search_product_name(wd, compare_name):
             if product_name.is_displayed():
                 product_name = product_name.text
                 break
+            else:
+                scroll_control(wd, 'D', 30)
         except NoSuchElementException:
             scroll_control(wd, 'D', 30)
 
     if product_name == compare_name:
         print('카테고리 필터 적용으로 상품 노출 확인')
     else:
-        print('카테고리 필터 적용으로 상품 노출 확인 실패')
+        print(f'카테고리 필터 적용으로 상품 노출 확인 실패 : plp-{product_name} / 비교-{compare_name}')
         raise Exception('카테고리 필터 적용으로 상품 노출 확인 실패')
 
 
