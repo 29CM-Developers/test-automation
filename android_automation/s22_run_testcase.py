@@ -13,6 +13,7 @@ from android_automation.test_cases.plp_test import Plp
 from android_automation.test_cases.search_test import Search
 from android_automation.test_cases.join_test import Join
 from android_automation.test_cases.my_test import My
+from android_automation.test_cases.pdp_test import Pdp
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
@@ -129,6 +130,11 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # 실제 실행 -   주문 건이 없을 경우, 상품 리뷰 성공
         self.result_data = My.test_review_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 실제 실행 -  PDP에서 좋아요 선택하기
+        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
