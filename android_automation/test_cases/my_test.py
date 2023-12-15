@@ -392,8 +392,8 @@ class My:
             my_coupon_page.click_option_cart(wd)
 
             # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
-            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID_1'], self.pconf['LOGIN_SUCCESS_PW'], 'CART')
-            coupon_list = my_coupon_page.save_my_coupon_list(wd)
+            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'], 'CART')
+            coupon_list = my_coupon_page.save_my_coupon_list(wd, api_coupon_list)
 
             test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '장바구니')
 
@@ -402,9 +402,9 @@ class My:
             my_coupon_page.click_option_product(wd)
 
             # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
-            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID_1'], self.pconf['LOGIN_SUCCESS_PW'],
+            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'],
                                              'PRODUCT')
-            coupon_list = my_coupon_page.save_my_coupon_list(wd)
+            coupon_list = my_coupon_page.save_my_coupon_list(wd, api_coupon_list)
 
             test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '상품')
 

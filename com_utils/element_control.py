@@ -97,10 +97,7 @@ def aal(webdriver, element_value):
     # Locator 분기를 통해 최적화 한다
     try:
         if element_value.startswith("//") or element_value.startswith("(//"):
-            try:
-                element = wd.find_element(AppiumBy.XPATH, element_value)
-            except NoSuchElementException:
-                pass
+            element = wd.find_element(AppiumBy.XPATH, element_value)
         elif element_value.startswith("c_"):
             element_value = element_value.lstrip("c_")
             element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
@@ -133,10 +130,7 @@ def aals(webdriver, element_value):
     # Locator 분기를 통해 최적화 한다
     try:
         if element_value.startswith("//") or element_value.startswith("(//"):
-            try:
-                element = wd.find_elements(AppiumBy.XPATH, element_value)
-            except NoSuchElementException:
-                pass
+            element = wd.find_elements(AppiumBy.XPATH, element_value)
         elif element_value.startswith("c_"):
             element_value = element_value.lstrip("c_")
             element = wd.find_elements(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")

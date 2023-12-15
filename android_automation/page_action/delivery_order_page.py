@@ -63,16 +63,13 @@ def click_order_cancel_btn(wd):
     sleep(3)
 
 
-def check_order_cancel(wd, warning_texts):
+def check_order_cancel(wd):
     try:
         aal(wd, 'c_주문 취소가 완료되었습니다.')
-        test_result = 'PASS'
         print('주문 취소 완료 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 취소 완료 확인 실패')
         print('주문 취소 완료 확인 실패')
-    return test_result
+        raise Exception('주문 취소 완료 확인 실패')
 
 
 def click_move_to_home(wd):

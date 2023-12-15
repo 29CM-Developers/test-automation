@@ -21,7 +21,7 @@ def click_to_increase_the_number_of_products(wd):
 
 
 def click_check_out_btn(wd):
-    sleep(3)
+    sleep(5)
     aalc(wd, 'c_CHECK OUT')
     print('CHECK OUT 선택')
     sleep(5)
@@ -99,15 +99,22 @@ def save_product_price(wd):
 def save_total_price(wd):
     for i in (0, 3):
         try:
-            total_order_amount_title = aal(wd, '//div[@id="__next"]/div/section[2]/dl/dt[4]')
+            total_order_amount_title_layer = aals(wd, '//*[@id="__next"]/div/section[2]/dl/dt')
+            for total_order_amount_title in total_order_amount_title_layer:
+                print(f'total_order_amount_title : {total_order_amount_title.text}')
+                if total_order_amount_title.text == '총 주문금액':
+                    print('총 주문금액 엘리먼트 확인')
+                    total_order_amount_title = total_order_amount_title
+                    break
             print(f'total_order_amount_title : {total_order_amount_title.text}')
             if total_order_amount_title == None:
                 print('요소 발견 못함')
                 element_control.scroll_control(wd, 'D', 50)
             else:
                 print('요소 발견')
-                total_order_price = aal(wd, '//div[@id="__next"]/div/section[2]/dl/dd[4]/strong').text
+                total_order_price = aal(total_order_amount_title, '//../dd[2]/strong').text
                 print(f'total_order_price : {total_order_price}')
+
                 total_order_price = int(total_order_price.replace(',', ''))
                 print(f'total_order_price : {total_order_price}')
                 break

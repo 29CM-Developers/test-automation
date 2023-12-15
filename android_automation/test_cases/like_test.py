@@ -6,6 +6,7 @@ import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils import values_control, cookies_control
 from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
@@ -251,20 +252,21 @@ class Like:
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
             like_BrandName.click()
             sleep(4)
-            brand_web_view_layer = aal(wd, 'com.the29cm.app29cm:id/rootView')
-            brand_name = aal(wd,
-                             '//android.view.ViewGroup/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[1]/android.view.View[1]/android.widget.TextView').text
-            print(brand_name)
+            change_webview_contexts(wd)
             original_string = BrandName
             uppercase_string = original_string.upper()
-            if uppercase_string in brand_name:
+            brand_name = aal(wd, '//*[@id="__next"]/section[1]/div[1]/div[1]/h3')
+            print(f'brand_name : {brand_name.text}')
+            if uppercase_string in brand_name.text:
                 print('좋아요 브랜드 노출 확인')
             else:
                 test_result = 'WARN'
                 warning_texts.append('좋아요 브랜드 노출 확인 실패')
                 print('WARN : 좋아요 브랜드 노출 확인 실패')
 
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            sleep(1)
+            change_native_contexts(wd)
+            aalc(wd, 'com.the29cm.app29cm:id/imgBack')
             print("뒤로가기 선택")
             sleep(2)
 

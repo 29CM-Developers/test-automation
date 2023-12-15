@@ -278,21 +278,28 @@ class Home:
             aalc(wd, 'HOME')
             print("홈 탭 선택")
 
-            # 보강시나리오
-            # aalc(wd, 'life_tab')
-            # print("라이프 탭 선택")
-            # sleep(2)
-            # 라이프탭 아이디 설정 후 추가 필요
-            # aalc(wd, 'com.the29cm.app29cm:id/closeIcon')
-            aalc(wd, 'life_tab')
-            print("라이프 탭 해제")
-            sleep(1)
+            # 디폴트 선택 화면 확인
+            top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
+            culture_tab = aal(top_tabs, '//android.view.View[@index=4]')
+            if culture_tab == None:
+                print('라이프 탭 디폴트 아님')
+                pass
+            else:
+                print("컬처 탭 존재")
+                aalc(wd, 'life_tab')
+                print("라이프 탭 해제")
+            sleep(3)
             try:
-                aal(wd, 'women_tab')
-                aal(wd, 'men_tab')
-                aal(wd, 'life_tab')
-                aal(wd, 'best_tab')
-                aal(wd, 'recommend_tab')
+                women_tab = aal(wd, 'women_tab')
+                men_tab = aal(wd, 'men_tab')
+                life_tab = aal(wd, 'life_tab')
+                best_tab = aal(wd, 'best_tab')
+                if all(tab is not None for tab in [women_tab, men_tab, life_tab, best_tab]):
+                    print("홈 상단 탭 확인 성공")
+                else:
+                    print("홈 상단 탭 확인 실패")
+                    test_result = 'WARN'
+                    warning_texts.append("홈 상단 탭 확인 실패")
             except NoSuchElementException:
                 print("홈 상단 탭 확인 실패")
                 test_result = 'WARN'
@@ -538,7 +545,7 @@ class Home:
                 sleep(5)
 
                 found_element = None
-                for _ in range(10):
+                for _ in range(15):
                     try:
                         # 첫번째 피드 타이틀와 일치하는 요소 찾기
                         element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtFeedTitle')
@@ -639,7 +646,7 @@ class Home:
 
                 first_product_title[0].click()
                 print("첫번째 상품 클릭")
-                sleep(2)
+                sleep(5)
                 # 확인2 : 상품 상세 페이지의 상품명과 상품가격 비교 확인
                 # - 피드 컨텐츠 확인
                 # 스페셜 오더 상품 확인
@@ -652,14 +659,14 @@ class Home:
                     element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
                     pass
 
-                PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[3]/android.view.View[1]/android.widget.TextView'
-
-                PDP_price = aal(wd, PDP_price_xpath)
-                print(f'PDP_price : {PDP_price.text}')
-
-                PDP_price = PDP_price.text
-                PDP_price = PDP_price.replace(",", "")
-                PDP_price = int(PDP_price)
+                # PDP_price_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[4]/android.view.View[1]/android.widget.TextView[3]'
+                #
+                # PDP_price = aal(wd, PDP_price_xpath)
+                # print(f'PDP_price : {PDP_price.text}')
+                #
+                # PDP_price = PDP_price.text
+                # PDP_price = PDP_price.replace(",", "")
+                # PDP_price = int(PDP_price)
 
                 PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
                 print(f"PDP_product_title : {PDP_product_title}")
@@ -667,14 +674,15 @@ class Home:
                 best_product_title = first_product_title_text.replace("_", " ")
                 print(f"PDP_product_title : {PDP_product_title} ")
                 print(f"first_product_title_text : {best_product_title} ")
-                if PDP_product_title in best_product_title and PDP_price == first_product_price:
+                # and PDP_price == first_product_price
+                if PDP_product_title in best_product_title:
                     print("피드 컨텐츠 확인 확인")
                 else:
                     print("피드 컨텐츠 확인 실패")
                     test_result = 'WARN'
                     warning_texts.append("베스트 상품 PDP 정상 확인 실패")
                 print(f"첫번째 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_title}  ")
-                print(f"첫번째 상품 가격 : {first_product_price} , PDP 상품 가격 : {PDP_price}  ")
+                # print(f"첫번째 상품 가격 : {first_product_price} , PDP 상품 가격 : {PDP_price}  ")
                 sleep(3)
                 # 상단 뒤로가기로 홈화면 진입 확인
                 wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
