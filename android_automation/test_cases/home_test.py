@@ -280,14 +280,14 @@ class Home:
 
             # 디폴트 선택 화면 확인
             top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
-            culture_tab = aal(top_tabs, '//android.view.View[@index=4]')
-            if culture_tab == None:
-                print('라이프 탭 디폴트 아님')
-                pass
-            else:
-                print("컬처 탭 존재")
+            culture_tab = aal(top_tabs, '//android.view.View[@index=4]/android.widget.TextView')
+            if culture_tab.text == '푸드':
+                print("푸드 탭 존재")
                 aalc(wd, 'life_tab')
                 print("라이프 탭 해제")
+            else:
+                print('라이프 탭 디폴트 아님')
+
             sleep(3)
             try:
                 women_tab = aal(wd, 'women_tab')
