@@ -1,3 +1,4 @@
+from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc, element_scroll_control
@@ -6,15 +7,15 @@ from com_utils.api_control import my_heart_count
 
 def close_brand_recommended_page(wd):
     try:
+        sleep(5)
         # 관심 브랜드 선택 화면 발생
-        brands_of_interest = aal(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
-        print(brands_of_interest)
+        brands_of_interest = aal(wd, 'com.the29cm.app29cm:id/recommendBrandRecyclerView')
         if brands_of_interest == None:
             print('관심 브랜드 선택 팝업 미발생')
             pass
         else:
             print('관심 브랜드 선택 팝업 발생')
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
+            aalc(wd, 'com.the29cm.app29cm:id/iconClose')
     except NoSuchElementException:
         pass
 

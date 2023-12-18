@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_like_bottom_sheet
+from android_automation.page_action.like_page import close_brand_recommended_page
 from com_utils import values_control
 from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, swipe_control, \
@@ -177,11 +178,7 @@ class Home:
             # LIKE 탭 진입
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
             # 관심 브랜드 선택 화면 발생 케이스
-            try:
-                wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
-                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
-            except NoSuchElementException:
-                pass
+            close_brand_recommended_page(wd)
             close_bottom_sheet(self.wd)
             close_like_bottom_sheet(self.wd)
 
@@ -280,14 +277,14 @@ class Home:
 
             # 디폴트 선택 화면 확인
             top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
-            culture_tab = aal(top_tabs, '//android.view.View[@index=4]')
-            if culture_tab == None:
-                print('라이프 탭 디폴트 아님')
-                pass
-            else:
-                print("컬처 탭 존재")
+            culture_tab = aal(top_tabs, '//android.view.View[@index=4]/android.widget.TextView')
+            if culture_tab.text == '푸드':
+                print("푸드 탭 존재")
                 aalc(wd, 'life_tab')
                 print("라이프 탭 해제")
+            else:
+                print('라이프 탭 디폴트 아님')
+
             sleep(3)
             try:
                 women_tab = aal(wd, 'women_tab')
