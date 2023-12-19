@@ -223,7 +223,7 @@ def check_bottom_sheet_title(wd, warning_texts):
         else:
             print(f'바텀 시트 타이틀 : {title2}')
             test_result = 'WARN'
-            warning_texts.append('바텀 시트의 바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 비교 확인 타이틀 비교 확인 실패')
+            warning_texts.append('바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 비교 확인 실패')
     except NoSuchElementException:
         print('NoSuchElementException')
         test_result = 'WARN'

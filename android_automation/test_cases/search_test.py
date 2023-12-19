@@ -525,7 +525,7 @@ class Search:
 
             # 선택한 필터링으로 검색 결과 1위 상품명 비교
             # 11. 선택한 필터링으로 검색 결과 1위 상품명 비교
-            api_product_name = com_utils.api_control.filter_brand_search_results_by_category(brand_keyword)['item_name']
+            api_product_name = com_utils.api_control.filter_brand_search_results_by_category(self, self.pconf['LOGIN_SUCCESS_ID_1'],self.pconf['LOGIN_SUCCESS_PW'],brand_keyword)['item_name']
             # 확인4. 브랜드 연관 필터링 확인
             # 확인5. 카테고리 필터 적용으로 상품 노출 확인
             search_result_page.check_search_product_name(wd, api_product_name)
