@@ -251,7 +251,10 @@ class Search:
             search_result_page.click_brand_category(wd, brand_keyword)
 
             # 선택한 필터링으로 검색 결과 1위 상품명 비교
-            api_product_name = com_utils.api_control.filter_brand_search_results_by_category(brand_keyword)['item_name']
+            api_product_name = \
+            com_utils.api_control.filter_brand_search_results_by_category(self, self.pconf['id_29cm'],
+                                                                          self.pconf['password_29cm'], brand_keyword)[
+                'item_name']
             search_result_page.check_search_product_name(wd, api_product_name)
 
             # 검색 화면으로 복귀
