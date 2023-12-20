@@ -87,4 +87,3 @@ def click_brand_category(wd, keyword):
     else:
         aalc(small_categories, f'c_{small}')
     sleep(1)
-
