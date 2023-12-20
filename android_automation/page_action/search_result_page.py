@@ -58,15 +58,32 @@ def check_search_product_name(wd, compare_name):
 
 def click_brand_category(wd, keyword):
     category_name = search_brand_category_info(keyword)
-
     large = category_name['large_name']
-    aalc(wd, f'c_{large}')
-    sleep(1)
-
     medium = category_name['medium_name']
-    aalc(wd, f'c_{medium}')
+    small = category_name['small_name']
+
+    sticky_large_categories = aal(wd, 'com.the29cm.app29cm:id/stickyLargeCategories')
+
+    if sticky_large_categories == None :
+        aalc(wd, f'c_{large}')
+    else:
+        aalc(sticky_large_categories, f'c_{large}')
+
     sleep(1)
 
-    small = category_name['small_name']
-    aalc(wd, f'c_{small}')
+    sticky_mediu_categories = aal(wd, 'com.the29cm.app29cm:id/stickyMediumCategories')
+
+    if sticky_mediu_categories == None:
+        aalc(wd, f'c_{medium}')
+    else:
+        aalc(sticky_mediu_categories, f'c_{medium}')
+
+    sleep(1)
+
+    small_categories = aal(wd, 'com.the29cm.app29cm:id/smallCategories')
+
+    if small_categories == None:
+        aalc(wd, f'c_{small}')
+    else:
+        aalc(small_categories, f'c_{small}')
     sleep(1)
