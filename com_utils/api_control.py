@@ -38,11 +38,13 @@ def home_banner_info(self):
     return banner_data
 
 
-def feed_contents_info():
+def feed_contents_info(id, password):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
     feed_contents_titles = {}
     # 우먼 탭 컨텐츠 API 호출
     response = requests.get(
-        'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0')
+        'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0',
+        cookies=cookies)
     if response.status_code == 200:
         contents_api_data = response.json()
         feed_item_contents = contents_api_data['data']['results']
