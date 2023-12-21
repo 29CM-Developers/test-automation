@@ -45,7 +45,7 @@ def change_criteria_to_all(wd):
     else:
         filter_btn.click()
         ialc(wd, 'gender_filter_all')
-        print(f'필터 : 전체 기준이 아닌 것으로 확인되어 전체 기준으로 변경 - {filter_btn.text}')
+        print(f'필터가 전체 기준이 아닌 것으로 확인되어 전체 기준으로 변경')
 
 
 def change_criteria_to_women(wd):

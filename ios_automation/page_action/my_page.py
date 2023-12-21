@@ -77,7 +77,6 @@ def check_recent_history(wd, product_name, post_title):
     for title in recent[:2]:
         title = title.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
         recent_history.append(title)
-    print(f'히스토리 : {recent_history}')
 
     if product_name in recent_history and post_title in recent_history:
         print('최근 본 컨텐츠 히스토리 확인')
