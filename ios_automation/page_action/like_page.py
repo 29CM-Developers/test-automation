@@ -144,7 +144,6 @@ def click_to_unlike_post(wd):
 
 def save_like_product_name(wd):
     like_product_name = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="product_name"]').text
-    print(f'좋아요 상품명 : {like_product_name}')
     return like_product_name
 
 

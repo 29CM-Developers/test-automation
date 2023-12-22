@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, ials, element_scroll_control
+from com_utils.element_control import ial, ialc, ials, ialwc, element_scroll_control
 from com_utils.api_control import product_detail, best_plp_women_clothes
 from ios_automation.page_action import context_change
 
@@ -44,7 +44,6 @@ def check_product_name(product_name, compare_name):
 def save_product_price(wd):
     price = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-4bcxzt ent7twr4"]').text
     price = int(price.replace(',', '').replace('원', ''))
-    print(f'PDP 전시 가격: {price}')
     return price
 
 
@@ -100,7 +99,7 @@ def click_move_to_cart(wd):
 
 
 def click_like_btn(wd):
-    ialc(wd, '//span[contains(text(), "찜하기")]')
+    ialwc(wd, '//span[contains(text(), "찜하기")]')
 
 
 # 옵션 존재 여부와 개수에 따라 옵션 선택
@@ -120,16 +119,16 @@ def select_options(wd, product_item_no):
         option_name = ''
 
         for i in range(len(option_layout)):
-            ialc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
+            ialwc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
 
             if i < len(option_layout) - 1:
-                ialc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
+                ialwc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
                 option_item_list = option_item_list[0].get('list', [])
             else:
                 for option in option_item_list:
                     if option['limited_qty'] != 0:
                         option_name = option["title"].strip()
-                        ialc(wd, f'//li[contains(text(), "{option_name}")]')
+                        ialwc(wd, f'//li[contains(text(), "{option_name}")]')
                         break
                     else:
                         print(f'{option_name} 옵션 품절 확인')
@@ -153,7 +152,6 @@ def save_no_soldout_product_no():
         product_soldout = best_plp_women_clothes(i, 'NOW')['item_soldout']
         if not product_soldout:
             product_item_no = best_plp_women_clothes(i, 'NOW')['item_no']
-            print(f'베스트 상품 번호 : {product_item_no}')
             break
     return product_item_no
 
@@ -164,7 +162,6 @@ def save_purchase_price(wd):
     price = ial(wd,
                 f'//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther[{len(xpath_index)}]/XCUIElementTypeStaticText[@index="{int(index) + 1}"]').text
     price = int(price.replace(',', ''))
-    print(f'구매 가능 가격 : {price}')
     return price
 
 
