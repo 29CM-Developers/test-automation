@@ -31,7 +31,6 @@ def set_like_zero(self, wd):
     post_count = my_heart['post_count']
 
     if product_count != 0:
-        print(f'좋아요 상품 수 : {product_count}')
         # product 탭 진입하여 모든 상품 좋아요 해제
         click_product_tab(wd)
         click_to_unlike_product(wd)
@@ -39,14 +38,12 @@ def set_like_zero(self, wd):
         refresh_product_like_tab(wd)
 
     if brand_count != 0:
-        print(f'좋아요 브랜드 수 : {brand_count}')
         click_brand_tab(wd)
         click_to_unlike_brand(wd)
         # 좋아요 해제 후 새로고침
         refresh_brand_like_tab(wd)
 
     if post_count != 0:
-        print(f'좋아요 포스트 수 : {post_count}')
         click_post_tab(wd)
         click_to_unlike_post(wd)
         # 좋아요 해제 후 새로고침

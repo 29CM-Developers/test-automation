@@ -105,7 +105,7 @@ class Home:
             home_page.click_tab_name(wd, '우먼')
 
             # 피드 정보 불러오기
-            feed_title_list = feed_contents_info()
+            feed_title_list = feed_contents_info(self.pconf['id_29cm'], self.pconf['password_29cm'])
             feed_title_1st = feed_title_list['first_feed_title']
             feed_contain_item = feed_title_list['first_title_with_item']
             feed_title_2nd = feed_title_list['second_feed_title']

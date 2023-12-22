@@ -1,6 +1,9 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from com_utils.api_control import home_banner_info
 from com_utils.element_control import ial, ialc, scroll_control, swipe_control
 from ios_automation.page_action import context_change
@@ -99,19 +102,16 @@ def check_for_duplicate_banner_contents(self):
 
 
 def save_banner_title(wd):
+    title_element = '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText'
     banner_titles = []
     for i in range(0, 3):
-        sleep(2)
         try:
-            banner_title = ial(wd, '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
+            WebDriverWait(wd, 10).until(EC.element_attribute_to_include((By.XPATH, title_element), 'label'))
+            banner_title = ial(wd, title_element).text
             banner_titles.append(banner_title)
         except Exception:
-            # 에러 발생하여 타이틀 확인 실패 시, 이전 배너로 스와이프하여 타이틀 저장
-            banner = ial(wd, 'home_banner')
-            swipe_control(wd, banner, 'right', 30)
-            banner_title = ial(wd, '//XCUIElementTypeOther[@name="home_banner_title"]/XCUIElementTypeStaticText').text
-            banner_titles.append(banner_title)
-            print(banner_title)
+            pass
+        sleep(2)
     return banner_titles
 
 

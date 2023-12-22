@@ -17,7 +17,6 @@ def click_home_btn(wd):
 def save_product_name(wd):
     product_name = ial(wd, 'c_감도 깊은 취향 셀렉트샵 29CM').text
     product_name = product_name.replace(' - 감도 깊은 취향 셀렉트샵 29CM', '')
-    print(f'PDP 상품명 : {product_name}')
     return product_name
 
 
