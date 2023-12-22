@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, ials, ialwc, element_scroll_control
+from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import product_detail, best_plp_women_clothes
 from ios_automation.page_action import context_change
 
@@ -99,7 +99,7 @@ def click_move_to_cart(wd):
 
 
 def click_like_btn(wd):
-    ialwc(wd, '//span[contains(text(), "찜하기")]')
+    ialc(wd, '//span[contains(text(), "찜하기")]')
 
 
 # 옵션 존재 여부와 개수에 따라 옵션 선택
@@ -119,16 +119,16 @@ def select_options(wd, product_item_no):
         option_name = ''
 
         for i in range(len(option_layout)):
-            ialwc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
+            ialc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
 
             if i < len(option_layout) - 1:
-                ialwc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
+                ialc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
                 option_item_list = option_item_list[0].get('list', [])
             else:
                 for option in option_item_list:
                     if option['limited_qty'] != 0:
                         option_name = option["title"].strip()
-                        ialwc(wd, f'//li[contains(text(), "{option_name}")]')
+                        ialc(wd, f'//li[contains(text(), "{option_name}")]')
                         break
                     else:
                         print(f'{option_name} 옵션 품절 확인')

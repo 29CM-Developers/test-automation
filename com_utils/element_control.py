@@ -76,15 +76,10 @@ def ialc(wd, element_value):
     element = ial(wd, element_value)
     if not isinstance(wd, WebDriver):
         wd = element.parent
-    ActionChains(wd).move_to_element(element).click().pause(0.1).perform()
-
-
-def ialwc(wd, element_value):
-    """
-        iOS_all_in_one_locator_webview_click
-        """
-    element = ial(wd, element_value)
-    element.click()
+    if 'NATIVE' in wd.current_context:
+        ActionChains(wd).move_to_element(element).click().pause(0.1).perform()
+    else:
+        element.click()
 
 
 def ialk(wd, element_value, text):

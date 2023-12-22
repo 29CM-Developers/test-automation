@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ialc, ial, ials, ialwc
+from com_utils.element_control import ialc, ial, ials
 from ios_automation.page_action import context_change
 
 
@@ -22,7 +22,7 @@ def clear_cart_list(wd):
         index = select_count.find('/')
         if select_count[index - 1] != select_count[index + 1]:
             all_select.click()
-        ialwc(wd, '//button[contains(text(), "선택삭제")]')
+        ialc(wd, '//button[contains(text(), "선택삭제")]')
         print('장바구니에 담긴 상품 삭제 완료')
         context_change.switch_context(wd, 'native')
     click_back_btn(wd)
@@ -69,12 +69,12 @@ def save_product_count(wd):
 
 
 def click_delete_product(wd):
-    ialwc(wd, '//div[2]/button[contains(text(), "삭제")]')
+    ialc(wd, '//div[2]/button[contains(text(), "삭제")]')
     sleep(2)
 
 
 def click_add_product(wd):
-    ialwc(wd, '//button[contains(text(), "+")]')
+    ialc(wd, '//button[contains(text(), "+")]')
     sleep(2)
 
 
@@ -104,5 +104,5 @@ def check_add_product(before_count, after_count, before_price, after_price, prod
 
 
 def click_check_out_btn(wd):
-    ialwc(wd, '//button[contains(text(), "CHECK OUT")]')
+    ialc(wd, '//button[contains(text(), "CHECK OUT")]')
     sleep(3)
