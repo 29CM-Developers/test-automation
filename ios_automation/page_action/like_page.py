@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, element_scroll_control
+from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import my_heart_count
 
 
@@ -124,38 +124,35 @@ def refresh_post_like_tab(wd):
 
 
 def click_to_unlike_product(wd):
-    product = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="icHeartLine"]')
+    product = ials(wd, 'liked_item_like_btn')
     for product_like in product:
         product_like.click()
 
 
 def click_to_unlike_brand(wd):
-    brand = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="ic heart line"]')
+    brand = ials(wd, 'c_heart line')
     for brand_like in brand:
         brand_like.click()
 
 
 def click_to_unlike_post(wd):
-    post = wd.find_elements(AppiumBy.XPATH,
-                            '//XCUIElementTypeCell[@name="like_post_item"]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeButton')
+    post = ials(wd, 'c_heart line')
     for post_like in post:
         post_like.click()
 
 
 def save_like_product_name(wd):
-    like_product_name = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="product_name"]').text
+    like_product_name = ial(wd, '//XCUIElementTypeStaticText[@name="product_name"]').text
     return like_product_name
 
 
 def click_product_like_btn(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').click()
+    ialc(wd, '//XCUIElementTypeButton[@name="like_btn"]')
 
 
 # like_product_name = 좋아요 상품 목록의 상품명과 비교할 상품명
 def check_product_like(wd, like_product_name):
-    liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
-    liked_product_name = liked_product.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeStaticText[@index="1"]').text
+    liked_product_name = ial(wd, 'liked_product_name').text
     if like_product_name == liked_product_name:
         print('좋아요 상품 노출 확인')
     else:
@@ -164,22 +161,17 @@ def check_product_like(wd, like_product_name):
 
 
 def click_product_name(wd):
-    liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
-    liked_product.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').click()
+    ialc(wd, 'liked_product_name')
     sleep(3)
 
 
 def click_liked_product_cart_btn(wd):
-    liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
-    liked_product.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                               '**/XCUIElementTypeButton[`label == "장바구니 담기"`]').click()
+    ialc(wd, 'liked_product_cart_btn')
 
 
 def save_like_brand_name(wd):
-    recommended_brand = wd.find_element(AppiumBy.XPATH,
-                                        '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="3"]')
-    like_brand_name = recommended_brand.find_element(AppiumBy.XPATH,
-                                                     '//XCUIElementTypeStaticText[@index="1"]').text
+    recommended_brand = ial(wd, '//XCUIElementTypeCell[@name="like_brand_item"]')
+    like_brand_name = ial(recommended_brand, '//XCUIElementTypeStaticText[@index="1"]').text
     return like_brand_name
 
 
@@ -194,10 +186,8 @@ def check_brand_page_name(wd, like_brand_name):
 
 
 def click_brand_like_btn(wd):
-    recommended_brand = wd.find_element(AppiumBy.XPATH,
-                                        '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="3"]')
-    recommended_brand.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                   '**/XCUIElementTypeButton[`label == "ic heart line"`]').click()
+    recommended_brand = ial(wd, '//XCUIElementTypeCell[@name="like_brand_item"]')
+    ialc(recommended_brand, 'c_ic heart line')
 
 
 # like_brand_name = 좋아요 상품 목록의 브랜드명과 비교할 브랜드명
@@ -222,18 +212,19 @@ def click_brand_back_btn(wd):
 
 
 def save_liked_brand_product_name(wd):
-    brand_product_name = ial(wd,
-                             '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText').text
+    brand_product = ial(wd,
+                        '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView')
+    brand_product_name = ial(brand_product, '//XCUIElementTypeStaticText').text
     return brand_product_name
 
 
-def click_liked_brand_porduct_name(wd):
-    ialc(wd,
-         '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther')
+def click_liked_brand_product_name(wd):
+    brand = ial(wd, 'like_brand_item')
+    ialc(brand, '//XCUIElementTypeCell[@index="0"]')
 
 
 def move_to_welove_page(wd):
-    wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "인기 게시물 보기"`]').click()
+    ialc(wd, 'c_게시물 보기')
 
 
 # like_post_name = 좋아요 상품 목록의 포스트 제목과 비교할 포스트 제목
@@ -248,8 +239,7 @@ def check_post_like(wd, like_post_name):
 
 
 def save_grid_image_size(wd):
-    image_size = ial(wd,
-                     '//XCUIElementTypeCell[@name="like_product_item"]/XCUIElementTypeOther/XCUIElementTypeImage').size
+    image_size = ial(wd, 'liked_product_image').size
     return image_size
 
 

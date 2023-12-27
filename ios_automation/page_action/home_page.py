@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from com_utils.api_control import home_banner_info
-from com_utils.element_control import ial, ialc, scroll_control, swipe_control
+from com_utils.element_control import ial, ialc, ials, scroll_control, swipe_control
 from ios_automation.page_action import context_change
 
 
@@ -22,8 +22,8 @@ def click_search_btn(wd):
 
 
 def click_close_life_tab(wd):
-    select_tab = ial(wd,
-                     '//XCUIElementTypeOther[3]/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeStaticText').text
+    tab = ial(wd, f'//*[contains(@label, "라이프")]/../../..')
+    select_tab = ial(tab, '//XCUIElementTypeStaticText[1]').text
     if select_tab == '라이프':
         ialc(wd, 'ic close white')
     else:
@@ -37,11 +37,10 @@ def click_tab_name(wd, click_tab_name):
 
 
 def save_tab_names(wd):
-    tab = wd.find_elements(AppiumBy.XPATH,
-                           '//XCUIElementTypeOther[3]/XCUIElementTypeCollectionView/XCUIElementTypeCell')
+    tab = ials(wd, f'//*[contains(@label, "라이프")]/../../../XCUIElementTypeCell')
     tab_name_list = []
     for text in tab:
-        tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeOther/XCUIElementTypeStaticText').text
+        tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
         tab_name_list.append(tab_name)
     tab_name_list = ', '.join(tab_name_list)
     return tab_name_list
@@ -61,9 +60,14 @@ def click_dynamic_gate(wd):
     # 다이나믹 게이트 -> 센스있는 선물하기 선택
     for i in range(0, 3):
         try:
-            ialc(wd, '센스있는 선물하기')
-            sleep(3)
-            break
+            element = ial(wd, '센스있는 선물하기')
+            if element.is_displayed():
+                ialc(wd, '센스있는 선물하기')
+                sleep(3)
+                break
+            else:
+                dynamic_gate = ial(wd, 'dynamic_gate')
+                swipe_control(wd, dynamic_gate, 'left', 30)
         except NoSuchElementException:
             dynamic_gate = ial(wd, 'dynamic_gate')
             swipe_control(wd, dynamic_gate, 'left', 30)
