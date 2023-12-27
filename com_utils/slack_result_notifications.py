@@ -139,11 +139,15 @@ def slack_thread_notification(self):
     else:
         color = self.conf['fail_color']
         # 실패 내용 쓰레드
+        try:
+            error_code = self.result_data['error_texts'][0]
+        except IndexError as e:
+            error_code = e
         reason_attachment = {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"error code: *{self.result_data['error_texts'][0]}*"
+                "text": f"error code: *{error_code}*"
             }
         }
         attachment["attachments"][0]["color"] = color
