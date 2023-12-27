@@ -156,9 +156,9 @@ def slack_thread_notification(self):
                 index = 1
             else:
                 index = 2
-            error_reason = error_texts[index]
-        except IndexError:
-            error_reason = None
+            error_reason = error_texts[index] if index > 0 else None
+        except IndexError as e:
+            error_reason = e
 
         code_attachment = {
             "type": "section",
