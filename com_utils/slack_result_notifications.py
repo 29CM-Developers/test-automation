@@ -182,12 +182,16 @@ def slack_thread_notification(self):
         # 날짜와 시간을 원하는 형식으로 문자열로 변환
         formatted_datetime = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
         # 이미지 업로드
-        with open(self.result_data['img_src'], 'rb') as f:
-            content = f.read()
-        attachment = {"channels": self.conf['slack_channel'], "thread_ts": self.response['ts'], "title": formatted_datetime,
-                      "content": content}
-        headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
-        requests.post(url=self.conf['slack_file_upload_url'], headers=headers, data=attachment)
+        try:
+            with open(self.result_data['img_src'], 'rb') as f:
+                content = f.read()
+        except FileNotFoundError:
+            content = None
+        if content is not None:
+            attachment = {"channels": self.conf['slack_channel'], "thread_ts": self.response['ts'], "title": formatted_datetime,
+                          "content": content}
+            headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
+            requests.post(url=self.conf['slack_file_upload_url'], headers=headers, data=attachment)
 
     return self.count
 
