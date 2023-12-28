@@ -181,7 +181,7 @@ def check_inipay_page(wd):
 
 def click_virtual_account_payment(wd):
     ialc(wd, '//XCUIElementTypeOther[@name="전체 동의"]')
-    ialc(wd, 'c_토스뱅크')
+    ialc(wd, 'c_신한은행')
     for i in range(0, 3):
         try:
             element = ial(wd, '//XCUIElementTypeButton[@name="다음"]')
