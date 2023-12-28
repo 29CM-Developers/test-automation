@@ -43,6 +43,12 @@ def move_to_pdp(wd, product_item_no):
     sleep(3)
 
 
+def move_to_pdp_iOS(wd, product_item_no):
+    wd.get(f'app29cm://product/{product_item_no}')
+    sleep(2)
+    close_bottom_sheet(wd)
+
+
 # Home 탭으로 이동 딥링크
 def move_to_home_Android(self, wd):
     wd.get('app29cm://home')

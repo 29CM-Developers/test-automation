@@ -3,6 +3,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import my_heart_count
+from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 def close_brand_recommended_page(wd):
@@ -163,6 +164,7 @@ def check_product_like(wd, like_product_name):
 def click_product_name(wd):
     ialc(wd, 'liked_product_name')
     sleep(3)
+    close_bottom_sheet(wd)
 
 
 def click_liked_product_cart_btn(wd):
@@ -221,6 +223,8 @@ def save_liked_brand_product_name(wd):
 def click_liked_brand_product_name(wd):
     brand = ial(wd, 'like_brand_item')
     ialc(brand, '//XCUIElementTypeCell[@index="0"]')
+    sleep(2)
+    close_bottom_sheet(wd)
 
 
 def move_to_welove_page(wd):
