@@ -1,7 +1,6 @@
 import os
 import sys
 import traceback
-import com_utils.deeplink_control
 
 from time import time, sleep
 from com_utils import values_control
@@ -9,7 +8,7 @@ from com_utils.api_control import search_popular_keyword, search_result, product
 from com_utils.element_control import tap_control
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import product_detail_page, cart_page, order_page, context_change
-from com_utils.deeplink_control import move_to_home
+from com_utils.deeplink_control import move_to_home, move_to_pdp_iOS
 
 
 class Cart:
@@ -27,7 +26,7 @@ class Cart:
             product_item_no = order_product_random_no()
 
             # 딥링크로 베스트 상품 PDP 진입
-            com_utils.deeplink_control.move_to_pdp(wd, product_item_no)
+            move_to_pdp_iOS(wd, product_item_no)
 
             # PDP 상세 API 호출하여 상품명 확인
             best_product = product_detail(product_item_no)['item_name']
@@ -58,7 +57,7 @@ class Cart:
             search_product_item_no = search_result(popular_1st_keyword, 1)['product_item_no']
 
             # 딥링크로 검색 상품 진입
-            com_utils.deeplink_control.move_to_pdp(wd, search_product_item_no)
+            move_to_pdp_iOS(wd, search_product_item_no)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(search_product_item_no)['item_name']

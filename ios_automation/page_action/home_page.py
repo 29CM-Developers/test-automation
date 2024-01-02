@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from com_utils.api_control import home_banner_info
 from com_utils.element_control import ial, ialc, ials, scroll_control, swipe_control
 from ios_automation.page_action import context_change
+from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 def check_home_logo(wd):
@@ -223,3 +224,5 @@ def save_contents_product_price(wd):
 
 def click_contents_product(wd):
     ialc(wd, '//XCUIElementTypeOther[@name="home_content_product"]')
+    sleep(1)
+    close_bottom_sheet(wd)

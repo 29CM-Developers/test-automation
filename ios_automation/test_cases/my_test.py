@@ -67,7 +67,7 @@ class My:
             product_item_no = com_utils.api_control.best_plp_women_clothes(1, 'NOW')['item_no']
 
             # 딥링크로 베스트 상품 PDP 진입
-            com_utils.deeplink_control.move_to_pdp(wd, product_item_no)
+            com_utils.deeplink_control.move_to_pdp_iOS(wd, product_item_no)
 
             # PDP 상품 이름 저장 -> 이미지 1개일 경우와 2개 이상일 경우, XPATH index 변경되어 아래와 같이 작성
             product_name = product_detail_page.save_product_name(wd)
