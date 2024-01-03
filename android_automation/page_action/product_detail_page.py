@@ -111,7 +111,7 @@ def click_direct_gift_btn(wd):
 
 
 def click_move_to_cart(wd):
-    aalc(wd, f'c_바로가기')
+    aalc(wd, 'c_바로가기')
 
 
 def click_like_btn(wd):
