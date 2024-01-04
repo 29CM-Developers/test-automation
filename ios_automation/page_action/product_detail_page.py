@@ -17,7 +17,6 @@ def click_home_btn(wd):
 def save_product_name(wd):
     product_name = ial(wd, 'c_감도 깊은 취향 셀렉트샵 29CM').text
     product_name = product_name.replace(' - 감도 깊은 취향 셀렉트샵 29CM', '')
-    print(f'PDP 상품명 : {product_name}')
     return product_name
 
 
@@ -45,7 +44,6 @@ def check_product_name(product_name, compare_name):
 def save_product_price(wd):
     price = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-4bcxzt ent7twr4"]').text
     price = int(price.replace(',', '').replace('원', ''))
-    print(f'PDP 전시 가격: {price}')
     return price
 
 
@@ -154,7 +152,6 @@ def save_no_soldout_product_no():
         product_soldout = best_plp_women_clothes(i, 'NOW')['item_soldout']
         if not product_soldout:
             product_item_no = best_plp_women_clothes(i, 'NOW')['item_no']
-            print(f'베스트 상품 번호 : {product_item_no}')
             break
     return product_item_no
 
@@ -165,7 +162,6 @@ def save_purchase_price(wd):
     price = ial(wd,
                 f'//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther[{len(xpath_index)}]/XCUIElementTypeStaticText[@index="{int(index) + 1}"]').text
     price = int(price.replace(',', ''))
-    print(f'구매 가능 가격 : {price}')
     return price
 
 

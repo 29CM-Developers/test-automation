@@ -2,6 +2,7 @@ from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials, swipe_control, element_scroll_control, scroll_control
+from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 def click_back_btn(wd):
@@ -159,6 +160,8 @@ def save_category_product_price(wd):
 
 def click_category_product(wd):
     ialc(wd, 'product_name')
+    sleep(1)
+    close_bottom_sheet(wd)
 
 
 def click_not_login_user_product_like_btn(wd):

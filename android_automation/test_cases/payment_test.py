@@ -185,11 +185,13 @@ class Payment:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
-            # deeplink_control.move_to_home_Android(self, wd)
+            # 네이티브 변경
+            change_native_contexts(wd)
+            wd.get('app29cm://home')
 
         finally:
             # 주문 최종 취소 확인
-            # order_page.finally_order_cancel(self, order_no)
+            order_page.finally_order_cancel(self, order_no)
             run_time = f"{time() - start_time:.2f}"
             warning = [str(i) for i in warning_texts]
             warning_points = "\n".join(warning)

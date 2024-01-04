@@ -158,7 +158,7 @@ class Like:
 
             # 좋아요 브랜드의 첫번쨰 상품 선택하여 해당 상품 PDP 진입
             liked_brand_product_name = like_page.save_liked_brand_product_name(wd)
-            like_page.click_liked_brand_porduct_name(wd)
+            like_page.click_liked_brand_product_name(wd)
             pdp_product_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_product_name, liked_brand_product_name)
 

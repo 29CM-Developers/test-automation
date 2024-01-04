@@ -2,11 +2,12 @@ import os
 import sys
 import traceback
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
+from android_automation.page_action.context_change import change_native_contexts
 from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
 from com_utils.testrail_api import send_test_result
-from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar
+from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet
 from com_utils.deeplink_control import move_to_pdp
 from time import sleep, time
 
@@ -19,6 +20,9 @@ class Pdp:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 네이티브 변경
+            change_native_contexts(wd)
+
             # 여성 인기 브랜드 1위 검색 결과 저장
             brand_name = search_woman_popular_brand_name()
 
@@ -27,6 +31,9 @@ class Pdp:
 
             # 딥링크로 검색 상품 진입
             move_to_pdp(wd, search_product_item_no)
+
+            # 바텀시트 노출 여부 확인
+            bottom_sheet.close_bottom_sheet(wd)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(search_product_item_no)['item_name']
@@ -76,6 +83,8 @@ class Pdp:
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
             except Exception:
                 pass
+            # 네이티브 변경
+            change_native_contexts(wd)
             wd.get('app29cm://home')
 
         finally:
@@ -95,11 +104,17 @@ class Pdp:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 네이티브 변경
+            change_native_contexts(wd)
+
             # 필터를 건 검색 결과 화면에서 랜덤으로 상품번호 저장
             random_product_no = order_product_random_no()
 
             # 딥링크로 검색 상품 진입
             move_to_pdp(wd, random_product_no)
+
+            # 바텀시트 노출 여부 확인
+            bottom_sheet.close_bottom_sheet(wd)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(random_product_no)['item_name']
@@ -144,8 +159,11 @@ class Pdp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            # 네이티브 변경
+            change_native_contexts(wd)
             wd.get('app29cm://home')
 
         finally:
@@ -173,6 +191,8 @@ class Pdp:
 
             # 딥링크로 검색 상품 진입
             move_to_pdp(wd, search_product_item_no)
+
+            close_pdp_bottom_sheet(wd)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(search_product_item_no)['item_name']
@@ -219,6 +239,7 @@ class Pdp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')

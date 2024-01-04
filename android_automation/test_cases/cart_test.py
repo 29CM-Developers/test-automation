@@ -219,10 +219,11 @@ class Cart:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
-            # 네이티브로 변경
-            cart_page.change_native_contexts(wd)
+            # 네이티브 변경
+            change_native_contexts(wd)
             wd.get('app29cm://home')
 
         finally:
@@ -292,10 +293,11 @@ class Cart:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
-            # 네이티브로 변경
-            cart_page.change_native_contexts(wd)
+            # 네이티브 변경
+            change_native_contexts(wd)
             wd.get('app29cm://home')
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
@@ -354,8 +356,11 @@ class Cart:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            # 네이티브 변경
+            change_native_contexts(wd)
             wd.get('app29cm://home')
 
         finally:

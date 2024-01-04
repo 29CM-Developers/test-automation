@@ -13,7 +13,7 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from android_automation.page_action import navigation_bar, category_page, best_product_list_page
+from android_automation.page_action import navigation_bar, category_page, best_product_list_page, bottom_sheet
 from com_utils import values_control, element_control, api_control
 from time import sleep, time
 from com_utils.testrail_api import send_test_result
@@ -156,6 +156,10 @@ class Plp:
                 best_item_first = element_control.scroll_to_element_with_text(wd, api_data_first)
                 best_item_first.click()
                 sleep(2)
+
+                # 바텀시트 노출 여부 확인
+                bottom_sheet.close_bottom_sheet(wd)
+
                 api_data_title = re.sub(r'\s+', ' ', api_data_first)
                 PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data_title}')]")
                 for PDP_title in PDP_title_elements:

@@ -58,7 +58,7 @@ def click_payment(wd):
 def click_virtual_account_payment(wd):
     sleep(1)
     aalc(wd, 'c_전체 동의')
-    aalc(wd, 'c_토스뱅크')
+    aalc(wd, 'c_케이뱅크')
     scroll_control(wd, 'D', 50)
     try:
         elements = aals(wd, 'c_다음')

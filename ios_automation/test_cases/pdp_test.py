@@ -8,7 +8,7 @@ from com_utils.api_control import product_detail, search_woman_popular_brand_nam
     order_product_random_no
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import context_change, product_detail_page, order_page, like_page, navigation_bar
-from com_utils.deeplink_control import move_to_pdp, move_to_like
+from com_utils.deeplink_control import move_to_pdp_iOS, move_to_like, move_to_home_iOS
 
 
 class Pdp:
@@ -26,7 +26,7 @@ class Pdp:
             search_product_item_no = search_result(brand_name, 1)['product_item_no']
 
             # 딥링크로 검색 상품 진입
-            move_to_pdp(wd, search_product_item_no)
+            move_to_pdp_iOS(wd, search_product_item_no)
 
             pdp_name = product_detail_page.save_product_name(wd)
 
@@ -72,7 +72,8 @@ class Pdp:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
-            wd.get(self.conf['deeplink']['home'])
+            context_change.switch_context(wd, 'native')
+            move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -98,7 +99,7 @@ class Pdp:
             search_product_item_no = search_result(brand_name, 1)['product_item_no']
 
             # 딥링크로 검색 상품 진입
-            move_to_pdp(wd, search_product_item_no)
+            move_to_pdp_iOS(wd, search_product_item_no)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(search_product_item_no)['item_name']
@@ -148,7 +149,8 @@ class Pdp:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
-            wd.get(self.conf['deeplink']['home'])
+            context_change.switch_context(wd, 'native')
+            move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
@@ -171,7 +173,7 @@ class Pdp:
             random_product_no = order_product_random_no()
 
             # 딥링크로 검색 상품 진입
-            move_to_pdp(wd, random_product_no)
+            move_to_pdp_iOS(wd, random_product_no)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(random_product_no)['item_name']
@@ -217,7 +219,8 @@ class Pdp:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
-            wd.get(self.conf['deeplink']['home'])
+            context_change.switch_context(wd, 'native')
+            move_to_home_iOS(self, wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"

@@ -24,7 +24,8 @@ def save_first_post_title(wd):
     posts = wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
                             '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
     post_title = posts.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[2]').text
-    print(f'포스트명 : {post_title}')
+    if '댓글' in post_title:
+        post_title = posts.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[5]').text
     return post_title
 
 

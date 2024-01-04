@@ -38,11 +38,13 @@ def home_banner_info(self):
     return banner_data
 
 
-def feed_contents_info():
+def feed_contents_info(id, password):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
     feed_contents_titles = {}
     # 우먼 탭 컨텐츠 API 호출
     response = requests.get(
-        'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0')
+        'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort=WOMEN&home_type=APP_HOME&limit=20&offset=0',
+        cookies=cookies)
     if response.status_code == 200:
         contents_api_data = response.json()
         feed_item_contents = contents_api_data['data']['results']
@@ -366,14 +368,16 @@ def search_brand_category_info(keyword):
         print('검색 결과 브랜드 정보 API 불러오기 실패')
 
 
-def filter_brand_search_results_by_category(keyword):
+def filter_brand_search_results_by_category(self, id, password, keyword):
     categories = com_utils.api_control.search_brand_category_info(keyword)
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
 
     filter_result = {}
     search_response = requests.get(
-        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}'
+        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}&sort=personalizerc'
         f'&categoryLargeCode={categories["large_code"]}&categoryMediumCode={categories["medium_code"]}'
-        f'&categorySmallCode={categories["small_code"]}')
+        f'&categorySmallCode={categories["small_code"]}&gender={self.pconf["gender_first"]}',
+        cookies=cookies)
     if search_response.status_code == 200:
         search_result_data = search_response.json()
         filter_brand = search_result_data['data']['products']

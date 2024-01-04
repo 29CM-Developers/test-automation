@@ -7,18 +7,18 @@ import com_utils.element_control
 
 
 def enter_setting_page(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarSettingWhite').click()
+    ialc(wd, 'setting_btn')
 
 
 def enter_login_page(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]').click()
+    ialc(wd, 'login_btn')
     sleep(3)
 
 
 def find_login_btn(wd):
     for i in range(0, 5):
         try:
-            element = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]')
+            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'login_btn')
             if element.is_displayed():
                 break
         except NoSuchElementException:
@@ -28,7 +28,7 @@ def find_login_btn(wd):
 
 def check_login_btn(wd):
     try:
-        wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="로그인·회원가입"]')
+        ial(wd, 'login_btn')
         print('My 탭 로그인 문구 확인')
     except NoSuchElementException:
         print('My 탭 로그인 문구 확인 실패')
@@ -77,7 +77,6 @@ def check_recent_history(wd, product_name, post_title):
     for title in recent[:2]:
         title = title.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
         recent_history.append(title)
-    print(f'히스토리 : {recent_history}')
 
     if product_name in recent_history and post_title in recent_history:
         print('최근 본 컨텐츠 히스토리 확인')
@@ -137,7 +136,7 @@ def click_coupon_menu(wd):
 def find_logout_btn(wd):
     for i in range(0, 5):
         try:
-            element = wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LOGOUT"]')
+            element = ial(wd, 'c_LOGOUT')
             if element.is_displayed():
                 break
         except NoSuchElementException:
@@ -146,4 +145,4 @@ def find_logout_btn(wd):
 
 
 def click_logout_btn(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LOGOUT"]').click()
+    ialc(wd, 'c_LOGOUT')

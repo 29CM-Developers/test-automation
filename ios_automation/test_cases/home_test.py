@@ -92,6 +92,9 @@ class Home:
             # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
+            # 라이프 탭 디폴트 선택 여부 확인 및 닫기
+            home_page.click_close_life_tab(wd)
+
             # 맨 카테고리 탭 선택
             home_page.click_tab_name(wd, '맨')
 
@@ -102,7 +105,7 @@ class Home:
             home_page.click_tab_name(wd, '우먼')
 
             # 피드 정보 불러오기
-            feed_title_list = feed_contents_info()
+            feed_title_list = feed_contents_info(self.pconf['id_29cm'], self.pconf['password_29cm'])
             feed_title_1st = feed_title_list['first_feed_title']
             feed_contain_item = feed_title_list['first_title_with_item']
             feed_title_2nd = feed_title_list['second_feed_title']
