@@ -63,11 +63,11 @@ def check_recent_title(wd, type, title):
 
 
 def expand_recent_contents(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[6]').click()
+    ialc(wd, '//XCUIElementTypeButton[6]')
 
 
 def close_recent_contents(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[4]').click()
+    ialc(wd, '//XCUIElementTypeButton[4]')
 
 
 def check_recent_history(wd, product_name, post_title):
@@ -90,7 +90,7 @@ def click_delivery_order_menu(wd):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '주문배송조회')
             if element.is_displayed():
-                element.click()
+                ialc(wd, '주문배송조회')
                 break
         except NoSuchElementException:
             pass
@@ -102,7 +102,7 @@ def click_review_menu(wd):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상품 리뷰')
             if element.is_displayed():
-                element.click()
+                ialc(wd, '상품 리뷰')
                 break
         except NoSuchElementException:
             pass
@@ -114,7 +114,7 @@ def click_edit_user_info_menu(wd):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, '회원 정보 수정')
             if element.is_displayed():
-                element.click()
+                ialc(wd, '회원 정보 수정')
                 break
         except NoSuchElementException:
             pass
@@ -126,7 +126,7 @@ def click_coupon_menu(wd):
         try:
             element = ial(wd, '쿠폰')
             if element.is_displayed():
-                element.click()
+                ialc(wd, '쿠폰')
                 break
         except NoSuchElementException:
             pass

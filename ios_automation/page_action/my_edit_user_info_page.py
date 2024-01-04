@@ -1,10 +1,12 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ialk
+from ios_automation.page_action import context_change
 
 
 def input_password(wd, password):
-    ialk(wd, '//XCUIElementTypeOther[@name="비밀번호 재확인 절차"]/XCUIElementTypeSecureTextField', password)
+    context_change.switch_context(wd, 'webview')
+    ialk(wd, '//input[contains(@type, "password")]', password)
+    context_change.switch_context(wd, 'native')
 
 
 def click_next_btn(wd):
