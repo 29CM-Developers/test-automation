@@ -7,7 +7,7 @@ from ios_automation.page_action import context_change
 
 
 def click_pdp_back_btn(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+    ialc(wd, 'common back icon black')
 
 
 def click_home_btn(wd):
@@ -94,7 +94,7 @@ def click_direct_gift_btn(wd):
 
 
 def click_move_to_cart(wd):
-    wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeStaticText[`label == "바로가기"`]').click()
+    ialc(wd, '**/XCUIElementTypeStaticText[`label == "바로가기"`]')
     sleep(3)
 
 

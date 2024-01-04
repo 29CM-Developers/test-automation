@@ -1,9 +1,10 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from com_utils.element_control import ialc
 
 
 def click_back_btn(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
+    ialc(wd, 'navi_back_btn')
 
 
 def check_notification(wd):

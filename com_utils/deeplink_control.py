@@ -1,5 +1,6 @@
 from time import sleep
-from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet, close_bottom_sheet
+from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet, close_bottom_sheet, \
+    pdp_close_bottom_sheet
 from ios_automation.page_action import like_page
 from android_automation.page_action import bottom_sheet
 
@@ -46,7 +47,7 @@ def move_to_pdp(wd, product_item_no):
 def move_to_pdp_iOS(wd, product_item_no):
     wd.get(f'app29cm://product/{product_item_no}')
     sleep(2)
-    close_bottom_sheet(wd)
+    pdp_close_bottom_sheet(wd)
 
 
 # Home 탭으로 이동 딥링크

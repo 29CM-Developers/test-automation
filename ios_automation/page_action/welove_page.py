@@ -8,12 +8,12 @@ from com_utils.element_control import ial, ialc, ials
 
 # welove 페이지에서 뒤로가기
 def click_welove_back_btn(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'navi_back_btn').click()
+    ialc(wd, 'navi_back_btn')
 
 
 # 포스트에서 welove 페이지로 뒤로가기
 def click_post_to_welove_back_btn(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+    ialc(wd, 'common back icon black')
 
 
 def click_hash_tag_back_btn(wd):
@@ -30,7 +30,7 @@ def save_first_post_title(wd):
 
 
 def click_first_post(wd):
-    wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeCell[`name == "recommended_post"`][1]').click()
+    ialc(wd, '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
     sleep(3)
 
 
