@@ -58,6 +58,8 @@ def save_remove_prefix_product_name(product_name):
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
 def check_product_name(warning_texts, product_name, compare_name):
+    product_name = product_name.replace('_', ' ')
+    compare_name = compare_name.replace('_', ' ')
     if compare_name in product_name:
         test_result = 'PASS'
         print('상품명 동일 확인')

@@ -193,6 +193,8 @@ class Pdp:
             move_to_pdp(wd, search_product_item_no)
 
             close_pdp_bottom_sheet(wd)
+            # 바텀시트 노출 여부 확인
+            bottom_sheet.close_bottom_sheet(wd)
 
             # PDP 상세 API 호출하여 상품명 확인
             search_product = product_detail(search_product_item_no)['item_name']
@@ -206,6 +208,7 @@ class Pdp:
             # CTA영역 > 좋아요 아이콘 선택
             product_detail_page.click_like_btn(wd)
 
+            close_pdp_bottom_sheet(wd)
             # 바텀 시트의 함께 보면 좋은 상품 타이틀, 다른고객이 함께 구매한 상품 타이틀 비교 확인
             test_result = product_detail_page.check_bottom_sheet_title(wd, warning_texts)
 
