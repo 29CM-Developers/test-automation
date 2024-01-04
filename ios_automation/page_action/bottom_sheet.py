@@ -16,3 +16,8 @@ def close_bottom_sheet(wd):
 def find_icon_and_close_bottom_sheet(wd):
     ial(wd, 'navi_cart_btn')
     close_bottom_sheet(wd)
+
+
+def pdp_close_bottom_sheet(wd):
+    ial(wd, 'common cart icon black')
+    close_bottom_sheet(wd)
