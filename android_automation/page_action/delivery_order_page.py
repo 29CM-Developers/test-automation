@@ -58,9 +58,9 @@ def check_order_detail_price(wd, payment_type, order_price):
 
 def click_order_cancel_btn(wd):
     aalc(wd, 'c_취소접수')
-    sleep(3)
+    sleep(5)
     aalc(wd, 'c_취소접수 완료하기')
-    sleep(3)
+    sleep(2)
 
 
 def check_order_cancel(wd):
