@@ -6,7 +6,7 @@ import com_utils.deeplink_control
 from time import time, sleep
 from com_utils import values_control
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page
+from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page, context_change
 from ios_automation.page_action.select_category_page import test_select_category
 
 
@@ -59,6 +59,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:
@@ -88,9 +89,6 @@ class UserLoginTest:
             # 로그아웃 완료 > 로그인,회원가입 문구 확인
             my_page.find_login_btn(wd)
             my_page.check_login_btn(wd)
-
-            # Home 으로 복귀 후,온보딩 프로그램 확인
-            navigation_bar.logout_and_move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -156,6 +154,7 @@ class UserLoginTest:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:

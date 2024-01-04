@@ -55,6 +55,7 @@ def check_search_product_name(wd, compare_name):
     if compare_name in product_name:
         print('카테고리 필터 적용으로 상품 노출 확인')
     else:
+        print(f'product_name : {product_name}, compare_name : {compare_name}')
         print('카테고리 필터 적용으로 상품 노출 확인 실패')
         raise Exception('카테고리 필터 적용으로 상품 노출 확인 실패')
 

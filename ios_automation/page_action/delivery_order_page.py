@@ -7,7 +7,7 @@ from ios_automation.page_action import bottom_sheet
 
 
 def click_back_btn(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+    ialc(wd, 'common back icon black')
 
 
 def check_no_delivery_order(wd):

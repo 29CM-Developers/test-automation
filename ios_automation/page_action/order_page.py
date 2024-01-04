@@ -78,6 +78,7 @@ def save_purchase_btn_price(wd):
 
 
 def save_delivery_price(wd):
+    scroll_control(wd, 'D', 30)
     ialc(wd, '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeButton[1]')
     delivery_price = ial(wd,
                          '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeStaticText[@index="1"]').text
