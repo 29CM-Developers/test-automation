@@ -90,9 +90,6 @@ class UserLoginTest:
             my_page.find_login_btn(wd)
             my_page.check_login_btn(wd)
 
-            # Home 으로 복귀 후,온보딩 프로그램 확인
-            navigation_bar.logout_and_move_to_home(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')

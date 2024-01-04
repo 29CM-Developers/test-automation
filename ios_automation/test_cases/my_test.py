@@ -29,9 +29,8 @@ class My:
             # 세팅 페이지 내 알림 문구 확인
             my_setting_page.check_notification(wd)
 
-            # Home 탭으로 보구기
+            # 마이페이지로 복귀
             my_setting_page.click_back_btn(wd)
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -98,9 +97,8 @@ class My:
             # 최근 본 상품 히스토리 확인
             my_page.check_recent_history(wd, recent_product_name, post_title)
 
-            # 최근 본 상품 영역 축소 후 Home 탭으로 이동
+            # 최근 본 상품 영역 축소
             my_page.close_recent_contents(wd)
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
@@ -135,13 +133,14 @@ class My:
             # My 탭으로 이동
             com_utils.deeplink_control.move_to_my(self, wd)
 
+            # 주문배송조회 메뉴 선택
             my_page.click_delivery_order_menu(wd)
 
+            # 배송 상품 없음 확인
             delivery_order_page.check_no_delivery_order(wd)
 
+            # 마이페이지로 복귀
             delivery_order_page.click_back_btn(wd)
-
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
