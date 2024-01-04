@@ -25,7 +25,7 @@ def click_required_terms(wd):
 
 
 def input_email(wd, email):
-    aalk(wd, 'android.widget.EditText', email)
+    wd.find_element(AppiumBy.CLASS_NAME, 'android.widget.EditText').send_keys(email)
     sleep(1)
 
 

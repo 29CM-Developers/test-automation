@@ -12,6 +12,7 @@ def move_to_home(wd):
 
 
 def move_to_category(wd):
+    sleep(1)
     aalc(wd, 'CATEGORY')
 
 
@@ -25,10 +26,30 @@ def move_to_like(wd):
 
 def move_to_my(wd):
     aalc(wd, 'MY')
+    print('MY 선택')
 
 
 def move_to_cart(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgCart')
+    print("장바구니 선택")
+
+
+def move_to_back(wd):
+    aalc(wd, 'com.the29cm.app29cm:id/imgBack')
+    print("뒤로가기 선택")
+    sleep(1)
+
+
+def move_to_alarm(wd):
+    sleep(2)
+    aalc(wd, 'com.the29cm.app29cm:id/imgInboxNotification')
+    print("우상단 알람 선택")
+
+
+def move_to_top_cart(wd):
+    sleep(2)
+    aalc(wd, 'com.the29cm.app29cm:id/imgCart')
+    print("우상단 장바구니 선택")
 
 
 def logout_and_move_to_home(wd):
