@@ -6,7 +6,7 @@ import com_utils.deeplink_control
 from time import time
 from com_utils import values_control
 from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import login_page, my_page, navigation_bar, join_page
+from ios_automation.page_action import login_page, my_page, navigation_bar, join_page, context_change
 
 
 class Join:
@@ -25,6 +25,8 @@ class Join:
             # 간편 회원가입 선택
             login_page.click_simple_join_btn(wd)
 
+            context_change.switch_context(wd, 'webview')
+
             # 필수 약관 선택 후 가입 시도
             join_page.click_required_terms(wd)
 
@@ -33,6 +35,8 @@ class Join:
 
             # 기가입 이메일 가입 불가 에러
             join_page.check_same_email_join_error(wd)
+
+            context_change.switch_context(wd, 'native')
 
             # My 탭으로 복귀
             join_page.click_back_btn(wd)
@@ -52,6 +56,7 @@ class Join:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:

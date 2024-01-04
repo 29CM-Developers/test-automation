@@ -1,28 +1,31 @@
-from appium.webdriver.common.appiumby import AppiumBy
+from time import sleep
 from selenium.common import NoSuchElementException
+from com_utils.element_control import ialk, ialc, ials, ial
 
 
 def click_back_btn(wd):
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+    ialc(wd, 'common back icon black')
 
 
 def click_required_terms(wd):
-    terms = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeOther[@index="2"]/XCUIElementTypeOther')
+    sleep(2)
+    terms = ials(wd, '//label')
     for required_term in terms:
         if '필수' in required_term.text:
             required_term.click()
         else:
             pass
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, '동의하고 가입하기').click()
+    ialc(wd, '//button[contains(text(), "가입하기")]')
 
 
 def input_email(wd, email):
-    wd.find_element(AppiumBy.CLASS_NAME, 'XCUIElementTypeTextField').send_keys(email)
+    sleep(2)
+    ialk(wd, '//input[contains(@name, "username")]', email)
 
 
 def check_same_email_join_error(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '동일한 이메일 주소로 가입된 계정이 있습니다. 기존 계정으로 로그인해주세요.')
+        ial(wd, '//p[contains(text(), "동일한 이메일 주소로 가입된 계정이 있습니다.")]')
         print('기가입된 계정으로 회원가입 실패 확인')
     except NoSuchElementException:
         print('기가입된 계정으로 회원가입 실패 확인 실패')
