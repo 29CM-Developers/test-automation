@@ -13,19 +13,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from android_automation.page_action import navigation_bar, category_page, login_page, home_page, best_product_list_page, \
+    product_detail_page, search_page, search_result_page, my_page
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils import values_control, element_control
 from time import sleep, time, strftime, localtime
 from com_utils.element_control import aal, aalk, aalc, aals, swipe_control, is_keyboard_displayed, close_keyboard
 from com_utils.testrail_api import send_test_result
-
-logger = logging.getLogger(name='Log')
-logger.setLevel(logging.INFO)  ## 경고 수준 설정
-formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
-stream_handler = logging.StreamHandler()  ## 스트림 핸들러 생성
-stream_handler.setFormatter(formatter)  ## 텍스트 포맷 설정
-logger.addHandler(stream_handler)  ## 핸들러 등록
 
 class NotLogin:
 
@@ -37,90 +31,40 @@ class NotLogin:
         start_time = time()
         try:
             sleep(3)
-            print("[사용 불가 기능 사용]CASE 시작")
-            close_bottom_sheet(self.wd)
+            print(f'[{test_name}] 테스트 시작')
 
-            sleep(3)
-            # 홈 > 카테고리 PLP 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'top_title').click()
-
-            print("홈 > 카테고리 PLP 진입 > 의류 > 상의 선택")
-            # 임의의 상품 좋아요 버튼 선택
-            plp_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/recyclerview')
-            plp_layer.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.widget.ImageView[2]').click()
-            print("좋아요 선택")
-            # 로그인 화면 진입 확인
-            login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
-            if login_page_title.text == '로그인':
-                print("로그인 진입 확인 : 로그인 문구 확인")
-            else:
-                print("로그인 진입 확인 : 로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 진입 확인 실패")
-            print(f"가이드 문구 : {login_page_title.text} ")
-
-            # 뒤로가기로 카테고리 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
             sleep(1)
-            # 뒤로가기로 홈화면 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            close_bottom_sheet(self.wd)
+            # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
+            navigation_bar.move_to_category(wd)
+            category_page.click_category_top(wd)
+            category_page.click_not_login_user_product_like_btn(wd)
 
-            #full test 확장 시나리오
-            # 홈 > 우상단 알림 아이콘 선택
-            sleep(2)
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgInboxNotification').click()
-            print("홈 > 우상단 알림 아이콘 선택")
-            # 로그인 화면 진입 확인
-            login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
-            if login_page_title.text == '로그인':
-                print("로그인 진입 확인 : 로그인 문구 확인")
-            else:
-                print("로그인 진입 확인 : 로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 진입 확인 실패")
-            print(f"가이드 문구 : {login_page_title.text} ")
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
 
-            # 뒤로가기로 홈화면 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
+            navigation_bar.move_to_back(wd)
+            navigation_bar.move_to_home(wd)
+
+            # 우상단 알람 선택
+            navigation_bar.move_to_alarm(wd)
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
 
             # 홈 > 우상단 장바구니 아이콘 선택
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgCart').click()
-            print("홈 > 우상단 장바구니 아이콘 선택")
-            # 로그인 화면 진입 확인
-            login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
-            if login_page_title.text == '로그인':
-                print("로그인 진입 확인 : 로그인 문구 확인")
-            else:
-                print("로그인 진입 확인 : 로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 진입 확인 실패")
-            print(f"가이드 문구 : {login_page_title.text} ")
+            navigation_bar.move_to_top_cart(wd)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
 
-            # 뒤로가기로 홈화면 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
             # 하단 like 아이콘 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'LIKE').click()
-            print("하단 like 아이콘 선택")
-            # 로그인 화면 진입 확인
-            login_page_title = wd.find_element(By.XPATH, '//*[@resource-id="__next"]/android.widget.TextView[1]')
-            if login_page_title.text == '로그인':
-                print("로그인 진입 확인 : 로그인 문구 확인")
-            else:
-                print("로그인 진입 확인 : 로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 진입 확인 실패")
-            print("가이드 문구 : %s " % login_page_title.text)
-
-            # 뒤로가기로 홈화면 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            print("[사용 불가 기능 사용]CASE 종료")
+            navigation_bar.move_to_like(wd)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -135,6 +79,7 @@ class NotLogin:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')
@@ -158,240 +103,59 @@ class NotLogin:
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
-        print("[사용 가능 기능 사용]CASE 시작")
-        sleep(3)
-
-        # 홈화면 변경 ui 로 진행 시
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_tab').click()
-        print("베스트탭 선택")
-        sleep(2)
         try:
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/all').click()
-            print("전체보기 버튼 선택")
-            sleep(1)
-            best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
-            if best_page_title.text == '베스트':
-                print("베스트 페이지 진입 확인")
-            else:
-                print("베스트 페이지 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("베스트 페이지 진입 확인 실패")
-            print(f"타이틀 문구 : {best_page_title.text} ")
-            best_product_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_title').text
-            print(f"베스트 상품명 : {best_product_title} ")
-            # wd.find_element(AppiumBy.XPATH, '//android.view.ViewGroup[1]/android.view.ViewGroup').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_title').click()
-            sleep(1)
-        except NoSuchElementException:
-            print("전체보기 버튼 미노출- 베스트 탭 ui 변경")
-            best_product_title = wd.find_elements(AppiumBy.XPATH,
-                                                  '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+            print(f'[{test_name}] 테스트 시작')
 
-            print(f"베스트 상품명 : {best_product_title[0].text} ")
-            best_product_list_title = best_product_title[0].text
-            best_product_price = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/lastSalePrice"]')
+            # 라이프 선택 닫기
+            home_page.click_close_life_tab(wd)
 
-            print(f"베스트 상품 가격 : {best_product_price[0].text} ")
-            best_product_list_price = best_product_price[0].text
+            # Home > 베스트 탭 선택하여 베스트 PLP 진입
+            home_page.click_tab_name(wd, 'best_tab')
 
-            best_product_title[0].click()
-            sleep(1)
-        # 이굿 위크 상품 확인
-        try:
-            sale_tag = aal(wd, '이굿위크 할인 상품')
-            if sale_tag == None:
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-                print('sale_tag 상품 미발견')
-            else:
-                element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-                print('sale_tag 상품 발견')
-        except NoSuchElementException:
-            print('sale_tag 상품 미발견')
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-            pass
-        # 스페셜 오더 상품 확인
-        try:
-            wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-            print('SPECIAL-ORDER 상품 발견')
-        except NoSuchElementException:
-            print('SPECIAL-ORDER 상품 미발견')
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-            pass
+            # 베스트 탭에서 첫번째 상품명 저장하고 PDP 진입
+            plp_name = best_product_list_page.save_best_first_product_name(wd)
+            plp_price = best_product_list_page.save_best_first_product_price(wd)
+            best_product_list_page.click_best_first_product(wd)
 
-        PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath).text
-        print(f"PDP_product_title : {PDP_product_title}")
-        PDP_product_title = PDP_product_title.replace("_", " ")
-        best_product_title = best_product_list_title.replace("_", " ")
-        print(f"PDP_product_title : {PDP_product_title} ")
-        print(f"best_product_title : {best_product_title} ")
-        if PDP_product_title in best_product_title:
-            print("베스트 상품 PDP 정상 확인")
-        else:
-            print("베스트 상품 PDP 정상 확인 실패")
-            test_result = 'WARN'
-            warning_texts.append("베스트 상품 PDP 정상 확인 실패")
-        print(f"베스트 상품명 : {best_product_title} , PDP 상품명 : {PDP_product_title}  ")
-        sleep(3)
-        # 상단으로 홈화면 진입 확인
-        wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgHome').click()
-        print("상단 홈아이콘 선택")
-        # 8. 홈 > 피드 > 추천 탭선택
-        sleep(1)
-        # 홈화면 변경 ui 시나리오
-        # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-        # tab_layer.find_element(AppiumBy.XPATH,'//android.widget.HorizontalScrollView/android.widget.LinearLayout/android.view.ViewGroup[5]').click()
-        # 이굿위크 여부 확인
-        # try:
-        #     wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommend_tab')
-        # except NoSuchElementException:
-        #     main_tab_container = aal(wd, 'com.the29cm.app29cm:id/container')
-        #     swipe_control(wd, main_tab_container, 'left', 10)
-        # aalc(wd, 'recommend_tab')
-        # print("추천 탭 선택")
-        # sleep(1)
-        #
-        # guide_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/textRecommend')
-        # if guide_text.text == '당신을 위한 추천 상품':
-        #     print("'당신을 위한 추천 상품’ 가이드 문구 노출 확인")
-        # else:
-        #     print("'당신을 위한 추천 상품' 가이드 문구 노출 실패")
-        #     test_result = 'WARN'
-        #     warning_texts.append("추천 가이드 문구 확인 실패")
-        # print(f"가이드 문구 : {guide_text.text} ")
-        #
-        # sleep(1)
-        # 우먼탭으로 선택 ui 변경
-        # tab_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/tabScrollView')
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'women_tab').click()
-        sleep(1)
-        # 카테고리 탭 진입 for you 탭 선택
-        aalc(wd, 'CATEGORY')
-        aalc(wd, 'for_you_title')
-        sleep(1)
-        # 추천 확인 추가
-        top_menu = aal(wd, 'com.the29cm.app29cm:id/topMenu')
-        recommend_title = aal(top_menu, '//android.view.View/android.widget.TextView')
-        print(f"타이틀 문구 : {recommend_title.text} ")
+            # 선택한 상품의 PDP에서 상품 이름 비교
+            pdp_name = product_detail_page.save_product_name(wd)
+            product_detail_page.check_product_name1(pdp_name, plp_name)
 
-        if recommend_title.text == '당신을 위한 추천 상품':
-            print('타이틀 문구 당신을 위한 추천 문구 확인')
-        else:
-            print('타이틀 문구 당신을 위한 추천 문구 확인 실패')
-            test_result = 'WARN'
-            warning_texts.append(" 비로그인 유저 추천 페이지 타이틀 확인 실패")
+            # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
+            product_detail_page.click_pdp_back_btn(wd)
 
-        # 뒤로가기로 카테고리 화면 진입
-        aalc(top_menu, '//android.view.View/android.view.View')
-        aalc(wd, 'HOME')
+            # 카테고리 탭 진입
+            navigation_bar.move_to_category(wd)
 
-        # 6. Home 상단 네비게이션 검색 아이콘 선택
-        wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSearch').click()
-        print("상단 검색 아이콘 선택")
-        sleep(2)
+            # 추천 페이지 진입하여 상단의 타이틀 비교 (비로그인 유저 : 당신)
+            category_page.click_for_you_category(wd)
+            category_page.check_not_login_user_recommended_tab(wd)
 
-        # 키보드가 올라가 있는지 확인하고, 올라가 있다면 닫기
-        if is_keyboard_displayed(wd):
-            print("키패드 열림 확인")
-            close_keyboard(wd)
-            print("키패드 닫기")
-        else:
-            print("키패드 미노출")
+            # 홈 탭으로 복귀
+            category_page.click_back_btn(wd)
+            navigation_bar.move_to_home(wd)
 
-        search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
+            # 상단 검색 버튼 선택하여 인기 브랜드 6위 선택
+            home_page.click_search_btn(wd)
+            search_brand_name = search_page.save_popular_brand_name(wd, '6')
+            search_page.click_popular_brand_name(wd, '6')
 
-        try:
-            # 최근 검색어 있는 경우 모두 지우기로 삭제
-            # delete_all = wd.find_elements(By.XPATH, "//*[contains(@text, '최근 검색')]")
-            # print(delete_all)
-            # if len(delete_all) == 0:
-            #     pass
-            # else:
-            #     search_container = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/container')
-            #     search_container.find_element(AppiumBy.XPATH,
-            #                                   '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View').click()
-            # sleep(2)
-            delete_all = aal(wd, 'c_모두 지우기')
-            if delete_all == None:
-                print("최근검색어 없음")
-            else:
-                print("최근검색어 있음")
-                aalc(wd, 'c_모두 지우기')
-            # print(delete_all)
-            # if len(delete_all) == 0:
-            print("검색 ui 변경 화면")
-            response = requests.get(
-                'https://search-api.29cm.co.kr/api/v4/popular?gender=all&keywordLimit=100&brandLimit=30')
-            if response.status_code == 200:
-                api_data = response.json()
-                category_name = api_data['data']['brand']['results'][0]['categoryName']
-                print(f"category_name : {category_name}")
+            # 검색 결과 화면 진입하여 선택한 브랜드명과 입력란의 문구 비교 확인
+            search_result_page.check_input_field(wd, search_brand_name)
 
-                # 지금 많이 찾는 브랜드 찾기
-                search_container_title = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'search_popular_clothes_brand')
-                if search_container_title.text == f"지금 많이 찾는 {category_name} 브랜드":
-                    pass
-                else:
-                    print(f"지금 많이 찾는 {category_name} 브랜드 타이틀 노출 실패")
-                    test_result = 'WARN'
-                    warning_texts.append(f"지금 많이 찾는 {category_name} 브랜드 타이틀 노출 실패")
-                print(f"타이틀 확인 : {search_container_title.text}")
-            else:
-                print('카테고리 그룹 API 호출 실패')
+            # 검색 결과 화면의 브랜드명에 검색어와 연관된 브랜드 확인
+            search_result_page.check_relate_brand_name(wd, search_brand_name)
 
-            brand_6th = wd.find_element(AppiumBy.XPATH,
-                                        '(//android.view.View[@content-desc="popular_brand_layer"])[1]/android.view.View[6]')
+            # My 탭 진입하여 로그인,회원가입 문구 노출 확인
+            search_result_page.click_back_btn(wd)
+            search_result_page.click_back_btn(wd)
+            navigation_bar.move_to_my(wd)
+            my_page.check_login_btn(wd)
 
-            # 7. 검색 화면 > 인기 브랜드 검색어6위 선택
-            brand_6th_name = brand_6th.find_element(AppiumBy.XPATH, '//android.widget.TextView[2]').text
-            brand_6th.click()
-            print('브랜드 6위 선택')
-            print(brand_6th_name)
-            # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
-            search_edit_text = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').text
-            if brand_6th_name in search_edit_text:
-                print("선택한 브랜드명과 입력란에 작성된 문구가 동일 확인")
-            else:
-                print("선택한 브랜드명과 입력란에 작성된 문구가 동일 실패")
-                test_result = 'WARN'
-                warning_texts.append("브랜드명 비교 실패")
-            print(f"검색어 : {search_edit_text} ")
-            # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
-            brand_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
-            search_brand = brand_layer.find_element(AppiumBy.XPATH,
-                                                    '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
-            if brand_6th_name in search_brand:
-                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인")
-            else:
-                print("선택한 브랜드명과 브랜드 영역에 노출된 브랜드 문구가 동일 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인 실패")
-            print(f"브랜드 이름 : {search_brand} ")
-            # 뒤로가기로 카테고리 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            sleep(2)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_home(wd)
 
-            # 뒤로가기로 카테고리 진입 확인
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-            print("뒤로가기 선택")
-            # 8. MY 탭 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
-            print("하단 마이페이지 화면 진입")
-
-            # 로그인 회원가입 버튼 선택
-            # 확인4 : 프로필 영역의 로그인.회원가입 문구 확인
-            not_login = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin').text
-            if not_login == '로그인·회원가입':
-                print("프로필 영역의 로그인.회원가입 문구 확인")
-            else:
-                print("프로필 영역의 로그인.회원가입 문구 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("프로필 영역의 로그인.회원가입 문구 확인 실패")
-            print(f"프로필 영역의 문구 확인 : {not_login} ")
-            print("[사용 가능 기능 사용]CASE 종료")
-
-
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -406,6 +170,7 @@ class NotLogin:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')

@@ -1,7 +1,8 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import aal, aalc
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from com_utils.element_control import aal, aalc, aals
 from com_utils.element_control import scroll_control
 
 
@@ -30,3 +31,23 @@ def check_best_product_name(warning_texts, compare_name, product_name):
         warning_texts.append('베스트 PLP 상품명 확인 실패')
         print(f'베스트 PLP 상품명 확인 실패 : {compare_name} / {product_name}')
     return test_result
+
+
+def save_best_first_product_name(wd):
+    product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+    product_name = product_name_list[0].text
+    return product_name
+
+
+def save_best_first_product_price(wd):
+    best_product_list_price = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/lastSalePrice"]')
+    print(f"베스트 상품 가격 : {best_product_list_price[0].text} ")
+    best_product_price = best_product_list_price[0].text
+    return best_product_price
+
+
+def click_best_first_product(wd):
+    product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+    product_name_list[0].click()
+    sleep(1)
+    close_bottom_sheet(wd)

@@ -60,6 +60,7 @@ def save_remove_prefix_product_name(product_name):
 def check_product_name(warning_texts, product_name, compare_name):
     product_name = product_name.replace('_', ' ')
     compare_name = compare_name.replace('_', ' ')
+    print(f'상품명 - pdp: {product_name} / 비교: {compare_name}')
     if compare_name in product_name:
         test_result = 'PASS'
         print('상품명 동일 확인')
@@ -70,6 +71,16 @@ def check_product_name(warning_texts, product_name, compare_name):
         sleep(1)
     return test_result
 
+
+def check_product_name1(product_name, compare_name):
+    product_name = product_name.replace('_', ' ')
+    compare_name = compare_name.replace('_', ' ')
+    print(f'상품명 - pdp: {product_name} / 비교: {compare_name}')
+    if compare_name in product_name:
+        print('PDP 진입 확인 - 상품명')
+    else:
+        print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
+        raise Exception('PDP 진입 확인 실패 - 상품명')
 
 def close_purchase_modal(wd):
     wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView').click()
@@ -232,3 +243,26 @@ def check_bottom_sheet_title(wd, warning_texts):
         warning_texts.append('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
         print('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
     return test_result
+
+
+def save_product_name(wd):
+    # 이굿 위크 상품 확인
+    sale_tag = aal(wd, '이굿위크 할인 상품')
+    if sale_tag == None:
+        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+        print('sale_tag 상품 미발견')
+    else:
+        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
+        print('sale_tag 상품 발견')
+    # 스페셜 오더 상품 확인
+    special_order = aal(wd, "//*[contains(@text, 'SPECIAL-ORDER')]")
+    if special_order == None:
+        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
+        print('SPECIAL-ORDER 상품 미발견')
+    else:
+        print('SPECIAL-ORDER 상품 발견')
+        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+
+    PDP_product_title = aal(wd, element_xpath).text
+    print(f"PDP_product_title : {PDP_product_title}")
+    return PDP_product_title

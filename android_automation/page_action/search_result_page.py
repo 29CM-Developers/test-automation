@@ -6,11 +6,14 @@ from selenium.common import NoSuchElementException
 
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
+    print('뒤로가기 선택')
+    sleep(1)
 
 
 def check_input_field(wd, keyword):
-    search_input_field = aal(wd, 'input_keyword').text
-    if search_input_field == keyword:
+    # 확인3-1 : 선택한 브랜드명과 입력란에 작성된 문구가 동일한지 확인
+    search_input_field = aal(wd, 'com.the29cm.app29cm:id/searchEditText').text
+    if keyword in search_input_field:
         print('인기 검색어 검색 확인 - 입력란')
     else:
         print(f'인기 브랜드 검색 결과 확인 실패 : 입력-{keyword} / 노출-{search_input_field}')
@@ -88,3 +91,15 @@ def click_brand_category(wd, keyword):
     else:
         aalc(small_categories, f'c_{small}')
     sleep(1)
+
+
+def check_relate_brand_name(wd, compare_brand_name):
+    # 확인3-2 : 브랜드 영역에 노출되는 브랜드와 검색한 브랜드명이 동일한지 확인
+    brand_layer = aal(wd, 'com.the29cm.app29cm:id/searchResultBrandComposeView')
+    relate_brand_name = aal(brand_layer, '//android.view.View/android.view.View[1]/android.widget.TextView[1]').text
+
+    if compare_brand_name in relate_brand_name:
+        print('인기 브랜드 검색 확인 - 연관 브랜드')
+    else:
+        print(f'인기 브랜드 검색 확인 실패 - 연관 브랜드 : 입력-{compare_brand_name} / 노출-{relate_brand_name}')
+        raise Exception(f'인기 브랜드 검색 확인 실패 - 연관 브랜드')
