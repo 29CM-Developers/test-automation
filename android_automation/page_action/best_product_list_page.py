@@ -35,7 +35,6 @@ def check_best_product_name(warning_texts, compare_name, product_name):
 
 def save_best_first_product_name(wd):
     product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
-    print(f"베스트 상품명 : {product_name_list[0].text} ")
     product_name = product_name_list[0].text
     return product_name
 

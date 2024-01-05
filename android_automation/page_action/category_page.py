@@ -49,11 +49,12 @@ def click_for_you_category(wd):
 def check_not_login_user_recommended_tab(wd):
     try:
         # 추천 확인 추가
-        top_menu = aal(wd, 'com.the29cm.app29cm:id/topMenu')
-        recommend_title = aal(top_menu, '//android.view.View/android.widget.TextView')
-        print(f"타이틀 문구 : {recommend_title.text} ")
-        aal(wd, 'c_당신을 위한 추천')
-        print('비로그인 유저 추천 페이지 타이틀 확인')
+        recommend_title = aal(wd, 'c_당신을 위한 추천')
+        if recommend_title == None:
+            print('비로그인 유저 추천 페이지 타이틀 확인 실패')
+            raise Exception('비로그인 유저 추천 페이지 타이틀 확인 실패')
+        else:
+            print('비로그인 유저 추천 페이지 타이틀 확인')
     except NoSuchElementException:
         print('비로그인 유저 추천 페이지 타이틀 확인 실패')
         raise Exception('비로그인 유저 추천 페이지 타이틀 확인 실패')
