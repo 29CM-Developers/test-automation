@@ -59,47 +59,39 @@ def click_first_post_hashtag(wd, post_hash_tag):
     sleep(5)
 
 
-def check_hash_tag_title(wd, warning_texts, hash_tag):
+def check_hash_tag_title(wd, hash_tag):
     print("check_hash_tag_title")
     sleep(2)
     hash_tag_title = aal(wd, hash_tag).text
     if hash_tag_title == hash_tag:
-        test_result = 'PASS'
         print('포스트 해시태그 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('포스트 해시태그 확인 실패')
         print(f'포스트 해시태그 확인 실패 : {hash_tag} / {hash_tag_title}')
-    return test_result
+        raise Exception('포스트 해시태그 확인 실패')
 
 
-def check_hash_tag_post(wd, warning_texts, post_title):
-    test_result = 'WARN'
+def check_hash_tag_post(wd, post_title):
+    tag_break = False
     for i in range(0, 5):
-        try:
-            post = aal(wd, post_title)
-            print(f'post : {post}')
-            if post == None:
-                com_utils.element_control.scroll_control(wd, "D", 30)
-            elif post.is_displayed():
-                test_result = 'PASS'
-                print('포스트 해시태그 확인 - 페이지 내 포스트')
-                break
-        except NoSuchElementException:
+        post = aal(wd, post_title)
+        if post == None:
             pass
+        elif post.is_displayed():
+            print(f'post : {post.text}')
+            tag_break = True
+            print('포스트 해시태그 확인 - 페이지 내 포스트')
+            break
         com_utils.element_control.scroll_control(wd, "D", 30)
-    if test_result == 'WARN':
-        test_result = 'WARN'
-        warning_texts.append('포스트 해시태그 확인 실패 - 포스트 타이틀')
+    if not tag_break:
         print('포스트 해시태그 확인 실패 - 포스트 타이틀')
-    return test_result
+        raise Exception('포스트 해시태그 확인 실패 - 포스트 타이틀')
 
 
-def find_and_save_third_post(wd, warning_texts):
-    test_result = 'WARN'
+def find_and_save_third_post(wd):
+    find_break = False
     com_utils.element_control.scroll_control(wd, "D", 40)
     sleep(2)
-    try:
+    for i in range(0, 5):
         post_layer = aal(wd, 'com.the29cm.app29cm:id/weloveRecyclerView')
         post = aal(post_layer,
                    "//android.widget.LinearLayout[3]/android.widget.RelativeLayout/android.widget.TextView[1]")
@@ -111,11 +103,10 @@ def find_and_save_third_post(wd, warning_texts):
             post = aal(post_layer,
                        "//android.widget.LinearLayout[3]/android.widget.RelativeLayout/android.widget.TextView[1]")
         if post.is_displayed():
-            test_result = 'PASS'
+            find_break = True
             print(f'포스트 추가 노출 확인 : {post.text}')
-    except NoSuchElementException:
-        pass
-    if test_result == 'WARN':
-        warning_texts.append('포스트 추가 노출 확인 실패')
+            break
+        com_utils.element_control.scroll_control(wd, "D", 40)
+    if not find_break:
         print('포스트 추가 노출 확인 실패')
-    return test_result
+        raise Exception('포스트 추가 노출 확인 실패')

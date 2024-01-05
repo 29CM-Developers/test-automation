@@ -148,11 +148,10 @@ def find_scroll_and_find_product_rank(wd, text):
     for _ in range(10):
         element = aal(wd, f"//*[contains(@text, '{text}')]")
         if element == None:
-            print("아이템 미발견")
+            pass
         else:
             print(f"element : {element.text}")
             if element.is_displayed():
-                print("아이템 발견")
                 break
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)

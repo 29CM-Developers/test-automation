@@ -13,6 +13,7 @@ def click_pdp_back_btn(wd):
 
 def click_home_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgHome')
+    sleep(2)
 
 
 def save_product_name(wd):
