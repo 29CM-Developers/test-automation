@@ -51,12 +51,12 @@ def move_to_pdp_iOS(wd, product_item_no):
 
 
 # Home 탭으로 이동 딥링크
-def move_to_home_Android(self, wd):
+def move_to_home_Android(wd):
     wd.get('app29cm://home')
     bottom_sheet.close_bottom_sheet(wd)
 
 
-def move_to_my_Android(self, wd):
+def move_to_my_Android(wd):
     sleep(5)
     wd.get('app29cm://mypage')
     sleep(1)

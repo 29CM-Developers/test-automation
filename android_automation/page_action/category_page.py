@@ -26,7 +26,8 @@ def click_pin_menu(wd, find_menu):
 
 
 def click_best_category(wd):
-    aalc(wd, 'best')
+    aalc(wd, 'best_title')
+    print("홈 > 카테고리 > 의류 > 베스트 선택")
 
 
 def click_category_top(wd):

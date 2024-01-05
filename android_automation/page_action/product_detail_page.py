@@ -8,6 +8,7 @@ from com_utils.api_control import product_detail, best_plp_women_clothes
 
 def click_pdp_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
+    print('뒤로가기 선택')
 
 
 def click_home_btn(wd):
