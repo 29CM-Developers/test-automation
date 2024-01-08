@@ -59,19 +59,16 @@ def save_remove_prefix_product_name(product_name):
 
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
-def check_product_name(warning_texts, product_name, compare_name):
+def check_product_name(product_name, compare_name):
     product_name = product_name.replace('_', ' ')
     compare_name = compare_name.replace('_', ' ')
     print(f'상품명 - pdp: {product_name} / 비교: {compare_name}')
     if compare_name in product_name:
-        test_result = 'PASS'
         print('상품명 동일 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('PDP 진입 확인 실패')
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
-        sleep(1)
-    return test_result
+        raise Exception('상품명 동일 확인 실패')
+    sleep(1)
 
 
 def check_product_name1(product_name, compare_name):
@@ -217,34 +214,27 @@ def save_purchase_price(wd):
     return price
 
 
-def check_bottom_sheet_title(wd, warning_texts):
+def check_bottom_sheet_title(wd):
     try:
         title1 = aal(wd, 'c_함께 보면 좋은 상품').text
         if title1 == '함께 보면 좋은 상품':
-            test_result = 'PASS'
             print('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인')
         else:
             print(f'바텀 시트 타이틀 : {title1}')
-            test_result = 'WARN'
-            warning_texts.append('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
+            raise Exception('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
 
         title2 = aal(wd, 'c_다른 고객이 함께 구매한 상품').text
         if title2 == None:
             print('바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 미발생')
             pass
         elif title2 == '다른 고객이 함께 구매한 상품':
-            test_result = 'PASS'
             print('바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 비교 확인')
         else:
             print(f'바텀 시트 타이틀 : {title2}')
-            test_result = 'WARN'
-            warning_texts.append('바텀 시트의 다른 고객이 함께 구매한 상품 타이틀 비교 확인 실패')
+            raise Exception('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
     except NoSuchElementException:
-        print('NoSuchElementException')
-        test_result = 'WARN'
-        warning_texts.append('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
         print('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
-    return test_result
+        raise Exception('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
 
 
 def save_product_name(wd):

@@ -25,7 +25,7 @@ class Join:
             print(f'[{test_name}] 테스트 시작')
 
             # My 탭으로 이동하여 로그인 페이지 진입
-            com_utils.deeplink_control.move_to_my_Android(self, wd)
+            com_utils.deeplink_control.move_to_my_Android(wd)
             my_page.enter_login_page(wd)
 
             # 간편 회원가입 선택

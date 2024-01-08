@@ -8,7 +8,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
-from android_automation.page_action import welove_page, my_page, product_detail_page
+from android_automation.page_action import welove_page, my_page, product_detail_page, delivery_order_page
 import com_utils
 from com_utils import values_control, slack_result_notifications, element_control, deeplink_control
 from android_automation.page_action import navigation_bar, my_coupon_page, my_page
@@ -16,7 +16,7 @@ from com_utils.api_control import my_coupon_list
 from com_utils.element_control import aalc, aal, aals
 from com_utils.testrail_api import send_test_result
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
-from android_automation.page_action import my_setting_page
+from android_automation.page_action import my_setting_page, product_review_page
 
 
 class My:
@@ -172,34 +172,20 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            print("[주문 건이 없을 경우, 주문 배송 조회 확인] CASE 시작")
-            # 하단 네비게이터에 MY 메뉴 진입
-            sleep(2)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
-            sleep(3)
-            print("홈 > 마이페이지 화면 진입")
-            try:
-                wd.find_element(By.XPATH, "//*[contains(@text, '주문배송조회')]").click()
-                sleep(3)
-                order_delivery_tracking_title = wd.find_elements(By.XPATH, "//*[contains(@text, '주문배송조회')]")
-                order_delivery_tracking_guide = wd.find_element(By.XPATH, "//*[contains(@text, '주문내역이 없습니다')]")
-                print(f"order_delivery_tracking_title.text : {order_delivery_tracking_title[1].text}")
-                print(f"order_delivery_tracking_guide.text : {order_delivery_tracking_guide.text}")
-                if order_delivery_tracking_title[
-                    1].text == '주문배송조회' and order_delivery_tracking_guide.text == '주문내역이 없습니다':
-                    print("주문 건이 없을 경우, 주문 배송 조회 확인")
-                else:
-                    print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
-                # 뒤로가기로 마이페이지 진입 확인
-                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+            print(f'[{test_name}] 테스트 시작')
 
-            except NoSuchElementException:
-                print("NoSuchElementException 주문 건이 없을 경우, 주문 배송 조회 확인 실패")
-                sleep(1)
-            wd.get('app29cm://home')
-            print("[주문 건이 없을 경우, 주문 배송 조회 확인] CASE 종료")
+            # My 탭으로 이동
+            com_utils.deeplink_control.move_to_my_Android(wd)
+
+            my_page.click_delivery_order_menu(wd)
+
+            delivery_order_page.check_no_delivery_order(wd)
+
+            delivery_order_page.click_back_btn(wd)
+
+            navigation_bar.move_to_home(wd)
+
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -214,6 +200,7 @@ class My:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')
@@ -238,34 +225,26 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            print("[주문 건이 없을 경우, 상품 리뷰 없음 확인] CASE 시작")
-            # 하단 네비게이터에 MY 메뉴 진입
-            sleep(5)
-            navigation_bar.move_to_my(wd)
-            sleep(3)
-            print("홈 > 마이페이지 화면 진입")
-            try:
-                aalc(wd, 'c_상품 리뷰')
-                sleep(5)
-                print("상품 리뷰 선택")
-                review_guide = aal(wd, 'c_아직 리뷰를 작성할 수 있는\n주문내역이 없습니다.').text
-                print(f"review_guide : {review_guide}")
-                aalc(wd, 'c_내 리뷰')
-                my_review_guide = aal(wd, 'c_작성한 리뷰가 없습니다.').text
-                print(f"my_review_guide : {my_review_guide}")
-                if review_guide == '아직 리뷰를 작성할 수 있는\n주문내역이 없습니다.' and my_review_guide == '작성한 리뷰가 없습니다.':
-                    print("주문 건이 없을 경우, 상품 리뷰 없음 확인")
-                else:
-                    print("주문 건이 없을 경우, 상품 리뷰 없음 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("주문 건이 없을 경우, 상품 리뷰 없음 확인 실패")
-                # 뒤로가기로 마이페이지 진입 확인
-                aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-            except Exception:
-                print("Exception 주문 건이 없을 경우, 상품 리뷰 없음 확인 실패")
-                sleep(1)
-            wd.get('app29cm://home')
-            print("[주문 건이 없을 경우, 상품 리뷰 없음 확인] CASE 종료")
+            print(f'[{test_name}] 테스트 시작')
+
+            # My 탭으로 이동
+            com_utils.deeplink_control.move_to_my_Android(wd)
+
+            # 싱픔 리뷰 페이지 진입
+            my_page.click_review_menu(wd)
+
+            # 작성 가능한 리뷰 없음 확인
+            product_review_page.check_no_reviews_available(wd)
+
+            # 내 리뷰 탭 진입하여 작성한 리뷰 없음 확인
+            product_review_page.click_my_review_tab(wd)
+            product_review_page.check_no_written_reviews(wd)
+
+            # Home 탭으로 복귀
+            product_review_page.click_back_btn(wd)
+            com_utils.deeplink_control.move_to_home_Android(wd)
+            print(f'[{test_name}] 테스트 종료')
+
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'
@@ -279,6 +258,7 @@ class My:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')

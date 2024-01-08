@@ -12,21 +12,12 @@ import com_utils
 from android_automation.page_action import my_page, login_page, navigation_bar
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.select_category_page import test_select_category
-from com_utils import values_control
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, \
     scroll_to_element_with_text, scroll
 from com_utils.testrail_api import send_test_result
-
-logger = logging.getLogger(name='Log')
-logger.setLevel(logging.INFO)  ## 경고 수준 설정
-formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-
-stream_handler = logging.StreamHandler()  ## 스트림 핸들러 생성
-stream_handler.setFormatter(formatter)  ## 텍스트 포맷 설정
-logger.addHandler(stream_handler)  ## 핸들러 등록
 
 
 class LoginLogout:
@@ -353,42 +344,22 @@ class LoginLogout:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            sleep(4)
-            print("[이메일 로그아웃]CASE 시작")
-            wd.get('app29cm://mypage')
-            sleep(1)
-            print("홈 > 마이페이지 화면 진입")
-            close_bottom_sheet(wd)
-            # 로그인 성공 진입 확인
-            login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == self.pconf['MASKING_NAME']:
-                pass
-            else:
-                print("로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 확인 실패")
-            print(f"로그인 유저 이름 : {login_name.text} ")
-            # 최하단[LOGOUT] 버튼 선택
-            # 스크롤하여 버튼 찾기
-            scroll_to_element_id(wd, 'com.the29cm.app29cm:id/btnLogout')
-            scroll(wd)
-            sleep(1)
+            print(f'[{test_name}] 테스트 시작')
 
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/btnLogout').click()
-            sleep(1)
-            logout_check = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin')
-            if '로그인' in logout_check.text:
-                pass
-            else:
-                logging.info("로그아웃 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 문구 확인 실패")
-            print("로그아웃 문구 확인 : %s " % logout_check.text)
+            # My 탭 딥링크로 진입
+            com_utils.deeplink_control.move_to_my_Android(wd)
 
-            # 하단 네비게이터에 MY 메뉴 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'HOME').click()
+            # 로그아웃 버튼 선택
+            my_page.find_logout_btn(wd)
+            my_page.click_logout_btn(wd)
 
-            print("[이메일 로그아웃]CASE 종료")
+            # 로그아웃 완료 > 로그인,회원가입 문구 확인
+            my_page.find_login_btn(wd)
+            my_page.check_login_btn(wd)
+
+            # Home 으로 복귀 후,온보딩 프로그램 확인
+            navigation_bar.logout_and_move_to_home(wd)
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다

@@ -201,7 +201,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             close_pdp_bottom_sheet(wd)
 
@@ -210,7 +210,7 @@ class Pdp:
 
             close_pdp_bottom_sheet(wd)
             # 바텀 시트의 함께 보면 좋은 상품 타이틀, 다른고객이 함께 구매한 상품 타이틀 비교 확인
-            test_result = product_detail_page.check_bottom_sheet_title(wd, warning_texts)
+            product_detail_page.check_bottom_sheet_title(wd)
 
             # 딥링크로 좋아요 상품 탭 이동
             wd.get('app29cm://like')
@@ -219,7 +219,7 @@ class Pdp:
 
             # 좋아요 한 상품 노출 확인
             like_product_name = like_page.save_like_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, like_product_name)
+            product_detail_page.check_product_name(pdp_name, like_product_name)
 
             # 좋아요 취소
             like_page.click_to_unlike_product(wd)

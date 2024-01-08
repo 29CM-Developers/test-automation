@@ -66,8 +66,10 @@ def click_delivery_order_menu(wd):
 def click_review_menu(wd):
     for i in range(0, 5):
         try:
-            element = aal(wd, '상품 리뷰')
-            if element.is_displayed():
+            element = aal(wd, 'c_상품 리뷰')
+            if element == None:
+                com_utils.element_control.scroll_control(wd, "D", 30)
+            elif element.is_displayed():
                 element.click()
                 break
         except NoSuchElementException:
@@ -115,8 +117,21 @@ def find_logout_btn(wd):
         com_utils.element_control.scroll_control(wd, "D", 50)
 
 
+def find_login_btn(wd):
+    for i in range(0, 5):
+        try:
+            element = aal(wd, 'com.the29cm.app29cm:id/txtLogin')
+            if element == None:
+                com_utils.element_control.scroll_control(wd, "U", 40)
+            if element.is_displayed():
+                break
+        except NoSuchElementException:
+            pass
+        com_utils.element_control.scroll_control(wd, "U", 40)
+
 def click_logout_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/btnLogout')
+    sleep(2)
 
 
 def check_nickname(self, wd):

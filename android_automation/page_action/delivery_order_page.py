@@ -10,16 +10,14 @@ def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
 
 
-def check_no_delivery_order(wd, warning_texts):
-    try:
-        aal(wd, 'c_주문내역이 없습니다')
-        test_result = 'PASS'
-        print("주문 건이 없을 경우, 주문 배송 조회 확인")
-    except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('주문 건이 없을 경우, 주문 배송 조회 확인 실패')
+def check_no_delivery_order(wd):
+    sleep(2)
+    element = aal(wd, 'c_주문내역이 없습니다')
+    if element == None:
         print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
-    return test_result
+        raise Exception('주문 건이 없을 경우, 주문 배송 조회 확인 실패')
+    else:
+        print("주문 건이 없을 경우, 주문 배송 조회 확인")
 
 
 def check_delivery_order(wd, order_no):
