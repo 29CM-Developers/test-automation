@@ -12,20 +12,18 @@ def enter_login_page(wd):
     sleep(3)
 
 
-def check_recent_title(wd, warning_texts, type, title):
+def check_recent_title(wd, type, title):
     recent_title = aal(wd, 'com.the29cm.app29cm:id/txtHistoryTitle').text
     print(f"recent_title : {recent_title} ")
     if recent_title in title:
-        test_result = 'PASS'
         print(f'최근 본 {type} 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append(f'최근 본 {type} 확인 실패')
         print(f'최근 본 {type} 확인 실패 : {title} / {recent_title}')
-    return test_result
+        raise Exception(f'최근 본 {type} 확인 실패')
 
 
 def expand_recent_contents(wd, post_title):
+    sleep(1)
     aalc(wd, f'c_{post_title}')
 
 
@@ -33,7 +31,7 @@ def close_recent_contents(wd):
     aalc(wd, 'com.the29cm.app29cm:id/pullUpLayout')
 
 
-def check_recent_history(wd, warning_texts, product_name, post_title):
+def check_recent_history(wd, product_name, post_title):
     recent_history = []
     sleep(2)
     recent = aals(wd, '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/txtHistoryTitle"]')
@@ -47,13 +45,10 @@ def check_recent_history(wd, warning_texts, product_name, post_title):
     print(f'히스토리 : {recent_history}')
 
     if product_name in recent_history and post_title in recent_history:
-        test_result = 'PASS'
         print('최근 본 컨텐츠 히스토리 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('최근 본 컨텐츠 히스토리 확인 실패')
-        print(f'최근 본 컨텐츠 히스토리 확인 실패: {product_name} / {post_title} / {recent_history}')
-    return test_result
+        print(f'최근 본 컨텐츠 히스토리 확인 실패 : {product_name} / {post_title}')
+        raise Exception(f'최근 본 컨텐츠 히스토리 확인 실패')
 
 
 def click_delivery_order_menu(wd):
