@@ -113,9 +113,9 @@ class NotLogin:
             home_page.click_tab_name(wd, 'best_tab')
 
             # 베스트 탭에서 첫번째 상품명 저장하고 PDP 진입
-            plp_name = best_product_list_page.save_best_first_product_name(wd)
+            plp_name = best_product_list_page.save_best_plp_first_product_name(wd)
             plp_price = best_product_list_page.save_best_first_product_price(wd)
-            best_product_list_page.click_best_first_product(wd)
+            best_product_list_page.click_home_tap_best_first_product(wd)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             pdp_name = product_detail_page.save_product_name(wd)

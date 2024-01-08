@@ -55,9 +55,16 @@ def save_best_first_product_name(wd):
         print(f'product_name : {product_name}')
         return product_name
 
-    # product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
-    # print(f'{product_name_list[0].text}')
-    # product_name = product_name_list[0].text
+def save_best_plp_first_product_name(wd):
+    sleep(1)
+    product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+    print(f'{product_name_list[0].text}')
+    if product_name_list == None:
+        pass
+    else:
+        product_name = product_name_list[0].text
+        print(f'product_name : {product_name}')
+        return product_name
 
 
 def save_best_first_product_price(wd):
@@ -85,10 +92,14 @@ def click_best_product_like_btn(wd):
 
 
 def click_best_first_product(wd):
-    # product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
-    # product_name_list[0].click()
-
     aalc(wd, 'best_item_title')
+    sleep(1)
+    close_bottom_sheet(wd)
+
+
+def click_home_tap_best_first_product(wd):
+    product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
+    product_name_list[0].click()
 
     sleep(1)
     close_bottom_sheet(wd)
