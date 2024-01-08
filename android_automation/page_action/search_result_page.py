@@ -1,4 +1,5 @@
 from time import sleep
+from appium.webdriver.common.appiumby import AppiumBy
 from com_utils.api_control import search_relate_keyword, search_brand_category_info
 from com_utils.element_control import aal, aalc, aals, scroll_control, element_scroll_control, swipe_control
 from selenium.common import NoSuchElementException
@@ -23,14 +24,13 @@ def check_input_field(wd, keyword):
 def check_product_brand_name(wd, compare_brand_name):
     product_brand_name = ''
     for i in range(0, 3):
-        try:
-            product_brand = aals(wd, 'brand_name')
-            product_brand_name = product_brand[0]
-            if product_brand_name.is_displayed():
-                product_brand_name = product_brand_name.text
-                break
-        except NoSuchElementException:
-            scroll_control(wd, 'D', 30)
+        product_brand = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/brandName"]')
+        if product_brand == None:
+            pass
+        else:
+            product_brand_name = product_brand[0].text
+            break
+        scroll_control(wd, 'D', 30)
 
     if compare_brand_name == product_brand_name:
         print('인기 브랜드 검색 상품 확인 - 상품 브랜드')
@@ -103,3 +103,140 @@ def check_relate_brand_name(wd, compare_brand_name):
     else:
         print(f'인기 브랜드 검색 확인 실패 - 연관 브랜드 : 입력-{compare_brand_name} / 노출-{relate_brand_name}')
         raise Exception(f'인기 브랜드 검색 확인 실패 - 연관 브랜드')
+
+
+def check_relate_keyword(wd, api_keyword_1st):
+    # 연관 검색어 리스트 API 호출
+    relate_keyword_list = search_relate_keyword(api_keyword_1st)
+    print(f'relate_keyword_list : {relate_keyword_list}')
+
+    if not relate_keyword_list:
+        check_input_field(wd, api_keyword_1st)
+    else:
+        related_1st_keyword = relate_keyword_list[0]
+        related_keyword_layer = aal(wd, 'com.the29cm.app29cm:id/relatedKeywordComposeView')
+        related_keyword_1st = aal(related_keyword_layer,
+                                  '//android.view.View/android.view.View/android.widget.TextView[1]').text
+        if related_keyword_1st in related_1st_keyword:
+            print('인기 검색어 검색 확인 - 연관 검색어')
+        else:
+            print(f'인기 검색어 검색 결과 확인 실패 : {related_keyword_1st} / {api_keyword_1st}')
+            raise Exception('인기 검색어 검색 결과 확인 실패')
+
+
+def click_sort_filter_btn(wd, sort):
+    selector_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
+    selector = aal(selector_layer, '//android.view.View/android.view.View/android.view.View[1]/android.widget.TextView')
+    selector.click()
+    bottom_sheet_layer = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
+    filter_by_sales = aal(bottom_sheet_layer, f'c_{sort}')
+
+    filter_by_sales_name = filter_by_sales.text
+    filter_by_sales.click()
+    print(f'정렬 : {sort} 선택')
+    sleep(1)
+    if selector.text in filter_by_sales_name:
+        print("판매순 정렬 변경 확인")
+    else:
+        print("판매순 정렬 변경 확인 실패")
+        raise Exception('판매순 정렬 변경 확인 실패')
+    sleep(1)
+
+
+def click_color_filter(self, wd, color):
+    print(f'color : {color}')
+    selector_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
+    sleep(1)
+    aalc(selector_layer, f'c_{self.conf["search_filter"]["color"]}')
+    sleep(1)
+    aalc(wd, f"c_{color}")
+    sleep(1)
+    print(f'color : {color} 선택')
+
+
+def click_category_filter(wd, category):
+    sleep(1)
+    aalc(wd, 'category_filter_layer')
+    sleep(1)
+    aalc(wd, f"c_{category}")
+    sleep(1)
+    print(f'필터 - 카테고리 : {category} 선택')
+
+
+def click_price_range_filter(wd, price_range):
+    aalc(wd, 'price_range')
+    sleep(1)
+    aalc(wd, f"c_{price_range}")
+    sleep(1)
+
+
+def click_product_info_filter(wd, product_info):
+    aalc(wd, 'product_information')
+    sleep(0.5)
+    aalc(wd, f"c_{product_info}")
+    sleep(0.5)
+
+
+def click_apply_filter_btn(wd):
+    aalc(wd, 'com.the29cm.app29cm:id/confirm')
+
+
+def save_filter_info(wd, filter_list):
+    print(f'filter_list : {filter_list}')
+    filter_list_set = []
+    filter_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
+    for filter in filter_list:
+        element = aal(filter_layer, f'c_{filter}')
+        if element == None:
+            if filter == '5만원 ~ 10만원':
+                price = '50,000원 ~ 100,000원'
+                element = aal(filter_layer, f'c_{price}')
+            else:
+                swipe_control(wd, filter_layer, 'left', 80)
+                element = aal(filter_layer, f'c_{filter}')
+        print(f'element.text : {element.text}')
+        filter_list_set.append(element.text)
+
+    return filter_list_set
+
+
+def check_filter_info(self, wd, to_be_filter_list):
+    selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+    element = aal(selector_layer, f'c_{to_be_filter_list[1]}')
+    if '블랙' in element.text:
+        print("블랙 필터링 노출 확인")
+    else:
+        print("블랙 필터링 노출 확인 불가")
+        raise Exception('인기 검색어 검색 결과 확인 실패')
+    element = aal(selector_layer, f'c_{to_be_filter_list[2]}')
+    if '여성의류' in element.text:
+        print("여성의류 필터링 노출 확인")
+    else:
+        print("여성의류 필터링 노출 확인 실패")
+        raise Exception('인기 검색어 검색 결과 확인 실패')
+    swipe_control(wd, selector_layer, 'left', 30)
+    element = aal(selector_layer, f'c_50,000원 ~ 100,000원')
+    if '50,000원 ~ 100,000원' in element.text:
+        print("50,000원 ~ 100,000원 필터링 노출 확인")
+    else:
+        print("50,000원 ~ 100,000원 필터링 노출 확인 실패")
+        raise Exception('인기 검색어 검색 결과 확인 실패')
+    swipe_control(wd, selector_layer, 'left', 40)
+    swipe_control(wd, selector_layer, 'left', 40)
+    element = aals(wd, 'c_품절상품 제외')
+    if '품절상품 제외' in element[0].text:
+        print("품절상품 제외 필터링 노출 확인")
+    else:
+        print("품절상품 제외 필터링 노출 확인 실패")
+        raise Exception('인기 검색어 검색 결과 확인 실패')
+    sleep(2)
+
+
+def save_filter_reseult_info(self, wd):
+    filter_list = []
+    filter_list.append(self.conf["sort"]["order"])
+    filter_list.append(self.conf["search_filter"]["black"])
+    filter_list.append(self.conf["search_filter"]["woman_clothes"])
+    filter_list.append(self.conf["search_filter"]["5to10"])
+    filter_list.append(self.conf["search_filter"]["excludingout_of_stock_products"])
+    return filter_list
