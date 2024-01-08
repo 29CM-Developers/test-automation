@@ -146,3 +146,8 @@ def check_login_btn(wd):
         print('My 탭 로그인 문구 확인 실패')
         raise Exception('My 탭 로그인 문구 확인 실패')
     print(f"로그아웃 문구 확인 :{logout_check.text} ")
+
+def enter_setting_page(wd):
+    aalc(wd, 'com.the29cm.app29cm:id/imgSetting')
+    print('설정 화면 진입')
+    sleep(2)

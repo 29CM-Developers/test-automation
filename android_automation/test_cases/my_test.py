@@ -16,6 +16,7 @@ from com_utils.api_control import my_coupon_list
 from com_utils.element_control import aalc, aal, aals
 from com_utils.testrail_api import send_test_result
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action import my_setting_page
 
 
 class My:
@@ -37,26 +38,21 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            print("[설정 화면 진입] CASE 시작")
-            # 하단 네비게이터에 MY 메뉴 진입
-            sleep(2)
-            wd.get('app29cm://mypage')
-            sleep(1)
-            print("홈 > 마이페이지 화면 진입")
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgSetting').click()
-            sleep(2)
-            label_shopping = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLabelShopping').text
-            alarm_label = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtAlarmLabel').text
-            if label_shopping == '쇼핑 알림' and alarm_label == '재입고 알림':
-                print("설정 화면 진입 확인")
-                pass
-            else:
-                print("설정 화면 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("설정 화면 진입 확인 실패")
-            print(f"타이틀 확인 : {label_shopping}, {alarm_label}")
-            wd.get('app29cm://home')
-            print("[설정 화면 진입] CASE 종료")
+            print(f'[{test_name}] 테스트 시작')
+
+            # My 탭으로 이동
+            com_utils.deeplink_control.move_to_my_Android(wd)
+
+            # 세팅 페이지 진입
+            my_page.enter_setting_page(wd)
+
+            # 세팅 페이지 내 알림 문구 확인
+            my_setting_page.check_notification(wd)
+
+            # Home 탭으로 바꾸기
+            com_utils.deeplink_control.move_to_home_Android(wd)
+
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -71,6 +67,7 @@ class My:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')
