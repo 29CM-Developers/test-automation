@@ -19,6 +19,7 @@ def click_pin_menu(wd, find_menu):
                 click_break = True
                 sleep(2)
                 pin_menu_title.click()
+                sleep(2)
         except NoSuchElementException:
             swipe_control(wd, pin_menu_list, 'left', 50)
             pass
@@ -96,13 +97,13 @@ def check_category_page_shose_title(wd, category_name):
     sleep(3)
     page_title = aal(wd, 'com.the29cm.app29cm:id/txtCategoryName')
     if page_title == None:
-        print(f'{category_name} 카테고리 PLP 진입 확인 실패qq')
-        raise Exception(f'{category_name} 카테고리 PLP 진입 확인 실패qq')
-    elif '신발' in page_title.text:
+        print(f'{category_name} 카테고리 PLP 진입 확인 실패')
+        raise Exception(f'{category_name} 카테고리 PLP 진입 확인 실패')
+    if '신발' in page_title.text:
         print('카테고리 전체 페이지 진입 확인')
         print(f'{category_name} 카테고리 PLP 진입 확인')
     else:
-        print(f'{category_name} 카테고리 PLP 진입 확인 실패22')
+        print(f'{category_name} 카테고리 PLP 진입 확인 실패')
         raise Exception(f'{category_name} 카테고리 PLP 진입 확인 실패')
 
 
