@@ -19,7 +19,7 @@ def click_pin_menu(wd, find_menu):
                 pin_menu_title = ial(pin, '//XCUIElementTypeOther/XCUIElementTypeStaticText')
                 if pin_menu_title.text == find_menu:
                     click_break = True
-                    pin_menu_title.click()
+                    ialc(pin, '//XCUIElementTypeOther/XCUIElementTypeStaticText')
             swipe_control(wd, pin_menu_list, 'left', 30)
         except NoSuchElementException:
             pass
