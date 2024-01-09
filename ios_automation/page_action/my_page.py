@@ -138,6 +138,7 @@ def find_logout_btn(wd):
         try:
             element = ial(wd, 'c_LOGOUT')
             if element.is_displayed():
+                com_utils.element_control.scroll_control(wd, "D", 30)
                 break
         except NoSuchElementException:
             pass
