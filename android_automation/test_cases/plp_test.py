@@ -13,7 +13,11 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from android_automation.page_action import navigation_bar, category_page, best_product_list_page, bottom_sheet
+from android_automation.page_action import navigation_bar, category_page, best_product_list_page, bottom_sheet, \
+    product_detail_page
+from android_automation.page_action.best_product_list_page import check_best_product_page, \
+    check_app_evaluation_pop_up_exposure
+from android_automation.page_action.navigation_bar import move_to_category
 from com_utils import values_control, element_control, api_control
 from time import sleep, time
 from com_utils.testrail_api import send_test_result
@@ -35,20 +39,13 @@ class Plp:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            print("[PLP 확인]CASE 시작")
-            sleep(2)
-            # 홈 > 카테고리 PLP 진입
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'CATEGORY').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_title').click()
-            print("홈 > 카테고리 > 의류 > 베스트 선택")
-            best_page_title = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtPageTitle')
-            if best_page_title.text == '베스트':
-                print("베스트 페이지 진입 확인")
-            else:
-                print("베스트 페이지 진입 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("베스트 페이지 진입 확인 실패")
-            print(f"타이틀 문구 : {best_page_title.text} ")
+            print(f'[{test_name}] 테스트 시작')
+            # 카테고리 탭 > 여성 의류 BEST
+            move_to_category(wd)
+            category_page.click_best_category(wd)
+
+            # 베스트 PLP 진입 확인
+            best_product_list_page.check_best_product_page(wd)
 
             # 일간 필터 선택
             best_product_list_page.click_period_sort(wd, '일간')
@@ -56,8 +53,7 @@ class Plp:
             # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
             api_oneday_product = api_control.best_plp_women_clothes(1, 'ONE_DAY')['item_name']
             oneday_product = best_product_list_page.save_best_first_product_name(wd)
-            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneday_product,
-                                                                         oneday_product)
+            best_product_list_page.check_best_product_name(api_oneday_product, oneday_product)
 
             # 주간 필터 선택
             best_product_list_page.click_period_sort(wd, '주간')
@@ -65,8 +61,7 @@ class Plp:
             # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
             api_oneweek_product = api_control.best_plp_women_clothes(1, 'ONE_WEEK')['item_name']
             oneweek_product = best_product_list_page.save_best_first_product_name(wd)
-            test_result = best_product_list_page.check_best_product_name(warning_texts, api_oneweek_product,
-                                                                         oneweek_product)
+            best_product_list_page.check_best_product_name(api_oneweek_product, oneweek_product)
 
             # 월간 필터 선택
             best_product_list_page.click_period_sort(wd, '월간')
@@ -74,133 +69,66 @@ class Plp:
             # api로 호출한 1위 상품명과 노출되는 1위 상품명 비교
             api_onemonth_product = api_control.best_plp_women_clothes(1, 'ONE_MONTH')['item_name']
             onemonth_product = best_product_list_page.save_best_first_product_name(wd)
-            test_result = best_product_list_page.check_best_product_name(warning_texts, api_onemonth_product,
-                                                                         onemonth_product)
+            best_product_list_page.check_best_product_name(api_onemonth_product, onemonth_product)
 
             # 실시간 필터로 복귀
             best_product_list_page.click_period_sort(wd, '실시간')
 
-            # 하트 이미 선택되었는지 확인
-            heart_element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like')
-            is_selected = heart_element.is_selected()
-            if is_selected:
-                print("하트 선택된 상태입니다.")
-                heart_element.click()
-                print("하트 선택 해제")
-            else:
-                print("하트 선택되지 않은 상태입니다.")
+            # 좋아요 버튼 선택 전, 좋아요 수 저장
+            heart_count = best_product_list_page.save_best_product_like_count(wd)
 
-            before_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
-            # 쉼표를 제거한 문자열 생성
-            before_like_count = before_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            before_like_count = int(before_like_count)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like').click()
-            sleep(2)
-            # 좋아요 선택
-            # 앱평가 발생 시 팝업 제거
-            app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
-            if len(app_evaluation) == 0:
-                pass
-            else:
-                wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
-                sleep(1)
-                wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
+            # 좋아요 버튼 선택 -> 찜하기 등록
+            best_product_list_page.click_best_product_like_btn(wd)
+            # 앱평가 팝업 노출 확인
+            check_app_evaluation_pop_up_exposure(wd)
 
-            after_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
-            # 좋아요 누른  좋아요 갯수 확인
-            # 쉼표를 제거한 문자열 생성
-            after_like_count = after_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            after_like_count = int(after_like_count)
-            sleep(2)
-            if after_like_count == before_like_count + 1:
-                print(f"갯수 확인 성공 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
-            else:
-                print(f"갯수 확인 실패 : 좋아요 누르기 전 갯수 -  {before_like_count}, 좋아요 누른 후 갯수 - {after_like_count}")
-                test_result = 'WARN'
-                warning_texts.append("피드 아이템 좋아요 개수 증가 확인 실패")
+            heart_select = best_product_list_page.save_best_product_like_count(wd)
 
-            before_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
+            # 좋아요 수 증가 확인
+            best_product_list_page.check_increase_like_count(heart_count, heart_select)
 
-            # 좋아요 취소 누르기 전 좋아요 갯수 확인
-            # 쉼표를 제거한 문자열 생성
-            before_like_count = before_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            before_like_count = int(before_like_count)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like').click()
-            # 좋아요 선택
-            after_like_count = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'best_item_like_count').text
-            # 좋아요 취소 누른  좋아요 갯수 확인
-            # 쉼표를 제거한 문자열 생성
-            after_like_count = after_like_count.replace(',', '')
-            # 문자열을 정수로 변환
-            after_like_count = int(after_like_count)
-            sleep(2)
-            if after_like_count == before_like_count - 1:
-                print(f"갯수 확인 성공 : 좋아요 취소 누르기 전 갯수 -  {before_like_count}, 좋아요 취소 누른 후 갯수 - {after_like_count}")
-            else:
-                print(f"갯수 확인 실패 : 좋아요 취소 누르기 전 갯수 -  {before_like_count}, 좋아요 취소 누른 후 갯수 - {after_like_count}")
-                test_result = 'WARN'
-                warning_texts.append("피드 아이템 좋아요 개수 차감 확인 실패")
-            sleep(3)
+            # 좋아요 버튼 선택 -> 찜하기 해제
+            best_product_list_page.click_best_product_like_btn(wd)
+            heart_deselect = best_product_list_page.save_best_product_like_count(wd)
 
-            # API 호출
-            response = requests.get("https://recommend-api.29cm.co.kr/api/v4/best/items?categoryList=268100100&limit=100&offset=0&periodSort=NOW")
-            if response.status_code == 200:
-                api_data = response.json()
-                api_data_first = api_data['data']['content'][0]['itemName']
-                api_data_10th = api_data['data']['content'][9]['itemName']
-                print(f"api_data_10th :{api_data_10th}")
-                # 1위 상품 선택
-                best_item_first = element_control.scroll_to_element_with_text(wd, api_data_first)
-                best_item_first.click()
-                sleep(2)
+            # 좋아요 수 차감 확인
+            best_product_list_page.check_decrease_like_count(heart_count, heart_deselect)
 
-                # 바텀시트 노출 여부 확인
-                bottom_sheet.close_bottom_sheet(wd)
+            # 실시간 여성 의류 베스트 1위 상품명과 금액 저장 및 선택
+            now_1st_product = api_control.best_plp_women_clothes(1, 'NOW')['item_name']
+            now_1st_product_price = best_product_list_page.save_plp_price(wd)
+            best_product_list_page.click_best_first_product(wd)
 
-                api_data_title = re.sub(r'\s+', ' ', api_data_first)
-                PDP_title_elements = wd.find_elements(By.XPATH, f"//*[contains(@text, '{api_data_title}')]")
-                for PDP_title in PDP_title_elements:
-                    print(PDP_title.text)
-                    if api_data_title in PDP_title.text:
-                        break
-                PDP_product_title = PDP_title.text
-                print(f"PDP_product_title : {PDP_product_title}")
-                if api_data_title in PDP_product_title:
-                    print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인")
-                else:
-                    print("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("API 호출해서 불러온 상품명과 PDP 상품명이 동일한지 확인 실패")
-                print(f"PDP 상품명 : {PDP_product_title}")
+            # PDP 상품명 비교
+            pdp_name = product_detail_page.save_product_name(wd)
+            product_detail_page.check_product_name1(pdp_name, now_1st_product)
 
-                # 뒤로가기로 베스트 PLP 진입 확인
-                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-                print("뒤로가기 선택")
-                sleep(2)
+            # context_change.switch_context(wd, 'webveiw')
+            #
+            # # PDP 상품가격 비교
+            # pdp_price = product_detail_page.save_product_price(wd)
+            # product_detail_page.check_product_price(pdp_price, now_1st_product_price)
+            #
+            # context_change.switch_context(wd, 'native')
 
-                # 10위 상품
-                best_item_10th = element_control.scroll_to_element_with_text(wd, api_data_10th)
-                if api_data_10th in best_item_10th.text:
-                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인")
-                else:
-                    print(" API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("API 호출해서 불러온 상품명과 10위의 상품명이 동일한지 확인 실패")
-                print(f"api호출 10번째 아이템명 : {api_data_10th} , 베스트 10위 아이템명 : {best_item_10th.text}")
+            # 베스트 PLP로 복귀
+            product_detail_page.click_pdp_back_btn(wd)
 
-                best_product_title = best_item_10th.text
-                print(f"베스트 상품명 : {best_product_title} ")
+            # API에서 호출한 상품명 저장
+            now_10th_product_prefix = api_control.best_plp_women_clothes(10, 'NOW')['item_prefix']
+            now_10th_product = api_control.best_plp_women_clothes(10, 'NOW')['item_name']
+            now_10th_product_name = best_product_list_page.save_api_product_name(now_10th_product_prefix,
+                                                                                 now_10th_product)
 
-                # 뒤로가기로 카테고리 진입 확인
-                wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
-                print("뒤로가기 선택")
-                sleep(2)
-            else:
-                print("API 호출에 실패했습니다.")
-            print("[PLP 확인]CASE 종료")
+            # 실시간 10위 상품 노출 확인
+            best_product_list_page.find_scroll_and_find_product_rank(wd, now_10th_product_name)
+            best_product_list_page.check_additional_product(wd, now_10th_product_name)
+
+            # Home으로 복귀
+            best_product_list_page.click_back_btn(wd)
+            navigation_bar.move_to_home(wd)
+
+            print(f'[{test_name}] 테스트 종료')
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -215,6 +143,7 @@ class Plp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')

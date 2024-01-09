@@ -32,8 +32,8 @@ def check_login_page(wd):
     # 로그인 화면 진입 확인
     login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
     print("홈 > 마이페이지 > 로그인 화면 진입")
-    sleep(1)
-    if login_page_title.text == '로그인':
+    sleep(3)
+    if '로그인' in login_page_title.text:
         print("로그인 문구 확인")
     else:
         print("로그인 문구 실패")

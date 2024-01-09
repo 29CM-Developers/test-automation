@@ -17,7 +17,9 @@ def move_to_category(wd):
 
 
 def move_to_search(wd):
+    sleep(1)
     aalc(wd, 'SEARCH')
+    print("하단 SEARCH탭 선택")
 
 
 def move_to_like(wd):

@@ -232,12 +232,7 @@ def scroll_to_element_with_text(wd, text):
             pass
 
         # 요소를 찾지 못하면 아래로 스크롤
-        size = wd.get_window_size()
-        start_x = size["width"] / 2
-        start_y = size["height"] * 0.5
-        end_y = size["height"] * 0.2
-        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
-        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+        scroll_control(wd, "D", 50)
         sleep(2)
 
     return element
@@ -255,12 +250,7 @@ def scroll_up_to_element_id(wd, element_id):
             pass
 
         # 요소를 찾지 못하면 아래로 스크롤
-        size = wd.get_window_size()
-        start_x = size["width"] / 2
-        start_y = size["height"] * 0.2
-        end_y = size["height"] * 0.5
-        duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
-        wd.swipe(start_x, start_y, start_x, end_y, duration_ms)
+        scroll_control(wd, "U", 30)
         sleep(2)
 
     return element
