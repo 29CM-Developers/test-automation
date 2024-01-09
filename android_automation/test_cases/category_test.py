@@ -13,7 +13,8 @@ from com_utils.api_control import large_category_list, large_categories_info, me
     category_plp_product
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
     swipe_control, scroll_to_element_with_text, scroll, swipe_control, element_scroll_control
-from android_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page
+from android_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page, \
+    context_change
 from com_utils.testrail_api import send_test_result
 
 class Category:
@@ -150,10 +151,14 @@ class Category:
             # 핀메뉴에서 위러브 페이지 진입
             category_page.click_pin_menu(wd, 'WELOVE')
 
+            # 웹뷰로 변경
+            context_change.change_webview_contexts(wd)
+
             post_title = welove_page.save_first_post_title(wd)
 
             # 첫번째 포스트의 첫번째 해시태그 저장 후 선택
             post_hash_tag = welove_page.save_first_post_hashtag(wd)
+
             print(f'post_hash_tag : {post_hash_tag}')
             welove_page.click_first_post_hashtag(wd, post_hash_tag)
 
@@ -163,11 +168,23 @@ class Category:
             # welove 페이지에서 저장한 포스트가 해시태그 페이지에 노출되는지 확인
             welove_page.check_hash_tag_post(wd, post_title)
 
+            # 네이티브로 변경
+            context_change.change_native_contexts(wd)
+
             # welove 페이지로 복귀
-            welove_page.click_welove_back_btn(wd)
+            welove_page.click_hash_tag_close_btn(wd)
+
+            # 핀메뉴에서 위러브 페이지 진입
+            category_page.click_pin_menu(wd, 'WELOVE')
+
+            # 웹뷰로 변경
+            context_change.change_webview_contexts(wd)
 
             # 포스트 추가 노출 확인
             welove_page.find_and_save_third_post(wd)
+
+            # 네이티브로 변경
+            context_change.change_native_contexts(wd)
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
