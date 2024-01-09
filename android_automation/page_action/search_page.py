@@ -9,6 +9,22 @@ def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     sleep(1)
 
+def check_keyboard_clear_recent_keyword(wd):
+    # 키보드가 올라가 있는지 확인하고, 올라가 있다면 닫기
+    if is_keyboard_displayed(wd):
+        print("키패드 열림 확인")
+        close_keyboard(wd)
+        print("키패드 닫기")
+    else:
+        print("키패드 미노출")
+
+    delete_all = aal(wd, 'c_모두 지우기')
+    if delete_all == None:
+        print("최근검색어 없음")
+    else:
+        print("최근검색어 있음")
+        aalc(wd, 'c_모두 지우기')
+
 
 def is_keyboard_displayed(wd):
     try:

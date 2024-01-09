@@ -84,6 +84,7 @@ def click_edit_user_info_menu(wd):
             if element == None:
                 com_utils.element_control.scroll_control(wd, "D", 30)
             elif element.is_displayed():
+                com_utils.element_control.scroll_control(wd, "D", 10)
                 element.click()
                 break
         except NoSuchElementException:

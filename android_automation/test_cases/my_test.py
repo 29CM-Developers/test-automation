@@ -8,7 +8,8 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
-from android_automation.page_action import welove_page, my_page, product_detail_page, delivery_order_page
+from android_automation.page_action import welove_page, my_page, product_detail_page, delivery_order_page, \
+    context_change
 import com_utils
 from com_utils import values_control, slack_result_notifications, element_control, deeplink_control
 from android_automation.page_action import navigation_bar, my_coupon_page, my_page
@@ -114,8 +115,11 @@ class My:
             com_utils.deeplink_control.move_to_welove(self, wd)
 
             # 첫번째 추천 게시물명 확인 및 선택
-            post_title = welove_page.save_first_post_title(wd)
-            welove_page.click_first_post(wd)
+            post_title = welove_page.save_first_post_title_for_recently_viewed(wd)
+            welove_page.click_first_post_for_recently_viewed(wd)
+
+            # # 네이티브로 변경
+            # context_change.change_native_contexts(wd)
 
             # My 탭으로 이동
             com_utils.deeplink_control.move_to_my_Android(wd)

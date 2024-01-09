@@ -47,9 +47,29 @@ def save_first_post_title(wd):
     print(f'포스트명 : {post_title}')
     return post_title
 
-def click_first_post(wd):
+
+def save_first_post_title_for_recently_viewed(wd):
+    sleep(2)
+    post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
+    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3')
+    if post_title == None:
+        com_utils.element_control.scroll_control(wd, "D", 30)
+    post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle').text
+    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
+    print(f'포스트명 : {post_title}')
+    return post_title
+
+
+def click_first_post_for_recently_viewed(wd):
     aalc(wd, 'com.the29cm.app29cm:id/txtPostTitle')
     sleep(3)
+
+
+def click_first_post(wd):
+    # aalc(wd, 'com.the29cm.app29cm:id/txtPostTitle')
+    aalc(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3')
+    sleep(3)
+
 
 def save_first_post_hashtag(wd):
     post_hash_tag = ''

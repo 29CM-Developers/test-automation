@@ -81,9 +81,6 @@ def check_product_name1(product_name, compare_name):
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
         raise Exception('PDP 진입 확인 실패 - 상품명')
 
-def close_purchase_modal(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView').click()
-
 
 def check_open_to_purchase_modal(wd, warning_texts):
     try:

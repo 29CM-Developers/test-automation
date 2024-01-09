@@ -11,7 +11,7 @@ def click_back_btn(wd):
 
 
 def check_no_delivery_order(wd):
-    sleep(2)
+    sleep(3)
     element = aal(wd, 'c_주문내역이 없습니다')
     if element == None:
         print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")

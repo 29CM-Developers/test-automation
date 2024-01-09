@@ -205,3 +205,31 @@ def click_category_product(wd, text):
     aalc(wd, f'c_{text}')
     sleep(1)
     navigation_bar.close_bottom_sheet(wd)
+
+
+def click_first_large_category(wd):
+    category_layer = aal(wd, 'com.the29cm.app29cm:id/shopComposeView')
+    # 첫번째 대메뉴 선택
+    aalc(category_layer, 'category_first_title')
+
+
+def check_unique_medium_category(self, wd):
+    # 중 카테고리 리스트 중 상단 4개의 카테고리명을 리스트로 저장
+    medium_category_list = []
+    category_layer = aal(wd, 'com.the29cm.app29cm:id/shopComposeView')
+
+    medium_category_list.append(aal(category_layer,
+                                    '//android.view.View/android.view.View[3]/android.view.View[@index=3]/android.widget.TextView').text)
+    medium_category_list.append(aal(category_layer,
+                                    '//android.view.View/android.view.View[3]/android.view.View[@index=4]/android.widget.TextView').text)
+    medium_category_list.append(aal(category_layer,
+                                    '//android.view.View/android.view.View[3]/android.view.View[@index=5]/android.widget.TextView').text)
+    medium_category_list.append(aal(category_layer,
+                                    '//android.view.View/android.view.View[3]/android.view.View[@index=6]/android.widget.TextView').text)
+    category_list = self.pconf['compare_category_list']
+    print(f"medium_category_list : {medium_category_list}, category_list : {category_list}")
+    if category_list == medium_category_list:
+        print('Unique 카테고리 확인')
+    else:
+        print(f'Unique 카테고리 확인 실패 : {medium_category_list}')
+        raise Exception('Unique 카테고리 확인 실패')

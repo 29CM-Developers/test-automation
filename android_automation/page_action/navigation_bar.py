@@ -1,5 +1,6 @@
 from appium.webdriver.common.appiumby import AppiumBy
-from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_like_bottom_sheet
+from android_automation.page_action.like_page import close_brand_recommended_page
 from android_automation.page_action.select_category_page import test_select_category
 from com_utils.element_control import aalc
 from time import sleep
@@ -24,6 +25,11 @@ def move_to_search(wd):
 
 def move_to_like(wd):
     aalc(wd, 'LIKE')
+    sleep(1)
+    # 관심 브랜드 선택 화면 발생 케이스
+    close_brand_recommended_page(wd)
+    close_bottom_sheet(wd)
+    close_like_bottom_sheet(wd)
 
 
 def move_to_my(wd):
