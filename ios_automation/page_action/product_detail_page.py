@@ -157,11 +157,11 @@ def save_no_soldout_product_no():
 
 
 def save_purchase_price(wd):
-    xpath_index = ials(wd, '//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther')
-    index = ial(wd, '//XCUIElementTypeStaticText[@name="구매 가능 금액"]').get_attribute('index')
-    price = ial(wd,
-                f'//*[contains(@label, "감도 깊은 취향 셀렉트샵 29CM")]/XCUIElementTypeOther[{len(xpath_index)}]/XCUIElementTypeStaticText[@index="{int(index) + 1}"]').text
-    price = int(price.replace(',', ''))
+    sleep(1)
+    context_change.switch_context(wd, 'webview')
+    price = ial(wd, '//span[contains(text(), "구매 가능 금액")]/../span[contains(@color, "accent")]').text
+    context_change.switch_context(wd, 'native')
+    price = int(price.replace(',', '').replace('원', ''))
     return price
 
 

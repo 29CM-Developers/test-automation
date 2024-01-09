@@ -140,6 +140,8 @@ class Category:
             # 핀메뉴에서 위러브 페이지 진입
             category_page.click_pin_menu(wd, 'WELOVE')
 
+            context_change.switch_context(wd, 'webview')
+
             post_title = welove_page.save_first_post_title(wd)
 
             # 첫번째 포스트의 첫번째 해시태그 저장 후 선택
@@ -149,14 +151,16 @@ class Category:
             # 해시태그 페이지 타이틀과 저장한 해시태그 비교 확인
             welove_page.check_hash_tag_title(wd, post_hash_tag)
 
-            # # welove 페이지에서 저장한 포스트가 해시태그 페이지에 노출되는지 확인
-            # welove_page.check_hash_tag_post(wd, post_title)
+            # welove 페이지에서 저장한 포스트가 해시태그 페이지에 노출되는지 확인
+            welove_page.check_hash_tag_post(wd, post_title)
 
             # welove 페이지로 복귀
             welove_page.click_hash_tag_back_btn(wd)
 
             # 포스트 추가 노출 확인
             welove_page.find_and_save_third_post(wd)
+
+            context_change.switch_context(wd, 'native')
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
@@ -173,6 +177,7 @@ class Category:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:

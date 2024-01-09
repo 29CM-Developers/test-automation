@@ -8,6 +8,10 @@ from com_utils.element_control import ial, ialc, ials
 
 # welove 페이지에서 뒤로가기
 def click_welove_back_btn(wd):
+    ialc(wd, 'common back icon black')
+
+
+def click_native_welove_back_btn(wd):
     ialc(wd, 'navi_back_btn')
 
 
@@ -17,10 +21,15 @@ def click_post_to_welove_back_btn(wd):
 
 
 def click_hash_tag_back_btn(wd):
-    ialc(wd, 'common close icon black')
+    ialc(wd, '//button[contains(@class, "css-1lwmh7z")]')
 
 
 def save_first_post_title(wd):
+    post_title = ials(wd, '//h3')[1].text
+    return post_title
+
+
+def save_native_first_post_title(wd):
     posts = wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
                             '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
     post_title = posts.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[2]').text
@@ -30,39 +39,33 @@ def save_first_post_title(wd):
 
 
 def click_first_post(wd):
+    ials(wd, '//h3')[1].click()
+    sleep(3)
+
+
+def click_native_first_post(wd):
     ialc(wd, '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
     sleep(3)
 
 
 # like_post_name = 포스트 제목
 def click_post_like_btn(wd):
-    wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1w1sbu5 e69h9670"]').click()
+    ialc(wd, '//button[contains(@class, "css-1w1sbu5")]')
 
 
 def save_first_post_hashtag(wd):
     com_utils.element_control.scroll_control(wd, 'D', 10)
-    post_hash_tag = ''
-    for i in range(0, 3):
-        try:
-            post = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
-            first_hash_tag = ial(post, '//XCUIElementTypeButton[1]')
-            if first_hash_tag.is_displayed():
-                post_hash_tag = post.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[1]').text
-                break
-            com_utils.element_control.scroll_control(wd, 'D', 30)
-        except NoSuchElementException:
-            pass
+    post_hash_tag = ial(wd, '//button').text.replace('#', '')
     return post_hash_tag
 
 
 def click_first_post_hashtag(wd):
-    post = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[1]')
-    ialc(post, '//XCUIElementTypeButton[1]')
+    ialc(wd, '//button')
     sleep(3)
 
 
 def check_hash_tag_title(wd, hash_tag):
-    hash_tag_title = ial(wd, '//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeStaticText').text
+    hash_tag_title = ial(wd, '//h3[contains(text(), "#")]').text.replace('# ', '')
     if hash_tag_title == hash_tag:
         print('포스트 해시태그 확인')
     else:
@@ -74,7 +77,7 @@ def check_hash_tag_post(wd, post_title):
     tag_break = False
     for i in range(0, 5):
         try:
-            post = ial(wd, post_title)
+            post = ial(wd, f'//h1[contains(text(), "{post_title}")]')
             if post.is_displayed():
                 tag_break = True
                 print('포스트 해시태그 확인 - 페이지 내 포스트')
@@ -88,12 +91,11 @@ def check_hash_tag_post(wd, post_title):
 
 
 def find_and_save_third_post(wd):
-    post_title = ial(wd, '(//XCUIElementTypeCell[@name="recommended_post"])[3]/XCUIElementTypeStaticText[2]').text
-    print(post_title)
+    post_title = ials(wd, '//h3')[3].text
     find_break = False
     for i in range(0, 5):
         try:
-            post = ial(wd, post_title)
+            post = ial(wd, f'//h3[contains(text(), "{post_title}")]')
             if post.is_displayed():
                 find_break = True
                 print('포스트 추가 노출 확인')
