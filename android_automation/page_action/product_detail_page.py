@@ -129,8 +129,7 @@ def option_exist(product_item_no):
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
     change_webview_contexts(wd)
-    # element = aal(wd, '//label[contains(text(), "수량")]')
-    element = aal(wd, ':r1:')
+    element = aal(wd, '//label[contains(text(), "수량")]')
     if element == None:
         options = '옵션 있음'
     else:

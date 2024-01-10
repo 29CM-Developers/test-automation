@@ -1,6 +1,7 @@
 import re
 from time import sleep
 from appium import webdriver
+from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 import com_utils.element_control
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
@@ -83,16 +84,13 @@ def click_hyundai_card(wd):
         try:
             element = aal(wd, 'c_현대카드 X PIN PAY')
             if element == None:
-                print('엘리멘트 없음')
                 scroll_control(wd, 'U', 50)
                 sleep(1)
             elif element.is_displayed():
-                print('엘리멘트 발견')
                 virtual_account = True
                 element.click()
                 break
         except NoSuchElementException:
-            print('노서치')
             pass
         scroll_control(wd, 'U', 50)
     if not virtual_account:
@@ -123,7 +121,6 @@ def save_purchase_price(wd):
                 scroll_control(wd, 'D', 100)
             else:
                 if element.is_displayed():
-                    # parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제금액")]/../..')
                     parent_elements = aal(wd, f'//*[contains(@text, "결제금액")]/../..')
                     print(f'parent_elements:{parent_elements}')
 
@@ -144,8 +141,7 @@ def save_purchase_btn_price(wd):
     print(f'save_purchase_btn_price : {price}')
     return price
 def save_delivery_price(wd):
-    # parent_elements = aal(wd, '//*[contains(@text, "결제금액")]/../..')
-    parent_elements = wd.find_element(By.XPATH, '//*[contains(@text, "결제금액")]/../..')
+    parent_elements = aal(wd, '//*[contains(@text, "결제금액")]/../..')
     com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(parent_elements, '//android.widget.Button')
     com_utils.element_control.scroll_control(wd, 'D', 100)
@@ -153,10 +149,9 @@ def save_delivery_price(wd):
     webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
     wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
     # 웹뷰에서 작업 수행 (예: 웹 요소 찾기, 클릭 등)
-    # delivery_price_parents = wd.find_element(By.XPATH, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
-    # delivery_price_element = delivery_price_parents.find_elements(By.XPATH, '*')
     delivery_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
-    delivery_price_element = aals(delivery_price_parents, '*')
+    delivery_price_element = delivery_price_parents.find_elements(AppiumBy.XPATH, '*')
+    # delivery_price_element = aals(delivery_price_parents, '//*')
     for i in range(len(delivery_price_element)):
         print(f'delivery_price_element : {delivery_price_element[i].text}')
         if delivery_price_element[i].text == '배송비':
@@ -168,7 +163,6 @@ def save_delivery_price(wd):
     delivery_price = int(delivery_price) if delivery_price else 0
     print(f'delivery_price : {delivery_price}')
     return delivery_price
-
 
 def change_webview(wd):
     # 앱에서 웹뷰로 전환
@@ -205,11 +199,9 @@ def change_native(wd):
 
 
 def save_coupon_discount_price(wd):
-    # coupon_discount_price_parents = wd.find_element(By.XPATH,
-    #                                                 '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
-    # coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
     coupon_discount_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
-    coupon_discount_price_element = aals(coupon_discount_price_parents, '*')
+    coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
+    # coupon_discount_price_element = aals(coupon_discount_price_parents, '*')
 
     for i in range(len(coupon_discount_price_element)):
         print(f'coupon_discount_price_element : {coupon_discount_price_element[i].text}')
@@ -342,7 +334,6 @@ def check_payment_type(wd, payment_type):
     sleep(2)
     payment_info = ''
     try:
-        # parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제방법")]/../..')
         parent_elements = aal(wd, f'//*[contains(@text, "결제방법")]/../..')
         p1 = aals(parent_elements, '//android.view.View')
         for i in range(len(p1)):
