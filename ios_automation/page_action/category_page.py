@@ -102,8 +102,7 @@ def check_not_login_user_recommended_tab(wd):
 
 
 def save_webview_category_product_name(wd):
-    product = wd.find_element(AppiumBy.XPATH, '//div[contains(@class, "css-1rcys17")]')
-    plp_name = product.find_element(AppiumBy.XPATH, '//h5').text
+    plp_name = ial(wd, '//h5').text
     return plp_name
 
 
