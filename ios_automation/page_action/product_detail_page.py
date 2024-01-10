@@ -58,7 +58,7 @@ def check_product_price(product_price, compare_price):
 
 
 def close_purchase_modal(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeWebView').click()
+    ialc(wd, '//XCUIElementTypeWebView')
 
 
 def check_open_to_purchase_modal(wd):

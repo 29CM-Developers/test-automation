@@ -1,6 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from selenium.webdriver import ActionChains
 from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import my_heart_count
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
@@ -127,19 +128,19 @@ def refresh_post_like_tab(wd):
 def click_to_unlike_product(wd):
     product = ials(wd, 'liked_item_like_btn')
     for product_like in product:
-        product_like.click()
+        ActionChains(wd).move_to_element(product_like).click().pause(0.1).perform()
 
 
 def click_to_unlike_brand(wd):
     brand = ials(wd, 'c_heart line')
     for brand_like in brand:
-        brand_like.click()
+        ActionChains(wd).move_to_element(brand_like).click().pause(0.1).perform()
 
 
 def click_to_unlike_post(wd):
     post = ials(wd, 'c_heart line')
     for post_like in post:
-        post_like.click()
+        ActionChains(wd).move_to_element(post_like).click().pause(0.1).perform()
 
 
 def save_like_product_name(wd):

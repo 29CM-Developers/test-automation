@@ -31,14 +31,7 @@ def ial(webdriver, element_value):
         element_value = element_value.lstrip("c_")
         element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@label, '{element_value}')]")
     else:
-        for locator in locators:
-            try:
-                if truewd:
-                    wd.implicitly_wait(1)
-                element = wd.find_element(getattr(AppiumBy, locator), element_value)
-                break
-            except NoSuchElementException:
-                pass
+        element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, element_value)
     return element
 
 
@@ -73,7 +66,10 @@ def ialc(wd, element_value):
     """
     iOS_all_in_one_locator_click
     """
-    element = ial(wd, element_value)
+    if type(element_value) == str:
+        element = ial(wd, element_value)
+    else:
+        element = element_value
     if not isinstance(wd, WebDriver):
         wd = element.parent
     if 'NATIVE' in wd.current_context:
@@ -94,11 +90,9 @@ def aal(webdriver, element_value):
     """
     V1 android_all_in_one_locator
     1. Contains 사용 시 앞에 'c_' 를 붙여주세요
+    2. CLASS_NAME 사용 시 앞에 'cn_' 를 붙여주세요
     """
-    locators = ["ACCESSIBILITY_ID", "CLASS_NAME", "ID", "XPATH"]
     wd = webdriver
-    # webdriver 의 경우 대기 시간 컨트롤 을 위해 wd가 어떤 데이터 인지 파악 해둔다
-    truewd = isinstance(wd, WebDriver)
     # Locator 분기를 통해 최적화 한다
     try:
         if element_value.startswith("//") or element_value.startswith("(//"):
@@ -106,17 +100,13 @@ def aal(webdriver, element_value):
         elif element_value.startswith("c_"):
             element_value = element_value.lstrip("c_")
             element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
+        elif element_value.startswith("cn_"):
+            element_value = element_value.lstrip("cn_")
+            element = wd.find_element(AppiumBy.CLASS_NAME, element_value)
         elif element_value.startswith("com"):
             element = wd.find_element(AppiumBy.ID, element_value)
         else:
-            for locator in locators:
-                try:
-                    wd.implicitly_wait(1) if truewd else None
-                    element = wd.find_element(getattr(AppiumBy, locator), element_value)
-                    break
-                except NoSuchElementException:
-                    element = wd.find_element(AppiumBy.XPATH, f"//*[contains(@text, '{element_value}')]")
-                    break
+            element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, element_value)
     except Exception:
         element = None
         pass

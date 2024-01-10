@@ -342,7 +342,7 @@ def search_relate_keyword(api_keyword_1st):
 def search_result(keyword, order):
     result = {}
     search_response = requests.get(
-        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}&excludeSoldOut=false')
+        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}&excludeSoldOut=true')
     if search_response.status_code == 200:
         search_result_data = search_response.json()
         result['product_item_no'] = search_result_data['data']['products'][order - 1]['itemNo']
@@ -404,7 +404,7 @@ def product_detail(product_item_no):
 
 def order_product_random_no():
     response = requests.get(
-        'https://search-api.29cm.co.kr/api/v4/products/search?keyword=양말&excludeSoldOut=false&minPrice=0&maxPrice=1500')
+        'https://search-api.29cm.co.kr/api/v4/products/search?keyword=양말&excludeSoldOut=true&minPrice=0&maxPrice=1500')
     if response.status_code == 200:
         product_data = response.json()
         while True:
