@@ -9,7 +9,7 @@ from com_utils import values_control
 from com_utils.api_control import my_coupon_list
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import my_page, my_setting_page, navigation_bar, product_detail_page, welove_page, \
-    delivery_order_page, product_review_page, my_coupon_page
+    delivery_order_page, product_review_page, my_coupon_page, context_change, category_page
 
 
 class My:
@@ -79,11 +79,14 @@ class My:
             my_page.check_recent_title(wd, '상품', recent_product_name)
 
             # welove 페이지 이동
-            com_utils.deeplink_control.move_to_welove(self, wd)
+            wd.get(self.conf['deeplink']['category'])
+            category_page.click_pin_menu(wd, 'WELOVE')
 
             # 첫번째 추천 게시물명 확인 및 선택
+            context_change.switch_context(wd, 'webview')
             post_title = welove_page.save_first_post_title(wd)
             welove_page.click_first_post(wd)
+            context_change.switch_context(wd, 'native')
 
             # My 탭으로 이동
             com_utils.deeplink_control.move_to_my(self, wd)
@@ -111,6 +114,7 @@ class My:
                 error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
+            context_change.switch_context(wd, 'native')
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
         finally:

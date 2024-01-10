@@ -204,8 +204,8 @@ def check_brand_like(wd, like_brand_name):
 
 
 def click_liked_brand_name(wd):
-    liked_brand = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_item')
-    liked_brand.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').click()
+    liked_brand = ial(wd, 'like_brand_item')
+    ialc(liked_brand, '//XCUIElementTypeStaticText[@index="1"]')
     sleep(2)
 
 

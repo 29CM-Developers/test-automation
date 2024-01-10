@@ -172,8 +172,8 @@ class Like:
             like_page.move_to_welove_page(wd)
 
             # 첫번째 추천 게시물명 확인 및 선택
-            like_post_name = welove_page.save_first_post_title(wd)
-            welove_page.click_first_post(wd)
+            like_post_name = welove_page.save_native_first_post_title(wd)
+            welove_page.click_native_first_post(wd)
 
             # webview 전환
             context_change.switch_context(wd, 'webview')
@@ -186,7 +186,7 @@ class Like:
 
             # LIKE 탭으로 복귀
             welove_page.click_post_to_welove_back_btn(wd)
-            welove_page.click_welove_back_btn(wd)
+            welove_page.click_native_welove_back_btn(wd)
 
             # POST 탭 새로고침
             like_page.refresh_post_like_tab(wd)

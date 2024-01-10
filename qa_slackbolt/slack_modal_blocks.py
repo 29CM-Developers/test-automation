@@ -1,4 +1,4 @@
-def block(feature_name):
+def block(feature_name, significant=None):
     block = [
         {
             "type": "input",
@@ -63,12 +63,11 @@ def block(feature_name):
             "type": "input",
             "block_id": "test_rate",
             "element": {
-                "type": "number_input",
-                "is_decimal_allowed": False,
+                "type": "plain_text_input",
                 "action_id": "testrail_no",
                 "placeholder": {
                     "type": "plain_text",
-                    "text": "Testrail로 테스트 중이면 Plan No, Manual로 테스트 중이면 진행률 작성"
+                    "text": "plan no(Testrail) or 진행률(Manual) 작성 (숫자만 입력 가능)"
                 }
             },
             "label": {
@@ -84,6 +83,7 @@ def block(feature_name):
                 "type": "plain_text_input",
                 "multiline": True,
                 "action_id": "significant",
+                "initial_value": f"{significant}",
                 "placeholder": {
                     "type": "plain_text",
                     "text": "특이사항을 작성해 주세요."
@@ -114,7 +114,7 @@ def block(feature_name):
     return block
 
 
-def modal_block(ack, body, client, feature_name):
+def modal_block(body, client, feature_name, significant):
     client.views_open(
         trigger_id=body["trigger_id"],
         view={
@@ -124,7 +124,7 @@ def modal_block(ack, body, client, feature_name):
                 'type': 'plain_text',
                 'text': 'Daily Report 작성'
             },
-            'blocks': block(feature_name),
+            'blocks': block(feature_name, significant),
             'submit': {
                 'type': 'plain_text',
                 'text': '확인'
@@ -137,7 +137,39 @@ def modal_block(ack, body, client, feature_name):
     )
 
 
-def update_modal_block(ack, body, client, feature_name):
+def error_modal_block(body, client, feature_name, significant, error_message):
+    client.views_open(
+        trigger_id=body["trigger_id"],
+        view={
+            "type": "modal",
+            "callback_id": 'modal-id',
+            'title': {
+                'type': 'plain_text',
+                'text': 'Daily Report 작성'
+            },
+            'blocks': [
+                          {
+                              "type": "section",
+                              "block_id": "error_message",
+                              "text": {
+                                  "type": "mrkdwn",
+                                  "text": f"{error_message}"
+                              }
+                          }
+                      ] + block(feature_name, significant),
+            'submit': {
+                'type': 'plain_text',
+                'text': '확인'
+            },
+            "close": {
+                "type": "plain_text",
+                "text": "Cancel"
+            }
+        }
+    )
+
+
+def update_modal_block(body, client, feature_name):
     client.views_update(
         view_id=body["view"]["id"],
         hash=body["view"]["hash"],
