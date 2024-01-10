@@ -68,6 +68,8 @@ def ialc(wd, element_value):
     """
     if type(element_value) == str:
         element = ial(wd, element_value)
+    else:
+        element = element_value
     if not isinstance(wd, WebDriver):
         wd = element.parent
     if 'NATIVE' in wd.current_context:
