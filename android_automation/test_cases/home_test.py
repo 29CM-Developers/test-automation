@@ -150,7 +150,7 @@ class Home:
             home_page.click_tab_name(wd, 'women_tab')
 
             # 홈화면 배너 중복 여부 확인
-            home_page.check_for_duplicate_banner_contents(self, wd)
+            home_page.check_for_duplicate_banner_contents(self)
 
             # 홈화면 배너 타이틀 3개 저장
             home_banner_title = home_page.save_banner_title(wd)

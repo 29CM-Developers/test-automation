@@ -10,8 +10,8 @@ def input_password(wd, password):
 
 
 def click_next_btn(wd):
-    # aalc(wd, 'android.widget.Button')
-    wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
+    aalc(wd, 'cn_android.widget.Button')
+    # wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
     sleep(2)
 
 

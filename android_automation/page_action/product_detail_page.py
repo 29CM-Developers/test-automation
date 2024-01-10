@@ -19,7 +19,7 @@ def click_home_btn(wd):
 def save_product_name(wd):
     # 이굿 위크 상품 확인
     try:
-        sale_tag = aal(wd, '이굿위크 할인 상품')
+        sale_tag = aal(wd, 'c_이굿위크 할인 상품')
         if sale_tag == None:
             element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
             print('sale_tag 상품 ㅁㅣ발견')
@@ -33,7 +33,8 @@ def save_product_name(wd):
 
     # 스페셜 오더 상품 확인
     try:
-        wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
+        aal(wd, "//*[contains(@text, 'SPECIAL-ORDER')]")
+        # wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
         element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
         print('SPECIAL-ORDER 상품 발견')
     except NoSuchElementException:
@@ -41,7 +42,8 @@ def save_product_name(wd):
         element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
         pass
 
-    PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath)
+    # PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath)
+    PDP_product_title = aal(wd, element_xpath)
     print(f'PDP 상품명 : {PDP_product_title.text}')
     return PDP_product_title.text
 
@@ -82,18 +84,6 @@ def check_product_name1(product_name, compare_name):
         raise Exception('PDP 진입 확인 실패 - 상품명')
 
 
-def check_open_to_purchase_modal(wd, warning_texts):
-    try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, '장바구니 담기')
-        test_result = 'PASS'
-        print('PDP 구매하기 모달 노출 확인')
-    except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('PDP 구매하기 모달 노출 확인 실패')
-        print('PDP 구매하기 모달 노출 확인')
-    return test_result
-
-
 def click_purchase_btn(wd):
     aalc(wd, 'c_구매하기')
 
@@ -109,7 +99,7 @@ def click_put_in_cart_btn(wd):
 
 
 def click_direct_purchase_btn(wd):
-    aalc(wd, '바로 구매하기')
+    aalc(wd, 'c_바로 구매하기')
     sleep(1)
 
 
@@ -139,7 +129,8 @@ def option_exist(product_item_no):
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
     change_webview_contexts(wd)
-    element = aal(wd, '//label[contains(text(), "수량")]')
+    # element = aal(wd, '//label[contains(text(), "수량")]')
+    element = aal(wd, ':r1:')
     if element == None:
         options = '옵션 있음'
     else:
@@ -167,16 +158,14 @@ def select_options(wd, product_item_no):
     sleep(1)
     change_native_contexts(wd)
 
-def check_add_product_to_cart(wd, warning_texts):
-    try:
-        aal(wd, 'c_장바구니에 상품')
-        test_result = 'PASS'
-        print('상품 장바구니 담기 확인')
-    except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('상품 장바구니 담기 확인 실패')
+
+def check_add_product_to_cart(wd):
+    element = aal(wd, 'c_장바구니에 상품')
+    if element == None:
         print('상품 장바구니 담기 확인 실패')
-    return test_result
+        raise Exception('상품 장바구니 담기 확인 실패')
+    else:
+        print('상품 장바구니 담기 확인')
 
 
 def save_no_soldout_product_no():
@@ -195,7 +184,8 @@ def save_purchase_price(wd):
     print(amount_available_for_purchase_elemenent.text)
     # 예시로 XPath를 사용하여 특정 엘리먼트를 찾음
     # 부모 엘리먼트를 찾음
-    parent_element = wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
+    # parent_element = wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
+    parent_element = aal(wd, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
     print(f'parent_element : {parent_element}')
     # 부모의 자식 엘리먼트들을 모두 찾은 후에, 형제 엘리먼트를 찾음
     amount_available_for_purchase = aals(parent_element, '//android.widget.TextView')

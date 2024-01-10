@@ -10,6 +10,7 @@ def click_back_btn(wd):
 
 
 def check_no_reviews_available(wd):
+    sleep(1)
     review_guide = aal(wd, 'c_아직 리뷰를 작성할 수 있는\n주문내역이 없습니다.').text
     print(f"review_guide : {review_guide}")
     if review_guide == '아직 리뷰를 작성할 수 있는\n주문내역이 없습니다.':
@@ -20,7 +21,7 @@ def check_no_reviews_available(wd):
 
 
 def click_my_review_tab(wd):
-    aalc(wd, '내 리뷰 (')
+    aalc(wd, 'c_내 리뷰 (')
 
 
 def check_no_written_reviews(wd):

@@ -286,13 +286,10 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            print("[보유하고 있는 쿠폰 목록 확인] CASE 시작")
-            # 하단 네비게이터에 MY 메뉴 진입
-            sleep(5)
-            # navigation_bar.move_to_my(wd)
-            wd.get('app29cm://mypage')
-            sleep(3)
-            print("홈 > 마이페이지 화면 진입")
+            print(f'[{test_name}] 테스트 시작')
+
+            # My 탭으로 이동
+            com_utils.deeplink_control.move_to_my_Android(wd)
 
             # 쿠폰 메뉴 선택
             my_page.click_coupon_menu(wd)
@@ -303,26 +300,62 @@ class My:
 
             # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
             api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'], 'CART')
-            coupon_list = my_coupon_page.save_my_coupon_list(wd, api_coupon_list)
+            coupon_list = my_coupon_page.save_my_coupon_list(wd)
 
-            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '장바구니')
+            my_coupon_page.check_coupon_list(wd, api_coupon_list, coupon_list, '장바구니')
 
             # 상품 쿠폰 타입 선택
             my_coupon_page.click_cart_coupon_type(wd)
             my_coupon_page.click_option_product(wd)
 
             # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
-            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'],
-                                             'PRODUCT')
-            coupon_list = my_coupon_page.save_my_coupon_list(wd, api_coupon_list)
+            api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'], 'PRODUCT')
+            coupon_list = my_coupon_page.save_my_coupon_list(wd)
 
-            test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '상품')
+            my_coupon_page.check_coupon_list(wd, api_coupon_list, coupon_list, '상품')
 
             my_coupon_page.click_back_btn(wd)
             navigation_bar.move_to_home(wd)
 
-            wd.get('app29cm://home')
-            print("[보유하고 있는 쿠폰 목록 확인] CASE 종료")
+            print(f'[{test_name}] 테스트 종료')
+
+            # print("[보유하고 있는 쿠폰 목록 확인] CASE 시작")
+            # # 하단 네비게이터에 MY 메뉴 진입
+            # sleep(5)
+            # # navigation_bar.move_to_my(wd)
+            # wd.get('app29cm://mypage')
+            # sleep(3)
+            # print("홈 > 마이페이지 화면 진입")
+            #
+            # # 쿠폰 메뉴 선택
+            # my_page.click_coupon_menu(wd)
+            #
+            # # 장바구니 타입 선택
+            # my_coupon_page.click_coupon_type(wd)
+            # my_coupon_page.click_option_cart(wd)
+            #
+            # # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
+            # api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'], 'CART')
+            # coupon_list = my_coupon_page.save_my_coupon_list(wd, api_coupon_list)
+            #
+            # test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '장바구니')
+            #
+            # # 상품 쿠폰 타입 선택
+            # my_coupon_page.click_cart_coupon_type(wd)
+            # my_coupon_page.click_option_product(wd)
+            #
+            # # API 호출 쿠폰 목록과 노출되는 쿠폰 목록 저장
+            # api_coupon_list = my_coupon_list(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'],
+            #                                  'PRODUCT')
+            # coupon_list = my_coupon_page.save_my_coupon_list(wd, api_coupon_list)
+            #
+            # test_result = my_coupon_page.check_coupon_list(wd, warning_texts, api_coupon_list, coupon_list, '상품')
+            #
+            # my_coupon_page.click_back_btn(wd)
+            # navigation_bar.move_to_home(wd)
+            #
+            # wd.get('app29cm://home')
+            # print("[보유하고 있는 쿠폰 목록 확인] CASE 종료")
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'

@@ -165,7 +165,7 @@ class Payment:
             order_page.check_api_order_cancel(self, order_no)
 
             # Home으로 이동
-            deeplink_control.move_to_home_Android(self, wd)
+            deeplink_control.move_to_home_Android(wd)
 
             print(f'[{test_name}] 테스트 종료')
 

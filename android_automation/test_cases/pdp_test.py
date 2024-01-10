@@ -40,7 +40,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             # 선물하기 버튼 선택
             product_detail_page.click_gift_btn(wd)
@@ -55,13 +55,13 @@ class Pdp:
             product_detail_page.click_direct_gift_btn(wd)
 
             # 선물 받는 분 정보 타이틀 확인
-            order_page.check_receiver_info(wd, warning_texts)
+            order_page.check_receiver_info(wd)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, pdp_name)
+            order_page.check_order_product_name(wd, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_pdp_purchase_price(wd, warning_texts, pdp_price)
+            order_page.check_pdp_purchase_price(wd, pdp_price)
 
             # Home으로 복귀
             order_page.click_back_btn(wd)
@@ -81,6 +81,7 @@ class Pdp:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             # 네이티브 변경
@@ -121,7 +122,7 @@ class Pdp:
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
             pdp_name = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name, search_product)
+            product_detail_page.check_product_name(pdp_name, search_product)
 
             # 구매하기 버튼 선택
             product_detail_page.click_purchase_btn(wd)
@@ -137,13 +138,13 @@ class Pdp:
             product_detail_page.click_direct_purchase_btn(wd)
 
             # 배송정보 타이틀 확인
-            test_result = order_page.check_delivery_info(wd, warning_texts)
+            order_page.check_delivery_info(wd)
 
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, pdp_name)
+            order_page.check_order_product_name(wd, pdp_name)
 
             # 주문서 가격 비교 확인
-            test_result = order_page.check_pdp_purchase_price(wd, warning_texts, pdp_price)
+            order_page.check_pdp_purchase_price(wd, pdp_price)
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:

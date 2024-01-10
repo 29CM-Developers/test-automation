@@ -29,7 +29,7 @@ def check_login_error_text(self, wd):
 
 
 def check_login_page(wd):
-    sleep(2)
+    sleep(3)
     # 로그인 화면 진입 확인
     login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
     print("홈 > 마이페이지 > 로그인 화면 진입")
@@ -44,5 +44,5 @@ def check_login_page(wd):
 
 def click_simple_join_btn(wd):
     # 간편 회원가입하기 버튼 선택
-    aalc(wd, '간편 회원가입하기')
+    aalc(wd, 'c_간편 회원가입하기')
     print("간편 회원가입하기 버튼 선택")

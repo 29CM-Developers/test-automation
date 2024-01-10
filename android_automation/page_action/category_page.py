@@ -89,7 +89,8 @@ def scroll_up_large_category(wd):
 
 
 def click_category(wd, category_name):
-    category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
+    # category_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/shopComposeView')
+    category_layer = aal(wd, 'com.the29cm.app29cm:id/shopComposeView')
     aalc(category_layer, category_name)
 
 

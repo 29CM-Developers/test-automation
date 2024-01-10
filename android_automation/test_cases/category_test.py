@@ -146,7 +146,7 @@ class Category:
             sleep(2)
             wd.get(self.conf['deeplink']['category'])
             print("카테고리탭 진입")
-            close_bottom_sheet(self.wd)
+            close_bottom_sheet(wd)
 
             # 핀메뉴에서 위러브 페이지 진입
             category_page.click_pin_menu(wd, 'WELOVE')
@@ -155,12 +155,18 @@ class Category:
             context_change.change_webview_contexts(wd)
 
             post_title = welove_page.save_first_post_title(wd)
+            # post_title = welove_page.save_first_post_title_for_recently_viewed(wd)
 
             # 첫번째 포스트의 첫번째 해시태그 저장 후 선택
             post_hash_tag = welove_page.save_first_post_hashtag(wd)
+            # post_hash_tag = welove_page.save_first_post_hashtag_native(wd)
 
             print(f'post_hash_tag : {post_hash_tag}')
             welove_page.click_first_post_hashtag(wd, post_hash_tag)
+            # welove_page.click_first_post_hashtag_native(wd, post_hash_tag)
+
+            # # 웹뷰로 변경
+            # context_change.change_webview_contexts(wd)
 
             # 해시태그 페이지 타이틀과 저장한 해시태그 비교 확인
             welove_page.check_hash_tag_title(wd, post_hash_tag)

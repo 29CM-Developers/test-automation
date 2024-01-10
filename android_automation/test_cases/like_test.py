@@ -214,7 +214,7 @@ class Like:
             like_page.close_brand_recommended_page(wd)
 
             # 추천 리스트의 첫번째 상품명 저장 및 좋아요 선택
-            like_product_name = like_page.save_like_product_name(wd)
+            like_product_name = like_page.save_like_product_name_in_like(wd)
             like_page.click_product_like_btn(wd)
 
             # PRODUCT 탭 새로고침

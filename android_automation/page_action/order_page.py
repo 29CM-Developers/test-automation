@@ -123,7 +123,8 @@ def save_purchase_price(wd):
                 scroll_control(wd, 'D', 100)
             else:
                 if element.is_displayed():
-                    parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제금액")]/../..')
+                    # parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제금액")]/../..')
+                    parent_elements = aal(wd, f'//*[contains(@text, "결제금액")]/../..')
                     print(f'parent_elements:{parent_elements}')
 
                     p1 = aals(parent_elements, '//android.widget.Button')
@@ -143,6 +144,7 @@ def save_purchase_btn_price(wd):
     print(f'save_purchase_btn_price : {price}')
     return price
 def save_delivery_price(wd):
+    # parent_elements = aal(wd, '//*[contains(@text, "결제금액")]/../..')
     parent_elements = wd.find_element(By.XPATH, '//*[contains(@text, "결제금액")]/../..')
     com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(parent_elements, '//android.widget.Button')
@@ -151,8 +153,10 @@ def save_delivery_price(wd):
     webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
     wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
     # 웹뷰에서 작업 수행 (예: 웹 요소 찾기, 클릭 등)
-    delivery_price_parents = wd.find_element(By.XPATH, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
-    delivery_price_element = delivery_price_parents.find_elements(By.XPATH, '*')
+    # delivery_price_parents = wd.find_element(By.XPATH, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
+    # delivery_price_element = delivery_price_parents.find_elements(By.XPATH, '*')
+    delivery_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
+    delivery_price_element = aals(delivery_price_parents, '*')
     for i in range(len(delivery_price_element)):
         print(f'delivery_price_element : {delivery_price_element[i].text}')
         if delivery_price_element[i].text == '배송비':
@@ -201,9 +205,11 @@ def change_native(wd):
 
 
 def save_coupon_discount_price(wd):
-    coupon_discount_price_parents = wd.find_element(By.XPATH,
-                                                    '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
-    coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
+    # coupon_discount_price_parents = wd.find_element(By.XPATH,
+    #                                                 '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
+    # coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
+    coupon_discount_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
+    coupon_discount_price_element = aals(coupon_discount_price_parents, '*')
 
     for i in range(len(coupon_discount_price_element)):
         print(f'coupon_discount_price_element : {coupon_discount_price_element[i].text}')
@@ -229,43 +235,38 @@ def save_order_no(wd):
     return order_no
 
 
-def check_delivery_info(wd, warning_texts):
+def check_delivery_info(wd):
     try:
         aal(wd, 'c_배송 정보')
-        test_result = 'PASS'
         print('구매하기 결제 화면 진입 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('구매하기 결제 화면 진입 확인 실패')
         print('구매하기 결제 화면 진입 확인 실패')
-    return test_result
+        raise Exception('구매하기 결제 화면 진입 확인 실패')
 
 
-def check_receiver_info(wd, warning_texts):
-    test_result = 'WARN'
+def check_receiver_info(wd):
+    info_break = False
     for i in range(0, 5):
         try:
             element = aal(wd, 'c_선물 받는 분 정보')
             if element.is_displayed():
-                test_result = 'PASS'
+                info_break = True
                 print('선물하기 결제 화면 진입 확인')
                 break
         except NoSuchElementException:
             pass
         scroll_control(wd, 'D', 50)
-    if test_result == 'WARN':
-        test_result = 'WARN'
-        warning_texts.append('선물하기 결제 화면 진입 확인 실패')
+    if not info_break:
         print('선물하기 결제 화면 진입 확인 실패')
-    return test_result
+        raise Exception('선물하기 결제 화면 진입 확인 실패')
 
 
-def check_order_product_name(wd, warning_texts, product_name):
+def check_order_product_name(wd, product_name):
     print(f'product_name : {product_name}')
     result_string = re.sub('\[29CM 단독\]_', '', product_name)
     print(f'result_string : {result_string}')
     sleep(5)
-    test_result = 'WARN'
+    name_break = False
     order_name = ''
     for i in range(0, 5):
         try:
@@ -275,20 +276,18 @@ def check_order_product_name(wd, warning_texts, product_name):
             else:
                 order_name = element.text
                 if element.is_displayed() and order_name == result_string:
-                    test_result = 'PASS'
                     print('주문서 상품명 확인')
+                    name_break = True
                     break
         except NoSuchElementException:
             scroll_control(wd, 'D', 50)
             pass
-    if test_result == 'WARN':
-        test_result = 'WARN'
-        warning_texts.append('주문서 상품명 확인 실패')
+    if not name_break:
         print(f'주문서 상품명 확인 실패: pdp-{product_name} / 주문서-{order_name}')
-    return test_result
+        raise Exception('주문서 상품명 확인 실패')
 
 
-def check_cart_purchase_price(wd, warning_texts, cart_price):
+def check_cart_purchase_price(wd, cart_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
@@ -298,35 +297,28 @@ def check_cart_purchase_price(wd, warning_texts, cart_price):
         f'주문서 가격 확인 - cart_price: {cart_price} / 배송비 : {delivery_price} / 쿠폰 할인 금액 : {coupon_discount_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} ')
     compare_price = cart_price + delivery_price - coupon_discount_price
     if order_price == compare_price and btn_price == compare_price:
-        test_result = 'PASS'
         print('주문서 가격 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문서 가격 확인 실패')
         print(
             f'주문서 가격 확인 실패 - pdp: {cart_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} / 쿠폰 할인 금액 : {coupon_discount_price}')
+        raise Exception('주문서 가격 확인 실패')
     sleep(3)
 
-    return test_result
 
-
-def check_pdp_purchase_price(wd, warning_texts, pdp_price):
+def check_pdp_purchase_price(wd, pdp_price):
     order_price = save_purchase_price(wd)
     btn_price = save_purchase_btn_price(wd)
     delivery_price = save_delivery_price(wd)
     compare_price = pdp_price + delivery_price
     if order_price == compare_price and btn_price == compare_price:
-        test_result = 'PASS'
         print('주문서 가격 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문서 가격 확인 실패')
         print(
             f'주문서 가격 확인 실패 - pdp: {pdp_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price}')
+        raise Exception('주문서 가격 확인 실패')
 
     change_native_contexts(wd)
     sleep(5)
-    return test_result
 
 
 def check_inipay_page(wd):
@@ -350,7 +342,8 @@ def check_payment_type(wd, payment_type):
     sleep(2)
     payment_info = ''
     try:
-        parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제방법")]/../..')
+        # parent_elements = wd.find_element(By.XPATH, f'//*[contains(@text, "결제방법")]/../..')
+        parent_elements = aal(wd, f'//*[contains(@text, "결제방법")]/../..')
         p1 = aals(parent_elements, '//android.view.View')
         for i in range(len(p1)):
             print(f'element : {p1[i].text}')

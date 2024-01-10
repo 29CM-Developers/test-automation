@@ -46,16 +46,6 @@ def click_tab_name(wd, click_tab_name):
     sleep(2)
 
 
-def save_tab_names(wd):
-    tab = aals(wd, f'//*[contains(@label, "라이프")]/../../../XCUIElementTypeCell')
-    tab_name_list = []
-    for text in tab:
-        tab_name = text.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
-        tab_name_list.append(tab_name)
-    tab_name_list = ', '.join(tab_name_list)
-    return tab_name_list
-
-
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'
 # tab_list : 비교할 탭 이름 리스트
 def check_tab_names(wd):
@@ -114,12 +104,11 @@ def check_dynamic_gate_gift_page(wd, dynamic_gate_btn_name):
         raise Exception('다이나믹 게이트 타이틀 확인 실패')
 
 
-def check_for_duplicate_banner_contents(self, wd):
+def check_for_duplicate_banner_contents(self):
     # 홈화면 배너 API 호출
     banner_data = home_banner_info(self)
     banner_ids = banner_data['banner_ids']
     banner_contents = banner_data['banner_contents']
-    print(f'banner_data : {banner_ids}, {banner_contents}')
 
     # 모든 홈 배너의 id와 contents의 중복 여부를 확인
     check_id = len(banner_ids) != len(set(banner_ids))
@@ -140,7 +129,7 @@ def save_banner_title(wd):
 
     try:
         sleep(3)
-        for i in range(0, 10):
+        for i in range(0, 5):
             sleep(2.5)
             home_banner_title = aal(wd, 'com.the29cm.app29cm:id/title')
             if home_banner_title == None:
@@ -239,7 +228,8 @@ def scroll_to_feed_contents_feed_contain_item(wd):
 
 def check_heartIcon_is_selected(wd):
     # 하트 이미 선택되었는지 확인
-    heart_element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartIcon')
+    # heart_element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartIcon')
+    heart_element = aal(wd, 'com.the29cm.app29cm:id/heartIcon')
     is_selected = heart_element.is_selected()
     if is_selected:
         print("하트 선택된 상태입니다.")
@@ -250,7 +240,8 @@ def check_heartIcon_is_selected(wd):
 
 
 def save_contents_like_count(wd):
-    before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
+    # before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
+    before_like_count = aal(wd, 'com.the29cm.app29cm:id/heartCount').text
     # 쉼표를 제거한 문자열 생성
     before_like_count = before_like_count.replace(',', '')
     # 문자열을 정수로 변환
@@ -311,10 +302,13 @@ def click_contents_product(wd):
 
 def check_app_evaluation_popup(wd):
     # 앱평가 발생 시 팝업 제거
-    app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
+    # app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
+    app_evaluation = aals(wd, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
     if len(app_evaluation) == 0:
         pass
     else:
-        wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
+        # wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
+        aalc(wd, "//*[contains(@text, '좋아요')]")
         sleep(1)
-        wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
+        # wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
+        aalc(wd, "//*[contains(@text, '나중에 하기')]")

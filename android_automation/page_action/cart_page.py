@@ -131,7 +131,7 @@ def save_product_name_one(wd):
     return first_product_name
 
 
-def check_product_name(wd, warning_texts, pdp_name1, pdp_name2):
+def check_product_name(wd, pdp_name1, pdp_name2):
     sleep(2)
     last_product_name = aal(wd, '//*[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[2]/div/div/a').text
     first_product_name = aal(wd, '//*[@id="__next"]/div/section[1]/div[2]/div[3]/div/div[2]/div/div/a').text
@@ -139,18 +139,13 @@ def check_product_name(wd, warning_texts, pdp_name1, pdp_name2):
     print(f'last_product_name :{last_product_name}, first_product_name : {first_product_name}')
 
     if last_product_name == pdp_name2 and first_product_name == pdp_name1:
-        test_result = 'PASS'
         print('장바구니 리스트 상품 이름 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('장바구니 리스트 상품 이름 확인 실패')
-        print(
-            f'last_product_name :{last_product_name}/pdp_name2:{pdp_name2} , first_product_name : {first_product_name}/pdp_name1:{pdp_name1} ')
-
-    return test_result
+        print(f'장바구니 리스트 상품 이름 확인 실패 :{first_product_name}/{pdp_name1}, {last_product_name}/{pdp_name2}')
+        raise Exception('장바구니 리스트 상품 이름 확인 실패')
 
 
-def check_change_in_number_of_products(wd, warning_texts):
+def check_change_in_number_of_products(wd):
     number_or_products = aal(wd, '//div[@id="__next"]/div/section[1]/div[1]/span/label').text
     print(f'number_or_products : {number_or_products}')
     # 뒤에서 2번째 문자 추출
@@ -162,27 +157,19 @@ def check_change_in_number_of_products(wd, warning_texts):
     print(f'products_total_number : {products_total_number}')
 
     if products_total_number == 1:
-        test_result = 'PASS'
         print('주문 상품 수 총 1개로 변경 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('주문 상품 수 총 1개로 변경 확인 실패')
-        print(f'products_total_number : {products_total_number}')
-
-    return test_result
+        print(f'주문 상품 수 총 1개로 변경 확인 실패 : {products_total_number}')
+        raise Exception('주문 상품 수 총 1개로 변경 확인 실패')
 
 
-def check_total_order_amount(wd, warning_texts, delete_product_price, before_delete_total_price,
-                             after_delete_total_price):
+def check_total_order_amount(delete_product_price, before_delete_total_price, after_delete_total_price):
     if before_delete_total_price == after_delete_total_price + delete_product_price:
-        test_result = 'PASS'
         print('총 주문금액이 해당 상품의 가격만큼 차감 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('장바구니 상품 제거 확인 실패')
         print(
-            f'delete_product_price:{delete_product_price}/ before_delete_total_price:{before_delete_total_price}/after_delete_total_price :{after_delete_total_price}')
-    return test_result
+            f'장바구니 상품 제거 확인 실패 : delete_product_price:{delete_product_price}/ before_delete_total_price:{before_delete_total_price}/after_delete_total_price :{after_delete_total_price}')
+        raise Exception('장바구니 상품 제거 확인 실패')
 
 
 def check_increase_in_product_count(wd, warning_texts):

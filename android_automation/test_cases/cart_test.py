@@ -144,8 +144,8 @@ class Cart:
             best_product = product_detail(product_item_no)['item_name']
 
             # PDP에 노출되는 상품명과 API 호출된 상품명 동일한 지 확인
-            pdp_name1 = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name1, best_product)
+            best_pdp_name = product_detail_page.save_product_name(wd)
+            product_detail_page.check_product_name(best_pdp_name, best_product)
 
             # 구매하기 버튼 선택
             product_detail_page.click_purchase_btn(wd)
@@ -159,7 +159,7 @@ class Cart:
             product_detail_page.click_put_in_cart_btn(wd)
 
             # 상품 장바구니에 담기 완료 바텀시트 노출 확인
-            test_result = product_detail_page.check_add_product_to_cart(wd, warning_texts)
+            product_detail_page.check_add_product_to_cart(wd)
 
             # 바텀시트 외의 영역 선택하여 바텀시트 닫기
             tap_control(wd)
@@ -177,8 +177,8 @@ class Cart:
             search_product = product_detail(search_product_item_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-            pdp_name2 = product_detail_page.save_product_name(wd)
-            test_result = product_detail_page.check_product_name(warning_texts, pdp_name2, search_product)
+            keyword_pdp_name = product_detail_page.save_product_name(wd)
+            product_detail_page.check_product_name(keyword_pdp_name, search_product)
 
             # 구매하기 버튼 선택
             product_detail_page.click_purchase_btn(wd)
@@ -190,7 +190,7 @@ class Cart:
             product_detail_page.click_put_in_cart_btn(wd)
 
             # 상품 장바구니에 담기 완료 바텀시트 노출 확인
-            test_result = product_detail_page.check_add_product_to_cart(wd, warning_texts)
+            product_detail_page.check_add_product_to_cart(wd)
 
             # 장바구니로 이동
             product_detail_page.click_move_to_cart(wd)
@@ -199,11 +199,11 @@ class Cart:
             # print(wd.window_handles)
             # wd.switch_to.window(wd.window_handles[0])
             # print(wd.current_window_handle)
-            test_result = cart_page.check_product_name(wd, warning_texts, pdp_name1, pdp_name2)
+            cart_page.check_product_name(wd, best_pdp_name, keyword_pdp_name)
             # 네이티브로 변경
             change_native_contexts(wd)
             # Home 탭으로 이동
-            move_to_home_Android(self, wd)
+            move_to_home_Android(wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
@@ -257,19 +257,19 @@ class Cart:
             # 첫번째 상품 삭제
             cart_page.click_delete_btn_to_first_product(wd)
             # 주문 상품 수 총 1개로 변경 확인
-            test_result = cart_page.check_change_in_number_of_products(wd, warning_texts)
+            cart_page.check_change_in_number_of_products(wd)
             # 삭제 후 토탈 금액 저장
             after_delete_total_price = cart_page.save_total_price(wd)
             # 총 주문금액이 해당 상품의 가격만큼 차감 확인
-            test_result = cart_page.check_total_order_amount(wd, warning_texts, delete_product_price,
-                                                             before_delete_total_price, after_delete_total_price)
+            cart_page.check_total_order_amount(delete_product_price, before_delete_total_price,
+                                               after_delete_total_price)
 
             # 첫번째 상품 주문 금액 저장
             first_product_price = cart_page.save_product_price(wd)
             # 남은 상품의 구매 개수 [+] 1번 선택
             cart_page.click_to_increase_the_number_of_products(wd)
             # 상품의 개수 정보 2로 변경 확인
-            test_result = cart_page.check_increase_in_product_count(wd, warning_texts)
+            cart_page.check_increase_in_product_count(wd, warning_texts)
             change_total_price = cart_page.save_total_price(wd)
             # 총 주문금액 변경 확인
             test_result = cart_page.check_change_total_order_amount(wd, warning_texts, first_product_price,
@@ -277,7 +277,7 @@ class Cart:
             # 네이티브 변경
             change_native_contexts(wd)
             # Home 탭으로 이동
-            move_to_home_Android(self, wd)
+            move_to_home_Android(wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
@@ -332,15 +332,15 @@ class Cart:
             # 1. [CHECK OUT] 버튼 선택
             cart_page.click_check_out_btn(wd)
             # 확인1 : 배송정보 타이틀 확인 - 구매하기 결제 화면 진입 확인
-            test_result = order_page.check_delivery_info(wd, warning_texts)
+            order_page.check_delivery_info(wd)
             # 확인2 : 주문상품 정보 상품명 비교 확인 - 주문서 상품명 확인
             # 주문 상품 정보 상품명 확인
-            order_page.check_order_product_name(wd, warning_texts, product_name)
+            order_page.check_order_product_name(wd, product_name)
             # # 확인3 : 가격 정보 비교 (스크롤 최하단 결제금액, 결제 버튼의 금액) - 주문서 가격 확인
-            test_result = order_page.check_cart_purchase_price(wd, warning_texts, total_price)
+            order_page.check_cart_purchase_price(wd, total_price)
 
             # Home 탭으로 이동
-            # move_to_home_Android(self, wd)
+            # move_to_home_Android(wd)
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
