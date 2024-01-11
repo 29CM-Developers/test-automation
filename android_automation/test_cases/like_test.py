@@ -5,15 +5,14 @@ import logging
 import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
-
 import com_utils
 from android_automation.page_action import like_page, navigation_bar, product_detail_page, context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils import values_control, cookies_control, deeplink_control
 from time import sleep, time
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
-    swipe_control, scroll_to_element_with_text, scroll, swipe_control, element_scroll_control
+from com_utils.element_control import aal, aalk, aalc, scroll_control, \
+    swipe_control, swipe_control, element_scroll_control
 from com_utils.testrail_api import send_test_result
 
 

@@ -1,33 +1,13 @@
-import json
-import logging
 import os.path
-import re
-import subprocess
 import sys
 import traceback
 import logging
-import requests
-from appium.webdriver.common.appiumby import AppiumBy
-from appium.webdriver.common.mobileby import MobileBy
-from selenium.common import NoSuchElementException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from android_automation.page_action import navigation_bar, category_page, best_product_list_page, bottom_sheet, \
-    product_detail_page
-from android_automation.page_action.best_product_list_page import check_best_product_page, \
-    check_app_evaluation_pop_up_exposure
+from android_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page
+from android_automation.page_action.best_product_list_page import check_app_evaluation_pop_up_exposure
 from android_automation.page_action.navigation_bar import move_to_category
-from com_utils import values_control, element_control, api_control
-from time import sleep, time
+from com_utils import values_control, api_control
+from time import time
 from com_utils.testrail_api import send_test_result
-
-logger = logging.getLogger(name='Log')
-logger.setLevel(logging.INFO)  ## 경고 수준 설정
-formatter = logging.Formatter('|%(name)s||%(lineno)s|%(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-stream_handler = logging.StreamHandler()  ## 스트림 핸들러 생성
-stream_handler.setFormatter(formatter)  ## 텍스트 포맷 설정
-logger.addHandler(stream_handler)  ## 핸들러 등록
 
 
 class Plp:

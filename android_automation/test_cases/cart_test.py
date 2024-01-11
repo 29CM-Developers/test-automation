@@ -3,7 +3,6 @@ import sys
 import traceback
 import logging
 from telnetlib import EC
-
 import requests
 import com_utils.deeplink_control
 from appium.webdriver.common.appiumby import AppiumBy

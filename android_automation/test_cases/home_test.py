@@ -22,8 +22,7 @@ from android_automation.page_action.like_page import close_brand_recommended_pag
 from com_utils import values_control, deeplink_control
 from time import sleep, time
 from com_utils.api_control import search_total_popular_brand_name, home_banner_info, feed_contents_info
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, swipe_control, \
-    scroll_to_element_with_text, scroll, swipe_control, aals
+from com_utils.element_control import aal, aalk, aalc, scroll_control, swipe_control, swipe_control, aals
 from com_utils.testrail_api import send_test_result
 
 

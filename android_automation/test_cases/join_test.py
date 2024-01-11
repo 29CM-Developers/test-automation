@@ -1,14 +1,11 @@
-import logging
+
 import os.path
 import sys
 import traceback
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from time import sleep, time
+from time import time
 import com_utils
 from android_automation.page_action import my_page, login_page, join_page, navigation_bar
-from com_utils import values_control, slack_result_notifications, element_control
+from com_utils import values_control
 from com_utils.testrail_api import send_test_result
 
 

@@ -15,8 +15,7 @@ from android_automation.page_action.select_category_page import test_select_cate
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
 from com_utils import values_control, slack_result_notifications, deeplink_control
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, \
-    scroll_to_element_with_text, scroll
+from com_utils.element_control import aal, aalk, aalc, scroll_control
 from com_utils.testrail_api import send_test_result
 
 
