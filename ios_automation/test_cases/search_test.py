@@ -265,9 +265,6 @@ class Search:
             # 최근 검색어 모두 지우기
             search_page.clear_recent_keyword(wd)
 
-            # 뒤로가기
-            search_page.click_back_btn(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')

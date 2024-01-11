@@ -250,8 +250,6 @@ class My:
             my_coupon_page.check_coupon_list(wd, api_coupon_list, coupon_list, '상품')
 
             my_coupon_page.click_back_btn(wd)
-            navigation_bar.move_to_home(wd)
-
 
         except Exception:
             test_result = 'FAIL'

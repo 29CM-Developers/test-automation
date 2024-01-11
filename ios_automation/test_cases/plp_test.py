@@ -101,7 +101,6 @@ class Plp:
 
             # Home으로 복귀
             best_product_list_page.click_back_btn(wd)
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'

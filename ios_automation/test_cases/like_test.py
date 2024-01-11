@@ -41,8 +41,6 @@ class Like:
             like_page.click_post_tab(wd)
             like_page.check_no_post_like(wd)
 
-            navigation_bar.move_to_home(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
@@ -212,9 +210,6 @@ class Like:
 
             # 상단 Like 개수 확인
             like_page.check_like_total_count(wd, "0")
-
-            # Home 탭으로 복귀
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'

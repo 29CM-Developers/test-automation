@@ -164,7 +164,6 @@ class Category:
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'

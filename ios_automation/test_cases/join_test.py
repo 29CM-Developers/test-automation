@@ -42,9 +42,6 @@ class Join:
             join_page.click_back_btn(wd)
             login_page.click_back_btn(wd)
 
-            # Home 탭으로 이동
-            navigation_bar.move_to_home(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
