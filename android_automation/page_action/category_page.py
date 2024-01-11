@@ -219,14 +219,10 @@ def check_unique_medium_category(self, wd):
     medium_category_list = []
     category_layer = aal(wd, 'com.the29cm.app29cm:id/shopComposeView')
 
-    medium_category_list.append(aal(category_layer,
-                                    '//android.view.View/android.view.View[3]/android.view.View[@index=3]/android.widget.TextView').text)
-    medium_category_list.append(aal(category_layer,
-                                    '//android.view.View/android.view.View[3]/android.view.View[@index=4]/android.widget.TextView').text)
-    medium_category_list.append(aal(category_layer,
-                                    '//android.view.View/android.view.View[3]/android.view.View[@index=5]/android.widget.TextView').text)
-    medium_category_list.append(aal(category_layer,
-                                    '//android.view.View/android.view.View[3]/android.view.View[@index=6]/android.widget.TextView').text)
+    for i in range(3, 7):
+        medium_category_list.append(aal(category_layer,
+                                        f'//android.view.View/android.view.View[3]/android.view.View[@index={i}]/android.widget.TextView').text)
+
     category_list = self.pconf['compare_category_list']
     print(f"medium_category_list : {medium_category_list}, category_list : {category_list}")
     if category_list == medium_category_list:
