@@ -8,8 +8,8 @@ from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 def close_brand_recommended_page(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+        ial(wd, 'recommended_brand_page')
+        ialc(wd, 'icNavigationbarBackBlack')
         print('브랜드 추천 페이지 노출 확인')
     except NoSuchElementException:
         pass
@@ -17,7 +17,7 @@ def close_brand_recommended_page(wd):
 
 def close_noti_bottom_sheet(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'liked_item_sale_notification_guide')
+        ial(wd, 'liked_item_sale_notification_guide')
         ialc(wd, '닫기')
         print('알림 바텀시트 노출 확인')
     except NoSuchElementException:
