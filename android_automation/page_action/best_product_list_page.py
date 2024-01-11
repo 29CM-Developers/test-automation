@@ -49,10 +49,10 @@ def save_best_first_product_name(wd):
     sleep(1)
     product_name = aal(wd, 'best_item_title')
     if product_name == None:
-        print("요소미발견")
+        pass
     else:
         product_name = product_name.text
-        print(f'product_name : {product_name}')
+        print(f'베스트 첫번째 상품명 {product_name} 확인')
         return product_name
 
 def save_best_plp_first_product_name(wd):
@@ -69,7 +69,7 @@ def save_best_plp_first_product_name(wd):
 
 def save_best_first_product_price(wd):
     best_product_list_price = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/lastSalePrice"]')
-    print(f"베스트 상품 가격 : {best_product_list_price[0].text} ")
+    print(f"베스트 상품 가격 {best_product_list_price[0].text} 확인 ")
     best_product_price = best_product_list_price[0].text
     return best_product_price
 
@@ -77,7 +77,7 @@ def save_best_first_product_price(wd):
 def save_best_product_like_count(wd):
     heart_count = aal(wd, 'best_item_like_count')
     if heart_count == None:
-        print('요소없음')
+        pass
     else:
         heart_count = heart_count.text
         heart_count = int(heart_count.replace(',', ''))
@@ -100,7 +100,6 @@ def click_best_first_product(wd):
 def click_home_tap_best_first_product(wd):
     product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
     product_name_list[0].click()
-
     sleep(1)
     close_bottom_sheet(wd)
 
@@ -112,9 +111,9 @@ def check_app_evaluation_pop_up_exposure(wd):
         print("앱 평가 팝업 미발생")
         pass
     else:
-        aalc(wd, "//*[contains(@text, '좋아요')]")
+        aalc(wd, "c_좋아요")
         sleep(1)
-        aalc(wd, "//*[contains(@text, '나중에 하기')]")
+        aalc(wd, "c_나중에 하기")
         print("앱 평가 팝업 발생하여 닫기")
 
 
@@ -138,7 +137,7 @@ def check_decrease_like_count(heart_count, heart_unselect):
 def save_plp_price(wd):
     price = aal(wd, 'best_item_price')
     if price == None:
-        print("요소발견못함")
+        pass
     else:
         price = price.text
         price = price.replace('원', '')
@@ -157,11 +156,11 @@ def check_best_product_name(compare_name, product_name):
 
 def find_scroll_and_find_product_rank(wd, text):
     for _ in range(10):
-        element = aal(wd, f"//*[contains(@text, '{text}')]")
+        element = aal(wd, f"c_{text}")
         if element == None:
             pass
         else:
-            print(f"element : {element.text}")
+            print(f"상품명 확인 : {element.text}")
             if element.is_displayed():
                 break
         # 요소를 찾지 못하면 아래로 스크롤
@@ -184,5 +183,5 @@ def save_api_product_name(prefix, product_name):
         best_product_name = product_name
     else:
         best_product_name = f'{prefix[0]} {product_name}'
-    print(best_product_name)
+    print(f'api 베스트 상풍명 {best_product_name} 확인')
     return best_product_name

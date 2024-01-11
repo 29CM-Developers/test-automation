@@ -9,12 +9,12 @@ from selenium.webdriver.support import expected_conditions as ec, wait
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import NoSuchElementException
 import com_utils
-from android_automation.page_action import my_page, login_page, navigation_bar
+from android_automation.page_action import my_page, login_page, navigation_bar, my_edit_user_info_page
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.select_category_page import test_select_category
 from time import sleep, time, strftime, localtime
 from appium.webdriver.common.touch_action import TouchAction
-from com_utils import values_control, slack_result_notifications
+from com_utils import values_control, slack_result_notifications, deeplink_control
 from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_control, \
     scroll_to_element_with_text, scroll
 from com_utils.testrail_api import send_test_result
@@ -216,99 +216,40 @@ class LoginLogout:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            print("[이메일 로그인 성공]CASE 시작")
-            sleep(2)
-            close_bottom_sheet(self.wd)
-            wd.get('app29cm://mypage')
-            sleep(2)
-            print("홈 > 마이페이지 화면 진입")
-            close_bottom_sheet(self.wd)
+            print(f'[{test_name}] 테스트 시작')
 
-            # 로그인 회원가입 버튼 선택
-            aalc(wd, 'com.the29cm.app29cm:id/txtLogin')
-            print("로그인 버튼 선택")
-            sleep(3)
+            sleep(1)
 
-            # 로그인 화면 진입 확인
-            login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
-            print("홈 > 마이페이지 > 로그인 화면 진입")
+            # 로그인 페이지 진입
+            com_utils.deeplink_control.move_to_my_Android(wd)
+            my_page.enter_login_page(wd)
 
-            close_bottom_sheet(self.wd)
+            # 올바른 아이디, 올바른 비밀번호 입력
+            login_page.input_id_password(wd, self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'])
 
-            if login_page_title.text == '로그인':
-                print("로그인 문구 확인")
-            else:
-                print("로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 문구 확인 실패")
-            print(f"가이드 문구 : {login_page_title.text} ")
+            # 프로필 이름 확인
+            my_page.check_nickname(self, wd)
 
-            # 올바른 비밀번로 입력 후 로그인 하기 버튼 선택
-            aalk(wd, '//android.widget.EditText[1]', self.pconf['LOGIN_SUCCESS_ID'])
-            aalk(wd, '//android.widget.EditText[2]', self.pconf['LOGIN_SUCCESS_PW'])
-            aalc(wd, '//android.widget.Button')
-            print("로그인 버튼 선택")
-            sleep(3)
+            # 회원 정보 수정 페이지 진입
+            my_page.click_edit_user_info_menu(wd)
 
-            # 로그인 성공 진입 확인
-            login_name = wd.find_element(By.ID, 'com.the29cm.app29cm:id/txtUserName')
-            if login_name.text == self.pconf['MASKING_NAME']:
-                pass
-            else:
-                print("로그인 문구 실패")
-                test_result = 'WARN'
-                warning_texts.append("로그인 문구 확인 실패")
-            print("로그인 유저 이름 : %s " % login_name.text)
-            # 보강시나리오 회원 정보 수정 버튼 선택
-            try:
-                scroll_to_element_with_text(wd, '회원 정보 수정')
-                scroll_control(wd, 'D', 10)
-                aalc(wd, 'c_회원 정보 수정')
-                sleep(3)
-                aalk(wd, '//android.widget.EditText', self.pconf['LOGIN_SUCCESS_PW'])
-                wd.find_element(By.CLASS_NAME, 'android.widget.Button').click()
-                sleep(2)
-                try:
-                    edit_member_information = aal(wd, 'c_회원정보 수정')
-                    print("회원정보 수정 화면 진입")
-                    if edit_member_information.text == '회원정보 수정':
-                        print("회원정보 수정 페이지 타이틀 확인")
-                    else:
-                        print("회원정보 수정 페이지 타이틀 확인 실패")
-                        test_result = 'WARN'
-                        warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
-                    print(f"가이드 문구 : {edit_member_information.text} ")
-                except NoSuchElementException:
-                    print("회원정보 수정 페이지 타이틀 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
-                    print(f"가이드 문구 : {edit_member_information.text} ")
-                try:
-                    user_email = aal(wd, f'c_{self.pconf["MASKING_EMAIL"]}')
-                    print("로그인한 유저 이메일 확인")
+            # 비밀번호 재확인
+            my_edit_user_info_page.input_password(wd, self.pconf['LOGIN_SUCCESS_PW'])
+            my_edit_user_info_page.click_next_btn(wd)
 
-                    if user_email.text == self.pconf['MASKING_EMAIL']:
-                        print("회원정보 수정 페이지 확인")
-                    else:
-                        print("회원정보 수정 페이지 확인 실패")
-                        test_result = 'WARN'
-                        warning_texts.append("회원정보 수정 페이지 확인 실패")
-                    print(f"가이드 문구 : {user_email.text} ")
-                except NoSuchElementException:
-                    print("회원정보 수정 페이지 타이틀 확인 실패")
-                    test_result = 'WARN'
-                    warning_texts.append("회원정보 수정 페이지 타이틀 확인 실패")
-                    print(f"가이드 문구 : {user_email.text} ")
-            except NoSuchElementException:
-                print("회원정보 수정 페이지 확인 실패")
-                test_result = 'WARN'
-                warning_texts.append("회원정보 수정 페이지 확인 실패")
+            # 회원 정보 수정 페이지의 타이틀과 닉네임 확인
+            my_edit_user_info_page.check_edit_page_title(wd)
+            my_edit_user_info_page.check_edit_page_id(wd, self.pconf['MASKING_NAME'])
 
-            # 하단 네비게이터에 홈 메뉴 진입
-            aalc(wd, 'HOME')
-            print("홈화면 진입")
-            print("[이메일 로그인 성공]CASE 종료")
-            close_bottom_sheet(self.wd)
+            # Home 으로 복귀
+            my_edit_user_info_page.click_back_btn(wd)
+            navigation_bar.move_to_home(wd)
+
+            # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
+            test_select_category(wd)
+
+            print(f'[{test_name}] 테스트 종료')
+
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'
@@ -322,6 +263,7 @@ class LoginLogout:
                 # 에러메시지 분류 시 예외처리
                 error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
                 error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
+                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
             except Exception:
                 pass
             wd.get('app29cm://home')

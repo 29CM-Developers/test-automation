@@ -1,6 +1,8 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+
+from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
 from com_utils.element_control import aal, aalc, element_scroll_control
 from com_utils.api_control import my_heart_count
 
@@ -20,18 +22,9 @@ def close_brand_recommended_page(wd):
         pass
 
 
-def close_noti_bottom_sheet(wd):
-    try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'liked_item_sale_notification_guide')
-        aalc(wd, '닫기')
-        print('알림 바텀시트 노출')
-    except NoSuchElementException:
-        pass
-
-
 def set_like_zero(self, wd):
     # 좋아요 api 호출하여 각 탭의 좋아요 수 확인
-    my_heart = my_heart_count(self.pconf['id_29cm'], self.pconf['password_29cm'])
+    my_heart = my_heart_count(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'])
     product_count = my_heart['product_count']
     brand_count = my_heart['brand_count']
     post_count = my_heart['post_count']
@@ -51,87 +44,73 @@ def set_like_zero(self, wd):
         # 좋아요 해제 후 새로고침
         refresh_brand_like_tab(wd)
 
-    if post_count != 0:
-        print(f'좋아요 포스트 수 : {post_count}')
-        click_post_tab(wd)
-        click_to_unlike_post(wd)
-        # 좋아요 해제 후 새로고침
-        refresh_post_like_tab(wd)
+    # if post_count != 0:
+    #     print(f'좋아요 포스트 수 : {post_count}')
+    #     click_post_tab(wd)
+    #     click_to_unlike_post(wd)
+    #     # 좋아요 해제 후 새로고침
+    #     refresh_post_like_tab(wd)
 
 
 # 비교하는 like 수를 like_count에 작성
-def check_like_total_count(wd, warning_texts, like_count):
-    like_total_count = aal(wd, 'like_total_count')
-    if like_total_count.text == like_count:
-        test_result = 'PASS'
-        print('총 LIKE 개수 확인')
+def check_like_total_count(wd, like_count):
+    txtHeartCount = aal(wd, 'com.the29cm.app29cm:id/txtHeartCount').text
+    if txtHeartCount == like_count:
+        print(f'총 LIKE 개수 {like_count} 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('총 LIKE 개수 확인 실패')
-        print('총 LIKE 개수 확인 실패')
-    return test_result
+        print(f'총 LIKE 개수 {like_count} 확인 실패')
+        raise Exception(f'총 LIKE 개수 {like_count} 확인 실패')
 
 
 def click_product_tab(wd):
-    aalc(wd, 'like_product_tab')
+    aalc(wd, 'com.the29cm.app29cm:id/layoutProduct')
 
 
 def click_brand_tab(wd):
-    aalc(wd, 'like_brand_tab')
+    aalc(wd, 'com.the29cm.app29cm:id/layoutBrand')
 
 
 def click_post_tab(wd):
     aalc(wd, 'like_post_tab')
 
 
-def check_no_product_like(wd, warning_texts):
-    try:
-        aal(wd, '좋아요한 상품이 없습니다. 마음에 드는 상품의 하트를 눌러보세요.')
-        test_result = 'PASS'
+def check_no_product_like(wd):
+    txtInfo = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtInfo').text
+    if txtInfo in '좋아요한 상품이 없습니다.\n마음에 드는 상품에 하트를 눌러보세요.':
         print('PRODUCT 좋아요 없음 문구 노출 확인')
-    except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('PRODUCT 좋아요 없음 문구 노출 확인 실패')
+    else:
         print('PRODUCT 좋아요 없음 문구 노출 확인 실패')
-    return test_result
+        raise Exception('PRODUCT 좋아요 없음 문구 노출 확인 실패')
 
 
-def check_no_brand_like(wd, warning_texts):
-    try:
-        aal(wd, '좋아요한 브랜드가 없어요.')
-        test_result = 'PASS'
+def check_no_brand_like(wd):
+    txtInfo = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtInfo').text
+    if txtInfo in '좋아요한 브랜드가 없습니다.\n마음에 드는 브랜드에 하트를 눌러보세요.':
         print('BRAND 좋아요 없음 문구 노출 확인')
-    except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('BRAND 좋아요 없음 문구 노출 확인 실패')
+    else:
         print('BRAND 좋아요 없음 문구 노출 확인 실패')
-    return test_result
+        raise Exception('BRAND 좋아요 없음 문구 노출 확인 실패')
 
 
-def check_no_post_like(wd, warning_texts):
+def check_no_post_like(wd):
     try:
         aal(wd, '좋아요한 게시물이 없습니다. 다시 보고 싶은 게시물에 하트를 눌러보세요.')
-        test_result = 'PASS'
         print('POST 좋아요 없음 문구 노출 확인')
     except NoSuchElementException:
-        test_result = 'WARN'
-        warning_texts.append('POST 좋아요 없음 문구 노출 확인')
         print('POST 좋아요 없음 문구 노출 확인')
-    return test_result
-
+        raise Exception('POST 좋아요 없음 문구 노출 확인')
 
 def refresh_product_like_tab(wd):
-    product_list = aal(wd, 'like_product_list')
+    product_list = aal(wd, 'com.the29cm.app29cm:id/layoutInfo')
     element_scroll_control(wd, product_list, 'U', 30)
 
 
 def refresh_brand_like_tab(wd):
-    product_list = aal(wd, 'like_brand_list')
-    element_scroll_control(wd, product_list, 'U', 30)
+    aalc(wd, 'com.the29cm.app29cm:id/layoutShowBrand')
 
 
 def refresh_post_like_tab(wd):
-    product_list = aal(wd, 'like_post_list')
+    product_list = aal(wd, 'com.the29cm.app29cm:id/layoutInfo')
     element_scroll_control(wd, product_list, 'U', 30)
 
 
@@ -147,147 +126,197 @@ def click_to_unlike_product(wd):
 
 
 def click_to_unlike_brand(wd):
-    brand = wd.find_elements(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="ic heart line"]')
-    for brand_like in brand:
-        brand_like.click()
-
-
-def click_to_unlike_post(wd):
-    post = wd.find_elements(AppiumBy.XPATH,
-                            '//XCUIElementTypeCell[@name="like_post_item"]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeButton')
-    for post_like in post:
-        post_like.click()
+    aalc(wd, 'com.the29cm.app29cm:id/layoutHeart')
+    txtBrandCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandCount').text
+    if txtBrandCount == '(0)':
+        print('Brand Count 감소 확인')
+    else:
+        print('Brand Count 감소 확인 실패')
 
 
 def save_like_product_name(wd):
-    try:
-        like_product_name = aal(wd, 'com.the29cm.app29cm:id/txtBody').text
-        print(f'좋아요 상품명 : {like_product_name}')
-    except NoSuchElementException:
-        print('상품명 못찾음')
-    return like_product_name
+    # like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    # productItem = aal(like_layer,
+    #                   '//android.view.ViewGroup[2]/android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
+    productItem = aal(wd, 'com.the29cm.app29cm:id/txtBody').text
+    print(f"productItem : {productItem}")
+    # like_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]').click()
+    return productItem
+
+
+def save_like_product_name_in_like(wd):
+    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    productItem = aal(like_layer,
+                      '//android.view.ViewGroup[2]/android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
+
+    print(f"productItem : {productItem}")
+    # like_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]').click()
+    return productItem
+
+    # try:
+    #     like_product_name = aal(wd, 'com.the29cm.app29cm:id/txtBody').text
+    #     print(f'좋아요 상품명 : {like_product_name}')
+    # except NoSuchElementException:
+    #     print('상품명 못찾음')
+    # return like_product_name
 
 
 def click_product_like_btn(wd):
-    wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="like_btn"]').click()
+    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    aalc(like_layer,
+         '//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]')
 
 
 # like_product_name = 좋아요 상품 목록의 상품명과 비교할 상품명
-def check_product_like(wd, warning_texts, like_product_name):
-    liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
-    liked_product_name = liked_product.find_element(AppiumBy.XPATH,
-                                                    '//XCUIElementTypeStaticText[@index="1"]').text
-    if like_product_name == liked_product_name:
-        test_result = 'PASS'
+def check_product_like(wd, like_product_name):
+    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    aalc(wd, 'com.the29cm.app29cm:id/layoutShowProduct')
+    like_productItem = aal(like_layer, 'com.the29cm.app29cm:id/txtBody').text
+    print(f"like_productItem : {like_productItem}")
+    if like_productItem in like_product_name:
         print('좋아요 상품 노출 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('좋아요 상품 노출 확인 실패')
-        print(f'좋아요 상품 노출 확인 실패: 좋아요 전-{like_product_name} / 좋아요 후-{liked_product_name}')
-    return test_result
+        print(f'좋아요 상품 노출 확인 실패: 좋아요 전-{like_product_name} / 좋아요 후-{like_productItem}')
+        raise Exception('좋아요 상품 노출 확인 실패')
+
+
+def click_product_name(wd):
+    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    aalc(like_layer, 'com.the29cm.app29cm:id/txtBody')
+    close_bottom_sheet(wd)
 
 
 def click_liked_product_cart_btn(wd):
-    liked_product = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_product_item')
-    liked_product.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                               '**/XCUIElementTypeButton[`label == "장바구니 담기"`]').click()
+    # 장바구니 버튼 선택하여 PDP 진입 확인 (바텀시트 확인, 상품명 확인)
+    aalc(wd, 'com.the29cm.app29cm:id/txtCart')
+    sleep(1)
+
+
+def check_open_to_purchase_modal(wd, like_productItem):
+    # like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    # like_productItem = aal(like_layer, 'com.the29cm.app29cm:id/txtBody').text
+    item_name = aal(wd, 'com.the29cm.app29cm:id/txtItemName').text
+    if item_name in like_productItem:
+        print('좋아요 상품명 장바구니 모달 확인')
+    else:
+        print('좋아요 상품명 장바구니 모달 확인 실패')
+        raise Exception('좋아요 상품명 장바구니 모달 확인 실패')
+
+
+def close_purchase_modal(wd):
+    sleep(1)
+    # aalc(wd, 'android:id/content')
+    wd.find_element(AppiumBy.ID, 'android:id/content').click()
+    print('모달 닫기 선택')
 
 
 def save_like_brand_name(wd):
-    recommended_brand = wd.find_element(AppiumBy.XPATH,
-                                        '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="3"]')
-    like_brand_name = recommended_brand.find_element(AppiumBy.XPATH,
-                                                     '//XCUIElementTypeStaticText[@index="1"]').text
-    print(f'좋아요 브랜드명 : {like_brand_name}')
-    return like_brand_name
+    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    BrandName = aal(like_layer, 'com.the29cm.app29cm:id/txtBrandName').text
+    print(f"브랜드 이름 : {BrandName} 확인")
+
+    return BrandName
 
 
 def click_brand_like_btn(wd):
-    recommended_brand = wd.find_element(AppiumBy.XPATH,
-                                        '//XCUIElementTypeCollectionView/XCUIElementTypeCell[@index="3"]')
-    recommended_brand.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                   '**/XCUIElementTypeButton[`label == "ic heart line"`]').click()
+    aalc(wd, 'com.the29cm.app29cm:id/layoutHeart')
 
 
 # like_brand_name = 좋아요 상품 목록의 브랜드명과 비교할 브랜드명
-def check_brand_like(wd, warning_texts, like_brand_name):
-    liked_brand = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_item')
-    liked_brand_name = liked_brand.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').text
-    if like_brand_name == liked_brand_name:
-        test_result = 'PASS'
+def check_brand_like(wd, like_brand_name):
+    like_BrandName = aal(wd, 'com.the29cm.app29cm:id/txtBrandName')
+    print(f"좋아요한 브랜드 이름 : {like_BrandName.text} 확인")
+    if like_brand_name in like_BrandName.text:
         print('좋아요 브랜드 노출 확인')
     else:
-        test_result = 'WARN'
-        warning_texts.append('좋아요 브랜드 노출 확인 실패')
-        print(f'좋아요 브랜드 노출 확인 실패: 좋아요 전-{like_brand_name} / 좋아요 후-{liked_brand_name}')
-    return test_result
+        print('좋아요 브랜드 노출 확인 실패')
+        raise Exception('좋아요 브랜드 노출 확인 실패')
+
+
+def check_brand_page_name(wd, like_brand_name):
+    original_string = like_brand_name
+    uppercase_string = original_string.upper()
+    brand_name = aal(wd, '//*[@id="__next"]/section[1]/div[1]/div[1]/h3')
+    print(f'브랜드 이름 : {brand_name.text} 확인')
+    if uppercase_string in brand_name.text:
+        print('좋아요 브랜드 노출 확인')
+    else:
+        print('좋아요 브랜드 노출 확인 실패')
+        raise Exception('좋아요 브랜드 노출 확인 실패')
+    sleep(1)
 
 
 def click_liked_brand_name(wd):
-    liked_brand = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_brand_item')
-    liked_brand.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@index="1"]').click()
+    aalc(wd, 'com.the29cm.app29cm:id/txtBrandName')
+    sleep(1)
 
 
 def click_brand_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
+    print("뒤로가기 선택")
+    sleep(2)
 
 
 def save_liked_brand_product_name(wd):
-    brand_product_name = aal(wd,
-                             '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText').text
-    print(f'좋아요 브랜드의 상품: {brand_product_name}')
-    return brand_product_name
+    like_BrandName = aal(wd, 'com.the29cm.app29cm:id/txtBrandName')
+    print(f"좋아요한 브랜드 이름 : {like_BrandName.text} 확인")
+    return like_BrandName
 
 
-def click_liked_brand_porduct_name(wd):
-    aalc(wd,
-         '//XCUIElementTypeCell[@name="like_brand_item"]/XCUIElementTypeOther/XCUIElementTypeCollectionView/XCUIElementTypeCell[1]/XCUIElementTypeOther/XCUIElementTypeOther')
+def save_liked_brand_product_name(wd):
+    item_layer = aal(wd, 'com.the29cm.app29cm:id/recyclerView')
+    item_name = aal(item_layer, '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/itemName"]').text
+    print(f'좋아요한 브랜드 상품명 : {item_name} 확인')
+    return item_name
 
 
-def move_to_welove_page(wd):
-    wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeButton[`label == "인기 게시물 보기"`]').click()
-
-
-# like_post_name = 좋아요 상품 목록의 포스트 제목과 비교할 포스트 제목
-def check_post_like(wd, warning_texts, like_post_name):
-    liked_post = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'like_post_item')
-    liked_post_name = liked_post.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
-    if like_post_name == liked_post_name:
-        test_result = 'PASS'
-        print('좋아요 게시물 노출 확인')
-    else:
-        test_result = 'WARN'
-        warning_texts.append('좋아요 게시물 노출 확인 실패')
-        print(f'좋아요 게시물 노출 확인 실패 : 좋아요 전-{like_post_name} / 좋아요 후-{liked_post_name}')
-    return test_result
+def click_liked_brand_product_name(wd):
+    item_layer = aal(wd, 'com.the29cm.app29cm:id/recyclerView')
+    aalc(item_layer, '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/itemName"]')
+    sleep(1)
+    close_bottom_sheet(wd)
+    close_pdp_bottom_sheet(wd)
 
 
 def save_grid_image_size(wd):
-    image_size = aal(wd,
-                     '//XCUIElementTypeCell[@name="like_product_item"]/XCUIElementTypeOther/XCUIElementTypeImage').size
-    return image_size
+    # 그리드 뷰 상태에서 이미지 사이즈 저장
+    # image_size_layer = aal(wd,'com.the29cm.app29cm:id/likeRecyclerView')
+    sleep(1)
+    grid_size = aal(wd, '//android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/imageThumbnail"]').size
+    print(f'grid_size : {grid_size["height"]} / {grid_size["width"]}')
+
+    return grid_size
 
 
 def save_list_image_size(wd):
-    image_size = aal(wd,
-                     '//XCUIElementTypeCollectionView[@name="like_product_list"]/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage').size
-    return image_size
+    list_size = aal(wd, '//android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/imageThumbnail"]').size
+    print(f'grid_size : {list_size["height"]} / {list_size["width"]}')
+    return list_size
 
 
 def click_change_view_type_to_list(wd):
-    aalc(wd, 'ic like list')
+    aalc(wd, 'com.the29cm.app29cm:id/imageGrid')
 
 
 def click_change_view_type_to_grid(wd):
-    aalc(wd, 'ic like grid')
+    aalc(wd, 'com.the29cm.app29cm:id/imageGrid')
 
 
-def check_veiw_image_size(warning_texts, grid_height, grid_width, list_height, list_width):
+def check_veiw_image_size(grid_height, grid_width, list_height, list_width):
     if grid_height != list_height and grid_width != list_width:
-        test_result = 'PASS'
         print("좋아요 상품 탭의 뷰 정렬 변경 확인")
     else:
-        test_result = 'WARN'
-        warning_texts.append('좋아요 상품 탭의 뷰 정렬 변경 확인 실패')
         print("좋아요 상품 탭의 뷰 정렬 변경 확인 실패")
-    return test_result
+        raise Exception('좋아요 상품 탭의 뷰 정렬 변경 확인 실패')
+
+
+def check_like_phases(wd):
+    like_title = aal(wd, 'com.the29cm.app29cm:id/txtTitle')
+    if like_title == None:
+        print('LIKE 탭 진입 확인 실패')
+        raise Exception('LIKE 탭 진입 확인 실패')
+    elif like_title.text == 'LIKE':
+        print('HOME 탭에서 LIKE 탭 이동 확인')
+    else:
+        print(f'LIKE 탭 진입 확인 실패 : {like_title.text}')
+        raise Exception('LIKE 탭 진입 확인 실패')

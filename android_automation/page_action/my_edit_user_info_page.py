@@ -1,5 +1,7 @@
 from time import sleep
 from selenium.common import NoSuchElementException
+from selenium.webdriver.common.by import By
+
 from com_utils.element_control import aal, aalc, aalk
 
 
@@ -8,7 +10,7 @@ def input_password(wd, password):
 
 
 def click_next_btn(wd):
-    aalc(wd, 'android.widget.Button')
+    aalc(wd, 'cn_android.widget.Button')
     sleep(2)
 
 

@@ -70,3 +70,10 @@ def move_to_pdp_Android(wd, product_item_no):
     wd.get(f'app29cm://product/{product_item_no}')
     sleep(3)
     bottom_sheet.close_bottom_sheet(wd)
+
+
+def move_to_like_Android(wd):
+    wd.get('app29cm://like')
+    # LIKE 탭 진입 후, 바텀시트, 노티 바텀시트, 브랜드 추천 페이지 노출 여부 순차적으로 확인
+    sleep(1)
+    bottom_sheet.close_bottom_sheet(wd)

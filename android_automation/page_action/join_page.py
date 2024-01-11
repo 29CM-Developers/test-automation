@@ -5,7 +5,7 @@ from com_utils.element_control import aal, aalc, aalk
 
 def click_back_btn(wd):
     # 뒤로가기로 홈화면 진입 확인
-    wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/imgBack').click()
+    aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print("뒤로가기 선택")
     sleep(3)
 
@@ -25,7 +25,7 @@ def click_required_terms(wd):
 
 
 def input_email(wd, email):
-    wd.find_element(AppiumBy.CLASS_NAME, 'android.widget.EditText').send_keys(email)
+    aalk(wd, 'cn_android.widget.EditText', email)
     sleep(1)
 
 

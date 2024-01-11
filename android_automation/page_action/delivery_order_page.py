@@ -11,7 +11,7 @@ def click_back_btn(wd):
 
 
 def check_no_delivery_order(wd):
-    sleep(2)
+    sleep(4)
     element = aal(wd, 'c_주문내역이 없습니다')
     if element == None:
         print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
@@ -40,7 +40,6 @@ def check_order_detail_price(wd, payment_type, order_price):
     find_element = wd.find_element(AppiumBy.XPATH, f'//*[contains(@text, "{payment_type}")]/../..')
     p1 = aals(find_element, '//android.widget.TextView')
     for j in range(len(p1)):
-        print(f'element : {p1[j].text}')
         if p1[j].text == '결제금액':
             price = p1[j + 1].text
             price = re.sub(r'[^0-9]', '', price)

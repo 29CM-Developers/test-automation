@@ -9,6 +9,22 @@ def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     sleep(1)
 
+def check_keyboard_clear_recent_keyword(wd):
+    # 키보드가 올라가 있는지 확인하고, 올라가 있다면 닫기
+    if is_keyboard_displayed(wd):
+        print("키패드 열림 확인")
+        close_keyboard(wd)
+        print("키패드 닫기")
+    else:
+        print("키패드 미노출")
+
+    delete_all = aal(wd, 'c_모두 지우기')
+    if delete_all == None:
+        print("최근검색어 없음")
+    else:
+        print("최근검색어 있음")
+        aalc(wd, 'c_모두 지우기')
+
 
 def is_keyboard_displayed(wd):
     try:
@@ -132,7 +148,6 @@ def swipe_brand_area(wd):
                                   '(//android.view.View[@content-desc="popular_brand_layer"])[1]')
     for _ in range(0, 4):
         element_control.swipe_control(wd, brand_layer, 'left', 60)
-        print("스와이프")
         sleep(1)
         brand_layer = wd.find_element(AppiumBy.XPATH,
                                       '(//android.view.View[@content-desc="popular_brand_layer"])[1]')
@@ -197,7 +212,6 @@ def save_popular_keyword(wd, keyword):
         else:
             print(f"element : {element.text}")
             if element.is_displayed():
-                print("아이템 발견")
                 return element.text
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
