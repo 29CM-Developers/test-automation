@@ -12,7 +12,7 @@ def click_pdp_back_btn(wd):
 
 def click_home_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgHome')
-    sleep(2)
+    # sleep(2)
 
 
 def save_product_name(wd):
@@ -113,9 +113,9 @@ def click_move_to_cart(wd):
 
 
 def click_like_btn(wd):
-    sleep(2)
+    #sleep(2)
     aalc(wd, 'c_찜하기')
-    sleep(3)
+    #sleep(3)
 
 # 옵션 존재 여부 확인
 def option_exist(product_item_no):
@@ -218,7 +218,7 @@ def check_bottom_sheet_title(wd):
 
 
 def save_product_name(wd):
-    sleep(2)
+    # sleep(2)
     # 이굿 위크 상품 확인
     sale_tag = aal(wd, '이굿위크 할인 상품')
     if sale_tag == None:

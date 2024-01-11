@@ -15,7 +15,7 @@ def check_home_logo(wd):
 def click_search_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgSearch')
     print("상단 검색 아이콘 선택")
-    sleep(2)
+    # sleep(2)
 
 
 def click_close_life_tab(wd):
@@ -28,14 +28,14 @@ def click_close_life_tab(wd):
         print("라이프 탭 해제")
     else:
         print('라이프 탭 디폴트 아님')
-    sleep(2)
+    #sleep(2)
 
 
 # click_tab_name : 선택하려는 상단 탭 이름 입력
 def click_tab_name(wd, click_tab_name):
     aalc(wd, click_tab_name)
     print(f'{click_tab_name} 탭 선택')
-    sleep(2)
+    #sleep(2)
 
 
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'

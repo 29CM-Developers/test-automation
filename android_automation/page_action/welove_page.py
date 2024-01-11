@@ -10,16 +10,16 @@ from com_utils.element_control import aal, aalc, aals
 
 # welove 페이지에서 뒤로가기
 def click_welove_back_btn(wd):
-    sleep(3)
+    # sleep(3)
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-    sleep(3)
+    #sleep(3)
 
 
 def click_hash_tag_close_btn(wd):
-    sleep(3)
+    # sleep(3)
     # 뒤로가기 버튼 시뮬레이트
     wd.press_keycode(AndroidKey.BACK)
-    sleep(3)
+    #sleep(3)
 
 
 # 포스트에서 welove 페이지로 뒤로가기
@@ -35,7 +35,7 @@ def click_hash_tag_back_btn(wd):
 
 
 def save_first_post_title(wd):
-    sleep(2)
+    #sleep(2)
 
     # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
     post_title = aals(wd, '//h3')[1]
@@ -80,7 +80,7 @@ def click_first_post_for_recently_viewed(wd):
 def click_first_post(wd):
     # aalc(wd, 'com.the29cm.app29cm:id/txtPostTitle')
     aalc(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3')
-    sleep(3)
+    #sleep(3)
 
 
 def save_first_post_hashtag(wd):
@@ -129,7 +129,7 @@ def click_first_post_hashtag(wd, post_hash_tag):
     # aalc(wd, '//*[@id="__next"]/section/section[1]/div[2]/ul/li[1]/div/div[1]/button')
     # com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(wd, '//button')
-    sleep(4)
+    #sleep(4)
 
 
 def click_first_post_hashtag_native(wd, post_hash_tag):
@@ -148,7 +148,7 @@ def click_first_post_hashtag_native(wd, post_hash_tag):
 
 def check_hash_tag_title(wd, hash_tag):
     print(f"check_hash_tag_title : {hash_tag}")
-    sleep(2)
+    # sleep(2)
     # hash_tag_title = aal(wd, hash_tag).text
     # hash_tag_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/div[2]/div/h3').text
     hash_tag_title = aal(wd, '//h3[contains(text(), "#")]').text
@@ -184,7 +184,7 @@ def check_hash_tag_post(wd, post_title):
 def find_and_save_third_post(wd):
     find_break = False
     com_utils.element_control.scroll_control(wd, "D", 40)
-    sleep(2)
+    #sleep(2)
     for i in range(0, 5):
         # post_layer = aal(wd, 'com.the29cm.app29cm:id/weloveRecyclerView')
         # post = aal(post_layer,
@@ -192,7 +192,7 @@ def find_and_save_third_post(wd):
         post = aal(wd, '//*[@id="__next"]/section/section[1]/div[2]/ul/li[3]/a/div[2]/h3')
         if post == None:
             com_utils.element_control.scroll_control(wd, "D", 40)
-            sleep(2)
+            # sleep(2)
             # post_layer = aal(wd, 'com.the29cm.app29cm:id/weloveRecyclerView')
             # post = aal(post_layer,
             #            "//android.widget.LinearLayout[3]/android.widget.RelativeLayout/android.widget.TextView[1]")

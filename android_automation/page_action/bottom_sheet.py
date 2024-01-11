@@ -6,7 +6,7 @@ from time import sleep
 
 def close_bottom_sheet(wd):
     try:
-        sleep(1)
+        # sleep(1)
         wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/com_braze_inappmessage_html')
         wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '닫기')]").click()
         print('바텀 시트 노출되어 닫기 동작')

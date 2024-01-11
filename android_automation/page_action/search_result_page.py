@@ -8,7 +8,7 @@ from selenium.common import NoSuchElementException
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print('뒤로가기 선택')
-    sleep(1)
+    # sleep(1)
 
 
 def check_input_field(wd, keyword):
@@ -133,47 +133,47 @@ def click_sort_filter_btn(wd, sort):
     filter_by_sales_name = filter_by_sales.text
     filter_by_sales.click()
     print(f'정렬 : {sort} 선택')
-    sleep(1)
+    #sleep(1)
     if selector.text in filter_by_sales_name:
         print("판매순 정렬 변경 확인")
     else:
         print("판매순 정렬 변경 확인 실패")
         raise Exception('판매순 정렬 변경 확인 실패')
-    sleep(1)
+    #sleep(1)
 
 
 def click_color_filter(self, wd, color):
     print(f'color : {color}')
     selector_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
-    sleep(1)
+    #sleep(1)
     aalc(selector_layer, f'c_{self.conf["search_filter"]["color"]}')
-    sleep(1)
+    #sleep(1)
     aalc(wd, f"c_{color}")
-    sleep(1)
+    #sleep(1)
     print(f'color : {color} 선택')
 
 
 def click_category_filter(wd, category):
-    sleep(1)
+    #sleep(1)
     aalc(wd, 'category_filter_layer')
-    sleep(1)
+    #sleep(1)
     aalc(wd, f"c_{category}")
-    sleep(1)
+    #sleep(1)
     print(f'필터 - 카테고리 : {category} 선택')
 
 
 def click_price_range_filter(wd, price_range):
     aalc(wd, 'price_range')
-    sleep(1)
+    #sleep(1)
     aalc(wd, f"c_{price_range}")
-    sleep(1)
+    #sleep(1)
 
 
 def click_product_info_filter(wd, product_info):
     aalc(wd, 'product_information')
-    sleep(0.5)
+    #sleep(0.5)
     aalc(wd, f"c_{product_info}")
-    sleep(0.5)
+    #sleep(0.5)
 
 
 def click_apply_filter_btn(wd):
@@ -228,7 +228,7 @@ def check_filter_info(self, wd, to_be_filter_list):
     else:
         print("품절상품 제외 필터링 노출 확인 실패")
         raise Exception('인기 검색어 검색 결과 확인 실패')
-    sleep(2)
+    #sleep(2)
 
 
 def save_filter_reseult_info(self, wd):

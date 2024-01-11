@@ -8,7 +8,7 @@ from com_utils.api_control import my_heart_count
 
 def close_brand_recommended_page(wd):
     try:
-        sleep(3)
+        # sleep(3)
         # 관심 브랜드 선택 화면 발생
         brands_of_interest = aal(wd, 'com.the29cm.app29cm:id/recommendBrandRecyclerView')
         if brands_of_interest == None:
