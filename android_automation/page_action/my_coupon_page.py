@@ -1,8 +1,6 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc, aals
 from time import sleep
-from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 
 
 def click_back_btn(wd):
@@ -10,7 +8,7 @@ def click_back_btn(wd):
 
 
 def click_coupon_type(wd):
-    sleep(3)
+    sleep(2)
     aalc(wd, 'c_전체 쿠폰')
     print('전체쿠폰 선택')
     sleep(1)

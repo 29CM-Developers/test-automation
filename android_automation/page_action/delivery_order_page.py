@@ -23,7 +23,7 @@ def check_no_delivery_order(wd):
 def check_delivery_order(wd, order_no):
     try:
         aalc(wd, f'c_{order_no}')
-        sleep(3)
+        sleep(2)
         print('주문 배송 조회 확인 - 주문번호')
     except NoSuchElementException:
         print('주문 배송 조회 확인 실패 - 주문번호')

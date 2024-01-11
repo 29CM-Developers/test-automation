@@ -3,10 +3,9 @@ from appium.webdriver.extensions.android.nativekey import AndroidKey
 import com_utils.element_control
 from selenium.common import NoSuchElementException
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from android_automation.page_action.cart_page import change_webview_contexts
-from android_automation.page_action.context_change import change_native_contexts, switch_context
-from com_utils.element_control import aal, aalc, aals, scroll_up_to_element_id, scroll_control, scroll_to_element_xpath
+from android_automation.page_action.context_change import change_native_contexts
+from com_utils.element_control import aal, aalc, aals
 
 
 # welove 페이지에서 뒤로가기
@@ -130,7 +129,7 @@ def click_first_post_hashtag(wd, post_hash_tag):
     # aalc(wd, '//*[@id="__next"]/section/section[1]/div[2]/ul/li[1]/div/div[1]/button')
     # com_utils.element_control.scroll_control(wd, 'D', 30)
     aalc(wd, '//button')
-    sleep(5)
+    sleep(4)
 
 
 def click_first_post_hashtag_native(wd, post_hash_tag):
@@ -144,7 +143,7 @@ def click_first_post_hashtag_native(wd, post_hash_tag):
     # aalc(wd, '//*[@id="__next"]/section/section[1]/div[2]/ul/li[1]/div/div[1]/button')
     # com_utils.element_control.scroll_control(wd, 'D', 30)
     # aalc(wd, '//button')
-    sleep(5)
+    sleep(4)
 
 
 def check_hash_tag_title(wd, hash_tag):

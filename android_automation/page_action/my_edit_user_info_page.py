@@ -1,7 +1,4 @@
 from time import sleep
-from selenium.common import NoSuchElementException
-from selenium.webdriver.common.by import By
-
 from com_utils.element_control import aal, aalc, aalk
 
 

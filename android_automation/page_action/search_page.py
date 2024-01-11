@@ -1,8 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.common import NoSuchElementException
 from com_utils import element_control
-from com_utils.element_control import aal, aalc, swipe_control, scroll_control, aals
+from com_utils.element_control import aal, aalc, scroll_control, aals
 
 
 def click_back_btn(wd):

@@ -1,6 +1,5 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from time import sleep, time
+from time import sleep
 from android_automation.page_action import navigation_bar
 from com_utils.element_control import aal, aalc, aals, swipe_control, element_scroll_control, scroll_control
 

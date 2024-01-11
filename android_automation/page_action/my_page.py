@@ -1,5 +1,4 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc, aals
 

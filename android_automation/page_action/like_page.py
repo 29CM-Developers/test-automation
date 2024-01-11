@@ -1,7 +1,6 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
 from com_utils.element_control import aal, aalc, element_scroll_control
 from com_utils.api_control import my_heart_count
@@ -9,7 +8,7 @@ from com_utils.api_control import my_heart_count
 
 def close_brand_recommended_page(wd):
     try:
-        sleep(5)
+        sleep(3)
         # 관심 브랜드 선택 화면 발생
         brands_of_interest = aal(wd, 'com.the29cm.app29cm:id/recommendBrandRecyclerView')
         if brands_of_interest == None:

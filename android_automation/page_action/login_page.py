@@ -1,4 +1,3 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
 from com_utils.element_control import aal, aalc, aalk
 

@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from com_utils.api_control import search_relate_keyword, search_brand_category_info
-from com_utils.element_control import aal, aalc, aals, scroll_control, element_scroll_control, swipe_control
+from com_utils.element_control import aal, aalc, aals, scroll_control, swipe_control
 from selenium.common import NoSuchElementException
 
 

@@ -1,5 +1,4 @@
 from time import sleep
-
 from com_utils.element_control import aal, aalc
 
 

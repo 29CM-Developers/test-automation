@@ -1,5 +1,4 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from com_utils.element_control import aal, aalc, aalk
 
 
@@ -7,7 +6,7 @@ def click_back_btn(wd):
     # 뒤로가기로 홈화면 진입 확인
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print("뒤로가기 선택")
-    sleep(3)
+    sleep(2)
 
 
 def click_required_terms(wd):

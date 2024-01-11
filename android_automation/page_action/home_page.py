@@ -28,8 +28,7 @@ def click_close_life_tab(wd):
         print("라이프 탭 해제")
     else:
         print('라이프 탭 디폴트 아님')
-
-    sleep(3)
+    sleep(2)
 
 
 # click_tab_name : 선택하려는 상단 탭 이름 입력
@@ -42,7 +41,7 @@ def click_tab_name(wd, click_tab_name):
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'
 # tab_list : 비교할 탭 이름 리스트
 def check_tab_names(wd):
-    sleep(3)
+    sleep(2)
     try:
         women_tab = aal(wd, 'women_tab')
         men_tab = aal(wd, 'men_tab')
@@ -76,9 +75,7 @@ def click_dynamic_gate(wd):
         dynamic_button_title = aal(wd, 'dynamic_button_gift')
     button_title = dynamic_button_title.text
     dynamic_button_title.click()
-
-    sleep(5)
-    gift_title = aal(wd, 'com.the29cm.app29cm:id/txtPageTitle').text
+    sleep(3)
     return button_title
 
 
@@ -270,8 +267,6 @@ def save_contents_product_price(wd):
 def click_contents_product(wd):
     first_product_title = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/productName"]')
     print(f'첫번째 상품명 : {first_product_title[0].text}')
-    first_product_title_text = first_product_title[0].text
-
     first_product_title[0].click()
     sleep(1)
     close_bottom_sheet(wd)

@@ -1,6 +1,4 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.common import NoSuchElementException
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils.element_control import aal, aalc, aals
 from com_utils.element_control import scroll_control

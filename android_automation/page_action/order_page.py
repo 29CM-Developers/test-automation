@@ -1,14 +1,12 @@
 import re
 from time import sleep
-from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 import com_utils.element_control
-from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
+from android_automation.page_action.context_change import change_native_contexts
 from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import aal, aalc, aals, scroll_control
 from selenium.common import NoSuchElementException
-from ios_automation.page_action import order_page
 
 
 def click_back_btn(wd):

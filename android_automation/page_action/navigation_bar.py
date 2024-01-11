@@ -1,4 +1,3 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_like_bottom_sheet
 from android_automation.page_action.like_page import close_brand_recommended_page
 from android_automation.page_action.select_category_page import test_select_category
@@ -49,13 +48,13 @@ def move_to_back(wd):
 
 
 def move_to_alarm(wd):
-    sleep(2)
+    sleep(1)
     aalc(wd, 'com.the29cm.app29cm:id/imgInboxNotification')
     print("우상단 알람 선택")
 
 
 def move_to_top_cart(wd):
-    sleep(2)
+    sleep(1)
     aalc(wd, 'com.the29cm.app29cm:id/imgCart')
     print("우상단 장바구니 선택")
 

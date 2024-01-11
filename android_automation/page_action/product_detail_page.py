@@ -1,5 +1,4 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from com_utils.element_control import aal, aalc, aals
@@ -104,7 +103,7 @@ def click_direct_purchase_btn(wd):
 
 
 def click_direct_gift_btn(wd):
-    sleep(3)
+    sleep(2)
     aalc(wd, 'c_바로 선물하기')
     sleep(1)
 
@@ -116,7 +115,7 @@ def click_move_to_cart(wd):
 def click_like_btn(wd):
     sleep(2)
     aalc(wd, 'c_찜하기')
-    sleep(5)
+    sleep(3)
 
 # 옵션 존재 여부 확인
 def option_exist(product_item_no):
