@@ -4,6 +4,8 @@ import com_utils.element_control
 from selenium.common import NoSuchElementException
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
+from android_automation.page_action.cart_page import change_webview_contexts
+from android_automation.page_action.context_change import change_native_contexts, switch_context
 from com_utils.element_control import aal, aalc, aals, scroll_up_to_element_id, scroll_control, scroll_to_element_xpath
 
 
@@ -35,7 +37,28 @@ def click_hash_tag_back_btn(wd):
 
 def save_first_post_title(wd):
     sleep(2)
+
     # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
+    post_title = aals(wd, '//h3')[1]
+    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
+    if post_title == None:
+        com_utils.element_control.scroll_control(wd, "D", 30)
+    # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle').text
+    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
+    post_title = aals(wd, '//h3')[1].text
+
+    print(f'포스트명 : {post_title}')
+
+    return post_title
+
+
+def save_first_post_title_for_recently_viewed(wd):
+    sleep(2)
+    # 웹뷰로 변경
+    change_webview_contexts(wd)
+
+    # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
+    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3')
     post_title = aals(wd, '//h3')[1]
     if post_title == None:
         com_utils.element_control.scroll_control(wd, "D", 30)
@@ -43,18 +66,10 @@ def save_first_post_title(wd):
     # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
     post_title = aals(wd, '//h3')[1].text
     print(f'포스트명 : {post_title}')
-    return post_title
 
+    # 네이티브로 변경
+    change_native_contexts(wd)
 
-def save_first_post_title_for_recently_viewed(wd):
-    sleep(2)
-    post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
-    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3')
-    if post_title == None:
-        com_utils.element_control.scroll_control(wd, "D", 30)
-    post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle').text
-    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
-    print(f'포스트명 : {post_title}')
     return post_title
 
 

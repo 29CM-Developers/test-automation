@@ -114,12 +114,16 @@ class My:
             # welove 페이지 이동
             com_utils.deeplink_control.move_to_welove(self, wd)
 
-            # 첫번째 추천 게시물명 확인 및 선택
-            post_title = welove_page.save_first_post_title_for_recently_viewed(wd)
-            welove_page.click_first_post_for_recently_viewed(wd)
+            # 웹뷰로 변경
+            context_change.change_webview_contexts(wd)
 
-            # # 네이티브로 변경
-            # context_change.change_native_contexts(wd)
+            post_title = welove_page.save_first_post_title(wd)
+
+            # 첫번째 추천 게시물명 확인 및 선택
+            welove_page.click_first_post(wd)
+
+            # 네이티브로 변경
+            context_change.change_native_contexts(wd)
 
             # My 탭으로 이동
             com_utils.deeplink_control.move_to_my_Android(wd)
