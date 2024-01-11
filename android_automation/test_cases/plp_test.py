@@ -106,7 +106,7 @@ class Plp:
 
             # Home으로 복귀
             best_product_list_page.click_back_btn(wd)
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
 
             print(f'[{test_name}] 테스트 종료')
 

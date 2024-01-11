@@ -389,7 +389,7 @@ class LoginLogout:
             print(f'[{test_name}] 테스트 시작')
 
             # 로그인 페이지 진입
-            com_utils.deeplink_control.move_to_my_Android(wd)
+            # com_utils.deeplink_control.move_to_my_Android(wd)
             my_page.enter_login_page(wd)
 
             # 올바른 이메일, 잘못된 비밀번호 입력하여 에러 문구 확인
@@ -406,7 +406,7 @@ class LoginLogout:
             my_page.check_nickname(self, wd)
 
             # Home 으로 복귀
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
 
             # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
             test_select_category(wd)

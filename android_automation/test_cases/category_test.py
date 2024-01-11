@@ -194,7 +194,7 @@ class Category:
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
 
             print(f'[{test_name}] CASE 종료')
 

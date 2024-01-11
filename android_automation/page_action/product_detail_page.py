@@ -218,6 +218,7 @@ def check_bottom_sheet_title(wd):
 
 
 def save_product_name(wd):
+    sleep(2)
     # 이굿 위크 상품 확인
     sale_tag = aal(wd, '이굿위크 할인 상품')
     if sale_tag == None:
