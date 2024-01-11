@@ -14,7 +14,7 @@ def enter_login_page(wd):
 
 def check_recent_title(wd, type, title):
     recent_title = aal(wd, 'com.the29cm.app29cm:id/txtHistoryTitle').text
-    print(f"recent_title : {recent_title} ")
+    print(f"최근본 타이틀 : {recent_title} 확인")
     if recent_title in title:
         print(f'최근 본 {type} 확인')
     else:
@@ -36,7 +36,7 @@ def check_recent_history(wd, product_name, post_title):
     sleep(2)
     recent = aals(wd, '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/txtHistoryTitle"]')
     if recent == None:
-        print("못찾앗음")
+        pass
     else:
         print(f'recent : {recent[0].text}')
     for i in range(2):
@@ -153,7 +153,6 @@ def check_nickname(self, wd):
 
 def check_login_btn(wd):
     sleep(1)
-    # logout_check = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtLogin')
     logout_check = aal(wd, 'com.the29cm.app29cm:id/txtLogin')
     if '로그인' in logout_check.text:
         pass

@@ -180,23 +180,18 @@ def save_no_soldout_product_no():
 
 def save_purchase_price(wd):
     amount_available_for_purchase_elemenent = aal(wd, f'c_구매 가능 금액')
-    print(amount_available_for_purchase_elemenent.text)
     # 예시로 XPath를 사용하여 특정 엘리먼트를 찾음
     # 부모 엘리먼트를 찾음
-    # parent_element = wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
     parent_element = aal(wd, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
     print(f'parent_element : {parent_element}')
     # 부모의 자식 엘리먼트들을 모두 찾은 후에, 형제 엘리먼트를 찾음
     amount_available_for_purchase = aals(parent_element, '//android.widget.TextView')
     for i in range(len(amount_available_for_purchase)):
-        print(f'amount_available_for_purchase : {amount_available_for_purchase[i].text}')
         if amount_available_for_purchase[i].text == '구매 가능 금액':
             price = amount_available_for_purchase[i + 1].text
-            print(f'구매 가능 가격 : {price}')
             break
-    print(f'구매 가능 가격 : {price}')
     price = int(price.replace(',', ''))
-    print(f'구매 가능 가격 : {price}')
+    print(f'구매 가능 가격 : {price}확인')
     return price
 
 

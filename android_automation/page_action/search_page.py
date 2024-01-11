@@ -148,7 +148,6 @@ def swipe_brand_area(wd):
                                   '(//android.view.View[@content-desc="popular_brand_layer"])[1]')
     for _ in range(0, 4):
         element_control.swipe_control(wd, brand_layer, 'left', 60)
-        print("스와이프")
         sleep(1)
         brand_layer = wd.find_element(AppiumBy.XPATH,
                                       '(//android.view.View[@content-desc="popular_brand_layer"])[1]')
@@ -213,7 +212,6 @@ def save_popular_keyword(wd, keyword):
         else:
             print(f"element : {element.text}")
             if element.is_displayed():
-                print("아이템 발견")
                 return element.text
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)

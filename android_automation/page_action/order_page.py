@@ -28,7 +28,6 @@ def click_virtual_account(wd):
                 element.click()
                 break
         except NoSuchElementException:
-            print("NOSUCH")
             scroll_control(wd, 'U', 50)
             pass
     if not virtual_account:
@@ -164,40 +163,6 @@ def save_delivery_price(wd):
     print(f'delivery_price : {delivery_price}')
     return delivery_price
 
-def change_webview(wd):
-    # 앱에서 웹뷰로 전환
-    webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
-    print("Available Contexts:", webview_contexts)
-
-    # 웹뷰로 전환
-    wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
-    print(f'wd.current_context : {wd.current_context}')
-    print(f'wd.current_window_handle : {wd.current_window_handle}')
-    print(f'wd.window_handles : {wd.window_handles}')
-    print(f'len(wd.window_handles) : {len(wd.window_handles)}')
-    for i in range(len(wd.window_handles) - 1, -1, -1):
-
-        if wd.window_handles[i] != wd.current_window_handle:
-            print(f'wd.window_handles[i] : {wd.window_handles[i]}')
-            wd.switch_to.window(wd.window_handles[i])
-            break
-
-    print(f'wd.current_window_handle : {wd.current_window_handle}')
-    print("웹뷰로 전환 성공")
-    sleep(3)
-
-
-def change_native(wd):
-    # 네이티브로 전환
-    webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
-    # print("Available Contexts:", webview_contexts)
-    # print(f'wd.current_context : {wd.current_context}')
-    # print(f'wd.current_window_handle : {wd.current_window_handle}')
-    print(f'wd.window_handles : {wd.window_handles}')
-    wd.switch_to.context('NATIVE_APP')
-    print("네이티브 변환 성공")
-
-
 def save_coupon_discount_price(wd):
     coupon_discount_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
     coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
@@ -216,7 +181,7 @@ def save_coupon_discount_price(wd):
     print(f'coupon_discount_price : {coupon_discount_price}')
 
     # 네이티브 전환
-    change_native(wd)
+    change_native_contexts(wd)
     return coupon_discount_price
 
 

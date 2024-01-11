@@ -53,13 +53,13 @@ def save_my_coupon_list(wd):
                 index = full_coupon_name.find('최대')
                 if index != -1:  # target_word를 찾은 경우
                     coupon_name = full_coupon_name[:index]
-                    print(f'coupon_name : {coupon_name}')
+                    print(f'쿠폰 이름 : {coupon_name} 확인')
                 else:
                     print("대상 단어를 찾을 수 없습니다.")
                     coupon_name = full_coupon_name
                 coupon_list.append(coupon_name)
     except NoSuchElementException:
-        print('쿠폰명 찾기 실패 ')
+        print('쿠폰명 찾기 실패')
         pass
     return coupon_list
 

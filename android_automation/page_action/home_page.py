@@ -1,15 +1,8 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from com_utils.api_control import home_banner_info
-from com_utils.element_control import aal, aalc, aals, scroll_control, swipe_control, scroll_to_element_with_text, \
-    scroll_to_element_id
-from ios_automation.page_action import context_change
+from com_utils.element_control import aal, aalc, aals, scroll_control, swipe_control
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
-
 
 def check_home_logo(wd):
     logo = aal(wd, 'com.the29cm.app29cm:id/imgLogo')
@@ -81,21 +74,16 @@ def click_dynamic_gate(wd):
     if dynamic_button_title == None:
         swipe_control(wd, dynamic_layer, 'left', 50)
         dynamic_button_title = aal(wd, 'dynamic_button_gift')
-    print(f'dynamic_button_title.text: {dynamic_button_title.text}')
     button_title = dynamic_button_title.text
     dynamic_button_title.click()
 
     sleep(5)
     gift_title = aal(wd, 'com.the29cm.app29cm:id/txtPageTitle').text
-    print(f'gift_title : {gift_title}')
-    print(f'button_title : {gift_title}')
     return button_title
 
 
 def check_dynamic_gate_gift_page(wd, dynamic_gate_btn_name):
     gift_title = aal(wd, 'com.the29cm.app29cm:id/txtPageTitle').text
-    print(f'gift_title : {gift_title}')
-    print(f'dynamic_gate_btn_name : {dynamic_gate_btn_name}')
 
     if gift_title == dynamic_gate_btn_name:
         print(f'다이나믹 게이트 타이틀 확인 : {gift_title}/{dynamic_gate_btn_name}')
@@ -136,7 +124,6 @@ def save_banner_title(wd):
                 print("타이틀 없는 배너")
             else:
                 home_banner_title = home_banner_title.text
-            print(f"home_banner_title : {home_banner_title}")
             banner_title_set.append(home_banner_title)
     except NoSuchElementException:
         print("타이틀 없는 배너")
@@ -144,8 +131,6 @@ def save_banner_title(wd):
 
     banner_title_set = set(banner_title_set)
     # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
-    print(f"banner_title_set : {len(banner_title_set)}")
-
     return banner_title_set
 
 
@@ -168,8 +153,6 @@ def check_scroll_to_recommended_contents(wd):
             if element == None:
                 pass
             elif element.is_displayed():
-                print(f"element : {element.text}")
-                print("아이템 발견")
                 break
         except:
             pass
@@ -178,12 +161,11 @@ def check_scroll_to_recommended_contents(wd):
         sleep(2)
 
     guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
-    print(f"가이드 문구 : {guide_text.text} ")
 
     if guide_text.text == '당신을 위한 추천 상품':
         print('홈화면 추천 타이틀 확인')
     else:
-        print('홈화면 추천 타이틀 확인 실패')
+        print(f'홈화면 추천 타이틀 확인 실패: {guide_text.text}')
         raise Exception('홈화면 추천 타이틀 확인 실패')
 
 
@@ -197,7 +179,7 @@ def scroll_to_feed_contents_feed_title_1st(wd, feed_title):
                 pass
             elif element.text == feed_title:
                 found_element = element
-                print(f"첫번째 feedTitle 발견 : {feed_title}")
+                print(f"첫번째 피드 타이틀  : {feed_title} 확인")
                 print(f"피드 컨텐츠 추가 노출 확인 : {element.text}")
                 break
         except NoSuchElementException:
@@ -223,30 +205,25 @@ def scroll_to_feed_contents_feed_contain_item(wd):
         scroll_control(wd, 'D', 50)
         sleep(2)
 
-    # products_layer = aal(wd, 'com.the29cm.app29cm:id/products')
-
 
 def check_heartIcon_is_selected(wd):
     # 하트 이미 선택되었는지 확인
-    # heart_element = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartIcon')
     heart_element = aal(wd, 'com.the29cm.app29cm:id/heartIcon')
     is_selected = heart_element.is_selected()
     if is_selected:
-        print("하트 선택된 상태입니다.")
+        print("하트 선택된 상태 확인")
         heart_element.click()
         print("하트 선택 해제")
     else:
-        print("하트 선택되지 않은 상태입니다.")
+        print("하트 선택되지 않은 상태 확인")
 
 
 def save_contents_like_count(wd):
-    # before_like_count = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/heartCount').text
     before_like_count = aal(wd, 'com.the29cm.app29cm:id/heartCount').text
     # 쉼표를 제거한 문자열 생성
     before_like_count = before_like_count.replace(',', '')
     # 문자열을 정수로 변환
     before_like_count = int(before_like_count)
-
     return before_like_count
 
 
@@ -302,13 +279,10 @@ def click_contents_product(wd):
 
 def check_app_evaluation_popup(wd):
     # 앱평가 발생 시 팝업 제거
-    # app_evaluation = wd.find_elements(By.XPATH, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
     app_evaluation = aals(wd, "//*[contains(@text, '29CM 앱을 어떻게 생각하시나요?')]")
     if len(app_evaluation) == 0:
         pass
     else:
-        # wd.find_element(By.XPATH, "//*[contains(@text, '좋아요')]").click()
         aalc(wd, "//*[contains(@text, '좋아요')]")
         sleep(1)
-        # wd.find_element(By.XPATH, "//*[contains(@text, '나중에 하기')]").click()
         aalc(wd, "//*[contains(@text, '나중에 하기')]")

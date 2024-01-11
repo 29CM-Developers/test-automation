@@ -269,10 +269,10 @@ class Cart:
             # 남은 상품의 구매 개수 [+] 1번 선택
             cart_page.click_to_increase_the_number_of_products(wd)
             # 상품의 개수 정보 2로 변경 확인
-            cart_page.check_increase_in_product_count(wd, warning_texts)
+            cart_page.check_increase_in_product_count(wd)
             change_total_price = cart_page.save_total_price(wd)
             # 총 주문금액 변경 확인
-            test_result = cart_page.check_change_total_order_amount(wd, warning_texts, first_product_price,
+            test_result = cart_page.check_change_total_order_amount(first_product_price,
                                                                     change_total_price)
             # 네이티브 변경
             change_native_contexts(wd)

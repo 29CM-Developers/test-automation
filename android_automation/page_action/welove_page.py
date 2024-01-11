@@ -10,8 +10,6 @@ from com_utils.element_control import aal, aalc, aals, scroll_up_to_element_id, 
 # welove 페이지에서 뒤로가기
 def click_welove_back_btn(wd):
     sleep(3)
-    # 뒤로가기 버튼 시뮬레이트
-    # wd.press_keycode(AndroidKey.BACK)
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     sleep(3)
 

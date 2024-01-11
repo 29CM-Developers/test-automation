@@ -24,7 +24,7 @@ def check_login_error_text(self, wd):
     else:
         print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 실패")
         raise Exception('이메일 로그인 실패 확인 실패')
-    print(f"가이드 문구 : {guide_text.text} ")
+    print(f"가이드 문구 : {guide_text.text} 확인")
     sleep(1)
 
 
