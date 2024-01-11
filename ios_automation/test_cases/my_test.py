@@ -79,8 +79,7 @@ class My:
             my_page.check_recent_title(wd, '상품', recent_product_name)
 
             # welove 페이지 이동
-            wd.get(self.conf['deeplink']['category'])
-            category_page.click_pin_menu(wd, 'WELOVE')
+            com_utils.deeplink_control.move_to_welove(self, wd)
 
             # 첫번째 추천 게시물명 확인 및 선택
             context_change.switch_context(wd, 'webview')
@@ -251,8 +250,6 @@ class My:
             my_coupon_page.check_coupon_list(wd, api_coupon_list, coupon_list, '상품')
 
             my_coupon_page.click_back_btn(wd)
-            navigation_bar.move_to_home(wd)
-
 
         except Exception:
             test_result = 'FAIL'

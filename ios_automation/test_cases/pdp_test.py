@@ -53,9 +53,6 @@ class Pdp:
             like_page.click_to_unlike_product(wd)
             like_page.refresh_product_like_tab(wd)
 
-            # Home으로 이동
-            navigation_bar.move_to_home(wd)
-
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'

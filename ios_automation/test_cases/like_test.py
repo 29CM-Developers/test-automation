@@ -41,8 +41,6 @@ class Like:
             like_page.click_post_tab(wd)
             like_page.check_no_post_like(wd)
 
-            navigation_bar.move_to_home(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
@@ -171,12 +169,11 @@ class Like:
             # 추천 게시물 페이지로 이동
             like_page.move_to_welove_page(wd)
 
-            # 첫번째 추천 게시물명 확인 및 선택
-            like_post_name = welove_page.save_native_first_post_title(wd)
-            welove_page.click_native_first_post(wd)
-
-            # webview 전환
             context_change.switch_context(wd, 'webview')
+
+            # 첫번째 추천 게시물명 확인 및 선택
+            like_post_name = welove_page.save_first_post_title(wd)
+            welove_page.click_first_post(wd)
 
             # post 내 좋아요 버튼 선택
             welove_page.click_post_like_btn(wd)
@@ -186,7 +183,7 @@ class Like:
 
             # LIKE 탭으로 복귀
             welove_page.click_post_to_welove_back_btn(wd)
-            welove_page.click_native_welove_back_btn(wd)
+            welove_page.click_welove_back_btn(wd)
 
             # POST 탭 새로고침
             like_page.refresh_post_like_tab(wd)
@@ -213,9 +210,6 @@ class Like:
 
             # 상단 Like 개수 확인
             like_page.check_like_total_count(wd, "0")
-
-            # Home 탭으로 복귀
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'
