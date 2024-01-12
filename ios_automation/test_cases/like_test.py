@@ -232,6 +232,5 @@ class Like:
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            context_change.switch_context(wd, 'native')
             send_test_result(self, test_result, '좋아요 존재하는 LIKE 화면 확인')
             return result_data

@@ -49,6 +49,7 @@ class Pdp:
             move_to_like(self, wd)
 
             # Like 탭에서 좋아요 한 상품 노출 확인 > 좋아요 해제
+            like_page.refresh_product_like_tab(wd)
             like_page.check_product_like(wd, pdp_name)
             like_page.click_to_unlike_product(wd)
             like_page.refresh_product_like_tab(wd)

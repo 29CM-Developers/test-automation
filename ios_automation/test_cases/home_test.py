@@ -2,6 +2,7 @@ import os
 import sys
 import traceback
 import com_utils.element_control
+import com_utils.deeplink_control
 
 from com_utils import values_control
 from time import time
@@ -184,6 +185,8 @@ class Home:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
             # CATEGORY 탭 진입
             navigation_bar.move_to_category(wd)

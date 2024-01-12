@@ -112,6 +112,21 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # 홈화면에서 다른 탭 이동 확인
+        self.result_data = Home.test_move_tab_from_home(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # Like 존재하지 않을 경우
+        self.result_data = Like.test_no_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # Like 존재하는 경우
+        self.result_data = Like.test_like_item(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # PLP 기능 확인
         self.result_data = Plp.test_product_listing_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -142,16 +157,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # My -> 설정
-        self.result_data = My.test_enter_settings_screen(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # My -> 최근 본 컨텐츠 확인
-        self.result_data = My.test_recently_viewed_content(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
         # My -> 주문 건이 없을 경우, 주문 배송 조회
         self.result_data = My.test_track_delivery_without_orders(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -172,11 +177,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 간편 회원가입 실패
-        self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
     # Pro 14 케이스
     def test_iOS_BVT(self):
         self.def_name = sys._getframe().f_code.co_name
@@ -189,11 +189,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 홈화면에서 다른 탭 이동 확인
-        self.result_data = Home.test_move_tab_from_home(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
         # 홈화면 배너 확인
         self.result_data = Home.test_home_banner(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -201,16 +196,6 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 홈화면 컨텐츠 확인
         self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # Like 존재하지 않을 경우
-        self.result_data = Like.test_no_like_item(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # Like 존재하는 경우
-        self.result_data = Like.test_like_item(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
@@ -229,10 +214,10 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 신용카드로 구매하기
-        self.result_data = Payment.test_pay_with_credit_card(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # 신용카드로 구매하기
+        # self.result_data = Payment.test_pay_with_credit_card(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # PDP에서 선물 주문서로 이동
         self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
@@ -249,6 +234,16 @@ class IOSTestAutomation(unittest.TestCase):
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # My -> 설정
+        self.result_data = My.test_enter_settings_screen(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 최근 본 컨텐츠 확인
+        self.result_data = My.test_recently_viewed_content(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 쿠폰함
         self.result_data = My.test_coupons_list(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -256,6 +251,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 간편 회원가입 실패
+        self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 

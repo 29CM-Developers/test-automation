@@ -134,8 +134,8 @@ class Category:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            # 카테고리 탭 선택
-            wd.get(self.conf['deeplink']['category'])
+            # 딥링크로 카테고리 탭 이동
+            com_utils.deeplink_control.move_to_category(self, wd)
 
             # 핀메뉴에서 위러브 페이지 진입
             category_page.click_pin_menu(wd, 'WELOVE')
