@@ -9,9 +9,6 @@ def slack_notification(self):
     if self.result_data['test_result'] == 'PASS':
         color = self.conf['pass_color']
         emoji = self.conf['pass_emoji']
-    elif self.result_data['test_result'] == 'WARN':
-        color = self.conf['warn_color']
-        emoji = self.conf['warn_emoji']
     else:
         color = self.conf['fail_color']
         emoji = self.conf['fail_emoji']
@@ -46,24 +43,10 @@ def slack_update_notification(self):
             test_result = 'FAIL'
             color = self.conf['fail_color']
             emoji = self.conf['fail_emoji']
-        elif self.slack_result == 'WARN':
-            test_result = 'WARN'
-            color = self.conf['warn_color']
-            emoji = self.conf['warn_emoji']
         else:
             test_result = 'PASS'
             color = self.conf['pass_color']
             emoji = self.conf['pass_emoji']
-    elif self.result_data['test_result'] == 'WARN':
-        if self.slack_result == 'FAIL':
-            test_result = 'FAIL'
-            color = self.conf['fail_color']
-            emoji = self.conf['fail_emoji']
-        else:
-            test_result = 'WARN'
-            color = self.conf['warn_color']
-            emoji = self.conf['warn_emoji']
-            self.slack_result = self.result_data.get('test_result')
     else:
         color = self.conf['fail_color']
         emoji = self.conf['fail_emoji']
@@ -93,14 +76,13 @@ def slack_update_notification(self):
     self.result_lists.append(self.result_data['test_result'])
     pass_count = self.result_lists.count("PASS")
     fail_count = self.result_lists.count("FAIL")
-    warn_count = self.result_lists.count("WARN")
 
     # slack noti 양식 가져오기
     attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
                                  test_result=test_result, def_name=self.def_name,
                                  count=self.count, total_time=str_total_time,
                                  device_platform=device_emoji, device_name=self.device_name, pass_count=pass_count,
-                                 fail_count=fail_count, warn_count=warn_count)
+                                 fail_count=fail_count)
 
     attachment['ts'] = self.response['ts']
     payload = json.dumps(attachment)
@@ -119,21 +101,6 @@ def slack_thread_notification(self):
         attachment["attachments"][0]["color"] = color
         attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
         attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
-        attachment = json.dumps(attachment)
-        response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
-    elif self.result_data['test_result'] == 'WARN':
-        color = self.conf['warn_color']
-        warn_attachment = {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": f"*추가 확인 필요*: \n{self.result_data.get('warning_texts')}"
-            }
-        }
-        attachment["attachments"][0]["color"] = color
-        attachment["attachments"][0]["blocks"][0]["text"]["text"] = f"성공 쓰레드 테스트: *{self.result_data.get('test_name')}*"
-        attachment["attachments"][0]["blocks"][1]["text"]["text"] = f"테스트 소요시간: *{self.result_data.get('run_time')} 초*"
-        attachment["attachments"][0]["blocks"].append(warn_attachment)
         attachment = json.dumps(attachment)
         response = requests.post(url=self.conf['slack_message_url'], headers=headers, data=attachment)
     else:
@@ -196,7 +163,8 @@ def slack_thread_notification(self):
     return self.count
 
 
-def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_time, device_platform, device_name, pass_count=0, fail_count=0, warn_count=0):
+def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_time, device_platform, device_name,
+                    pass_count=0, fail_count=0):
     attachment = {
         "channel": channel,
         "attachments": [
@@ -228,7 +196,7 @@ def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_t
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": f"테스트 진행률: *총 {count} 개 / PASS {pass_count} 개 - FAIL {fail_count} 개 - WARN {warn_count}개 / 총 {total_time}*"
+                            "text": f"테스트 진행률: *총 {count} 개 / PASS {pass_count} 개 - FAIL {fail_count} 개 / 총 {total_time}*"
                         }
                     }
                 ]
