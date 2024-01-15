@@ -167,11 +167,6 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # PDP에서 좋아요
-        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -246,6 +241,11 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 쿠폰함
         self.result_data = My.test_coupons_list(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # PDP에서 좋아요
+        self.result_data = Pdp.test_like_on_pdp(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
