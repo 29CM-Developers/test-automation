@@ -57,6 +57,7 @@ def click_delivery_order_menu(wd):
         except NoSuchElementException:
             pass
         com_utils.element_control.scroll_control(wd, "U", 50)
+    sleep(1)
 
 
 def click_review_menu(wd):
