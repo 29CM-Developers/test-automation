@@ -139,15 +139,9 @@ class Home:
             pdp_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_name, contents_product_name)
 
-            # webview 전환
-            context_change.switch_context(wd, 'webview')
-
             # 상품 가격 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
             product_detail_page.check_product_price(pdp_price, contents_product_price)
-
-            # native 전환
-            context_change.switch_context(wd, 'native')
 
             # Home으로 복귀
             product_detail_page.click_pdp_back_btn(wd)

@@ -28,16 +28,11 @@ class Pdp:
             # 딥링크로 검색 상품 진입
             move_to_pdp_iOS(wd, search_product_item_no)
 
-            pdp_name = product_detail_page.save_product_name(wd)
-
-            # 웹뷰로 전환
-            context_change.switch_context(wd, 'webview')
+            # PDP의 상품명 저장
+            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
 
             # CTA의 좋아요 버튼 선택
             product_detail_page.click_like_btn(wd)
-
-            # native로 전환
-            context_change.switch_context(wd, 'native')
 
             # 바텀시트 최대로 확장하여 바텀시트 내 타이틀 확인 > 바텀 시트 닫기
             product_detail_page.move_bottom_sheet(wd, 'D')

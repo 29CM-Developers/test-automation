@@ -154,7 +154,6 @@ def save_category_product_price(wd):
     else:
         price = price.replace('원', '')
     price = int(price.replace(',', ''))
-    print(f'PLP 가격 : {price}')
     return price
 
 

@@ -22,28 +22,26 @@ def clear_cart_list(wd):
         index = select_count.find('/')
         if select_count[index - 1] != select_count[index + 1]:
             all_select.click()
-        ialc(wd, '//button[contains(text(), "선택삭제")]')
+        ialc(wd, '//*[@id="select_product_delete_btn"]')
         print('장바구니에 담긴 상품 삭제 완료')
         context_change.switch_context(wd, 'native')
     click_back_btn(wd)
 
 
 def save_number_of_order_product(wd):
-    info = ial(wd, '//strong[contains(text(), "총")]').text
+    info = ial(wd, '//*[@id="number_of_order_products"]').text
     order_product_count = int(info.replace('총 ', ''))
     return order_product_count
 
 
 def save_total_order_price(wd):
-    info = ial(wd, '//dt[contains(text(), "주문금액")]/..')
-    count = ials(info, '//dd')
-    total_price = int(count[1].text.replace(',', '').replace('원', ''))
+    total_price = int(ial(wd, '//*[@id="total_order_amount"]').text.replace(',', '').replace('원', ''))
     return total_price
 
 
 def save_product_name_list(wd):
     cart_product_name = []
-    product = ials(wd, '//a[contains(@href, "product.29cm.co.kr/catalog")][contains(@class, "css")]')
+    product = ials(wd, '//*[contains(@id, "product_title")]')
     for name in product[0:2]:
         product_name = name.text
         cart_product_name.append(product_name)
@@ -52,29 +50,29 @@ def save_product_name_list(wd):
 
 
 def save_product_name(wd):
-    product_name = ial(wd, '//a[contains(@href, "product.29cm.co.kr/catalog")][contains(@class, "css")]').text
+    product_name = ial(wd, '//*[contains(@id, "product_title")]').text
     return product_name
 
 
 def save_product_price(wd):
-    product_price = wd.find_element(AppiumBy.XPATH, '//span[contains(@class, "css-bmeojf")]')
+    product_price = ial(wd, '//*[contains(@id, "product_amount")]')
     product_price = int(product_price.text.replace(',', ''))
     return product_price
 
 
 def save_product_count(wd):
-    product_count = wd.find_element(AppiumBy.CSS_SELECTOR, '[inputmode="numeric"]').get_attribute('value')
+    product_count = ial(wd, '//*[contains(@id, "number_of_products")]').get_attribute('value')
     product_count = int(product_count)
     return product_count
 
 
 def click_delete_product(wd):
-    ialc(wd, '//div[2]/button[contains(text(), "삭제")]')
+    ialc(wd, '//*[contains(@id, "product_delete_btn_")]')
     sleep(2)
 
 
 def click_add_product(wd):
-    ialc(wd, '//button[contains(text(), "+")]')
+    ialc(wd, '//*[contains(@id, "add_product_btn")]')
     sleep(2)
 
 
