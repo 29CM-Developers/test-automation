@@ -210,6 +210,8 @@ class Category:
             except Exception:
                 pass
             deeplink_control.move_to_home(self, wd)
+            # 네이티브로 변경
+            context_change.change_native_contexts(wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"

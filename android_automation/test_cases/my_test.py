@@ -183,7 +183,7 @@ class My:
             print(f'[{test_name}] 테스트 시작')
 
             # My 탭으로 이동
-            # com_utils.deeplink_control.move_to_my_Android(wd)
+            com_utils.deeplink_control.move_to_my_Android(wd)
 
             my_page.click_delivery_order_menu(wd)
 

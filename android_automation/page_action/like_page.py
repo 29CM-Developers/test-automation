@@ -22,7 +22,7 @@ def close_brand_recommended_page(wd):
 
 def set_like_zero(self, wd):
     # 좋아요 api 호출하여 각 탭의 좋아요 수 확인
-    my_heart = my_heart_count(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'])
+    my_heart = my_heart_count(self.pconf['LOGIN_SUCCESS_ID_1'], self.pconf['LOGIN_SUCCESS_PW'])
     product_count = my_heart['product_count']
     brand_count = my_heart['brand_count']
     post_count = my_heart['post_count']
