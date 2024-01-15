@@ -30,7 +30,6 @@ def change_webview_contexts(wd):
             print(f'현재 핸들러 확인 : {wd.current_window_handle}')
             break
     print("웹뷰로 전환 성공")
-    # sleep(1)
 
 
 def change_native_contexts(wd):

@@ -8,13 +8,11 @@ def input_password(wd, password):
 
 def click_next_btn(wd):
     aalc(wd, 'cn_android.widget.Button')
-    sleep(2)
 
 
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print('뒤로가기 선택')
-    sleep(1)
 
 
 def check_edit_page_title(wd):

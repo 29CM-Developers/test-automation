@@ -37,7 +37,6 @@ def click_category_top(wd):
 
 
 def click_not_login_user_product_like_btn(wd):
-    #sleep(3)
     plp_layer = aal(wd, 'com.the29cm.app29cm:id/recyclerview')
     aalc(plp_layer, '//android.view.ViewGroup[1]/android.widget.ImageView[2]')
     print("좋아요 선택")
@@ -46,7 +45,6 @@ def click_not_login_user_product_like_btn(wd):
 def click_for_you_category(wd):
     aalc(wd, 'for_you_title')
     print("for you 선택")
-    #sleep(1)
 
 
 def check_not_login_user_recommended_tab(wd):
@@ -94,7 +92,6 @@ def click_category(wd, category_name):
 
 
 def check_category_page_shose_title(wd, category_name):
-    #sleep(3)
     page_title = aal(wd, 'com.the29cm.app29cm:id/txtCategoryName')
     if page_title == None:
         print(f'{category_name} 카테고리 PLP 진입 확인 실패')
@@ -108,7 +105,6 @@ def check_category_page_shose_title(wd, category_name):
 
 
 def check_category_page_sandal_title(wd):
-    #sleep(3)
     page_title = aal(wd, 'com.the29cm.app29cm:id/mediumCategory')
     if page_title == None:
         print(f'카테고리 샌들 PLP 진입 확인 실패')
@@ -132,7 +128,6 @@ def save_webview_category_product_name(wd, first_product_name):
             pass
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
-        #sleep(2)
 
 
 def check_category_product_name(plp_name, compare_name):
@@ -150,10 +145,10 @@ def scroll_up_to_category(wd, element_id):
             pass
         elif element.is_displayed():
             print(f"element : {element.get_attribute('content-desc')}")
+            scroll_control(wd, "U", 30)
             return element
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "U", 30)
-        #sleep(2)
 
 
 def click_filter_by_new(wd):
@@ -163,7 +158,6 @@ def click_filter_by_new(wd):
     new_product_order = aal(buttom_layer,
                             '//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.widget.TextView')
     new_product_order.click()
-    #sleep(1)
     print(f"정렬 : {selector.text}")
     if '신상품순' in selector.text:
         print(f"정렬 확인 : {selector.text}")
@@ -184,7 +178,6 @@ def save_category_product_name(wd, text):
 
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
-        #sleep(2)
 
 
 def save_category_product_price(wd):
@@ -203,7 +196,6 @@ def save_category_product_price(wd):
 
 def click_category_product(wd, text):
     aalc(wd, f'c_{text}')
-    #sleep(1)
     navigation_bar.close_bottom_sheet(wd)
 
 

@@ -1,12 +1,12 @@
+from time import sleep
+
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc, tap_control
-from time import sleep
 
 
 def close_bottom_sheet(wd):
     try:
-        # sleep(1)
         wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/com_braze_inappmessage_html')
         wd.find_element(AppiumBy.XPATH, "//*[contains(@text, '닫기')]").click()
         print('바텀 시트 노출되어 닫기 동작')
@@ -30,10 +30,9 @@ def close_pdp_bottom_sheet(wd):
         pass
 
 
-
 def close_like_bottom_sheet(wd):
+    sleep(1)
     try:
-        sleep(1)
         braze = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
         if braze == None:
             print('바텀 시트 미노출')

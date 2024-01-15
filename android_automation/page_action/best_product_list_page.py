@@ -1,4 +1,3 @@
-from time import sleep
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils.element_control import aal, aalc, aals
 from com_utils.element_control import scroll_control
@@ -6,7 +5,6 @@ from com_utils.element_control import scroll_control
 
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-    # sleep(1)
 
 
 # period = 실시간, 일간, 주간, 월간
@@ -38,14 +36,12 @@ def check_best_product_page(wd):
     else:
         if best_page_title.text == '베스트':
             print("베스트 페이지 진입 확인")
-            #sleep(1)
         else:
             print("베스트 페이지 진입 확인 실패")
             raise Exception('베스트 페이지 진입 확인 실패')
 
 
 def save_best_first_product_name(wd):
-    #sleep(1)
     product_name = aal(wd, 'best_item_title')
     if product_name == None:
         pass
@@ -55,7 +51,6 @@ def save_best_first_product_name(wd):
         return product_name
 
 def save_best_plp_first_product_name(wd):
-    #sleep(1)
     product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
     print(f'{product_name_list[0].text}')
     if product_name_list == None:
@@ -87,19 +82,16 @@ def save_best_product_like_count(wd):
 
 def click_best_product_like_btn(wd):
     aalc(wd, 'best_item_like')
-    #sleep(2)
 
 
 def click_best_first_product(wd):
     aalc(wd, 'best_item_title')
-    #sleep(1)
     close_bottom_sheet(wd)
 
 
 def click_home_tap_best_first_product(wd):
     product_name_list = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/contentsDescription"]')
     product_name_list[0].click()
-    #sleep(1)
     close_bottom_sheet(wd)
 
 
@@ -111,7 +103,6 @@ def check_app_evaluation_pop_up_exposure(wd):
         pass
     else:
         aalc(wd, "c_좋아요")
-        #sleep(1)
         aalc(wd, "c_나중에 하기")
         print("앱 평가 팝업 발생하여 닫기")
 
@@ -127,7 +118,6 @@ def check_increase_like_count(heart_count, heart_select):
 def check_decrease_like_count(heart_count, heart_unselect):
     if heart_unselect == heart_count:
         print('아이템 좋아요 개수 차감 확인')
-        #sleep(2)
     else:
         print(f'아이템 좋아요 개수 차감 확인 실패: {heart_count} / {heart_unselect}')
         raise Exception('아이템 좋아요 개수 차감 확인 실패')
@@ -164,7 +154,6 @@ def find_scroll_and_find_product_rank(wd, text):
                 break
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
-        #sleep(2)
 
 
 def check_additional_product(wd, product_name):

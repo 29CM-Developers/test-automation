@@ -9,6 +9,7 @@ import com_utils
 from android_automation.page_action import like_page, navigation_bar, product_detail_page, context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
+from android_automation.page_action.home_page import check_app_evaluation_popup
 from com_utils import values_control, cookies_control, deeplink_control
 from time import sleep, time
 from com_utils.element_control import aal, aalk, aalc, scroll_control, \
@@ -81,7 +82,7 @@ class Like:
             print(f'[{test_name}] 테스트 시작')
 
             # 딥링크로 LIKE 탭 진입
-            com_utils.deeplink_control.move_to_like(self, wd)
+            com_utils.deeplink_control.move_to_like_Android(wd)
 
             # 기선택된 좋아요 있을 경우 모두 해제
             like_page.set_like_zero(self, wd)
@@ -215,6 +216,9 @@ class Like:
             # 추천 리스트의 첫번째 상품명 저장 및 좋아요 선택
             like_product_name = like_page.save_like_product_name_in_like(wd)
             like_page.click_product_like_btn(wd)
+
+            # 앱평가 팝업 확인
+            check_app_evaluation_popup(wd)
 
             # PRODUCT 탭 새로고침
             like_page.refresh_product_like_tab(wd)

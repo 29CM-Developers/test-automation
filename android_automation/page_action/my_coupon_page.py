@@ -8,17 +8,17 @@ def click_back_btn(wd):
 
 
 def click_coupon_type(wd):
-    sleep(2)
+    # sleep(2)
     aalc(wd, 'c_전체 쿠폰')
     print('전체쿠폰 선택')
-    sleep(1)
+    #sleep(1)
 
 
 def click_cart_coupon_type(wd):
-    sleep(1)
+    #sleep(1)
     aalc(wd, 'c_장바구니 쿠폰')
     print('장바구니 쿠폰 선택')
-    sleep(1)
+    #sleep(1)
 
 
 def click_option_cart(wd):
@@ -35,7 +35,6 @@ def click_option_product(wd):
 
 def save_my_coupon_list(wd):
     coupon_list = []
-    sleep(3)
     try:
         no_coupon = aal(wd, 'c_발급 받은 쿠폰이 없습니다.')
         if no_coupon != None:
@@ -43,19 +42,13 @@ def save_my_coupon_list(wd):
             return coupon_list
         coupon_layer = aals(wd, f'//*[@resource-id[contains(., "-slide01")]]')
         for coupon_layer_item in coupon_layer:
-            coupon = aal(coupon_layer_item, '//android.widget.TextView[@index=3]')
+            coupon = aal(coupon_layer_item, '//android.widget.TextView[contains(@resource-id, "coupon_name")]')
             if coupon == None:
                 print('쿠폰명 찾기 실패 ')
             else:
                 full_coupon_name = coupon.text
-                index = full_coupon_name.find('최대')
-                if index != -1:  # target_word를 찾은 경우
-                    coupon_name = full_coupon_name[:index]
-                    print(f'쿠폰 이름 : {coupon_name} 확인')
-                else:
-                    print("대상 단어를 찾을 수 없습니다.")
-                    coupon_name = full_coupon_name
-                coupon_list.append(coupon_name)
+                print(f'쿠폰 이름 : {full_coupon_name} 확인')
+                coupon_list.append(full_coupon_name)
     except NoSuchElementException:
         print('쿠폰명 찾기 실패')
         pass

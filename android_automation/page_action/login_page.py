@@ -24,15 +24,12 @@ def check_login_error_text(self, wd):
         print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 실패")
         raise Exception('이메일 로그인 실패 확인 실패')
     print(f"가이드 문구 : {guide_text.text} 확인")
-    # sleep(1)
 
 
 def check_login_page(wd):
-    # sleep(4)
     # 로그인 화면 진입 확인
     login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
     print("홈 > 마이페이지 > 로그인 화면 진입")
-    #sleep(1)
     if '로그인' in login_page_title.text:
         print("로그인 문구 확인")
     else:

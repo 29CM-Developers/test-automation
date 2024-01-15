@@ -7,28 +7,23 @@ from com_utils.element_control import aal, aalc, aals
 def click_delete_btn_to_first_product(wd):
     # 웹 뷰에서 장바구니 첫번째 상품 삭제
     aalc(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[2]/button')
-    sleep(3)
     print('첫번째 상품 삭제')
 
 
 def click_to_increase_the_number_of_products(wd):
     # 웹뷰에서 장바구니 첫번째 상품 갯수 증가 선택
     aalc(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[3]/div/div/button[2]')
-    sleep(3)
     print('첫번째 상품 갯수 증가 선택')
 
 
 def click_check_out_btn(wd):
-    sleep(5)
     aalc(wd, 'c_CHECK OUT')
     print('CHECK OUT 선택')
-    sleep(5)
 
 
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print('뒤로가기 선택')
-    sleep(1)
 
 
 def click_delete_btn_to_all_product(wd):
@@ -39,7 +34,6 @@ def click_delete_btn_to_all_product(wd):
     else:
         print("장바구니에 담긴 상품 존재")
         aalc(wd, 'c_선택삭제')
-        sleep(3)
         print('전체상품삭제')
     click_back_btn(wd)
 
@@ -48,7 +42,6 @@ def click_cart_btn(wd):
     # 웹 뷰에서 장바구니 첫번째 상품 삭제
     aalc(wd, 'com.the29cm.app29cm:id/imgCart')
     print('장바구니 아이콘 선택')
-    sleep(2)
 
 
 def change_webview_contexts(wd):
@@ -69,17 +62,6 @@ def change_native_contexts(wd):
     # 네이티브로 전환
     wd.switch_to.context('NATIVE_APP')
     print("네이티브 변환 성공")
-
-def change_pinpay_webview_contexts(wd):
-    # 앱에서 웹뷰로 전환
-    webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
-    print("Available Contexts:", webview_contexts)
-    # 웹뷰로 전환
-    wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
-    print(f'wd.current_window_handle : {wd.current_window_handle}')
-    print(f'wd.window_handles : {wd.window_handles}')
-    print("웹뷰로 전환 성공")
-    sleep(4)
 
 def save_product_price(wd):
     try:
@@ -122,14 +104,12 @@ def save_total_price(wd):
 
 
 def save_product_name_one(wd):
-    sleep(3)
     first_product_name = aal(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[2]/div/div/a').text
     print(f'first_product_name : {first_product_name}')
     return first_product_name
 
 
 def check_product_name(wd, pdp_name1, pdp_name2):
-    sleep(2)
     last_product_name = aal(wd, '//*[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[2]/div/div/a').text
     first_product_name = aal(wd, '//*[@id="__next"]/div/section[1]/div[2]/div[3]/div/div[2]/div/div/a').text
 
@@ -165,7 +145,6 @@ def check_total_order_amount(delete_product_price, before_delete_total_price, af
 
 
 def check_increase_in_product_count(wd):
-    sleep(3)
     number_of_products = aal(wd,
                              '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[3]/div/div/input').get_attribute(
         "value")

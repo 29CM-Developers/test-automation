@@ -1,8 +1,11 @@
 from time import sleep
 from selenium.common import NoSuchElementException
+
+import com_utils.element_control
 from com_utils.api_control import home_banner_info
 from com_utils.element_control import aal, aalc, aals, scroll_control, swipe_control
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
+
 
 def check_home_logo(wd):
     logo = aal(wd, 'com.the29cm.app29cm:id/imgLogo')
@@ -15,7 +18,6 @@ def check_home_logo(wd):
 def click_search_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgSearch')
     print("상단 검색 아이콘 선택")
-    # sleep(2)
 
 
 def click_close_life_tab(wd):
@@ -28,20 +30,18 @@ def click_close_life_tab(wd):
         print("라이프 탭 해제")
     else:
         print('라이프 탭 디폴트 아님')
-    #sleep(2)
 
 
 # click_tab_name : 선택하려는 상단 탭 이름 입력
 def click_tab_name(wd, click_tab_name):
     aalc(wd, click_tab_name)
     print(f'{click_tab_name} 탭 선택')
-    #sleep(2)
 
 
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'
 # tab_list : 비교할 탭 이름 리스트
 def check_tab_names(wd):
-    sleep(2)
+    # sleep(2)
     try:
         women_tab = aal(wd, 'women_tab')
         men_tab = aal(wd, 'men_tab')
@@ -59,7 +59,7 @@ def check_tab_names(wd):
 
 def click_dynamic_gate(wd):
     # 큐레이션 확인
-    sleep(1)
+    #sleep(1)
     curation = aal(wd, 'com.the29cm.app29cm:id/frontItems')
     if curation == None:
         pass
@@ -67,7 +67,7 @@ def click_dynamic_gate(wd):
         swipe_control(wd, curation, 'left', 50)
 
     # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
-    sleep(1)
+    #sleep(1)
     dynamic_layer = aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
     dynamic_button_title = aal(wd, 'dynamic_button_gift')
     if dynamic_button_title == None:
@@ -75,7 +75,7 @@ def click_dynamic_gate(wd):
         dynamic_button_title = aal(wd, 'dynamic_button_gift')
     button_title = dynamic_button_title.text
     dynamic_button_title.click()
-    sleep(3)
+    #sleep(3)
     return button_title
 
 
@@ -113,7 +113,7 @@ def save_banner_title(wd):
     banner_title_set = []
 
     try:
-        sleep(3)
+        #sleep(3)
         for i in range(0, 5):
             sleep(2.5)
             home_banner_title = aal(wd, 'com.the29cm.app29cm:id/title')
@@ -155,7 +155,7 @@ def check_scroll_to_recommended_contents(wd):
             pass
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
-        sleep(2)
+        #sleep(2)
 
     guide_text = aal(wd, 'com.the29cm.app29cm:id/title')
 
@@ -200,7 +200,7 @@ def scroll_to_feed_contents_feed_contain_item(wd):
             break
         # 스크롤 액션 수행
         scroll_control(wd, 'D', 50)
-        sleep(2)
+        #sleep(2)
 
 
 def check_heartIcon_is_selected(wd):
@@ -216,7 +216,12 @@ def check_heartIcon_is_selected(wd):
 
 
 def save_contents_like_count(wd):
-    before_like_count = aal(wd, 'com.the29cm.app29cm:id/heartCount').text
+    before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
+    if before_like_count_element == None:
+        com_utils.element_control.scroll_control(wd, 'D', 40)
+    before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
+    before_like_count = before_like_count_element.text
+    print(f'하트갯수 확인 : {before_like_count}')
     # 쉼표를 제거한 문자열 생성
     before_like_count = before_like_count.replace(',', '')
     # 문자열을 정수로 변환
@@ -226,7 +231,6 @@ def save_contents_like_count(wd):
 
 def click_contents_like_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/heartCount')
-    sleep(1)
 
 
 def check_increase_like_count(heart_count, heart_select):
@@ -268,7 +272,6 @@ def click_contents_product(wd):
     first_product_title = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/productName"]')
     print(f'첫번째 상품명 : {first_product_title[0].text}')
     first_product_title[0].click()
-    sleep(1)
     close_bottom_sheet(wd)
 
 
@@ -279,5 +282,4 @@ def check_app_evaluation_popup(wd):
         pass
     else:
         aalc(wd, "//*[contains(@text, '좋아요')]")
-        sleep(1)
         aalc(wd, "//*[contains(@text, '나중에 하기')]")

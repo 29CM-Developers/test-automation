@@ -6,7 +6,6 @@ from com_utils.element_control import aal, aalc, scroll_control, aals
 
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-    # sleep(1)
 
 def check_keyboard_clear_recent_keyword(wd):
     # 키보드가 올라가 있는지 확인하고, 올라가 있다면 닫기
@@ -72,7 +71,6 @@ def check_recent_keyword(wd, keyword):
 def enter_keyword_and_click_search_btn(wd, keyword):
     wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/searchEditText').send_keys(keyword)
     aalc(wd, 'com.the29cm.app29cm:id/searchImg')
-    #sleep(2)
 
 
 def save_popular_brand_name(wd, num):
@@ -100,7 +98,6 @@ def save_popular_brand_name(wd, num):
 def click_popular_brand_name(wd, num):
     brand_layer = aal(wd, f'(//android.view.View[@content-desc="popular_brand_layer"])[1]/android.view.View[{num}]')
     aalc(brand_layer, '//android.widget.TextView[2]')
-    #sleep(2)
     print(f'{num}위 브랜드 선택')
 
 
@@ -126,7 +123,6 @@ def change_criteria_to_all(wd):
     filter_btn = aal(wd, 'c_전체 기준')
     if filter_btn == None:
         aalc(wd, 'c_여성 기준')
-        #sleep(1)
         aalc(wd, 'filter_all')
         print(f'필터가 전체 기준이 아닌 것으로 확인되어 전체 기준으로 변경')
     elif filter_btn.text == '전체 기준':
@@ -150,12 +146,10 @@ def swipe_brand_area(wd):
         sleep(1)
         brand_layer = wd.find_element(AppiumBy.XPATH,
                                       '(//android.view.View[@content-desc="popular_brand_layer"])[1]')
-    #sleep(1)
 
 
 def change_criteria_to_women(wd):
     aalc(wd, "c_전체 기준")
-    #sleep(2)
     aalc(wd, 'filter_woman')
 
 
@@ -174,7 +168,6 @@ def check_filter_criteria(self, wd):
                 break
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
-        #sleep(2)
     if brand_filter == '여성 기준':
         print('필터 적용 확인 - 필터 기준 문구')
     else:
@@ -184,7 +177,6 @@ def check_filter_criteria(self, wd):
 
 def check_popular_keyword_title(wd):
     # 지금 많이 찾는 검색어 찾기
-    #sleep(2)
     for i in range(0, 3):
         search_container_title = aal(wd, 'search_popular_search')
         if search_container_title == None:
@@ -214,7 +206,6 @@ def save_popular_keyword(wd, keyword):
                 return element.text
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)
-        #sleep(2)
 
 
 def check_popular_keyword(popular_keyword, api_keyword):

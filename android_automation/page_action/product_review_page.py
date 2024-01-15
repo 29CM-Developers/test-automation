@@ -5,11 +5,9 @@ from com_utils.element_control import aal, aalc
 def click_back_btn(wd):
     # 뒤로가기로 마이페이지 진입 확인
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-    sleep(1)
 
 
 def check_no_reviews_available(wd):
-    # sleep(3)
     review_guide = aal(wd, 'c_아직 리뷰를 작성할 수 있는\n주문내역이 없습니다.').text
     print(f"review_guide : {review_guide}")
     if review_guide == '아직 리뷰를 작성할 수 있는\n주문내역이 없습니다.':
