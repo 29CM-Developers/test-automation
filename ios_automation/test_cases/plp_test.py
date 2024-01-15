@@ -78,13 +78,9 @@ class Plp:
             pdp_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_name, now_1st_product)
 
-            # context_change.switch_context(wd, 'webveiw')
-            #
-            # # PDP 상품가격 비교
-            # pdp_price = product_detail_page.save_product_price(wd)
-            # product_detail_page.check_product_price(pdp_price, now_1st_product_price)
-            #
-            # context_change.switch_context(wd, 'native')
+            # PDP 상품가격 비교
+            pdp_price = product_detail_page.save_product_price(wd)
+            product_detail_page.check_product_price(pdp_price, now_1st_product_price)
 
             # 베스트 PLP로 복귀
             product_detail_page.click_pdp_back_btn(wd)

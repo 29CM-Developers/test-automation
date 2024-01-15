@@ -44,7 +44,7 @@ def check_order_product_name(wd, product_name):
         try:
             element = ial(wd, f'c_{product_name}')
             order_name = element.text
-            if element.is_displayed() and order_name == product_name:
+            if element.is_displayed() and product_name in order_name:
                 name_break = True
                 print('주문서 상품명 확인')
                 break

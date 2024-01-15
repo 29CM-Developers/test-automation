@@ -178,7 +178,7 @@ def save_like_brand_name(wd):
 
 
 def check_brand_page_name(wd, like_brand_name):
-    brand_page_name = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1uqcj9j ezghadi1"]').text
+    brand_page_name = ial(wd, '//*[@id="plp_brand_name"]').text
     # 브랜드 PLP에서는 브랜드명이 대문자로 노출되어 변환
     if brand_page_name == like_brand_name.upper():
         print('브랜드 PLP 진입 확인')
