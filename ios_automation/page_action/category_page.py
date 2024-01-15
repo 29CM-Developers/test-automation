@@ -14,14 +14,15 @@ def click_pin_menu(wd, find_menu):
     click_break = False
     for i in range(0, 5):
         try:
-            pin_menu = ials(wd, '//XCUIElementTypeOther[2]/XCUIElementTypeCollectionView/XCUIElementTypeCell')
+            pin_menu = ials(pin_menu_list, '//XCUIElementTypeCell')
             for pin in pin_menu:
                 pin_menu_title = ial(pin, '//XCUIElementTypeOther/XCUIElementTypeStaticText')
                 if pin_menu_title.text == find_menu:
                     click_break = True
-                    ialc(pin, '//XCUIElementTypeOther/XCUIElementTypeStaticText')
+                    ialc(wd, pin_menu_title)
+                    break
             swipe_control(wd, pin_menu_list, 'left', 30)
-        except NoSuchElementException:
+        except Exception:
             pass
         if click_break:
             break
@@ -102,8 +103,7 @@ def check_not_login_user_recommended_tab(wd):
 
 
 def save_webview_category_product_name(wd):
-    product = wd.find_element(AppiumBy.XPATH, '//div[contains(@class, "css-1rcys17")]')
-    plp_name = product.find_element(AppiumBy.XPATH, '//h5').text
+    plp_name = ial(wd, '//h5').text
     return plp_name
 
 
@@ -154,7 +154,6 @@ def save_category_product_price(wd):
     else:
         price = price.replace('원', '')
     price = int(price.replace(',', ''))
-    print(f'PLP 가격 : {price}')
     return price
 
 

@@ -1,7 +1,6 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from selenium.webdriver import ActionChains
 from com_utils.element_control import ial, ialc, ials, element_scroll_control
 from com_utils.api_control import my_heart_count
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
@@ -9,8 +8,8 @@ from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 def close_brand_recommended_page(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'recommended_brand_page')
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarBackBlack').click()
+        ial(wd, 'recommended_brand_page')
+        ialc(wd, 'icNavigationbarBackBlack')
         print('브랜드 추천 페이지 노출 확인')
     except NoSuchElementException:
         pass
@@ -18,7 +17,7 @@ def close_brand_recommended_page(wd):
 
 def close_noti_bottom_sheet(wd):
     try:
-        wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'liked_item_sale_notification_guide')
+        ial(wd, 'liked_item_sale_notification_guide')
         ialc(wd, '닫기')
         print('알림 바텀시트 노출 확인')
     except NoSuchElementException:
@@ -128,19 +127,19 @@ def refresh_post_like_tab(wd):
 def click_to_unlike_product(wd):
     product = ials(wd, 'liked_item_like_btn')
     for product_like in product:
-        ActionChains(wd).move_to_element(product_like).click().pause(0.1).perform()
+        ialc(wd, product_like)
 
 
 def click_to_unlike_brand(wd):
     brand = ials(wd, 'c_heart line')
     for brand_like in brand:
-        ActionChains(wd).move_to_element(brand_like).click().pause(0.1).perform()
+        ialc(wd, brand_like)
 
 
 def click_to_unlike_post(wd):
     post = ials(wd, 'c_heart line')
     for post_like in post:
-        ActionChains(wd).move_to_element(post_like).click().pause(0.1).perform()
+        ialc(wd, post_like)
 
 
 def save_like_product_name(wd):
@@ -179,7 +178,7 @@ def save_like_brand_name(wd):
 
 
 def check_brand_page_name(wd, like_brand_name):
-    brand_page_name = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-1uqcj9j ezghadi1"]').text
+    brand_page_name = ial(wd, '//*[@id="plp_brand_name"]').text
     # 브랜드 PLP에서는 브랜드명이 대문자로 노출되어 변환
     if brand_page_name == like_brand_name.upper():
         print('브랜드 PLP 진입 확인')

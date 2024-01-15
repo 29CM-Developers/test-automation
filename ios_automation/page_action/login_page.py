@@ -43,11 +43,10 @@ def check_login_page(wd):
     except NoSuchElementException:
         print('로그인 페이지 진입 확인 실패')
         raise Exception('로그인 페이지 진입 확인 실패')
-    wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'common back icon black').click()
+    ialc(wd, 'common back icon black')
 
 
 def click_simple_join_btn(wd):
     context_change.switch_context(wd, 'webview')
     ialc(wd, '//a[contains(text(), "회원가입하기")]')
-    # wd.find_element(AppiumBy.IOS_CLASS_CHAIN, '**/XCUIElementTypeLink[`label == "간편 회원가입하기"`]').click()
     context_change.switch_context(wd, 'native')

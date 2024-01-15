@@ -137,12 +137,6 @@ class UserLoginTest:
             # 프로필 이름 확인
             my_page.check_nickname(self, wd)
 
-            # Home 으로 복귀
-            navigation_bar.move_to_home(wd)
-
-            # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
-            test_select_category(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')

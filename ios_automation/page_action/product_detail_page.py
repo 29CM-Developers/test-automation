@@ -15,12 +15,14 @@ def click_home_btn(wd):
 
 
 def save_product_name(wd):
-    product_name = ial(wd, 'c_감도 깊은 취향 셀렉트샵 29CM').text
-    product_name = product_name.replace(' - 감도 깊은 취향 셀렉트샵 29CM', '')
+    context_change.switch_context(wd, 'webview')
+    product_name = ial(wd, '//*[@id="pdp_product_name"]').text
+    context_change.switch_context(wd, 'native')
     return product_name
 
 
-def save_remove_prefix_product_name(product_name):
+def save_remove_prefix_product_name(wd):
+    product_name = save_product_name(wd)
     index = product_name.find(']_')
     if index == -1:
         no_prefix_product_name = product_name
@@ -42,8 +44,10 @@ def check_product_name(product_name, compare_name):
 
 
 def save_product_price(wd):
-    price = wd.find_element(AppiumBy.CSS_SELECTOR, '[class="css-4bcxzt ent7twr4"]').text
+    context_change.switch_context(wd, 'webview')
+    price = ial(wd, '//*[@id="pdp_product_price"]').text
     price = int(price.replace(',', '').replace('원', ''))
+    context_change.switch_context(wd, 'native')
     return price
 
 
@@ -71,20 +75,28 @@ def check_open_to_purchase_modal(wd):
 
 
 def click_purchase_btn(wd):
-    ialc(wd, '구매하기')
+    context_change.switch_context(wd, 'webview')
+    ialc(wd, '//*[@id="cta_purchase"]')
+    context_change.switch_context(wd, 'native')
 
 
 def click_gift_btn(wd):
-    ialc(wd, '선물하기')
+    context_change.switch_context(wd, 'webview')
+    ialc(wd, '//*[@id="cta_gift_button"]')
+    context_change.switch_context(wd, 'native')
 
 
 def click_put_in_cart_btn(wd):
-    ialc(wd, '장바구니 담기')
+    context_change.switch_context(wd, 'webview')
+    ialc(wd, '//*[@id="pdp_shopping_basket"]')
+    context_change.switch_context(wd, 'native')
     sleep(1)
 
 
 def click_direct_purchase_btn(wd):
-    ialc(wd, '바로 구매하기')
+    context_change.switch_context(wd, 'webview')
+    ialc(wd, '//*[@id="pdp_buy_now"]')
+    context_change.switch_context(wd, 'native')
     sleep(1)
 
 
@@ -99,7 +111,9 @@ def click_move_to_cart(wd):
 
 
 def click_like_btn(wd):
-    ialc(wd, '//span[contains(text(), "찜하기")]')
+    context_change.switch_context(wd, 'webview')
+    ialc(wd, '//*[@id="cta_heart_button"]')
+    context_change.switch_context(wd, 'native')
 
 
 # 옵션 존재 여부와 개수에 따라 옵션 선택
@@ -159,7 +173,7 @@ def save_no_soldout_product_no():
 def save_purchase_price(wd):
     sleep(1)
     context_change.switch_context(wd, 'webview')
-    price = ial(wd, '//span[contains(text(), "구매 가능 금액")]/../span[contains(@color, "accent")]').text
+    price = ial(wd, '//*[@id="total_amount"]').text
     context_change.switch_context(wd, 'native')
     price = int(price.replace(',', '').replace('원', ''))
     return price

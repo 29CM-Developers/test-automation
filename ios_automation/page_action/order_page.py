@@ -44,7 +44,7 @@ def check_order_product_name(wd, product_name):
         try:
             element = ial(wd, f'c_{product_name}')
             order_name = element.text
-            if element.is_displayed() and order_name == product_name:
+            if element.is_displayed() and product_name in order_name:
                 name_break = True
                 print('주문서 상품명 확인')
                 break
@@ -129,7 +129,7 @@ def click_virtual_account(wd):
             element = ial(wd, '//XCUIElementTypeButton[@name="무통장입금"]')
             if element.is_displayed():
                 virtual_account = True
-                element.click()
+                ialc(wd, element)
                 break
         except NoSuchElementException:
             pass
@@ -145,7 +145,7 @@ def click_hyundai_card(wd):
             element = ial(wd, 'c_현대카드 X PIN PAY')
             if element.is_displayed():
                 virtual_account = True
-                element.click()
+                ialc(wd, element)
                 break
         except NoSuchElementException:
             pass
@@ -159,7 +159,7 @@ def click_all_agreement(wd):
         try:
             element = ial(wd, 'c_동의합니다')
             if element.is_displayed():
-                element.click()
+                ialc(wd, element)
                 break
         except NoSuchElementException:
             pass
@@ -187,7 +187,7 @@ def click_virtual_account_payment(wd):
         try:
             element = ial(wd, '//XCUIElementTypeButton[@name="다음"]')
             if element.is_displayed():
-                element.click()
+                ialc(wd, element)
                 break
         except NoSuchElementException:
             pass

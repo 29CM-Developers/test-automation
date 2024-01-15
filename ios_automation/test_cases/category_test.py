@@ -90,15 +90,9 @@ class Category:
             # 선택한 상품의 PDP에서 상품 이름 비교
             product_detail_page.check_product_name(pdp_name, plp_name)
 
-            # webview 전환
-            context_change.switch_context(wd, 'webview')
-
             # pdp 가격 저장 후, 카테고리 plp의 가격과 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
             product_detail_page.check_product_price(pdp_price, plp_price)
-
-            # native 전환
-            context_change.switch_context(wd, 'native')
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             product_detail_page.click_home_btn(wd)
@@ -134,8 +128,8 @@ class Category:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            # 카테고리 탭 선택
-            wd.get(self.conf['deeplink']['category'])
+            # 딥링크로 카테고리 탭 이동
+            com_utils.deeplink_control.move_to_category(self, wd)
 
             # 핀메뉴에서 위러브 페이지 진입
             category_page.click_pin_menu(wd, 'WELOVE')
@@ -164,7 +158,6 @@ class Category:
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             test_result = 'FAIL'

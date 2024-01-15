@@ -2,6 +2,7 @@ import os
 import sys
 import traceback
 import com_utils.element_control
+import com_utils.deeplink_control
 
 from com_utils import values_control
 from time import time
@@ -138,15 +139,9 @@ class Home:
             pdp_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_name, contents_product_name)
 
-            # webview 전환
-            context_change.switch_context(wd, 'webview')
-
             # 상품 가격 비교 확인
             pdp_price = product_detail_page.save_product_price(wd)
             product_detail_page.check_product_price(pdp_price, contents_product_price)
-
-            # native 전환
-            context_change.switch_context(wd, 'native')
 
             # Home으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -184,6 +179,8 @@ class Home:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
             # CATEGORY 탭 진입
             navigation_bar.move_to_category(wd)

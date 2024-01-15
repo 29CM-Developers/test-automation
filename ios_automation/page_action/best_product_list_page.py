@@ -56,7 +56,6 @@ def save_plp_price(wd):
     else:
         price = price.replace('원', '')
     price = int(price.replace(',', ''))
-    print(f'PLP 가격 : {price}')
     return price
 
 

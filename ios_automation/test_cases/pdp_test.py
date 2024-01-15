@@ -28,16 +28,11 @@ class Pdp:
             # 딥링크로 검색 상품 진입
             move_to_pdp_iOS(wd, search_product_item_no)
 
-            pdp_name = product_detail_page.save_product_name(wd)
-
-            # 웹뷰로 전환
-            context_change.switch_context(wd, 'webview')
+            # PDP의 상품명 저장
+            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
 
             # CTA의 좋아요 버튼 선택
             product_detail_page.click_like_btn(wd)
-
-            # native로 전환
-            context_change.switch_context(wd, 'native')
 
             # 바텀시트 최대로 확장하여 바텀시트 내 타이틀 확인 > 바텀 시트 닫기
             product_detail_page.move_bottom_sheet(wd, 'D')
@@ -49,12 +44,10 @@ class Pdp:
             move_to_like(self, wd)
 
             # Like 탭에서 좋아요 한 상품 노출 확인 > 좋아요 해제
+            like_page.refresh_product_like_tab(wd)
             like_page.check_product_like(wd, pdp_name)
             like_page.click_to_unlike_product(wd)
             like_page.refresh_product_like_tab(wd)
-
-            # Home으로 이동
-            navigation_bar.move_to_home(wd)
 
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
@@ -105,7 +98,7 @@ class Pdp:
             search_product = product_detail(search_product_item_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-            pdp_name = product_detail_page.save_product_name(wd)
+            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             # 선물하기 버튼 선택
@@ -179,7 +172,7 @@ class Pdp:
             search_product = product_detail(random_product_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-            pdp_name = product_detail_page.save_product_name(wd)
+            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             # 구매하기 버튼 선택

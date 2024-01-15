@@ -1,4 +1,3 @@
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials
 from ios_automation.page_action.context_change import switch_context
@@ -26,7 +25,7 @@ def save_my_coupon_list(wd):
     switch_context(wd, 'webview')
     coupon_list = []
     try:
-        coupon = ials(wd, '//span[contains(@class, "e1muu87i6")]')
+        coupon = ials(wd, '//*[contains(@id, "coupon_name")]')
         for name in coupon:
             coupon_name = name.text
             coupon_list.append(coupon_name)

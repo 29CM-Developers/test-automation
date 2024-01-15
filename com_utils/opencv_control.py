@@ -7,8 +7,11 @@ from com_utils.element_control import ial, aal
 
 
 def screenshot_page(wd):
-    device_size = wd.get_window_rect()
     directory = f'{os.getcwd()}/image/'
+    if not os.path.isdir(directory):
+        os.makedirs(directory)
+
+    device_size = wd.get_window_rect()
     screenshot = f'screenshot.png'
     wd.save_screenshot(directory + screenshot)
 

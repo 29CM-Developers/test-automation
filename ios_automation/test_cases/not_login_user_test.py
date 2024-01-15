@@ -108,9 +108,6 @@ class NotLoginUserTest:
             deeplink_control.move_to_my(self, wd)
             my_page.check_login_btn(wd)
 
-            # Home 탭으로 복귀
-            navigation_bar.move_to_home(wd)
-
         except Exception:
             test_result = 'FAIL'
             wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
