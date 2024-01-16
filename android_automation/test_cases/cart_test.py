@@ -22,107 +22,7 @@ from time import sleep, time
 
 
 class Cart:
-    def product_name(self, product_item_no):
-        response = requests.get(f'https://cache.29cm.co.kr/item/detail/{product_item_no}/')
-        if response.status_code == 200:
-            product_data = response.json()
-            product_name = product_data['item_name']
-            print(f"api 호출로 받은 product_name : {product_name}")
-            return product_name
-        else:
-            print('PDP 옵션 정보 API 불러오기 실패')
-
-    # 옵션 존재 여부 확인
-    def option_exist(self, product_item_no):
-        print(f"option_exist product_item_no : {product_item_no}")
-        response = requests.get(f'https://cache.29cm.co.kr/item/detail/{product_item_no}/')
-        if response.status_code == 200:
-            option_data = response.json()
-            option_items_list = option_data['option_items']['list']
-            print(option_items_list)
-            if not option_items_list:
-                option_exist = False
-                print('옵션 없는 상품')
-                return option_exist
-            else:
-                option_exist = True
-                print('옵션 있는 상품')
-                return option_exist
-        else:
-            print('PDP 옵션 정보 API 불러오기 실패')
-
-    # 옵션의 항목명 리스트
-    def option_layout(self, product_item_no):
-        response = requests.get(f'https://cache.29cm.co.kr/item/detail/{product_item_no}/')
-        if response.status_code == 200:
-            option_data = response.json()
-            option_items = option_data['option_items']['layout']
-            print(f"option_items : {option_items}")
-            return option_items
-        else:
-            print('PDP 옵션 정보 API 불러오기 실패')
-
-    # 옵션 리스트
-    def option_item_list(self, product_item_no):
-        response = requests.get(f'https://cache.29cm.co.kr/item/detail/{product_item_no}/')
-        if response.status_code == 200:
-            option_data = response.json()
-            option_list = option_data['option_items']['list']
-            print(f"option_list : {option_list}")
-            return option_list
-        else:
-            print('PDP 옵션 정보 API 불러오기 실패')
-
-    # 옵션 존재 여부와 개수에 따라 옵션 선택
-    def select_options(self, wd, product_item_no):
-        option_exist = Cart.option_exist(self, product_item_no)
-        if option_exist == True:
-            option_layout = Cart.option_layout(self, product_item_no)
-            option_item_list = Cart.option_item_list(self, product_item_no)
-
-            # 웹뷰 컨텍스트로 전환
-            current_context = wd.current_context
-            print(current_context)
-            native = wd.contexts[0]
-            webview = wd.contexts[1]
-            print(wd.contexts[1])
-
-            wd.switch_to.context(webview)
-            print(wd.contexts)
-            sleep(1)
-            WebDriverWait(wd, 10).until(EC.presence_of_element_located(
-                (By.XPATH, f"//input[@class='text' and @placeholder='{option_layout[i]}' and @type='text']")))
-            print("스위치 완료11")
-            wd.switch_to.context(native)
-            print("스위치 완료2")
-
-            for i in range(len(option_layout)):
-                print(f"항목 : {option_layout[i]}")
-                option_layout = wd.find_element(By.XPATH,
-                                                f"//input[@class='text' and @placeholder='{option_layout[i]}' and @type='text']")
-
-                if option_layout:
-                    # 엘리먼트를 사용하거나 값을 가져올 수 있습니다.
-                    option_layout = option_layout[0]
-                    option_layout.click()  # 엘리먼트를 클릭하거나 다른 작업 수행
-                print(option_layout)
-                option_layout.click()
-                print(f"옵션 : {option_item_list[0]['title']}")
-                option_item_list = wd.find_elements(AppiumBy.XPATH,
-                                                    f"//*[contains(@text, '{option_item_list[0]['title']}')]")
-                print(option_item_list)
-                option_item_list[0].click()
-
-                if i < len(option_layout) - 1:
-                    if 'list' in option_item_list[0]:
-                        option_item_list = option_item_list[0]['list']
-                    else:
-                        break
-                wd.switch_to.context(native)
-        else:
-            pass
-
-    def test_cart_list(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_cart_list(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -228,13 +128,11 @@ class Cart:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
+
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
             return result_data
 

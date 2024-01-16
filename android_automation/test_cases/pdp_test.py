@@ -13,7 +13,7 @@ from time import sleep, time
 
 
 class Pdp:
-    def test_gift_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_gift_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -90,15 +90,13 @@ class Pdp:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, 'PDP에서 선물 주문서 화면으로 이동')
             return result_data
 
-    def test_purchase_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_purchase_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -169,15 +167,13 @@ class Pdp:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, 'PDP에서 구매 주문서 화면으로 이동')
             return result_data
 
-    def test_like_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_like_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -250,10 +246,8 @@ class Pdp:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, 'PDP에서 선물 주문서 화면으로 이동')
             return result_data

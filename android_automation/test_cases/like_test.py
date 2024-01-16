@@ -18,61 +18,8 @@ from com_utils.testrail_api import send_test_result
 
 
 class Like:
-    def set_like_zero(self, wd):
 
-        wd.get(self.conf['deeplink']['like'])
-
-        # 화면 진입 시, 브랜드 추천 페이지 노출 여부 확인
-        # 관심 브랜드 선택 화면 발생
-        brands_of_interest = wd.find_elements(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutMyLikeAndOrderBrand')
-        print(brands_of_interest)
-        if len(brands_of_interest) == 0:
-            print('관심브랜드 화면 미노출')
-            pass
-        else:
-            print('관심브랜드 화면 노출')
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/iconClose').click()
-
-        print(
-            f"self.pconf['id_29cm']: {self.pconf['id_29cm']}, self.pconf['password_29cm']:{self.pconf['password_29cm']}")
-        cookies = cookies_control.cookie_29cm(self.pconf['id_29cm'], self.pconf['password_29cm'])
-
-        like_response = requests.get('https://front-api.29cm.co.kr/api/v4/heart/my-heart/count/', cookies=cookies)
-        like = like_response.json()
-        product_count = int(like['data']['product_count'])
-        brand_count = int(like['data']['brand_count'])
-        post_count = int(like['data']['post_count'])
-
-        if product_count != 0:
-            print(f'좋아요 상품 수 : {product_count}')
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProduct').click()
-            # 좋아요 해제 후 새로고침
-            # 상품 탭 선택
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutProduct').click()
-            product_like_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/likeRecyclerView')
-            product_like_layer.find_element(AppiumBy.XPATH,
-                                            '//android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView[2]').click()
-            txtProductCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtProductCount').text
-            print(txtProductCount)
-            if txtProductCount == '(0)':
-                print('Product Count 감소 확인')
-            else:
-                print('Product Count 감소 확인 실패')
-                print(f'Product Count : {txtHeartCount} ')
-
-        if brand_count != 0:
-            print(f'좋아요 브랜드 수 : {brand_count}')
-            # 브랜드 탭 선택
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutBrand').click()
-            wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/layoutHeart').click()
-            txtBrandCount = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/txtBrandCount').text
-            if txtBrandCount == '(0)':
-                print('Brand Count 감소 확인')
-            else:
-                print('Brand Count 감소 확인 실패')
-                print(f'Brand Count : {txtBrandCount} ')
-
-    def test_no_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_no_like_item(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
@@ -125,16 +72,14 @@ class Like:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '좋아요 존재하지 않는 LIKE 화면 확인')
             return result_data
-    def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+
+    def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
@@ -316,12 +261,9 @@ class Like:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '좋아요 존재하는 LIKE 화면 확인')
             return result_data

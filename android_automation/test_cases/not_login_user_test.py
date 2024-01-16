@@ -23,7 +23,7 @@ from com_utils.testrail_api import send_test_result
 
 class NotLogin:
 
-    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
@@ -86,17 +86,14 @@ class NotLogin:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입')
             return result_data
 
-    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src=''):
 
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
@@ -177,12 +174,9 @@ class NotLogin:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '비로그인 유저가 사용 가능한 기능 확인')
             return result_data

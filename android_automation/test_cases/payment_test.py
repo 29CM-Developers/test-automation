@@ -13,7 +13,7 @@ from com_utils import deeplink_control
 
 
 class Payment:
-    def test_pay_with_virtual_account(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_pay_with_virtual_account(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -92,15 +92,13 @@ class Payment:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '무통장 입금으로 상품 구매 후, 주문 배송 조회 확인')
             return result_data
 
-    def test_pay_with_credit_card(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_pay_with_credit_card(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
         order_no = ''
@@ -193,10 +191,8 @@ class Payment:
             # 주문 최종 취소 확인
             order_page.finally_order_cancel(self, order_no)
             run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '신용카드로 상품 구매 후, 주문 배송 조회 확인')
             return result_data
