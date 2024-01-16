@@ -3,7 +3,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc
 from com_utils.element_control import scroll_control
-from ios_automation.page_action.bottom_sheet import close_bottom_sheet
+from ios_automation.page_action.bottom_sheet import pdp_close_bottom_sheet
 
 
 def click_back_btn(wd):
@@ -84,7 +84,7 @@ def check_additional_product(wd, product_name):
 def click_best_first_product(wd):
     ialc(wd, '//XCUIElementTypeStaticText[@name="product_name"]')
     sleep(1)
-    close_bottom_sheet(wd)
+    pdp_close_bottom_sheet(wd)
 
 
 def save_best_product_like_count(wd):

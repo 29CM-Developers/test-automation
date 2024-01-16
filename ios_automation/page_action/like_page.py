@@ -148,6 +148,8 @@ def save_like_product_name(wd):
 
 
 def click_product_like_btn(wd):
+    product_list = ial(wd, 'like_product_list')
+    element_scroll_control(wd, product_list, 'D', 5)
     ialc(wd, '//XCUIElementTypeButton[@name="like_btn"]')
 
 
@@ -168,6 +170,8 @@ def click_product_name(wd):
 
 
 def click_liked_product_cart_btn(wd):
+    product_list = ial(wd, 'like_product_list')
+    element_scroll_control(wd, product_list, 'D', 5)
     ialc(wd, 'liked_product_cart_btn')
 
 
