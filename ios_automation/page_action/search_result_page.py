@@ -109,7 +109,7 @@ def click_color_filter(wd, color):
             print(f'필터 - 색상 : {color} 선택')
             break
         except NoSuchElementException:
-            color_sheet = ial(wd, 'type == "XCUIElementTypeScrollView"')
+            color_sheet = ial(wd, '//*[@name="filter_bottom_sheet"]/descendant::XCUIElementTypeScrollView')
             element_scroll_control(wd, color_sheet, "D", 25)
 
 
@@ -131,16 +131,13 @@ def click_apply_filter_btn(wd):
 
 
 def save_filter_info(wd):
-    # 필터 element 확인
-    plp_view = ial(wd, '//XCUIElementTypeCollectionView[@index="1"]')
-    filter_view = ial(plp_view, '//XCUIElementTypeOther/XCUIElementTypeCollectionView[@index="2"]')
+    filter_view = ial(wd, '//*[@name="search filter reset icon"]/../following-sibling::XCUIElementTypeCollectionView')
 
     # 적용된 필터 확인
     filter_break = False
     filter_list = []
     for i in range(0, 2):
-        filters = ials(filter_view,
-                       '//XCUIElementTypeCell/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeStaticText')
+        filters = ials(filter_view, '//XCUIElementTypeStaticText')
         for filter in filters:
             filter_list.append(filter.text)
             if filter.text == '브랜드':

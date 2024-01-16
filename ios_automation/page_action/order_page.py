@@ -80,8 +80,7 @@ def save_purchase_btn_price(wd):
 def save_delivery_price(wd):
     scroll_control(wd, 'D', 30)
     ialc(wd, '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeButton[1]')
-    delivery_price = ial(wd,
-                         '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[4]/XCUIElementTypeStaticText[@index="1"]').text
+    delivery_price = ial(wd, '//*[@name="배송비"]/following-sibling::XCUIElementTypeStaticText').text
     delivery_price = re.findall(r'\d+', delivery_price)
     delivery_price = int(''.join(delivery_price))
     return delivery_price
@@ -89,7 +88,7 @@ def save_delivery_price(wd):
 
 def save_coupon_price(wd):
     coupon_price = ial(wd,
-                       '//XCUIElementTypeOther[@name="complementary"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeStaticText[@index="1"]').text
+                       '//XCUIElementTypeStaticText[@name="쿠폰 할인 금액"]/following-sibling::XCUIElementTypeStaticText').text
     coupon_price = re.findall(r'\d+', coupon_price)
     coupon_price = int(''.join(coupon_price))
     return coupon_price

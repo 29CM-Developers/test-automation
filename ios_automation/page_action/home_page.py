@@ -203,15 +203,17 @@ def check_decrease_like_count(heart_count, heart_unselect):
 
 
 def save_contents_product_name(wd):
-    product_name = ial(wd,
-                       '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[2]').text
+    product_name = ials(wd,
+                        '//XCUIElementTypeOther[@name="home_content_product"]/descendant::XCUIElementTypeStaticText')[
+        1].text
     product_name = product_name.strip()
     return product_name
 
 
 def save_contents_product_price(wd):
-    product_price = ial(wd,
-                        '//XCUIElementTypeOther[@name="home_content_product"]/XCUIElementTypeOther[2]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText[3]').text
+    product_price = ials(wd,
+                         '//XCUIElementTypeOther[@name="home_content_product"]/descendant::XCUIElementTypeStaticText')[
+        2].text
     if '%' in product_price:
         percent = product_price.find('%')
         start_index = percent + 2

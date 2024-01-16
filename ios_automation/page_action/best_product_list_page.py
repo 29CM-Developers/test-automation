@@ -34,7 +34,6 @@ def save_api_product_name(prefix, product_name):
         best_product_name = product_name
     else:
         best_product_name = f'{prefix[0]} {product_name}'
-    print(best_product_name)
     return best_product_name
 
 

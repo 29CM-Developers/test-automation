@@ -179,9 +179,9 @@ def save_purchase_price(wd):
     return price
 
 
-def move_bottom_sheet(wd, direction):
+def move_like_bottom_sheet(wd, direction):
     element = ial(wd,
-                  '//XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[1]')
+                  '//*[@name="함께 보면 좋은 상품"]/ancestor::XCUIElementTypeCollectionView/../preceding-sibling::XCUIElementTypeOther')
     element_scroll_control(wd, element, direction, 40)
 
 
