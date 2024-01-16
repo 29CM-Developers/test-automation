@@ -1,5 +1,4 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from com_utils.element_control import aal, aalc, aalk
 
 
@@ -7,7 +6,6 @@ def click_back_btn(wd):
     # 뒤로가기로 홈화면 진입 확인
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print("뒤로가기 선택")
-    sleep(3)
 
 
 def click_required_terms(wd):
@@ -18,7 +16,6 @@ def click_required_terms(wd):
         # 동의하고 가입하기 선택
         aalc(wd, "//*[contains(@text, '동의하고 가입하기')]")
         print('동의하고 가입하기 선택')
-        sleep(2)
     except Exception:
         click_back_btn(wd)
         pass

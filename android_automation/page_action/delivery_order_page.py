@@ -9,9 +9,7 @@ from android_automation.page_action import bottom_sheet
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
 
-
 def check_no_delivery_order(wd):
-    sleep(4)
     element = aal(wd, 'c_주문내역이 없습니다')
     if element == None:
         print("주문 건이 없을 경우, 주문 배송 조회 확인 실패")
@@ -22,8 +20,8 @@ def check_no_delivery_order(wd):
 
 def check_delivery_order(wd, order_no):
     try:
+        sleep(2)
         aalc(wd, f'c_{order_no}')
-        sleep(3)
         print('주문 배송 조회 확인 - 주문번호')
     except NoSuchElementException:
         print('주문 배송 조회 확인 실패 - 주문번호')
@@ -55,9 +53,7 @@ def check_order_detail_price(wd, payment_type, order_price):
 
 def click_order_cancel_btn(wd):
     aalc(wd, 'c_취소접수')
-    sleep(5)
     aalc(wd, 'c_취소접수 완료하기')
-    sleep(2)
 
 
 def check_order_cancel(wd):

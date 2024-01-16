@@ -1,7 +1,9 @@
 from time import sleep
+
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
+    switch_context
 from com_utils.element_control import aal, aalc, aals
 from com_utils.api_control import product_detail, best_plp_women_clothes
 
@@ -13,7 +15,6 @@ def click_pdp_back_btn(wd):
 
 def click_home_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgHome')
-    sleep(2)
 
 
 def save_product_name(wd):
@@ -70,7 +71,6 @@ def check_product_name(product_name, compare_name):
     else:
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
         raise Exception('상품명 동일 확인 실패')
-    sleep(1)
 
 
 def check_product_name1(product_name, compare_name):
@@ -90,23 +90,18 @@ def click_purchase_btn(wd):
 
 def click_gift_btn(wd):
     aalc(wd, 'c_선물하기')
-    sleep(3)
 
 
 def click_put_in_cart_btn(wd):
     aalc(wd, 'c_장바구니 담기')
-    sleep(1)
 
 
 def click_direct_purchase_btn(wd):
     aalc(wd, 'c_바로 구매하기')
-    sleep(1)
 
 
 def click_direct_gift_btn(wd):
-    sleep(3)
     aalc(wd, 'c_바로 선물하기')
-    sleep(1)
 
 
 def click_move_to_cart(wd):
@@ -114,9 +109,7 @@ def click_move_to_cart(wd):
 
 
 def click_like_btn(wd):
-    sleep(2)
     aalc(wd, 'c_찜하기')
-    sleep(5)
 
 # 옵션 존재 여부 확인
 def option_exist(product_item_no):
@@ -129,6 +122,7 @@ def option_exist(product_item_no):
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
     change_webview_contexts(wd)
+    sleep(1)
     element = aal(wd, '//label[contains(text(), "수량")]')
     if element == None:
         options = '옵션 있음'
@@ -179,19 +173,29 @@ def save_no_soldout_product_no():
 
 
 def save_purchase_price(wd):
-    amount_available_for_purchase_elemenent = aal(wd, f'c_구매 가능 금액')
-    # 예시로 XPath를 사용하여 특정 엘리먼트를 찾음
-    # 부모 엘리먼트를 찾음
-    parent_element = aal(wd, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
-    print(f'parent_element : {parent_element}')
-    # 부모의 자식 엘리먼트들을 모두 찾은 후에, 형제 엘리먼트를 찾음
-    amount_available_for_purchase = aals(parent_element, '//android.widget.TextView')
-    for i in range(len(amount_available_for_purchase)):
-        if amount_available_for_purchase[i].text == '구매 가능 금액':
-            price = amount_available_for_purchase[i + 1].text
-            break
+    switch_context(wd, 'webview')
+    sleep(1)
+    price = wd.find_element(AppiumBy.ID, 'total_amount')
+    if price == None:
+        print('금액 요소 못찾음')
+    else:
+        price = price.text
+        print(f'구매 가능 금액 : {price} 확인')
+    # amount_available_for_purchase_elemenent = aal(wd, f'c_구매 가능 금액')
+    # # 예시로 XPath를 사용하여 특정 엘리먼트를 찾음
+    # # 부모 엘리먼트를 찾음
+    # parent_element = aal(wd, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
+    # print(f'parent_element : {parent_element}')
+    # # 부모의 자식 엘리먼트들을 모두 찾은 후에, 형제 엘리먼트를 찾음
+    # amount_available_for_purchase = aals(parent_element, '//android.widget.TextView')
+    # for i in range(len(amount_available_for_purchase)):
+    #     if amount_available_for_purchase[i].text == '구매 가능 금액':
+    #         price = amount_available_for_purchase[i + 1].text
+    #         break
+    price = price.replace('원', '')
     price = int(price.replace(',', ''))
     print(f'구매 가능 가격 : {price}확인')
+    change_native_contexts(wd)
     return price
 
 

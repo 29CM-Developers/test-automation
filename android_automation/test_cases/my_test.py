@@ -139,7 +139,7 @@ class My:
 
             # 최근 본 상품 영역 축소 후 Home 탭으로 이동
             my_page.close_recent_contents(wd)
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
@@ -191,7 +191,7 @@ class My:
 
             delivery_order_page.click_back_btn(wd)
 
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
 
             print(f'[{test_name}] 테스트 종료')
 
@@ -236,7 +236,7 @@ class My:
             print(f'[{test_name}] 테스트 시작')
 
             # My 탭으로 이동
-            com_utils.deeplink_control.move_to_my_Android(wd)
+            # com_utils.deeplink_control.move_to_my_Android(wd)
 
             # 싱픔 리뷰 페이지 진입
             my_page.click_review_menu(wd)
@@ -250,7 +250,7 @@ class My:
 
             # Home 탭으로 복귀
             product_review_page.click_back_btn(wd)
-            com_utils.deeplink_control.move_to_home_Android(wd)
+            # com_utils.deeplink_control.move_to_home_Android(wd)
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:

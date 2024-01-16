@@ -30,10 +30,9 @@ class NotLogin:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
-            sleep(3)
+            # sleep(3)
             print(f'[{test_name}] 테스트 시작')
 
-            sleep(1)
             close_bottom_sheet(self.wd)
             # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
             navigation_bar.move_to_category(wd)
@@ -153,7 +152,7 @@ class NotLogin:
             my_page.check_login_btn(wd)
 
             # Home 탭으로 복귀
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
 
             print(f'[{test_name}] 테스트 종료')
 

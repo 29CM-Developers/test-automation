@@ -1,5 +1,4 @@
 from time import sleep
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import aal, aalc, aals
 
@@ -9,7 +8,6 @@ def enter_login_page(wd):
     # 로그인 회원가입 버튼 선택
     aalc(wd, 'com.the29cm.app29cm:id/txtLogin')
     print("로그인 버튼 선택")
-    sleep(3)
 
 
 def check_recent_title(wd, type, title):
@@ -23,7 +21,6 @@ def check_recent_title(wd, type, title):
 
 
 def expand_recent_contents(wd, post_title):
-    sleep(1)
     aalc(wd, f'c_{post_title}')
 
 
@@ -33,7 +30,6 @@ def close_recent_contents(wd):
 
 def check_recent_history(wd, product_name, post_title):
     recent_history = []
-    sleep(2)
     recent = aals(wd, '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/txtHistoryTitle"]')
     if recent == None:
         pass
@@ -52,7 +48,6 @@ def check_recent_history(wd, product_name, post_title):
 
 
 def click_delivery_order_menu(wd):
-    sleep(1)
     for i in range(0, 5):
         try:
             element = aal(wd, 'c_주문배송조회')
@@ -62,6 +57,7 @@ def click_delivery_order_menu(wd):
         except NoSuchElementException:
             pass
         com_utils.element_control.scroll_control(wd, "U", 50)
+    sleep(1)
 
 
 def click_review_menu(wd):
@@ -71,6 +67,7 @@ def click_review_menu(wd):
             if element == None:
                 com_utils.element_control.scroll_control(wd, "D", 30)
             elif element.is_displayed():
+                com_utils.element_control.scroll_control(wd, "D", 30)
                 element.click()
                 break
         except NoSuchElementException:
@@ -135,7 +132,6 @@ def find_login_btn(wd):
 
 def click_logout_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/btnLogout')
-    sleep(2)
 
 
 def check_nickname(self, wd):
@@ -152,7 +148,6 @@ def check_nickname(self, wd):
 
 
 def check_login_btn(wd):
-    sleep(1)
     logout_check = aal(wd, 'com.the29cm.app29cm:id/txtLogin')
     if '로그인' in logout_check.text:
         pass
@@ -164,4 +159,3 @@ def check_login_btn(wd):
 def enter_setting_page(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgSetting')
     print('설정 화면 진입')
-    sleep(2)

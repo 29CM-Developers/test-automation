@@ -36,13 +36,12 @@ def move_to_my(self, wd):
 
 def move_to_welove(self, wd):
     wd.get(self.conf['deeplink']['welove'])
-    sleep(1)
 
 
 def move_to_pdp(wd, product_item_no):
-    sleep(5)
+    sleep(2)
     wd.get(f'app29cm://product/{product_item_no}')
-    sleep(3)
+
 
 
 def move_to_pdp_iOS(wd, product_item_no):
@@ -53,12 +52,13 @@ def move_to_pdp_iOS(wd, product_item_no):
 
 # Home 탭으로 이동 딥링크
 def move_to_home_Android(wd):
+    sleep(1)
     wd.get('app29cm://home')
     bottom_sheet.close_bottom_sheet(wd)
 
 
 def move_to_my_Android(wd):
-    sleep(5)
+    sleep(2)
     wd.get('app29cm://mypage')
     sleep(1)
     print("홈 > 마이페이지 화면 진입")
@@ -67,13 +67,16 @@ def move_to_my_Android(wd):
 
 
 def move_to_pdp_Android(wd, product_item_no):
+    #sleep(1)
+    print(f'product_item_no : {product_item_no}')
     wd.get(f'app29cm://product/{product_item_no}')
-    sleep(3)
+    #sleep(3)
     bottom_sheet.close_bottom_sheet(wd)
 
 
 def move_to_like_Android(wd):
     wd.get('app29cm://like')
-    # LIKE 탭 진입 후, 바텀시트, 노티 바텀시트, 브랜드 추천 페이지 노출 여부 순차적으로 확인
     sleep(1)
+    # LIKE 탭 진입 후, 바텀시트, 노티 바텀시트, 브랜드 추천 페이지 노출 여부 순차적으로 확인
+
     bottom_sheet.close_bottom_sheet(wd)

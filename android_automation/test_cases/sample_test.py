@@ -1,16 +1,11 @@
 import os.path
-import subprocess
 import sys
 import traceback
 
 from difflib import SequenceMatcher
 from time import sleep, time
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control
-from com_utils.testrail_api import send_test_result
 
 
 class AutomationTesting:

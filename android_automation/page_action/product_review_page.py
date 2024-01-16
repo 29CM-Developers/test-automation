@@ -1,12 +1,10 @@
 from time import sleep
-
 from com_utils.element_control import aal, aalc
 
 
 def click_back_btn(wd):
     # 뒤로가기로 마이페이지 진입 확인
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-    sleep(1)
 
 
 def check_no_reviews_available(wd):

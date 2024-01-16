@@ -1,7 +1,6 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
 from com_utils.element_control import aal, aalc, element_scroll_control
 from com_utils.api_control import my_heart_count
@@ -9,7 +8,6 @@ from com_utils.api_control import my_heart_count
 
 def close_brand_recommended_page(wd):
     try:
-        sleep(5)
         # 관심 브랜드 선택 화면 발생
         brands_of_interest = aal(wd, 'com.the29cm.app29cm:id/recommendBrandRecyclerView')
         if brands_of_interest == None:
@@ -24,7 +22,7 @@ def close_brand_recommended_page(wd):
 
 def set_like_zero(self, wd):
     # 좋아요 api 호출하여 각 탭의 좋아요 수 확인
-    my_heart = my_heart_count(self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'])
+    my_heart = my_heart_count(self.pconf['LOGIN_SUCCESS_ID_1'], self.pconf['LOGIN_SUCCESS_PW'])
     product_count = my_heart['product_count']
     brand_count = my_heart['brand_count']
     post_count = my_heart['post_count']
@@ -167,6 +165,7 @@ def click_product_like_btn(wd):
          '//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]')
 
 
+
 # like_product_name = 좋아요 상품 목록의 상품명과 비교할 상품명
 def check_product_like(wd, like_product_name):
     like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
@@ -189,7 +188,6 @@ def click_product_name(wd):
 def click_liked_product_cart_btn(wd):
     # 장바구니 버튼 선택하여 PDP 진입 확인 (바텀시트 확인, 상품명 확인)
     aalc(wd, 'com.the29cm.app29cm:id/txtCart')
-    sleep(1)
 
 
 def check_open_to_purchase_modal(wd, like_productItem):
@@ -204,7 +202,7 @@ def check_open_to_purchase_modal(wd, like_productItem):
 
 
 def close_purchase_modal(wd):
-    sleep(1)
+    # sleep(1)
     # aalc(wd, 'android:id/content')
     wd.find_element(AppiumBy.ID, 'android:id/content').click()
     print('모달 닫기 선택')
@@ -248,13 +246,11 @@ def check_brand_page_name(wd, like_brand_name):
 
 def click_liked_brand_name(wd):
     aalc(wd, 'com.the29cm.app29cm:id/txtBrandName')
-    sleep(1)
 
 
 def click_brand_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print("뒤로가기 선택")
-    sleep(2)
 
 
 def save_liked_brand_product_name(wd):
@@ -273,15 +269,12 @@ def save_liked_brand_product_name(wd):
 def click_liked_brand_product_name(wd):
     item_layer = aal(wd, 'com.the29cm.app29cm:id/recyclerView')
     aalc(item_layer, '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/itemName"]')
-    sleep(1)
     close_bottom_sheet(wd)
     close_pdp_bottom_sheet(wd)
 
 
 def save_grid_image_size(wd):
     # 그리드 뷰 상태에서 이미지 사이즈 저장
-    # image_size_layer = aal(wd,'com.the29cm.app29cm:id/likeRecyclerView')
-    sleep(1)
     grid_size = aal(wd, '//android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/imageThumbnail"]').size
     print(f'grid_size : {grid_size["height"]} / {grid_size["width"]}')
 

@@ -3,7 +3,6 @@ import sys
 import traceback
 import logging
 from telnetlib import EC
-
 import requests
 import com_utils.deeplink_control
 from appium.webdriver.common.appiumby import AppiumBy
@@ -239,7 +238,7 @@ class Cart:
             send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
             return result_data
 
-    def test_change_cart_items(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_change_cart_items(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -272,8 +271,8 @@ class Cart:
             cart_page.check_increase_in_product_count(wd)
             change_total_price = cart_page.save_total_price(wd)
             # 총 주문금액 변경 확인
-            test_result = cart_page.check_change_total_order_amount(first_product_price,
-                                                                    change_total_price)
+            cart_page.check_change_total_order_amount(first_product_price,
+                                                      change_total_price)
             # 네이티브 변경
             change_native_contexts(wd)
             # Home 탭으로 이동
@@ -302,17 +301,14 @@ class Cart:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
             return result_data
 
-    def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -362,16 +358,12 @@ class Cart:
             # 네이티브 변경
             change_native_contexts(wd)
             wd.get('app29cm://home')
-
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
             return result_data

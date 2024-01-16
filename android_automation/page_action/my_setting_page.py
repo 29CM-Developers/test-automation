@@ -1,11 +1,9 @@
 from time import sleep
-
 from com_utils.element_control import aal, aalc
 
 
 def click_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
-    sleep(1)
 
 
 def check_notification(wd):

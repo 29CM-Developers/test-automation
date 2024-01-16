@@ -1,14 +1,12 @@
 import re
 from time import sleep
-from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 import com_utils.element_control
-from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
+from android_automation.page_action.context_change import change_native_contexts
 from com_utils.api_control import my_order_status, my_order_cancel
 from com_utils.element_control import aal, aalc, aals, scroll_control
 from selenium.common import NoSuchElementException
-from ios_automation.page_action import order_page
 
 
 def click_back_btn(wd):
@@ -56,7 +54,7 @@ def click_payment(wd):
 
 
 def click_virtual_account_payment(wd):
-    sleep(1)
+    # sleep(1)
     aalc(wd, 'c_전체 동의')
     aalc(wd, 'c_케이뱅크')
     scroll_control(wd, 'D', 50)
@@ -69,12 +67,10 @@ def click_virtual_account_payment(wd):
                 break
     except NoSuchElementException:
         pass
-    sleep(5)
 
 
 def click_delivery_order_tracking(wd):
     aalc(wd, 'c_주문조회')
-    sleep(3)
 
 
 def click_hyundai_card(wd):
@@ -98,7 +94,6 @@ def click_hyundai_card(wd):
 
 def check_pinpay_page(wd):
     try:
-        sleep(6)
         aal(wd, 'c_현대카드')
         print('Pin Pay 페이지 진입')
     except NoSuchElementException:
@@ -106,7 +101,6 @@ def check_pinpay_page(wd):
 
 
 def click_pinpay_payment(wd):
-    # aalc(wd, 'c_현대')
     aalc(wd, 'c_결제하기')
     sleep(5)
 
@@ -259,7 +253,6 @@ def check_cart_purchase_price(wd, cart_price):
         print(
             f'주문서 가격 확인 실패 - pdp: {cart_price} / 배송비 : {delivery_price} / 주문서: {order_price} / 결제 버튼 : {btn_price} / 쿠폰 할인 금액 : {coupon_discount_price}')
         raise Exception('주문서 가격 확인 실패')
-    sleep(3)
 
 
 def check_pdp_purchase_price(wd, pdp_price):
@@ -275,12 +268,10 @@ def check_pdp_purchase_price(wd, pdp_price):
         raise Exception('주문서 가격 확인 실패')
 
     change_native_contexts(wd)
-    sleep(5)
 
 
 def check_inipay_page(wd):
     try:
-        sleep(3)
         aal(wd, 'c_KG이니시스')
         print('이니시스 페이지 진입')
     except NoSuchElementException:
@@ -296,7 +287,6 @@ def check_done_payment(wd):
 
 
 def check_payment_type(wd, payment_type):
-    sleep(2)
     payment_info = ''
     try:
         parent_elements = aal(wd, f'//*[contains(@text, "결제방법")]/../..')
@@ -322,7 +312,6 @@ def check_api_order_cancel(self, order_no):
     if order_status != '전체취소':
         my_order_cancel(self.pconf['id_29cm'], self.pconf['password_29cm'], order_no)
         print('주문 취소 완료')
-        sleep(2)
     elif order_status == '전체취소':
         print('주문 취소 최종 확인')
     else:

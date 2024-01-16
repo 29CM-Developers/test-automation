@@ -11,8 +11,8 @@ from com_utils import values_control, api_control, deeplink_control
 from time import sleep, time
 from com_utils.api_control import large_category_list, large_categories_info, medium_categories_code, \
     category_plp_product
-from com_utils.element_control import aal, aalk, aalc, scroll_to_element_id, scroll_up_to_element_id, scroll_control, \
-    swipe_control, scroll_to_element_with_text, scroll, swipe_control, element_scroll_control
+from com_utils.element_control import aal, aalk, aalc, scroll_control, \
+    swipe_control, swipe_control, element_scroll_control
 from android_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page, \
     context_change
 from com_utils.testrail_api import send_test_result
@@ -194,7 +194,7 @@ class Category:
 
             # Home으로 복귀
             welove_page.click_welove_back_btn(wd)
-            navigation_bar.move_to_home(wd)
+            # navigation_bar.move_to_home(wd)
 
             print(f'[{test_name}] CASE 종료')
 
@@ -210,6 +210,8 @@ class Category:
             except Exception:
                 pass
             deeplink_control.move_to_home(self, wd)
+            # 네이티브로 변경
+            context_change.change_native_contexts(wd)
 
         finally:
             run_time = f"{time() - start_time:.2f}"
