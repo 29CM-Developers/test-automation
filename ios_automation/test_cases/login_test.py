@@ -18,8 +18,6 @@ class UserLoginTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            sleep(1)
-
             # 로그인 페이지 진입
             com_utils.deeplink_control.move_to_my(self, wd)
             my_page.enter_login_page(wd)

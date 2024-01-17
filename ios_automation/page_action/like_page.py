@@ -26,7 +26,7 @@ def close_noti_bottom_sheet(wd):
 
 def set_like_zero(self, wd):
     # 좋아요 api 호출하여 각 탭의 좋아요 수 확인
-    my_heart = my_heart_count(self.pconf['id_29cm'], self.pconf['password_29cm'])
+    my_heart = my_heart_count(self.pconf['id2_29cm'], self.pconf['password_29cm'])
     product_count = my_heart['product_count']
     brand_count = my_heart['brand_count']
     post_count = my_heart['post_count']
@@ -148,6 +148,8 @@ def save_like_product_name(wd):
 
 
 def click_product_like_btn(wd):
+    product_list = ial(wd, 'like_product_list')
+    element_scroll_control(wd, product_list, 'D', 5)
     ialc(wd, '//XCUIElementTypeButton[@name="like_btn"]')
 
 
@@ -168,6 +170,8 @@ def click_product_name(wd):
 
 
 def click_liked_product_cart_btn(wd):
+    product_list = ial(wd, 'like_product_list')
+    element_scroll_control(wd, product_list, 'D', 5)
     ialc(wd, 'liked_product_cart_btn')
 
 
@@ -249,7 +253,7 @@ def save_grid_image_size(wd):
 
 def save_list_image_size(wd):
     image_size = ial(wd,
-                     '//XCUIElementTypeCollectionView[@name="like_product_list"]/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage').size
+                     '//XCUIElementTypeCollectionView[@name="like_product_list"]/descendant::XCUIElementTypeImage').size
     return image_size
 
 

@@ -1,8 +1,8 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, ials, element_scroll_control
-from com_utils.api_control import product_detail, best_plp_women_clothes
+from com_utils.element_control import ial, ialc, ialk, ials, element_scroll_control, tap_control
+from com_utils.api_control import best_plp_women_clothes, product_no_soldout_option
 from ios_automation.page_action import context_change
 
 
@@ -62,7 +62,7 @@ def check_product_price(product_price, compare_price):
 
 
 def close_purchase_modal(wd):
-    ialc(wd, '//XCUIElementTypeWebView')
+    tap_control(wd)
 
 
 def check_open_to_purchase_modal(wd):
@@ -125,29 +125,24 @@ def select_options(wd, product_item_no):
         options = '옵션 없음'
     except NoSuchElementException:
         options = '옵션 있음'
-    print(f'{options} 확인')
 
+    # 옵션 있을 경우, 옵션 선택
     if options == '옵션 있음':
-        option_layout = product_detail(product_item_no)['option_items_layout']
-        option_item_list = product_detail(product_item_no)['option_items_list']
-        option_name = ''
+        option_list = product_no_soldout_option(product_item_no)
 
-        for i in range(len(option_layout)):
-            ialc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
-
-            if i < len(option_layout) - 1:
-                ialc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
-                option_item_list = option_item_list[0].get('list', [])
-            else:
-                for option in option_item_list:
-                    if option['limited_qty'] != 0:
-                        option_name = option["title"].strip()
-                        ialc(wd, f'//li[contains(text(), "{option_name}")]')
-                        break
-                    else:
-                        print(f'{option_name} 옵션 품절 확인')
-                        pass
+        for list, value in option_list.items():
+            if list.startswith('layout'):
+                ialc(wd, f'//input[@placeholder="{value}"]/..')
+            elif list.startswith('option'):
+                ialc(wd, f'//li[contains(text(), "{value}")]')
     sleep(1)
+
+    # 텍스트 입력 영역 있을 경우, 텍스트 입력
+    try:
+        ialk(wd, '//textarea[contains(@class, "css")]', '랜덤으로 부탁드려요.')
+    except NoSuchElementException:
+        pass
+
     context_change.switch_context(wd, 'native')
 
 
@@ -179,9 +174,9 @@ def save_purchase_price(wd):
     return price
 
 
-def move_bottom_sheet(wd, direction):
+def move_like_bottom_sheet(wd, direction):
     element = ial(wd,
-                  '//XCUIElementTypeWindow[1]/XCUIElementTypeOther[2]/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther[1]')
+                  '//*[@name="함께 보면 좋은 상품"]/ancestor::XCUIElementTypeCollectionView/../preceding-sibling::XCUIElementTypeOther')
     element_scroll_control(wd, element, direction, 40)
 
 

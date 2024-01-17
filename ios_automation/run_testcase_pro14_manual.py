@@ -11,13 +11,14 @@ from com_utils import slack_result_notifications
 from ios_setup import pro14_setup
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.test_cases.home_test import Home
-from ios_automation.page_action.bottom_sheet import close_bottom_sheet
+from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet
 from ios_automation.test_cases.cart_test import Cart
 from ios_automation.test_cases.my_test import My
 from ios_automation.test_cases.pdp_test import Pdp
 from ios_automation.test_cases.join_test import Join
 from selenium.common.exceptions import InvalidSessionIdException
 from com_utils.testrail_api import *
+from time import sleep
 
 
 class IOSTestAutomation(unittest.TestCase):
@@ -75,7 +76,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
         # 앱 실행 후, 바텀 시트 노출 여부 확인
-        close_bottom_sheet(self.wd)
+        sleep(3)
+        find_icon_and_close_bottom_sheet(self.wd)
 
         # 이메일 로그인 성공
         self.result_data = UserLoginTest.test_email_login_success(self, self.wd)

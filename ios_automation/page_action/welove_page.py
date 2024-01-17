@@ -25,11 +25,9 @@ def save_first_post_title(wd):
     if 'WEBVIEW' in wd.current_context:
         post_title = ial(wd, '//*[@id="first_post_title"]').text
     else:
-        posts = wd.find_element(AppiumBy.IOS_CLASS_CHAIN,
-                                '**/XCUIElementTypeCell[`name == "recommended_post"`][1]')
-        post_title = posts.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[2]').text
-        if '댓글' in post_title:
-            post_title = posts.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[5]').text
+        posts = ials(wd,
+                     '//XCUIElementTypeStaticText[@name="Recommended Post"]/preceding-sibling::XCUIElementTypeStaticText')
+        post_title = posts[len(posts) - 2].text
     return post_title
 
 
