@@ -188,42 +188,6 @@ class Cart:
 
             print(f'[{test_name}] 테스트 종료')
 
-            # print(f'[{test_name}] 테스트 시작')
-            # navigation_bar.move_to_cart(wd)
-            # sleep(3)
-            # # 첫번째 상품 주문 금액 저장
-            # # 웹뷰로 변경
-            # change_webview_contexts(wd)
-            #
-            # delete_product_price = cart_page.save_product_price(wd)
-            # # 토탈 금액 저장
-            # before_delete_total_price = cart_page.save_total_price(wd)
-            # # 첫번째 상품 삭제
-            # cart_page.click_delete_btn_to_first_product(wd)
-            # # 주문 상품 수 총 1개로 변경 확인
-            # cart_page.check_change_in_number_of_products(wd)
-            # # 삭제 후 토탈 금액 저장
-            # after_delete_total_price = cart_page.save_total_price(wd)
-            # # 총 주문금액이 해당 상품의 가격만큼 차감 확인
-            # cart_page.check_total_order_amount(delete_product_price, before_delete_total_price,
-            #                                    after_delete_total_price)
-            #
-            # # 첫번째 상품 주문 금액 저장
-            # first_product_price = cart_page.save_product_price(wd)
-            # # 남은 상품의 구매 개수 [+] 1번 선택
-            # cart_page.click_to_increase_the_number_of_products(wd)
-            # # 상품의 개수 정보 2로 변경 확인
-            # cart_page.check_increase_in_product_count(wd)
-            # change_total_price = cart_page.save_total_price(wd)
-            # # 총 주문금액 변경 확인
-            # cart_page.check_change_total_order_amount(first_product_price,
-            #                                           change_total_price)
-            # # 네이티브 변경
-            # change_native_contexts(wd)
-            # # Home 탭으로 이동
-            # move_to_home_Android(wd)
-            #
-            # print(f'[{test_name}] 테스트 종료')
         except Exception:
             # 오류 발생 시 테스트 결과를 실패로 한다
             test_result = 'FAIL'
