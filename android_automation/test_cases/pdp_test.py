@@ -1,7 +1,8 @@
 import os
 import sys
 import traceback
-from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
+from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet, \
+    close_like_bottom_sheet
 from android_automation.page_action.context_change import change_native_contexts
 from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
@@ -213,6 +214,7 @@ class Pdp:
             wd.get('app29cm://like')
             like_page.close_brand_recommended_page(wd)
             close_bottom_sheet(wd)
+            close_like_bottom_sheet(wd)
 
             # 좋아요 한 상품 노출 확인
             like_product_name = like_page.save_like_product_name(wd)

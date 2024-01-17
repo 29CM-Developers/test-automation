@@ -22,6 +22,7 @@ def move_to_search(wd):
 
 def move_to_like(wd):
     aalc(wd, 'LIKE')
+    sleep(2)
     # 관심 브랜드 선택 화면 발생 케이스
     close_brand_recommended_page(wd)
     close_bottom_sheet(wd)
