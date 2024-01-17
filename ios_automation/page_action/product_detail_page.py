@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, ialk, ials, element_scroll_control
+from com_utils.element_control import ial, ialc, ialk, ials, element_scroll_control, tap_control
 from com_utils.api_control import best_plp_women_clothes, product_no_soldout_option
 from ios_automation.page_action import context_change
 
@@ -62,7 +62,7 @@ def check_product_price(product_price, compare_price):
 
 
 def close_purchase_modal(wd):
-    ialc(wd, '//XCUIElementTypeWebView')
+    tap_control(wd)
 
 
 def check_open_to_purchase_modal(wd):
