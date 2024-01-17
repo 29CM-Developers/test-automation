@@ -2,7 +2,6 @@ import unittest
 import os
 import sys
 import requests
-from android_automation.test_cases.like_test import Like
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
@@ -15,6 +14,7 @@ from android_automation.test_cases.search_test import Search
 from android_automation.test_cases.join_test import Join
 from android_automation.test_cases.my_test import My
 from android_automation.test_cases.pdp_test import Pdp
+from android_automation.test_cases.like_test import Like
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
 from selenium.common import InvalidSessionIdException
