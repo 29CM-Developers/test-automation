@@ -1,12 +1,12 @@
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc
+from com_utils.element_control import ial, ialc, tap_control
 
 
 def close_bottom_sheet(wd):
     wd.implicitly_wait(1)
     try:
         ial(wd, '//XCUIElementTypeOther[@name="Title"]')
-        ialc(wd, 'c_닫기')
+        tap_control(wd)
         print('바텀 시트 노출되어 닫기 동작')
     except NoSuchElementException:
         pass
