@@ -402,6 +402,31 @@ def product_detail(product_item_no):
         print('PDP 상세 정보 API 불러오기 실패')
 
 
+def product_no_soldout_option(product_item_no):
+    option_layout = product_detail(product_item_no)['option_items_layout']
+    option_item_list = product_detail(product_item_no)['option_items_list']
+    option_list = {}
+
+    option_break = False
+    for j in range(len(option_item_list)):
+        option_item_list = product_detail(product_item_no)['option_items_list']
+        for i, layout in enumerate(option_layout):
+            option_list[f'layout{i}'] = layout
+            if i < len(option_layout) - 1:
+                option_list[f'option{i}'] = option_item_list[j]["title"]
+                option_item_list = option_item_list[j].get('list', [])
+            else:
+                for option in option_item_list:
+                    option_name = option["title"].strip()
+                    if option['limited_qty'] > 0:
+                        option_break = True
+                        option_list[f'option{i}'] = option_name
+                        break
+        if option_break:
+            break
+    return option_list
+
+
 def order_product_random_no():
     response = requests.get(
         'https://search-api.29cm.co.kr/api/v4/products/search?keyword=양말&excludeSoldOut=true&minPrice=0&maxPrice=1500')

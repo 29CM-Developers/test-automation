@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 import traceback
@@ -22,7 +21,6 @@ class NotLoginUserTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            sleep(1)
             # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
             deeplink_control.move_to_category(self, wd)
             category_page.click_category(wd, '상의')
@@ -64,6 +62,8 @@ class NotLoginUserTest:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
             # 라이프 선택 닫기
             home_page.click_close_life_tab(wd)
