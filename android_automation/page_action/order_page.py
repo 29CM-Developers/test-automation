@@ -101,6 +101,7 @@ def check_pinpay_page(wd):
 
 
 def click_pinpay_payment(wd):
+    sleep(2)
     aalc(wd, 'c_결제하기')
     sleep(5)
 

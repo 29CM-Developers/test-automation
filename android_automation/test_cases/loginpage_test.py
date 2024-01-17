@@ -29,7 +29,7 @@ class LoginLogout:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            sleep(1)
+            sleep(2)
 
             # 로그인 페이지 진입
             com_utils.deeplink_control.move_to_my_Android(wd)
