@@ -89,6 +89,7 @@ def click_purchase_btn(wd):
 
 
 def click_gift_btn(wd):
+    sleep(1)
     aalc(wd, 'c_선물하기')
 
 

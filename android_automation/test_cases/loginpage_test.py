@@ -21,7 +21,7 @@ from com_utils.testrail_api import send_test_result
 
 class LoginLogout:
 
-    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_email_login_success(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
@@ -29,7 +29,7 @@ class LoginLogout:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            sleep(1)
+            sleep(2)
 
             # 로그인 페이지 진입
             com_utils.deeplink_control.move_to_my_Android(wd)
@@ -82,16 +82,14 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '이메일 로그인 성공')
             return result_data
-    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+
+    def test_logout(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
@@ -135,16 +133,14 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '로그아웃')
             return result_data
-    def test_email_login_error_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+
+    def test_email_login_error_success(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
@@ -198,12 +194,9 @@ class LoginLogout:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '이메일 로그인 실패')
             return result_data

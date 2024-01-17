@@ -17,6 +17,7 @@ def click_back_btn(wd):
 
 def check_edit_page_title(wd):
     try:
+        sleep(1)
         edit_member_information = aal(wd, 'c_회원정보 수정')
         print("회원정보 수정 화면 진입")
         if edit_member_information.text == '회원정보 수정':

@@ -19,7 +19,7 @@ from com_utils.testrail_api import send_test_result
 
 class Category:
 
-    def test_category_page(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_category_page(self, wd, test_result='PASS', error_texts=[], img_src=''):
         # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
         # 현재 함수명 저장 - slack noti에 사용
         test_name = self.dconf[sys._getframe().f_code.co_name]
@@ -125,17 +125,14 @@ class Category:
         finally:
             # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
             run_time = f"{time() - start_time:.2f}"
-            # warning texts list를 가독성 좋도록 줄바꿈
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             # 값 재사용 용이성을 위해 dict로 반환한다
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '카테고리를 선택해서 PLP 진입')
             return result_data
 
-    def test_welove(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_welove(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -215,10 +212,8 @@ class Category:
 
         finally:
             run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
             result_data = {
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
+                'test_name': test_name, 'run_time': run_time}
             send_test_result(self, test_result, '카테고리 핀메뉴의 Welove 진입하여 탐색')
             return result_data
