@@ -6,8 +6,8 @@ from selenium.common import NoSuchElementException
 from android_automation.page_action import context_change
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
     switch_context
-from com_utils.element_control import aal, aalc, aals
-from com_utils.api_control import product_detail, best_plp_women_clothes
+from com_utils.element_control import aal, aalc, aals, aalk
+from com_utils.api_control import product_detail, best_plp_women_clothes, product_no_soldout_option
 
 
 def click_pdp_back_btn(wd):
@@ -100,26 +100,22 @@ def select_options(wd, product_item_no):
         options = '옵션 있음'
     else:
         options = '옵션 없음'
-    print(f'{options} 확인')
+    # 옵션 있을 경우, 옵션 선택
     if options == '옵션 있음':
-        option_layout = product_detail(product_item_no)['option_items_layout']
-        option_item_list = product_detail(product_item_no)['option_items_list']
-        option_name = ''
-        print(f'option_layout : {option_layout}')
-        for i in range(len(option_layout)):
-            aalc(wd, f'//input[@placeholder="{option_layout[i]}"]/..')
-            if i < len(option_layout) - 1:
-                aalc(wd, f'//li[contains(text(), "{option_item_list[0]["title"]}")]')
-                option_item_list = option_item_list[0].get('list', [])
-            else:
-                for option in option_item_list:
-                    if option['limited_qty'] != 0:
-                        option_name = option["title"].strip()
-                        aalc(wd, f'//li[contains(text(), "{option_name}")]')
-                        break
-                    else:
-                        print(f'{option_name} 옵션 품절 확인')
-                        pass
+        option_list = product_no_soldout_option(product_item_no)
+
+        for list, value in option_list.items():
+            if list.startswith('layout'):
+                aalc(wd, f'//input[@placeholder="{value}"]/..')
+            elif list.startswith('option'):
+                aalc(wd, f'//li[contains(text(), "{value}")]')
+    sleep(1)
+
+    # 텍스트 입력 영역 있을 경우, 텍스트 입력
+    try:
+        aalk(wd, '//textarea[contains(@class, "css")]', '랜덤으로 부탁드려요.')
+    except NoSuchElementException:
+        pass
     sleep(1)
     change_native_contexts(wd)
 
