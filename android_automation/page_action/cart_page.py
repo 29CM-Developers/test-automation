@@ -4,20 +4,63 @@ from com_utils import element_control
 from com_utils.element_control import aal, aalc, aals
 
 
+def save_number_of_order_product(wd):
+    info = aal(wd, '//*[@id="number_of_order_products"]').text
+    order_product_count = int(info.replace('총 ', ''))
+    return order_product_count
+
+
+def save_total_order_price(wd):
+    total_price = int(aal(wd, '//*[@id="total_order_amount"]').text.replace(',', '').replace('원', ''))
+    return total_price
+
+
+def check_delete_product(before_count, after_count, before_price, after_price, product_price):
+    if after_count == before_count - 1 and after_price == before_price - product_price:
+        print('장바구니 상품 제거 확인')
+    else:
+        print('장바구니 상품 제거 확인 실패')
+        raise Exception('장바구니 상품 제거 확인 실패')
+
+
+def check_add_product(before_count, after_count, before_price, after_price, product_price):
+    if after_count == before_count + 1 and after_price == before_price + product_price:
+        print('장바구니 상품 추가 확인')
+    else:
+        print('장바구니 상품 변경 추가 실패')
+        raise Exception('장바구니 상품 변경 추가 실패')
+
+
+def click_delete_product(wd):
+    aalc(wd, '//*[contains(@id, "product_delete_btn_")]')
+    sleep(2)
+
+
+def click_add_product(wd):
+    aalc(wd, '//*[contains(@id, "add_product_btn")]')
+    sleep(2)
+
+
+def save_product_count(wd):
+    product_count = aal(wd, '//*[contains(@id, "number_of_products")]').get_attribute('value')
+    product_count = int(product_count)
+    return product_count
+
+
 def click_delete_btn_to_first_product(wd):
     # 웹 뷰에서 장바구니 첫번째 상품 삭제
-    aalc(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[2]/button')
+    aalc(wd, '//*[contains(@id, "product_delete_btn_")]')
     print('첫번째 상품 삭제')
 
 
 def click_to_increase_the_number_of_products(wd):
     # 웹뷰에서 장바구니 첫번째 상품 갯수 증가 선택
-    aalc(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[3]/div/div/button[2]')
+    aalc(wd, '//*[contains(@id, "add_product_btn")]')
     print('첫번째 상품 갯수 증가 선택')
 
 
 def click_check_out_btn(wd):
-    aalc(wd, 'c_CHECK OUT')
+    aalc(wd, '//button[contains(text(), "CHECK OUT")]')
     print('CHECK OUT 선택')
 
 
@@ -65,7 +108,7 @@ def change_native_contexts(wd):
 
 def save_product_price(wd):
     try:
-        product_price = aal(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[4]/div[1]/span')
+        product_price = aal(wd, '//*[contains(@id, "product_amount")]')
         product_price = product_price.text
         print(f'product_price : {product_price}')
         price = int(product_price.replace(',', ''))
@@ -104,7 +147,7 @@ def save_total_price(wd):
 
 
 def save_product_name_one(wd):
-    first_product_name = aal(wd, '//div[@id="__next"]/div/section[1]/div[2]/div[2]/div/div[2]/div/div/a').text
+    first_product_name = aal(wd, '//*[contains(@id, "product_title")]').text
     print(f'first_product_name : {first_product_name}')
     return first_product_name
 

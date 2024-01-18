@@ -197,7 +197,7 @@ def scroll_to_feed_contents_feed_contain_item(wd):
         if element == None:
             pass
         else:
-            scroll_control(wd, 'D', 30)
+            scroll_control(wd, 'D', 10)
             break
         # 스크롤 액션 수행
         scroll_control(wd, 'D', 50)
