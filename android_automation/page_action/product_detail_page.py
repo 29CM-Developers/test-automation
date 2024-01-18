@@ -112,10 +112,12 @@ def select_options(wd, product_item_no):
     sleep(1)
 
     # 텍스트 입력 영역 있을 경우, 텍스트 입력
-    try:
-        aalk(wd, '//textarea[contains(@class, "css")]', '랜덤으로 부탁드려요.')
-    except NoSuchElementException:
+    text_fild = aal(wd, '//textarea[contains(@class, "css")]')
+    if text_fild == None:
         pass
+    else:
+        aalk(wd, '//textarea[contains(@class, "css")]', '랜덤으로 부탁드려요.')
+
     sleep(1)
     change_native_contexts(wd)
 
