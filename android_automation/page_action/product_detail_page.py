@@ -2,6 +2,8 @@ from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+
+from android_automation.page_action import context_change
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
     switch_context
 from com_utils.element_control import aal, aalc, aals
@@ -15,38 +17,6 @@ def click_pdp_back_btn(wd):
 
 def click_home_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgHome')
-
-
-def save_product_name(wd):
-    # 이굿 위크 상품 확인
-    try:
-        sale_tag = aal(wd, 'c_이굿위크 할인 상품')
-        if sale_tag == None:
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-            print('sale_tag 상품 ㅁㅣ발견')
-        else:
-            element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-            print('sale_tag 상품 발견')
-    except NoSuchElementException:
-        print('sale_tag 상품 미발견')
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-        pass
-
-    # 스페셜 오더 상품 확인
-    try:
-        aal(wd, "//*[contains(@text, 'SPECIAL-ORDER')]")
-        # wd.find_element(AppiumBy.XPATH, "//*[contains(@text, 'SPECIAL-ORDER')]")
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
-        print('SPECIAL-ORDER 상품 발견')
-    except NoSuchElementException:
-        print('SPECIAL-ORDER 상품 미발견')
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-        pass
-
-    # PDP_product_title = wd.find_element(AppiumBy.XPATH, element_xpath)
-    PDP_product_title = aal(wd, element_xpath)
-    print(f'PDP 상품명 : {PDP_product_title.text}')
-    return PDP_product_title.text
 
 
 def save_remove_prefix_product_name(product_name):
@@ -111,6 +81,7 @@ def click_move_to_cart(wd):
 
 def click_like_btn(wd):
     aalc(wd, 'c_찜하기')
+
 
 # 옵션 존재 여부 확인
 def option_exist(product_item_no):
@@ -182,17 +153,7 @@ def save_purchase_price(wd):
     else:
         price = price.text
         print(f'구매 가능 금액 : {price} 확인')
-    # amount_available_for_purchase_elemenent = aal(wd, f'c_구매 가능 금액')
-    # # 예시로 XPath를 사용하여 특정 엘리먼트를 찾음
-    # # 부모 엘리먼트를 찾음
-    # parent_element = aal(wd, "//*[contains(@text, '구매 가능 금액')]/..")  # ".."은 상위 엘리먼트를 나타냄
-    # print(f'parent_element : {parent_element}')
-    # # 부모의 자식 엘리먼트들을 모두 찾은 후에, 형제 엘리먼트를 찾음
-    # amount_available_for_purchase = aals(parent_element, '//android.widget.TextView')
-    # for i in range(len(amount_available_for_purchase)):
-    #     if amount_available_for_purchase[i].text == '구매 가능 금액':
-    #         price = amount_available_for_purchase[i + 1].text
-    #         break
+
     price = price.replace('원', '')
     price = int(price.replace(',', ''))
     print(f'구매 가능 가격 : {price}확인')
@@ -223,24 +184,29 @@ def check_bottom_sheet_title(wd):
         raise Exception('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
 
 
-def save_product_name(wd):
-    # 이굿 위크 상품 확인
-    sale_tag = aal(wd, '이굿위크 할인 상품')
-    if sale_tag == None:
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-        print('sale_tag 상품 미발견')
-    else:
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=5]'
-        print('sale_tag 상품 발견')
-    # 스페셜 오더 상품 확인
-    special_order = aal(wd, "//*[contains(@text, 'SPECIAL-ORDER')]")
-    if special_order == None:
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=3]'
-        print('SPECIAL-ORDER 상품 미발견')
-    else:
-        print('SPECIAL-ORDER 상품 발견')
-        element_xpath = '//android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.widget.TextView[@index=4]'
+def like_item_save_product_name(wd):
+    context_change.change_webview_contexts(wd)
 
-    PDP_product_title = aal(wd, element_xpath).text
-    print(f"PDP_product_title : {PDP_product_title}")
-    return PDP_product_title
+    product_name = aal(wd, '//*[@id="pdp_product_name"]')
+    if product_name == None:
+        print('상품명 미확인됨')
+        pass
+    else:
+        product_name = aal(wd, '//*[@id="pdp_product_name"]').text
+
+    context_change.change_native_contexts(wd)
+    return product_name
+
+
+def save_product_name(wd):
+    context_change.change_webview_contexts(wd)
+
+    product_name = aal(wd, '//*[@id="pdp_product_name"]')
+    if product_name == None:
+        print('상품명 미확인됨')
+        pass
+    else:
+        product_name = aal(wd, '//*[@id="pdp_product_name"]').text
+
+    context_change.change_native_contexts(wd)
+    return product_name

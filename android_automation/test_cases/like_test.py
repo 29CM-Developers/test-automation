@@ -124,15 +124,6 @@ class Like:
             like_page.check_open_to_purchase_modal(wd, pdp_product_name)
             like_page.close_purchase_modal(wd)
 
-            # # PDP 상품 이름 저장
-            # pdp_product_name = product_detail_page.save_product_name(wd)
-            #
-            # # 좋아요 한 상품명과 PDP의 상품명 비교
-            # product_detail_page.check_product_name(pdp_product_name, like_product_name)
-            #
-            # # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
-            # product_detail_page.click_pdp_back_btn(wd)
-
             # 그리드 뷰 상태에서 이미지 사이즈 저장
             grid_size = like_page.save_grid_image_size(wd)
 
@@ -165,13 +156,11 @@ class Like:
 
             # webview 전환
             change_webview_contexts(wd)
-            # context_change.switch_context(wd, 'webview')
 
             # 브랜드 PLP에서 브랜드명 비교 확인
             like_page.check_brand_page_name(wd, like_brand_name)
 
             # native 전환
-            # context_change.switch_context(wd, 'native')
             change_native_contexts(wd)
 
             # 브랜드 PLP에서 좋아요 페이지로 복귀
@@ -180,7 +169,7 @@ class Like:
             # 좋아요 브랜드의 첫번쨰 상품 선택하여 해당 상품 PDP 진입
             liked_brand_product_name = like_page.save_liked_brand_product_name(wd)
             like_page.click_liked_brand_product_name(wd)
-            pdp_product_name = product_detail_page.save_product_name(wd)
+            pdp_product_name = product_detail_page.like_item_save_product_name(wd)
             product_detail_page.check_product_name(pdp_product_name, liked_brand_product_name)
 
             # Like 탭으로 복귀
