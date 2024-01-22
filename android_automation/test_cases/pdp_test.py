@@ -3,7 +3,7 @@ import sys
 import traceback
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet, \
     close_like_bottom_sheet
-from android_automation.page_action.context_change import change_native_contexts
+from android_automation.page_action.context_change import change_native_contexts, switch_context
 from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
@@ -47,7 +47,9 @@ class Pdp:
             product_detail_page.click_gift_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, search_product_item_no)
+            change_native_contexts(wd)
 
             # PDP 내의 가격 저장
             pdp_price = product_detail_page.save_purchase_price(wd)
@@ -127,7 +129,9 @@ class Pdp:
             product_detail_page.click_purchase_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, random_product_no)
+            change_native_contexts(wd)
             sleep(5)
 
             # PDP 내의 가격 저장

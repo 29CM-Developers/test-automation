@@ -9,7 +9,8 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
+from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
+    switch_context
 from com_utils.api_control import search_popular_keyword, search_result, product_detail
 from com_utils.element_control import tap_control
 from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
@@ -53,7 +54,9 @@ class Cart:
             sleep(5)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, product_item_no)
+            change_native_contexts(wd)
 
             # 상품 장바구니에 담기
             product_detail_page.click_put_in_cart_btn(wd)
@@ -84,7 +87,9 @@ class Cart:
             product_detail_page.click_purchase_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, search_product_item_no)
+            change_native_contexts(wd)
 
             # 상품 장바구니에 담기
             product_detail_page.click_put_in_cart_btn(wd)
@@ -96,9 +101,7 @@ class Cart:
             product_detail_page.click_move_to_cart(wd)
             # 웹뷰로 변경
             change_webview_contexts(wd)
-            # print(wd.window_handles)
-            # wd.switch_to.window(wd.window_handles[0])
-            # print(wd.current_window_handle)
+
             cart_page.check_product_name(wd, best_pdp_name, keyword_pdp_name)
             # 네이티브로 변경
             change_native_contexts(wd)

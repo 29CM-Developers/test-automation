@@ -38,12 +38,12 @@ def close_like_bottom_sheet(wd):
             print('바텀 시트 미노출')
         else:
             print('바텀 시트 노출확인')
-            like_bottom_sheet = aal(wd, '다음에')
+            like_bottom_sheet = aal(wd, 'c_다음에')
             if like_bottom_sheet == None:
                 print('바텀 시트 다음에 문구 미노출')
                 pass
             else:
-                aalc(wd, '다음에')
+                aalc(wd, 'c_다음에')
                 print('바텀 시트 노출되어 닫기 동작')
 
     except NoSuchElementException:
