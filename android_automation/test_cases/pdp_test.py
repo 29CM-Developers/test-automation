@@ -3,7 +3,8 @@ import sys
 import traceback
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet, \
     close_like_bottom_sheet
-from android_automation.page_action.context_change import change_native_contexts, switch_context
+from android_automation.page_action.context_change import change_native_contexts, switch_context, \
+    change_webview_contexts
 from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
@@ -47,7 +48,7 @@ class Pdp:
             product_detail_page.click_gift_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
-            switch_context(wd, 'webview')
+            change_webview_contexts(wd)
             product_detail_page.select_options(wd, search_product_item_no)
             change_native_contexts(wd)
 
