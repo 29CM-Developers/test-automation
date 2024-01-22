@@ -93,7 +93,6 @@ def option_exist(product_item_no):
 
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
-    change_webview_contexts(wd)
     sleep(1)
     element = aal(wd, '//label[contains(text(), "수량")]')
     if element == None:
@@ -119,8 +118,6 @@ def select_options(wd, product_item_no):
         aalk(wd, '//textarea[contains(@class, "css")]', '랜덤으로 부탁드려요.')
 
     sleep(1)
-    change_native_contexts(wd)
-
 
 def check_add_product_to_cart(wd):
     element = aal(wd, 'c_장바구니에 상품')
