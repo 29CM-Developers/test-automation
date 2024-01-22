@@ -6,7 +6,7 @@ from selenium.common import NoSuchElementException
 from android_automation.page_action import context_change
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
     switch_context
-from com_utils.element_control import aal, aalc, aals, aalk
+from com_utils.element_control import aal, aalc, aals, aalk, scroll_control
 from com_utils.api_control import product_detail, best_plp_women_clothes, product_no_soldout_option
 
 
@@ -178,30 +178,14 @@ def check_bottom_sheet_title(wd):
         print('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
         raise Exception('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
 
-
-def like_item_save_product_name(wd):
-    context_change.change_webview_contexts(wd)
-
-    product_name = aal(wd, '//*[@id="pdp_product_name"]')
-    if product_name == None:
-        print('상품명 미확인됨')
-        pass
-    else:
-        product_name = aal(wd, '//*[@id="pdp_product_name"]').text
-
-    context_change.change_native_contexts(wd)
-    return product_name
-
-
 def save_product_name(wd):
     context_change.change_webview_contexts(wd)
 
     product_name = aal(wd, '//*[@id="pdp_product_name"]')
     if product_name == None:
-        print('상품명 미확인됨')
-        pass
-    else:
-        product_name = aal(wd, '//*[@id="pdp_product_name"]').text
+        scroll_control(wd, 'D', 20)
+        product_name = aal(wd, '//*[@id="pdp_product_name"]')
 
+    product_name = aal(wd, '//*[@id="pdp_product_name"]').text
     context_change.change_native_contexts(wd)
     return product_name

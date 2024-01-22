@@ -48,7 +48,7 @@ class Pdp:
 
             # 옵션의 존재 여부 확인하여 옵션 선택
             switch_context(wd, 'webview')
-            product_detail_page.cart_2nd_item_select_options(wd, search_product_item_no)
+            product_detail_page.select_options(wd, search_product_item_no)
             change_native_contexts(wd)
 
             # PDP 내의 가격 저장

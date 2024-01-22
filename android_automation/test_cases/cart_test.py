@@ -54,7 +54,7 @@ class Cart:
             sleep(5)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
-            change_webview_contexts(wd)
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, product_item_no)
             change_native_contexts(wd)
 
