@@ -47,7 +47,7 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # webdriver
         self.wd, self.and_cap = s22_setup()
-        self.wd.implicitly_wait(3)
+        self.wd.implicitly_wait(5)
         # report data
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
