@@ -400,7 +400,7 @@
 		},
 		{
 			"key": "img_url",
-			"value": "",
+			"value": "/item/202401/11eeabb3a2d0c29783b6cb40c833adad.jpeg",
 			"type": "default",
 			"enabled": true
 		},
@@ -409,9 +409,21 @@
 			"value": "26160",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "status_consumer_price",
+			"value": "100",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "status_img_url",
+			"value": "/item/202401/11eeaf7a7ad563c4bfc66539b3cb8a5b.png",
+			"type": "default",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2023-11-30T07:45:57.872Z",
-	"_postman_exported_using": "Postman/10.20.7"
+	"_postman_exported_at": "2024-01-22T03:24:08.155Z",
+	"_postman_exported_using": "Postman/10.22.3"
 }
