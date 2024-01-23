@@ -5,6 +5,7 @@ import com_utils.deeplink_control
 
 from time import time
 from com_utils import values_control
+from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import login_page, my_page, navigation_bar, join_page, context_change
 
@@ -64,4 +65,8 @@ class Join:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '간편 회원가입 실패')
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data

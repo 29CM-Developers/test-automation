@@ -5,6 +5,7 @@ import com_utils
 
 from time import time
 from com_utils import values_control, api_control
+from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.deeplink_control import move_to_category
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page, \
@@ -119,5 +120,8 @@ class Plp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, 'PLP 기능 확인')
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
-
