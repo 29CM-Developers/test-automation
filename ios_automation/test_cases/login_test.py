@@ -5,6 +5,7 @@ import com_utils.deeplink_control
 
 from time import time, sleep
 from com_utils import values_control
+from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page, context_change
 from ios_automation.page_action.select_category_page import test_select_category
@@ -68,6 +69,9 @@ class UserLoginTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '이메일 로그인 성공')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_logout(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -109,6 +113,9 @@ class UserLoginTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '로그아웃')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_email_login_error_success(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -157,8 +164,7 @@ class UserLoginTest:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '이메일 로그인 실패')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
-
-
-
-

@@ -6,6 +6,7 @@ import com_utils.api_control
 
 from time import time
 from com_utils import values_control
+from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.api_control import my_coupon_list
 from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import my_page, my_setting_page, navigation_bar, product_detail_page, welove_page, \
@@ -53,6 +54,9 @@ class My:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '설정화면 진입')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_recently_viewed_content(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -123,6 +127,9 @@ class My:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '최근 본 컨텐츠 확인')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_track_delivery_without_orders(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -165,6 +172,9 @@ class My:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '주문 건이 없을 경우, 주문 배송 조회 없음 확인')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_review_without_orders(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -213,6 +223,9 @@ class My:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '주문 건이 없을 경우, 상품 리뷰 없음 확인')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_coupons_list(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -272,4 +285,7 @@ class My:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '보유하고 있는 쿠폰 목록 확인')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data

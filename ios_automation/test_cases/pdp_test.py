@@ -4,6 +4,7 @@ import traceback
 from time import time
 
 from com_utils import values_control
+from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
 from com_utils.testrail_api import send_test_result
@@ -76,6 +77,9 @@ class Pdp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, 'PDP에서 좋아요 선택하기')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_gift_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -153,6 +157,9 @@ class Pdp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, 'PDP에서 선물 주문서 화면으로 이동')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
 
     def test_purchase_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -223,4 +230,7 @@ class Pdp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, 'PDP에서 구매 주문서 화면으로 이동')
+            connection, cursor = connect_db(self)
+            insert_data(connection, cursor, self, result_data)
+            disconnect_db(connection, cursor)
             return result_data
