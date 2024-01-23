@@ -118,9 +118,10 @@ class Search:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '인기 브랜드 검색 결과 화면 진입')
-            connection, cursor = connect_db(self)
-            insert_data(connection, cursor, self, result_data)
-            disconnect_db(connection, cursor)
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
 
     def test_search_popular_keyword(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -193,9 +194,10 @@ class Search:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '인기 검색어 검색 결과 화면 진입')
-            connection, cursor = connect_db(self)
-            insert_data(connection, cursor, self, result_data)
-            disconnect_db(connection, cursor)
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
 
     def test_search_results_page(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -293,7 +295,8 @@ class Search:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '검색 결과 화면 확인')
-            connection, cursor = connect_db(self)
-            insert_data(connection, cursor, self, result_data)
-            disconnect_db(connection, cursor)
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data

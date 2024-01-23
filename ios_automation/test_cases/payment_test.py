@@ -100,9 +100,10 @@ class Payment:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '무통장 입금으로 상품 구매 후, 주문 배송 조회 확인')
-            connection, cursor = connect_db(self)
-            insert_data(connection, cursor, self, result_data)
-            disconnect_db(connection, cursor)
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
 
     def test_pay_with_credit_card(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -196,7 +197,8 @@ class Payment:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '신용카드로 상품 구매 후, 주문 배송 조회 확인')
-            connection, cursor = connect_db(self)
-            insert_data(connection, cursor, self, result_data)
-            disconnect_db(connection, cursor)
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data

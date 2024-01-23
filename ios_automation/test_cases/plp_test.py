@@ -120,7 +120,8 @@ class Plp:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, 'PLP 기능 확인')
-            connection, cursor = connect_db(self)
-            insert_data(connection, cursor, self, result_data)
-            disconnect_db(connection, cursor)
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
