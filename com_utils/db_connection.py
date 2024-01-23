@@ -1,20 +1,20 @@
 import time
-
 import psycopg2
 
 from psycopg2 import sql
 from datetime import datetime
 
-def connect_db():
+
+def connect_db(self):
     """
     postgresql DB connection
     """
     connection = psycopg2.connect(
-        host="192.168.103.13",
-        port="5432",
-        user="qaauto",
-        password="qadb29cm",
-        database="ui_automation_log"
+        host=self.econf.get("postgres_host"),
+        port=self.econf.get("postgres_port"),
+        user=self.econf.get("postgres_user"),
+        password=self.econf.get("postgres_pass"),
+        database=self.econf.get("postgres_database")
     )
     cursor = connection.cursor()
     return connection, cursor
@@ -70,12 +70,3 @@ def insert_data(connection, cursor, self, result_data):
 def disconnect_db(connection, cursor):
     cursor.close()
     connection.close()
-
-
-# try:
-#     connection, cursor = connect_db()
-#     result = insert_data(cursor)
-#     disconnect_db(cursor, connection)
-# except Exception as e:
-#     print(e)
-#     disconnect_db(cursor, connection)
