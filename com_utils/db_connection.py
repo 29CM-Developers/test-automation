@@ -39,7 +39,7 @@ def insert_data(connection, cursor, self, result_data):
         data_to_insert = {
             "platform": self.device_platform,
             "error_code": result_data.get("error_texts")[0],
-            "error_reason": result_data.get("error_texts")[1],
+            "error_reason": result_data.get("error_texts")[-1],
             "insert_time": datetime.now(),
             "error_scenario": result_data.get("test_name"),
             "test_result": result_data.get("test_result"),
