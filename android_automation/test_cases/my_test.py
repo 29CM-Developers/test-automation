@@ -87,7 +87,14 @@ class My:
             com_utils.deeplink_control.move_to_pdp_Android(wd, product_item_no)
 
             # PDP 상품 이름 저장 -> 이미지 1개일 경우와 2개 이상일 경우, XPATH index 변경되어 아래와 같이 작성
+            # 웹뷰 전환
+            context_change.change_webview_contexts(wd)
+
             product_name = product_detail_page.save_product_name(wd)
+
+            # 네이티브 전환
+            context_change.change_native_contexts(wd)
+
             recent_product_name = product_detail_page.save_remove_prefix_product_name(product_name)
 
             # My 탭으로 이동

@@ -143,9 +143,9 @@ def save_like_product_name(wd):
 
 
 def save_like_product_name_in_like(wd):
-    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    like_layer = aal(wd, 'first_product_layer')
     productItem = aal(like_layer,
-                      '//android.view.ViewGroup[2]/android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
+                      '//android.widget.TextView[@resource-id="com.the29cm.app29cm:id/contentsDescription"]').text
 
     print(f"productItem : {productItem}")
     # like_layer.find_element(AppiumBy.XPATH,'//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]').click()
@@ -160,9 +160,10 @@ def save_like_product_name_in_like(wd):
 
 
 def click_product_like_btn(wd):
-    like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    # like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
+    like_layer = aal(wd, 'first_product_layer')
     aalc(like_layer,
-         '//android.view.ViewGroup[2]/android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]')
+         '//android.widget.ImageView[@resource-id="com.the29cm.app29cm:id/contentsHeart"]')
 
 
 

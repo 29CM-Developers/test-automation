@@ -40,6 +40,7 @@ def move_to_cart(wd):
 
 
 def move_to_back(wd):
+    sleep(1)
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print("뒤로가기 선택")
 

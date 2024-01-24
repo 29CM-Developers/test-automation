@@ -65,7 +65,7 @@ def click_review_menu(wd):
         try:
             element = aal(wd, 'c_상품 리뷰')
             if element == None:
-                com_utils.element_control.scroll_control(wd, "D", 30)
+                pass
             elif element.is_displayed():
                 com_utils.element_control.scroll_control(wd, "D", 30)
                 element.click()

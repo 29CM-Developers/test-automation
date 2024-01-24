@@ -179,13 +179,10 @@ def check_bottom_sheet_title(wd):
         raise Exception('바텀 시트의 함께 보면 좋은 상품 타이틀 비교 확인 실패')
 
 def save_product_name(wd):
-    context_change.change_webview_contexts(wd)
-
     product_name = aal(wd, '//*[@id="pdp_product_name"]')
     if product_name == None:
         scroll_control(wd, 'D', 20)
         product_name = aal(wd, '//*[@id="pdp_product_name"]')
 
     product_name = aal(wd, '//*[@id="pdp_product_name"]').text
-    context_change.change_native_contexts(wd)
     return product_name

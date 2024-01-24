@@ -2,7 +2,8 @@ import os.path
 import sys
 import traceback
 import logging
-from android_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page
+from android_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page, \
+    context_change
 from android_automation.page_action.best_product_list_page import check_app_evaluation_pop_up_exposure
 from android_automation.page_action.navigation_bar import move_to_category
 from com_utils import values_control, api_control
@@ -80,7 +81,9 @@ class Plp:
             best_product_list_page.click_best_first_product(wd)
 
             # PDP 상품명 비교
+            context_change.switch_context(wd, 'webview')
             pdp_name = product_detail_page.save_product_name(wd)
+            context_change.change_native_contexts(wd)
             product_detail_page.check_product_name1(pdp_name, now_1st_product)
 
             # context_change.switch_context(wd, 'webveiw')

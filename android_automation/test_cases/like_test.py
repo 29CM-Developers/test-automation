@@ -108,8 +108,14 @@ class Like:
             # 좋아요 한 상품의 상품명 선택
             like_page.click_product_name(wd)
 
+            # 웹뷰 전환
+            context_change.switch_context(wd, 'webview')
+
             # PDP 상품 이름 저장
             pdp_product_name = product_detail_page.save_product_name(wd)
+
+            # 네이티브 전환
+            context_change.change_native_contexts(wd)
 
             # 좋아요 한 상품명과 PDP의 상품명 비교
             product_detail_page.check_product_name(pdp_product_name, like_product_name)
@@ -169,7 +175,15 @@ class Like:
             # 좋아요 브랜드의 첫번쨰 상품 선택하여 해당 상품 PDP 진입
             liked_brand_product_name = like_page.save_liked_brand_product_name(wd)
             like_page.click_liked_brand_product_name(wd)
+
+            # webview 전환
+            change_webview_contexts(wd)
+
             pdp_product_name = product_detail_page.save_product_name(wd)
+
+            # native 전환
+            change_native_contexts(wd)
+
             product_detail_page.check_product_name(pdp_product_name, liked_brand_product_name)
 
             # Like 탭으로 복귀

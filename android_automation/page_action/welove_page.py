@@ -31,37 +31,20 @@ def click_hash_tag_back_btn(wd):
 
 
 def save_first_post_title(wd):
-    # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
-    post_title = aals(wd, '//h3')[1]
-    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
+    if 'WEBVIEW' in wd.current_context:
+        post_title = aal(wd, '//*[@id="first_post_title"]')
+    else:
+        post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
+
     if post_title == None:
         com_utils.element_control.scroll_control(wd, "D", 30)
-    # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle').text
-    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
-    post_title = aals(wd, '//h3')[1].text
+
+    if 'WEBVIEW' in wd.current_context:
+        post_title = aal(wd, '//*[@id="first_post_title"]').text
+    else:
+        post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle').text
 
     print(f'포스트명 : {post_title}')
-
-    return post_title
-
-
-def save_first_post_title_for_recently_viewed(wd):
-    sleep(2)
-    # 웹뷰로 변경
-    change_webview_contexts(wd)
-
-    # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle')
-    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3')
-    post_title = aals(wd, '//h3')[1]
-    if post_title == None:
-        com_utils.element_control.scroll_control(wd, "D", 30)
-    # post_title = aal(wd, 'com.the29cm.app29cm:id/txtPostTitle').text
-    # post_title = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/a/div[2]/h3').text
-    post_title = aals(wd, '//h3')[1].text
-    print(f'포스트명 : {post_title}')
-
-    # 네이티브로 변경
-    change_native_contexts(wd)
 
     return post_title
 
@@ -145,9 +128,9 @@ def check_hash_tag_title(wd, hash_tag):
 def check_hash_tag_post(wd, post_title):
     tag_break = False
     for i in range(0, 5):
-        # post = aal(wd, post_title)
+        post = aal(wd, f'c_{post_title}')
         # post = aal(wd, '//div[@id="__next"]/section/section[1]/div[2]/ul/li[1]/div[2]/div/ul/li[1]/a/div[2]/h1')
-        post = aal(wd, f'//h1[contains(text(), "{post_title}")]')
+        # post = aal(wd, f'//h1[contains(text(), "{post_title}")]')
         if post == None:
             pass
         elif post.is_displayed():

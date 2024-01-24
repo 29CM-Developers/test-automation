@@ -118,7 +118,8 @@ def check_relate_keyword(wd, api_keyword_1st):
 
 
 def click_sort_filter_btn(wd, sort):
-    selector_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
+    # selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+    selector_layer = aal(wd, 'com.the29cm.app29cm:id/facetGroup')
     selector = aal(selector_layer, '//android.view.View/android.view.View/android.view.View[1]/android.widget.TextView')
     selector.click()
     bottom_sheet_layer = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
@@ -136,7 +137,8 @@ def click_sort_filter_btn(wd, sort):
 
 def click_color_filter(self, wd, color):
     print(f'color : {color}')
-    selector_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
+    # selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+    selector_layer = aal(wd, 'com.the29cm.app29cm:id/facetGroup')
     aalc(selector_layer, f'c_{self.conf["search_filter"]["color"]}')
     aalc(wd, f"c_{color}")
     print(f'color : {color} 선택')
@@ -165,7 +167,8 @@ def click_apply_filter_btn(wd):
 def save_filter_info(wd, filter_list):
     print(f'filter_list : {filter_list}')
     filter_list_set = []
-    filter_layer = aal(wd, 'com.the29cm.app29cm:id/selector')
+    # filter_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+    filter_layer = aal(wd, 'com.the29cm.app29cm:id/facetGroup')
     for filter in filter_list:
         element = aal(filter_layer, f'c_{filter}')
         if element == None:
@@ -182,7 +185,8 @@ def save_filter_info(wd, filter_list):
 
 
 def check_filter_info(self, wd, to_be_filter_list):
-    selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+    # selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/selector')
+    selector_layer = wd.find_element(AppiumBy.ID, 'com.the29cm.app29cm:id/filter')
     element = aal(selector_layer, f'c_{to_be_filter_list[1]}')
     if '블랙' in element.text:
         print("블랙 필터링 노출 확인")

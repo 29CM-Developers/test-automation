@@ -44,7 +44,7 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # webdriver
         self.wd, self.and_cap = note20_setup()
-        self.wd.implicitly_wait(5)
+        self.wd.implicitly_wait(10)
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
 
@@ -60,13 +60,28 @@ class AndroidTestAutomation(unittest.TestCase):
         except InvalidSessionIdException:
             self.appium.stop()
 
-    def test_automation_android_bvt2(self):
+    def test_automation_android_bvt(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
+        # 이메일 로그인 성공
+        self.result_data = LoginLogout.test_email_login_success(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 홈화면 배너 확인
+        self.result_data = Home.test_home_banner(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 홈화면 컨텐츠 확인
+        self.result_data = Home.test_home_contents(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 장바구니 리스트
         self.result_data = Cart.test_cart_list(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
@@ -100,36 +115,6 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 로그아웃
-        self.result_data = LoginLogout.test_logout(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 간편 회원가입 실패
-        self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-    def test_automation_android_bvt1(self):
-        # 메소드명과 일치하는 정보 받아오기
-        self.def_name = self.dconf[sys._getframe().f_code.co_name]
-
-        # 이메일 로그인 성공
-        self.result_data = LoginLogout.test_email_login_success(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면 배너 확인
-        self.result_data = Home.test_home_banner(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면 컨텐츠 확인
-        self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
         # My -> 설정
         self.result_data = My.test_enter_settings_screen(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
@@ -147,6 +132,16 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # PDP에서 좋아요
         self.result_data = Pdp.test_like_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 로그아웃
+        self.result_data = LoginLogout.test_logout(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 간편 회원가입 실패
+        self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
