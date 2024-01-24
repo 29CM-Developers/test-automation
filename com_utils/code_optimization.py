@@ -15,8 +15,8 @@ def finally_opt(self, start_time, test_result, error_texts, img_src, test_name, 
     result_data = {
         'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
         'test_name': test_name, 'run_time': run_time}
-    send_test_result(self, test_result, testcase_title)
     if self.user == 'pipeline':
+        send_test_result(self, test_result, testcase_title)
         connection, cursor = connect_db(self)
         insert_data(connection, cursor, self, result_data)
         disconnect_db(connection, cursor)
