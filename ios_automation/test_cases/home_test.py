@@ -5,6 +5,7 @@ import com_utils.element_control
 import com_utils.deeplink_control
 
 from com_utils import values_control
+from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from time import time
 from com_utils.api_control import search_total_popular_brand_name, feed_contents_info
 from com_utils.testrail_api import send_test_result
@@ -82,6 +83,10 @@ class Home:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '홈화면의 배너, 다이나믹 게이트 확인')
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
 
     def test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -171,6 +176,10 @@ class Home:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '홈화면의 컨텐츠(피드) 탐색')
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data
 
     def test_move_tab_from_home(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -251,4 +260,8 @@ class Home:
                 'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
                 'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
             send_test_result(self, test_result, '홈화면에서 다른 탭으로 이동')
+            if self.user == 'pipeline':
+                connection, cursor = connect_db(self)
+                insert_data(connection, cursor, self, result_data)
+                disconnect_db(connection, cursor)
             return result_data

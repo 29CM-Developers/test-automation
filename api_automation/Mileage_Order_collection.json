@@ -1,0 +1,1088 @@
+{
+  "info": {
+    "_postman_id": "f263dca3-871c-46bb-8656-d000dc457195",
+    "name": "Mileage - Order",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27465778"
+  },
+  "item": [
+    {
+      "name": "get inhouse token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "",
+              "pm.test(\"Response has a property called partner_token\", function () {",
+              "    pm.expect(jsonData).to.have.property('dajjeong_inhouse');",
+              "});",
+              "",
+              "pm.environment.set(\"inhouse_token\", jsonData.dajjeong_inhouse.inhouse_token)"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{qa_host}}/qa/personal/test_environment",
+          "host": [
+            "{{qa_host}}"
+          ],
+          "path": [
+            "qa",
+            "personal",
+            "test_environment"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 - CS",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+              "",
+              "var start_date = new Date(currentDate);",
+              "start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+              "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+              "const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+              "const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+              "",
+              "// 날짜 및 시간 문자열을 만듭니다.",
+              "const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T05:00:00Z`;",
+              "console.log(start_formattedDate)",
+              "",
+              "pm.environment.set(\"applyTime\", start_formattedDate)",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// request data",
+              "var jsondata = JSON.parse(request.data)",
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "var targetUserCount = jsondata.userIdList.length",
+              "var totalAmount = targetUserCount * jsondata.amount",
+              "",
+              "var data_type = jsondata.type",
+              "var idx = data_type.indexOf(\"_\")",
+              "var type = data_type.substring(0, idx)",
+              "",
+              "// data set",
+              "pm.environment.set('mileageId', responsejsondata.data.id)",
+              "pm.environment.set(\"targetUserCount\", targetUserCount)",
+              "pm.environment.set(\"userIdList\", jsondata.userIdList)",
+              "pm.environment.set(\"type\", jsondata.type)",
+              "pm.environment.set(\"status\", responsejsondata.data.status)",
+              "pm.environment.set(\"message\", jsondata.message)",
+              "pm.environment.set(\"imageUrl\", jsondata.imageUrl)",
+              "pm.environment.set(\"amount\", jsondata.amount)",
+              "pm.environment.set(\"validPeriod\", jsondata.validPeriod)",
+              "pm.environment.set(\"applyTime\", jsondata.applyTime)",
+              "pm.environment.set(\"totalAmount\", totalAmount)",
+              "pm.environment.set(\"insertedAt\", responsejsondata.data.insertedAt)",
+              "pm.environment.set(\"adminId\", responsejsondata.data.adminId)",
+              "",
+              "pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+              "});",
+              "pm.test(\"마일리지 id 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.id).to.eql(pm.environment.get(\"mileageId\"));",
+              "});",
+              "pm.test(\"targetUserCount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.targetUserCount).to.eql(pm.environment.get(\"targetUserCount\"));",
+              "});",
+              "pm.test(\"type 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.type).to.include(type);",
+              "});",
+              "pm.test(\"status 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.status).to.eql(\"SCHEDULED\");",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.message).to.eql(pm.environment.get(\"message\"));",
+              "});",
+              "pm.test(\"meimageUrlssage 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.imageUrl).to.eql(pm.environment.get(\"imageUrl\"));",
+              "});",
+              "pm.test(\"amount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.amount).to.eql(pm.environment.get(\"amount\"));",
+              "});",
+              "pm.test(\"validPeriod 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.validPeriod).to.eql(pm.environment.get(\"validPeriod\"));",
+              "});",
+              "pm.test(\"applyTime 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.applyTime).to.eql(pm.environment.get(\"applyTime\"));",
+              "});",
+              "pm.test(\"totalAmount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.totalAmount).to.eql(pm.environment.get(\"totalAmount\"));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userIdList\": [7214977],\n    \"type\": \"CS_REWARD\",\n    \"message\": \"CS 보상 마일리지 수기 적립 테스트\",\n    \"imageUrl\": null,\n    \"amount\": 500,\n    \"validPeriod\": 1,\n    \"applyTime\": \"{{applyTime}}\"\n}\n"
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 단건 조회",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// UTC+09:00 으로 변경",
+              "const applyTimeString = pm.environment.get(\"applyTime\");",
+              "",
+              "const formatDateString = (dateString) => {",
+              "  const date = new Date(dateString);",
+              "  date.setMilliseconds(0);",
+              "  date.setUTCHours(date.getUTCHours() + 9);",
+              "  date.setDate(date.getDate());",
+              "  return date.toISOString().slice(0, -5)+'+09:00';",
+              "};",
+              "const formattedApplyTime = formatDateString(applyTimeString);",
+              "pm.environment.set(\"formattedApplyTime\", formattedApplyTime)",
+              "",
+              "const insertDateString = pm.environment.get(\"insertedAt\");",
+              "const formatInsertString = (dateString) => {",
+              "  const date = new Date(dateString);",
+              "  date.setMilliseconds(0);",
+              "  date.setUTCHours(date.getUTCHours() + 9);",
+              "  return date.toISOString().slice(0, -5) + '+09:00';",
+              "};",
+              "const formattedInsertAt = formatInsertString(insertDateString);",
+              "pm.environment.set(\"formattedInsertAt\", formattedInsertAt)",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "",
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "const insertDateString = responsejsondata.data.insertedAt;",
+              "const formatInsertString = (dateString) => {",
+              "  const date = new Date(dateString);",
+              "  date.setMilliseconds(0);",
+              "  date.setUTCHours(date.getUTCHours() + 9);",
+              "  return date.toISOString().slice(0, -5) + '+09:00';",
+              "};",
+              "const formattedInsertAt = formatInsertString(insertDateString);",
+              "",
+              "var data_type = responsejsondata.data.type",
+              "var idx = data_type.indexOf(\"_\")",
+              "var type = data_type.substring(0, idx)",
+              "",
+              "",
+              "pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+              "});",
+              "pm.test(\"마일리지 id 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.id).to.eql(pm.environment.get(\"mileageId\"));",
+              "});",
+              "pm.test(\"targetUserCount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.targetUserCount).to.eql(pm.environment.get(\"targetUserCount\"));",
+              "});",
+              "pm.test(\"type 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.type).to.include(type);",
+              "});",
+              "pm.test(\"status 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.status).to.eql(pm.environment.get(\"status\"));",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.message).to.eql(pm.environment.get(\"message\"));",
+              "});",
+              "pm.test(\"imageUrl 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.imageUrl).to.eql(pm.environment.get(\"imageUrl\"));",
+              "});",
+              "pm.test(\"amount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.amount).to.eql(pm.environment.get(\"amount\"));",
+              "});",
+              "pm.test(\"validPeriod 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.validPeriod).to.eql(pm.environment.get(\"validPeriod\"));",
+              "});",
+              "pm.test(\"applyTime 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.applyTime).to.eql(pm.environment.get(\"formattedApplyTime\"));",
+              "});",
+              "pm.test(\"insertedAt 유효성 체크\", function () {",
+              "    pm.expect(formattedInsertAt).to.eql(pm.environment.get(\"formattedInsertAt\"));",
+              "});",
+              "pm.test(\"totalAmount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.totalAmount).to.eql(pm.environment.get(\"totalAmount\"));",
+              "});",
+              "pm.test(\"userIdList 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.userIdList).to.eql(pm.environment.get(\"userIdList\"));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue/{{mileageId}}",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue",
+            "{{mileageId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 취소",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "",
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "pm.test(\"마일리지 적립 취소 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+              "});",
+              "pm.test(\"data 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data).to.eql(true);",
+              "});",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue/cancel/{{mileageId}}",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue",
+            "cancel",
+            "{{mileageId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 - 이벤트",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+              "",
+              "var start_date = new Date(currentDate);",
+              "start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+              "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+              "const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+              "const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+              "",
+              "// 날짜 및 시간 문자열을 만듭니다.",
+              "const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T05:00:00Z`;",
+              "console.log(start_formattedDate)",
+              "",
+              "pm.environment.set(\"applyTime\", start_formattedDate)",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// request data",
+              "var jsondata = JSON.parse(request.data)",
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "var targetUserCount = jsondata.userIdList.length",
+              "var totalAmount = targetUserCount * jsondata.amount",
+              "",
+              "var data_type = jsondata.type",
+              "var idx = data_type.indexOf(\"_\")",
+              "var type = data_type.substring(0, idx)",
+              "",
+              "// data set",
+              "pm.environment.set('mileageId', responsejsondata.data.id)",
+              "pm.environment.set(\"targetUserCount\", targetUserCount)",
+              "pm.environment.set(\"userIdList\", jsondata.userIdList)",
+              "pm.environment.set(\"type\", jsondata.type)",
+              "pm.environment.set(\"status\", responsejsondata.data.status)",
+              "pm.environment.set(\"message\", jsondata.message)",
+              "pm.environment.set(\"imageUrl\", jsondata.imageUrl)",
+              "pm.environment.set(\"amount\", jsondata.amount)",
+              "pm.environment.set(\"validPeriod\", jsondata.validPeriod)",
+              "pm.environment.set(\"applyTime\", jsondata.applyTime)",
+              "pm.environment.set(\"totalAmount\", totalAmount)",
+              "pm.environment.set(\"insertedAt\", responsejsondata.data.insertedAt)",
+              "pm.environment.set(\"adminId\", responsejsondata.data.adminId)",
+              "",
+              "pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+              "});",
+              "pm.test(\"마일리지 id 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.id).to.eql(pm.environment.get(\"mileageId\"));",
+              "});",
+              "pm.test(\"targetUserCount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.targetUserCount).to.eql(pm.environment.get(\"targetUserCount\"));",
+              "});",
+              "pm.test(\"type 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.type).to.include(type);",
+              "});",
+              "pm.test(\"status 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.status).to.eql(\"SCHEDULED\");",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.message).to.eql(pm.environment.get(\"message\"));",
+              "});",
+              "pm.test(\"meimageUrlssage 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.imageUrl).to.eql(pm.environment.get(\"imageUrl\"));",
+              "});",
+              "pm.test(\"amount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.amount).to.eql(pm.environment.get(\"amount\"));",
+              "});",
+              "pm.test(\"validPeriod 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.validPeriod).to.eql(pm.environment.get(\"validPeriod\"));",
+              "});",
+              "pm.test(\"applyTime 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.applyTime).to.eql(pm.environment.get(\"applyTime\"));",
+              "});",
+              "pm.test(\"totalAmount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.totalAmount).to.eql(pm.environment.get(\"totalAmount\"));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userIdList\": [7214977],\n    \"type\": \"EVENT\",\n    \"message\": \"이벤트 마일리지 수기 적립 테스트\",\n    \"imageUrl\": \"/cms/202401/11eebb1ec3531966bfc66b76b625750d.png\",\n    \"amount\": 500,\n    \"validPeriod\": 1,\n    \"applyTime\": \"{{applyTime}}\"\n}\n"
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 단건 조회",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// UTC+09:00 으로 변경",
+              "const applyTimeString = pm.environment.get(\"applyTime\");",
+              "",
+              "const formatDateString = (dateString) => {",
+              "  const date = new Date(dateString);",
+              "  date.setMilliseconds(0);",
+              "  date.setUTCHours(date.getUTCHours() + 9);",
+              "  date.setDate(date.getDate());",
+              "  return date.toISOString().slice(0, -5)+'+09:00';",
+              "};",
+              "const formattedApplyTime = formatDateString(applyTimeString);",
+              "pm.environment.set(\"formattedApplyTime\", formattedApplyTime)",
+              "",
+              "const insertDateString = pm.environment.get(\"insertedAt\");",
+              "const formatInsertString = (dateString) => {",
+              "  const date = new Date(dateString);",
+              "  date.setMilliseconds(0);",
+              "  date.setUTCHours(date.getUTCHours() + 9);",
+              "  return date.toISOString().slice(0, -5) + '+09:00';",
+              "};",
+              "const formattedInsertAt = formatInsertString(insertDateString);",
+              "pm.environment.set(\"formattedInsertAt\", formattedInsertAt)",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "",
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "const insertDateString = responsejsondata.data.insertedAt;",
+              "const formatInsertString = (dateString) => {",
+              "  const date = new Date(dateString);",
+              "  date.setMilliseconds(0);",
+              "  date.setUTCHours(date.getUTCHours() + 9);",
+              "  return date.toISOString().slice(0, -5) + '+09:00';",
+              "};",
+              "const formattedInsertAt = formatInsertString(insertDateString);",
+              "",
+              "var data_type = responsejsondata.data.type",
+              "var idx = data_type.indexOf(\"_\")",
+              "var type = data_type.substring(0, idx)",
+              "",
+              "",
+              "pm.test(\"일반 쿠폰 생성 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+              "});",
+              "pm.test(\"마일리지 id 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.id).to.eql(pm.environment.get(\"mileageId\"));",
+              "});",
+              "pm.test(\"targetUserCount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.targetUserCount).to.eql(pm.environment.get(\"targetUserCount\"));",
+              "});",
+              "pm.test(\"type 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.type).to.include(type);",
+              "});",
+              "pm.test(\"status 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.status).to.eql(pm.environment.get(\"status\"));",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.message).to.eql(pm.environment.get(\"message\"));",
+              "});",
+              "pm.test(\"imageUrl 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.imageUrl).to.eql(pm.environment.get(\"imageUrl\"));",
+              "});",
+              "pm.test(\"amount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.amount).to.eql(pm.environment.get(\"amount\"));",
+              "});",
+              "pm.test(\"validPeriod 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.validPeriod).to.eql(pm.environment.get(\"validPeriod\"));",
+              "});",
+              "pm.test(\"applyTime 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.applyTime).to.eql(pm.environment.get(\"formattedApplyTime\"));",
+              "});",
+              "pm.test(\"insertedAt 유효성 체크\", function () {",
+              "    pm.expect(formattedInsertAt).to.eql(pm.environment.get(\"formattedInsertAt\"));",
+              "});",
+              "pm.test(\"totalAmount 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.totalAmount).to.eql(pm.environment.get(\"totalAmount\"));",
+              "});",
+              "pm.test(\"userIdList 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data.userIdList).to.eql(pm.environment.get(\"userIdList\"));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue/{{mileageId}}",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue",
+            "{{mileageId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 취소",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "",
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "pm.test(\"마일리지 적립 취소 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"SUCCESS\");",
+              "});",
+              "pm.test(\"data 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data).to.eql(true);",
+              "});",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue/cancel/{{mileageId}}",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue",
+            "cancel",
+            "{{mileageId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 - 이미지 없는 이벤트",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+              "",
+              "var start_date = new Date(currentDate);",
+              "start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+              "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+              "const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+              "const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+              "",
+              "// 날짜 및 시간 문자열을 만듭니다.",
+              "const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T05:00:00Z`;",
+              "console.log(start_formattedDate)",
+              "",
+              "pm.environment.set(\"applyTime\", start_formattedDate)",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "pm.test(\"마일리지 적립 실패 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"FAIL\");",
+              "});",
+              "pm.test(\"data 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data).to.eql(null);",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.message).to.include(\"이벤트\");",
+              "});",
+              "pm.test(\"errorCode 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.errorCode).to.eql(\"MILEAGE_ISSUE_NOT_FOUND_IMAGE\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userIdList\": [7214977],\n    \"type\": \"EVENT\",\n    \"message\": \"이미지 없는 이벤트 적립\",\n    \"imageUrl\": null,\n    \"amount\": 500,\n    \"validPeriod\": 1,\n    \"applyTime\": \"{{applyTime}}\"\n}\n"
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 실페 - 타이틀 길이 초과",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+              "",
+              "var start_date = new Date(currentDate);",
+              "start_date.setDate(start_date.getDate()+1); // start_date를 내일 날짜로 설정합니다.",
+              "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+              "const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+              "const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+              "",
+              "// 날짜 및 시간 문자열을 만듭니다.",
+              "const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T05:00:00Z`;",
+              "console.log(start_formattedDate)",
+              "",
+              "pm.environment.set(\"applyTime\", start_formattedDate)",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "pm.test(\"마일리지 적립 실패 응답 500\", function () {",
+              "    pm.response.to.have.status(500);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"FAIL\");",
+              "});",
+              "pm.test(\"data 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data).to.eql(null);",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.message).to.include(\"일시적인 오류가 발생했습니다.\");",
+              "});",
+              "pm.test(\"errorCode 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.errorCode).to.eql(\"COMMON_SYSTEM_ERROR\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userIdList\": [7214977],\n    \"type\": \"CS_REWARD\",\n    \"message\": \"60자이상메세지작성테스트60자이상메세지작성테스트60자이상메세지작성테스트60자이상메세지작성테스트60자이상메세지작성테스트60자이상메세지작성테스트\",\n    \"imageUrl\": null,\n    \"amount\": 500,\n    \"validPeriod\": 1,\n    \"applyTime\": \"{{applyTime}}\"\n}\n"
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 실페 - 적립 일시 이전",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+              "",
+              "var start_date = new Date(currentDate);",
+              "start_date.setDate(start_date.getDate()-1); // start_date를 어제 날짜로 설정합니다.",
+              "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+              "const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+              "const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+              "",
+              "// 날짜 및 시간 문자열을 만듭니다.",
+              "const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T05:00:00Z`;",
+              "console.log(start_formattedDate)",
+              "",
+              "pm.environment.set(\"applyTime\", start_formattedDate)",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "pm.test(\"마일리지 적립 실패 응답 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"FAIL\");",
+              "});",
+              "pm.test(\"data 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data).to.eql(null);",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.message).to.include(\"UTC\");",
+              "});",
+              "pm.test(\"errorCode 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.errorCode).to.eql(\"MILEAGE_ISSUE_INVALID_APPLY_TIME\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userIdList\": [7214977],\n    \"type\": \"CS_REWARD\",\n    \"message\": \"마일리지 적립 실패 테스트\",\n    \"imageUrl\": null,\n    \"amount\": 500,\n    \"validPeriod\": 1,\n    \"applyTime\": \"{{applyTime}}\"\n}\n"
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "마일리지 수기 적립 실페 - 유효기간 초과 입력",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "const currentDate = new Date(); // 현재 날짜와 시간을 얻습니다.",
+              "",
+              "var start_date = new Date(currentDate);",
+              "start_date.setDate(start_date.getDate()-1); // start_date를 어제 날짜로 설정합니다.",
+              "const start_year = start_date.getFullYear(); // 현재 연도를 얻습니다.",
+              "const start_month = start_date.getMonth() + 1; // 현재 월을 얻습니다. (0부터 시작하므로 +1을 해줍니다.)",
+              "const start_day = start_date.getDate(); // 내일 일자를 얻습니다.",
+              "",
+              "// 날짜 및 시간 문자열을 만듭니다.",
+              "const start_formattedDate = `${start_year}-${start_month.toString().padStart(2, '0')}-${start_day.toString().padStart(2, '0')}T05:00:00Z`;",
+              "console.log(start_formattedDate)",
+              "",
+              "pm.environment.set(\"applyTime\", start_formattedDate)",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// response data",
+              "var responsejsondata = pm.response.json()",
+              "",
+              "pm.test(\"마일리지 적립 실패 응답 500\", function () {",
+              "    pm.response.to.have.status(500);",
+              "});",
+              "pm.test(\"result 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.result).to.eql(\"FAIL\");",
+              "});",
+              "pm.test(\"data 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.data).to.eql(null);",
+              "});",
+              "pm.test(\"message 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.message).to.include(\"일시적인 오류가 발생했습니다.\");",
+              "});",
+              "pm.test(\"errorCode 유효성 체크\", function () {",
+              "    pm.expect(responsejsondata.errorCode).to.eql(\"COMMON_SYSTEM_ERROR\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{inhouse_token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userIdList\": [7214977],\n    \"type\": \"CS_REWARD\",\n    \"message\": \"마일리지 적립 실패 테스트\",\n    \"imageUrl\": null,\n    \"amount\": 500,\n    \"validPeriod\": 1900,\n    \"applyTime\": \"{{applyTime}}\"\n}\n"
+        },
+        "url": {
+          "raw": "https://qa-mileage-admin-api.29cm.co.kr/inhouse-admin/v4/mileage/accumulate-issue",
+          "protocol": "https",
+          "host": [
+            "qa-mileage-admin-api",
+            "29cm",
+            "co",
+            "kr"
+          ],
+          "path": [
+            "inhouse-admin",
+            "v4",
+            "mileage",
+            "accumulate-issue"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
