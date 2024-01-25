@@ -10,6 +10,7 @@ from com_utils import values_control
 from com_utils.testrail_api import send_test_result
 from android_automation.page_action import order_page, delivery_order_page, bottom_sheet
 from com_utils import deeplink_control
+from com_utils.code_optimization import finally_opt, exception_control
 
 
 class Payment:
@@ -73,29 +74,11 @@ class Payment:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
+            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
             wd.get('app29cm://home')
-
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, '무통장 입금으로 상품 구매 후, 주문 배송 조회 확인')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '무통장 입금으로 상품 구매 후, 주문 배송 조회 확인')
             return result_data
 
     def test_pay_with_credit_card(self, wd, test_result='PASS', error_texts=[], img_src=''):
@@ -168,31 +151,10 @@ class Payment:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            # 네이티브 변경
+            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
             change_native_contexts(wd)
             wd.get('app29cm://home')
-
         finally:
-            # 주문 최종 취소 확인
-            order_page.finally_order_cancel(self, order_no)
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, '신용카드로 상품 구매 후, 주문 배송 조회 확인')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '신용카드로 상품 구매 후, 주문 배송 조회 확인')
             return result_data

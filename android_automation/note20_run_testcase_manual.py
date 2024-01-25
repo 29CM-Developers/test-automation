@@ -1,6 +1,7 @@
 import unittest
 import os
 import sys
+
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
@@ -31,10 +32,7 @@ class AndroidTestAutomation(unittest.TestCase):
         cls.result_lists = []
         cls.total_time = ''
         cls.slack_result = ''
-        cls.user = 'pipeline'
-        if cls.user == 'pipeline':
-            cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy Note20', cls.pconf['Note20_tc_ids'])
-            cls.testcases = get_tests(cls)
+        cls.user = 'manual'
 
     def setUp(self):
 
@@ -48,11 +46,6 @@ class AndroidTestAutomation(unittest.TestCase):
         self.wd.implicitly_wait(5)
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.user == 'pipeline':
-            close_plan(cls)
 
     def tearDown(self):
         try:
@@ -146,6 +139,7 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
 
 if __name__ == '__main__':
     unittest.main()
