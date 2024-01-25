@@ -13,7 +13,7 @@ from android_automation.page_action.context_change import change_webview_context
     switch_context
 from com_utils.api_control import search_popular_keyword, search_result, product_detail
 from com_utils.element_control import tap_control
-from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
+from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page, context_change
 from com_utils.deeplink_control import move_to_home_Android
 from com_utils.testrail_api import send_test_result
 from com_utils import values_control, element_control
@@ -44,8 +44,15 @@ class Cart:
             # PDP 상세 API 호출하여 상품명 확인
             best_product = product_detail(product_item_no)['item_name']
 
+            # 웹뷰 전환
+            context_change.switch_context(wd, 'webview')
+
             # PDP에 노출되는 상품명과 API 호출된 상품명 동일한 지 확인
             best_pdp_name = product_detail_page.save_product_name(wd)
+
+            # 네이티브 전환
+            context_change.change_native_contexts(wd)
+
             product_detail_page.check_product_name(best_pdp_name, best_product)
 
             # 구매하기 버튼 선택
@@ -80,7 +87,15 @@ class Cart:
             search_product = product_detail(search_product_item_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
+
+            # 웹뷰 전환
+            context_change.change_webview_contexts(wd)
+
             keyword_pdp_name = product_detail_page.save_product_name(wd)
+
+            # 네이티브 전환
+            context_change.change_native_contexts(wd)
+
             product_detail_page.check_product_name(keyword_pdp_name, search_product)
 
             # 구매하기 버튼 선택

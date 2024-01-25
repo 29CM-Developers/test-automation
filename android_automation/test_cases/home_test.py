@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 
 import com_utils
 from android_automation.page_action import navigation_bar, category_page, home_page, search_page, bottom_sheet, \
-    like_page, my_page, product_detail_page
+    like_page, my_page, product_detail_page, context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_like_bottom_sheet
 from android_automation.page_action.like_page import close_brand_recommended_page
 from com_utils import values_control, deeplink_control
@@ -253,7 +253,9 @@ class Home:
             home_page.click_contents_product(wd)
 
             # 상품명 비교 확인
+            context_change.switch_context(wd, 'webview')
             pdp_name = product_detail_page.save_product_name(wd)
+            context_change.change_native_contexts(wd)
             product_detail_page.check_product_name(pdp_name, contents_product_name)
 
             # 상품 가격 비교 확인

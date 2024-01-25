@@ -9,7 +9,8 @@ from com_utils import values_control
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
 from com_utils.testrail_api import send_test_result
-from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet
+from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet, \
+    context_change
 from com_utils.deeplink_control import move_to_pdp
 from time import sleep, time
 
@@ -41,14 +42,17 @@ class Pdp:
             search_product = product_detail(search_product_item_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
+            context_change.switch_context(wd, 'webview')
+
             pdp_name = product_detail_page.save_product_name(wd)
+            change_native_contexts(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             # 선물하기 버튼 선택
             product_detail_page.click_gift_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
-            change_webview_contexts(wd)
+            context_change.switch_context(wd, 'webview')
             product_detail_page.select_options(wd, search_product_item_no)
             change_native_contexts(wd)
 
@@ -123,7 +127,9 @@ class Pdp:
             search_product = product_detail(random_product_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
+            context_change.switch_context(wd, 'webview')
             pdp_name = product_detail_page.save_product_name(wd)
+            change_native_contexts(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             # 구매하기 버튼 선택
@@ -203,7 +209,9 @@ class Pdp:
             search_product = product_detail(search_product_item_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
+            context_change.switch_context(wd, 'webview')
             pdp_name = product_detail_page.save_product_name(wd)
+            context_change.change_native_contexts(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             close_pdp_bottom_sheet(wd)
