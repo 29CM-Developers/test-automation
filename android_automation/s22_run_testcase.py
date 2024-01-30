@@ -34,9 +34,10 @@ class AndroidTestAutomation(unittest.TestCase):
         cls.result_lists = []
         cls.total_time = ''
         cls.slack_result = ''
-
-        cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy s22', cls.pconf['s22_tc_ids'])
-        cls.testcases = get_tests(cls)
+        cls.user = 'pipeline'
+        if cls.user == 'pipeline':
+            cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy s22', cls.pconf['s22_tc_ids'])
+            cls.testcases = get_tests(cls)
 
     def setUp(self):
 
@@ -54,7 +55,8 @@ class AndroidTestAutomation(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        close_plan(cls)
+        if cls.user == 'pipeline':
+            close_plan(cls)
 
     def tearDown(self):
         try:
