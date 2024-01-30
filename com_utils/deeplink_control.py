@@ -5,13 +5,16 @@ from ios_automation.page_action import like_page
 from android_automation.page_action import bottom_sheet
 
 
+def move_to_home(self, wd):
+    wd.get(self.conf['deeplink']['home'])
+    if self.device_platform == 'iOS':
+        find_icon_and_close_bottom_sheet(wd)
+    elif self.device_platform == 'Android':
+        bottom_sheet.close_bottom_sheet(wd)
+
+
 # Home 탭으로 이동 딥링크
 def move_to_home_iOS(self, wd):
-    wd.get(self.conf['deeplink']['home'])
-    find_icon_and_close_bottom_sheet(wd)
-
-
-def move_to_home(self, wd):
     wd.get(self.conf['deeplink']['home'])
     find_icon_and_close_bottom_sheet(wd)
 
@@ -41,7 +44,6 @@ def move_to_welove(self, wd):
 def move_to_pdp(wd, product_item_no):
     sleep(2)
     wd.get(f'app29cm://product/{product_item_no}')
-
 
 
 def move_to_pdp_iOS(wd, product_item_no):
