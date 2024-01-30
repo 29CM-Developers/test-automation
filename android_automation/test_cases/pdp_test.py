@@ -23,6 +23,7 @@ class Pdp:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            sleep(2)
             # 네이티브 변경
             change_native_contexts(wd)
 
@@ -49,12 +50,12 @@ class Pdp:
             product_detail_page.click_gift_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
-            change_webview_contexts(wd)
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, search_product_item_no)
-            change_native_contexts(wd)
 
             # PDP 내의 가격 저장
             pdp_price = product_detail_page.save_purchase_price(wd)
+            change_native_contexts(wd)
 
             # 선물 주문서 진입
             product_detail_page.click_direct_gift_btn(wd)
@@ -113,11 +114,11 @@ class Pdp:
             # 옵션의 존재 여부 확인하여 옵션 선택
             switch_context(wd, 'webview')
             product_detail_page.select_options(wd, random_product_no)
-            change_native_contexts(wd)
-            sleep(5)
 
             # PDP 내의 가격 저장
             pdp_price = product_detail_page.save_purchase_price(wd)
+
+            change_native_contexts(wd)
 
             # 구매 주문서 진입
             product_detail_page.click_direct_purchase_btn(wd)

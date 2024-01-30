@@ -140,9 +140,8 @@ def save_no_soldout_product_no():
 
 
 def save_purchase_price(wd):
-    switch_context(wd, 'webview')
     sleep(1)
-    price = wd.find_element(AppiumBy.ID, 'total_amount')
+    price = aal(wd, '//*[@id="total_amount"]')
     if price == None:
         print('금액 요소 못찾음')
     else:
@@ -151,8 +150,7 @@ def save_purchase_price(wd):
 
     price = price.replace('원', '')
     price = int(price.replace(',', ''))
-    print(f'구매 가능 가격 : {price}확인')
-    change_native_contexts(wd)
+    print(f'구매 가능 가격 : {price} 확인')
     return price
 
 
