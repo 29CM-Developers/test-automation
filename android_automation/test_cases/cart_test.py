@@ -163,9 +163,7 @@ class Cart:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '장바구니에 상품을 담고 장바구니 리스트 확인')
@@ -204,9 +202,7 @@ class Cart:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '장바구니에 상품을 담고 장바구니 리스트 확인')

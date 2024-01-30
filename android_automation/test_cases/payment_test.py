@@ -6,8 +6,6 @@ import com_utils.opencv_control
 from time import time
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
-from com_utils import values_control
-from com_utils.testrail_api import send_test_result
 from android_automation.page_action import order_page, delivery_order_page, bottom_sheet
 from com_utils import deeplink_control
 from com_utils.code_optimization import finally_opt, exception_control
@@ -73,9 +71,7 @@ class Payment:
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '무통장 입금으로 상품 구매 후, 주문 배송 조회 확인')
@@ -151,9 +147,7 @@ class Payment:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '신용카드로 상품 구매 후, 주문 배송 조회 확인')

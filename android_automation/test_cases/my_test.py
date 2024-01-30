@@ -47,8 +47,7 @@ class My:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '설정화면 진입')
@@ -109,9 +108,7 @@ class My:
             # navigation_bar.move_to_home(wd)
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            context_change.change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '최근 본 컨텐츠 확인')
@@ -139,8 +136,7 @@ class My:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '주문 건이 없을 경우, 주문 배송 조회 없음 확인')
@@ -173,8 +169,7 @@ class My:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '주문 건이 없을 경우, 상품 리뷰 없음 확인')
@@ -220,8 +215,7 @@ class My:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '보유하고 있는 쿠폰 목록 확인')

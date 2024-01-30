@@ -90,9 +90,7 @@ class Home:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '홈화면에서 다른 탭으로 이동')
             return result_data
@@ -147,9 +145,7 @@ class Home:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '홈화면의 배너, 다이나믹 게이트 확인')
@@ -232,9 +228,7 @@ class Home:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '홈화면의 컨텐츠(피드) 탐색')
             return result_data

@@ -45,8 +45,7 @@ class Join:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '간편 회원가입 실패')
             return result_data

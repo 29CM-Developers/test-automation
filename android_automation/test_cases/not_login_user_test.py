@@ -4,9 +4,7 @@ import traceback
 from android_automation.page_action import navigation_bar, category_page, login_page, home_page, best_product_list_page, \
     product_detail_page, search_page, search_result_page, my_page, context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
-from com_utils import values_control
 from time import time
-from com_utils.testrail_api import send_test_result
 from com_utils.code_optimization import finally_opt, exception_control
 
 class NotLogin:
@@ -53,8 +51,7 @@ class NotLogin:
             navigation_bar.move_to_back(wd)
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입')
@@ -121,9 +118,7 @@ class NotLogin:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            context_change.change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '비로그인 유저가 사용 가능한 기능 확인')

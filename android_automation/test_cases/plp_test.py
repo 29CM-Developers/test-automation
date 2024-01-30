@@ -5,9 +5,8 @@ from android_automation.page_action import category_page, best_product_list_page
 from android_automation.page_action.best_product_list_page import check_app_evaluation_pop_up_exposure
 from android_automation.page_action.context_change import change_native_contexts
 from android_automation.page_action.navigation_bar import move_to_category
-from com_utils import values_control, api_control
+from com_utils import api_control
 from time import time
-from com_utils.testrail_api import send_test_result
 from com_utils.code_optimization import finally_opt, exception_control
 
 class Plp:
@@ -111,9 +110,7 @@ class Plp:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       'PLP 기능 확인')

@@ -3,12 +3,9 @@ import sys
 import traceback
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet, \
     close_like_bottom_sheet
-from android_automation.page_action.context_change import change_native_contexts, switch_context, \
-    change_webview_contexts
-from com_utils import values_control
+from android_automation.page_action.context_change import change_native_contexts, switch_context
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
-from com_utils.testrail_api import send_test_result
 from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet
 from com_utils.deeplink_control import move_to_pdp
 from time import sleep, time
@@ -74,9 +71,7 @@ class Pdp:
             product_detail_page.click_home_btn(wd)
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       'PDP에서 선물 주문서 화면으로 이동')
@@ -134,9 +129,7 @@ class Pdp:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       'PDP에서 구매 주문서 화면으로 이동')
@@ -196,9 +189,7 @@ class Pdp:
 
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       'PDP에서 선물 주문서 화면으로 이동')

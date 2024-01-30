@@ -1,20 +1,14 @@
 import os.path
 import sys
 import traceback
-import logging
-import requests
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
+
 import com_utils
-from android_automation.page_action import like_page, navigation_bar, product_detail_page, context_change
-from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action import like_page, navigation_bar, product_detail_page
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from android_automation.page_action.home_page import check_app_evaluation_popup
-from com_utils import values_control, cookies_control, deeplink_control
-from time import sleep, time
-from com_utils.element_control import aal, aalk, aalc, scroll_control, \
-    swipe_control, swipe_control, element_scroll_control
-from com_utils.testrail_api import send_test_result
+from com_utils import  deeplink_control
+from time import time
+
 from com_utils.code_optimization import finally_opt, exception_control
 
 
@@ -53,9 +47,7 @@ class Like:
             navigation_bar.move_to_home(wd)
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '좋아요 존재하지 않는 LIKE 화면 확인')
@@ -210,9 +202,7 @@ class Like:
             navigation_bar.move_to_home(wd)
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '좋아요 존재하는 LIKE 화면 확인')

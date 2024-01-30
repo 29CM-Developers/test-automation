@@ -1,22 +1,13 @@
-import logging
+
 import os.path
-import subprocess
 import sys
 import traceback
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec, wait
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
 import com_utils
 from android_automation.page_action import my_page, login_page, navigation_bar, my_edit_user_info_page
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.select_category_page import test_select_category
-from time import sleep, time, strftime, localtime
-from appium.webdriver.common.touch_action import TouchAction
-from com_utils import values_control, slack_result_notifications, deeplink_control
-from com_utils.element_control import aal, aalk, aalc, scroll_control
-from com_utils.testrail_api import send_test_result
+from time import sleep, time
+from com_utils import  deeplink_control
 from com_utils.code_optimization import finally_opt, exception_control
 
 
@@ -63,8 +54,7 @@ class LoginLogout:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '이메일 로그인 성공')
             return result_data
@@ -93,8 +83,7 @@ class LoginLogout:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '로그아웃')
             return result_data
@@ -134,8 +123,7 @@ class LoginLogout:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
-            wd.get('app29cm://home')
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '이메일 로그인 실패')
             return result_data
