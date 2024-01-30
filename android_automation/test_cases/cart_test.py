@@ -7,8 +7,6 @@ from android_automation.page_action.context_change import change_webview_context
 from com_utils.element_control import tap_control
 from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
 from com_utils.deeplink_control import move_to_home_Android
-from com_utils.testrail_api import send_test_result
-from com_utils import values_control
 from com_utils.api_control import search_popular_keyword, search_result, product_detail, order_product_random_no
 from time import sleep, time
 from com_utils.code_optimization import finally_opt, exception_control
@@ -104,8 +102,6 @@ class Cart:
 
         except Exception:
             test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '장바구니에 상품을 담고 장바구니 리스트 확인')
