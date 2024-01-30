@@ -103,7 +103,7 @@ class Cart:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            test_result, img_src, error_texts = exception_control(wd, sys, os, traceback, error_texts)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
             change_native_contexts(wd)
             wd.get('app29cm://home')
         finally:
