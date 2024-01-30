@@ -60,10 +60,9 @@ class AndroidTestAutomation(unittest.TestCase):
 
     def tearDown(self):
         try:
-            self.wd.terminate_app('com.the29cm.app29cm')
             self.wd.quit()
             self.appium.stop()
-        except InvalidSessionIdException:
+        except Exception:
             self.appium.stop()
 
     def test_automation_android_bvt(self):
