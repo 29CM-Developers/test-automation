@@ -151,7 +151,7 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # # 현재 함수명 저장 - slack noti에 사용
+        # # # # 현재 함수명 저장 - slack noti에 사용
         # self.def_name = self.dconf[sys._getframe().f_code.co_name]
         # # 노트20 시나리오
         # # 실제 실행 - 이메일 로그인 성공
@@ -195,7 +195,7 @@ class AndroidTestAutomation(unittest.TestCase):
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
-        # # # 실제 실행 -  장바구니에서 구매하기
+        # # 실제 실행 -  장바구니에서 구매하기
         # self.result_data = Cart.test_purchase_on_cart(self, self.wd)
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
@@ -215,7 +215,7 @@ class AndroidTestAutomation(unittest.TestCase):
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
         #
-        # # # 무통장 입금으로 구매하기
+        # # 무통장 입금으로 구매하기
         # self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
         # self.count = slack_result_notifications.slack_thread_notification(self)
         # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
