@@ -24,7 +24,7 @@ def finally_opt(self, start_time, test_result, error_texts, img_src, test_name, 
     return result_data
 
 
-def exception_control(wd, sys, os, traceback, error_texts=[]):
+def exception_control(self, wd, sys, os, traceback, error_texts=[]):
     test_result = 'FAIL'
     wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
     img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
