@@ -30,6 +30,7 @@ def mpark_setup():
     android_options.set_capability("udid", "R3CRC0NFQEZ")
     android_options.set_capability("newCommandTimeout", 300)
     android_options.set_capability("noReset", True)
+    android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
     android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": False})
@@ -50,6 +51,7 @@ def hhj2008_setup():
     android_options.set_capability("newCommandTimeout", 300)
     android_options.set_capability("udid", 'R3CT70R2QFF')
     android_options.set_capability("noReset", True)
+    android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("goog:chromeOptions",
                                    {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True,
                                     "w3c": False})
@@ -73,6 +75,7 @@ def note20_setup():
     android_options.set_capability("udid", "R3CT10GJ9ZN")
     android_options.set_capability("newCommandTimeout", 300)
     android_options.set_capability("noReset", True)
+    android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
     android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": False})
@@ -93,6 +96,7 @@ def s22_setup():
     android_options.set_capability("udid", "R5CT51CZCRV")
     android_options.set_capability("newCommandTimeout", 300)
     android_options.set_capability("noReset", True)
+    android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
     android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": False})

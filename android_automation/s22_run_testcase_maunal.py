@@ -1,7 +1,6 @@
 import unittest
 import os
 import sys
-import requests
 and_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
@@ -11,13 +10,10 @@ from android_automation.test_cases.category_test import Category
 from android_automation.test_cases.home_test import Home
 from android_automation.test_cases.plp_test import Plp
 from android_automation.test_cases.search_test import Search
-from android_automation.test_cases.join_test import Join
 from android_automation.test_cases.my_test import My
-from android_automation.test_cases.pdp_test import Pdp
 from android_automation.test_cases.like_test import Like
 from android_setup import s22_setup
 from com_utils import slack_result_notifications
-from selenium.common import InvalidSessionIdException
 from com_utils.testrail_api import *
 
 
@@ -34,10 +30,7 @@ class AndroidTestAutomation(unittest.TestCase):
         cls.result_lists = []
         cls.total_time = ''
         cls.slack_result = ''
-        cls.user = 'pipeline'
-        if cls.user == 'pipeline':
-            cls.testcase_data = create_plan(cls, 'ANDROID', 'galaxy s22', cls.pconf['s22_tc_ids'])
-            cls.testcases = get_tests(cls)
+        cls.user = 'manual'
 
     def setUp(self):
 
@@ -52,11 +45,6 @@ class AndroidTestAutomation(unittest.TestCase):
         # report data
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.user == 'pipeline':
-            close_plan(cls)
 
     def tearDown(self):
         try:
@@ -144,6 +132,7 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = LoginLogout.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
 
 if __name__ == '__main__':
     unittest.main()

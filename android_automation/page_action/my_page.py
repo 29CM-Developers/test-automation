@@ -61,6 +61,7 @@ def click_delivery_order_menu(wd):
 
 
 def click_review_menu(wd):
+    sleep(2)
     for i in range(0, 5):
         try:
             element = aal(wd, 'c_상품 리뷰')

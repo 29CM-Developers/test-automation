@@ -6,6 +6,7 @@ from difflib import SequenceMatcher
 from time import sleep, time
 from appium.webdriver.common.appiumby import AppiumBy
 from com_utils import values_control
+from com_utils.code_optimization import finally_opt, exception_control
 
 
 class AutomationTesting:
@@ -16,24 +17,10 @@ class AutomationTesting:
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'MY').click()
         except Exception:
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-            except Exception:
-                pass
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      'PLP 기능 확인')
             return result_data
 
     def re_search_element(self, button_element):
@@ -69,22 +56,8 @@ class AutomationTesting:
 
             wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'FAIL').click()
         except Exception:
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-            except Exception:
-                pass
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '좋아요 존재하는 LIKE 화면 확인')
             return result_data

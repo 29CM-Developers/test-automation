@@ -3,15 +3,13 @@ import sys
 import traceback
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet, \
     close_like_bottom_sheet
-from android_automation.page_action.context_change import change_native_contexts, switch_context, \
-    change_webview_contexts
-from com_utils import values_control
+from android_automation.page_action.context_change import change_native_contexts, switch_context
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
-from com_utils.testrail_api import send_test_result
 from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet
 from com_utils.deeplink_control import move_to_pdp
 from time import sleep, time
+from com_utils.code_optimization import finally_opt, exception_control
 
 
 class Pdp:
@@ -22,6 +20,7 @@ class Pdp:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            sleep(2)
             # 네이티브 변경
             change_native_contexts(wd)
 
@@ -48,12 +47,12 @@ class Pdp:
             product_detail_page.click_gift_btn(wd)
 
             # 옵션의 존재 여부 확인하여 옵션 선택
-            change_webview_contexts(wd)
+            switch_context(wd, 'webview')
             product_detail_page.select_options(wd, search_product_item_no)
-            change_native_contexts(wd)
 
             # PDP 내의 가격 저장
             pdp_price = product_detail_page.save_purchase_price(wd)
+            change_native_contexts(wd)
 
             # 선물 주문서 진입
             product_detail_page.click_direct_gift_btn(wd)
@@ -71,33 +70,11 @@ class Pdp:
             order_page.click_back_btn(wd)
             product_detail_page.click_home_btn(wd)
             print(f'[{test_name}] 테스트 종료')
-
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            # 네이티브 변경
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, 'PDP에서 선물 주문서 화면으로 이동')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      'PDP에서 선물 주문서 화면으로 이동')
             return result_data
 
     def test_purchase_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
@@ -132,11 +109,11 @@ class Pdp:
             # 옵션의 존재 여부 확인하여 옵션 선택
             switch_context(wd, 'webview')
             product_detail_page.select_options(wd, random_product_no)
-            change_native_contexts(wd)
-            sleep(5)
 
             # PDP 내의 가격 저장
             pdp_price = product_detail_page.save_purchase_price(wd)
+
+            change_native_contexts(wd)
 
             # 구매 주문서 진입
             product_detail_page.click_direct_purchase_btn(wd)
@@ -152,31 +129,10 @@ class Pdp:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            # 네이티브 변경
-            change_native_contexts(wd)
-            wd.get('app29cm://home')
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, 'PDP에서 구매 주문서 화면으로 이동')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      'PDP에서 구매 주문서 화면으로 이동')
             return result_data
 
     def test_like_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
@@ -232,29 +188,9 @@ class Pdp:
             navigation_bar.move_to_home(wd)
 
             print(f'[{test_name}] 테스트 종료')
-
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            wd.get('app29cm://home')
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, 'PDP에서 선물 주문서 화면으로 이동')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      'PDP에서 선물 주문서 화면으로 이동')
             return result_data

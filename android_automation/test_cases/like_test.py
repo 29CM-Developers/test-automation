@@ -1,20 +1,15 @@
 import os.path
 import sys
 import traceback
-import logging
-import requests
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver.common.by import By
+
 import com_utils
-from android_automation.page_action import like_page, navigation_bar, product_detail_page, context_change
-from android_automation.page_action.bottom_sheet import close_bottom_sheet
+from android_automation.page_action import like_page, navigation_bar, product_detail_page
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts
 from android_automation.page_action.home_page import check_app_evaluation_popup
-from com_utils import values_control, cookies_control, deeplink_control
-from time import sleep, time
-from com_utils.element_control import aal, aalk, aalc, scroll_control, \
-    swipe_control, swipe_control, element_scroll_control
-from com_utils.testrail_api import send_test_result
+from com_utils import  deeplink_control
+from time import time
+
+from com_utils.code_optimization import finally_opt, exception_control
 
 
 class Like:
@@ -52,31 +47,10 @@ class Like:
             navigation_bar.move_to_home(wd)
             print(f'[{test_name}] 테스트 종료')
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            wd.get('app29cm://home')
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
-            run_time = f"{time() - start_time:.2f}"
-            # 값 재사용 용이성을 위해 dict로 반환한다
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, '좋아요 존재하지 않는 LIKE 화면 확인')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '좋아요 존재하지 않는 LIKE 화면 확인')
             return result_data
 
     def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src=''):
@@ -227,32 +201,9 @@ class Like:
             # Home 탭으로 복귀
             navigation_bar.move_to_home(wd)
             print(f'[{test_name}] 테스트 종료')
-
-
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            wd.get('app29cm://home')
-
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
-            # 함수 완료 시 시간체크하여 시작시 체크한 시간과의 차이를 테스트 소요시간으로 반환
-            run_time = f"{time() - start_time:.2f}"
-            # 값 재사용 용이성을 위해 dict로 반환한다
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time}
-            send_test_result(self, test_result, '좋아요 존재하는 LIKE 화면 확인')
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '좋아요 존재하는 LIKE 화면 확인')
             return result_data
