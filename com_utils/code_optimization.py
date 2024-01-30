@@ -2,6 +2,7 @@ from time import time
 from com_utils.testrail_api import send_test_result
 from com_utils import values_control
 from com_utils.db_connection import connect_db, insert_data, disconnect_db
+from com_utils.deeplink_control import move_to_home
 
 
 def finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title):
@@ -23,7 +24,7 @@ def finally_opt(self, start_time, test_result, error_texts, img_src, test_name, 
     return result_data
 
 
-def exception_control(wd, sys, os, traceback, error_texts=[]):
+def exception_control(self, wd, sys, os, traceback, error_texts=[]):
     test_result = 'FAIL'
     wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
     img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
@@ -34,5 +35,7 @@ def exception_control(wd, sys, os, traceback, error_texts=[]):
         error_texts.append(values_control.find_next_value(error_text, 'Exception'))
     except Exception:
         pass
+    wd.switch_to.context(wd.contexts[0])
+    move_to_home(self, wd)
 
     return test_result, img_src, error_texts
