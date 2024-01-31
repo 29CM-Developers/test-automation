@@ -4,6 +4,7 @@ import traceback
 from time import time
 
 from com_utils import values_control
+from com_utils.code_optimization import exception_control, finally_opt
 from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
@@ -13,7 +14,7 @@ from com_utils.deeplink_control import move_to_pdp_iOS, move_to_like, move_to_ho
 
 
 class Pdp:
-    def test_like_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_like_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -51,39 +52,14 @@ class Pdp:
             like_page.refresh_product_like_tab(wd)
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            context_change.switch_context(wd, 'native')
-            move_to_home_iOS(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, 'PDP에서 좋아요 선택하기')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = 'PDP에서 좋아요 선택하기'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
-    def test_gift_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_gift_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -132,36 +108,11 @@ class Pdp:
             product_detail_page.click_home_btn(wd)
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            context_change.switch_context(wd, 'native')
-            move_to_home_iOS(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, 'PDP에서 선물 주문서 화면으로 이동')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = 'PDP에서 선물 주문서 화면으로 이동'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
     def test_purchase_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
@@ -206,34 +157,9 @@ class Pdp:
             order_page.check_purchase_price(wd, pdp_price)
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            context_change.switch_context(wd, 'native')
-            move_to_home_iOS(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, 'PDP에서 구매 주문서 화면으로 이동')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = 'PDP에서 구매 주문서 화면으로 이동'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data

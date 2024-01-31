@@ -1,5 +1,4 @@
 import unittest
-import requests
 import os
 import sys
 
@@ -38,9 +37,6 @@ class IOSTestAutomation(unittest.TestCase):
         cls.total_time = ''
         cls.slack_result = ''
 
-        cls.testcase_data = create_plan(cls, 'iOS', 'iPhone Pro 12', cls.pconf['pro12_tc_ids'])
-        cls.testcases = get_tests(cls)
-
     def setUp(self):
         # Appium Service
         self.appium = AppiumService()
@@ -69,10 +65,6 @@ class IOSTestAutomation(unittest.TestCase):
             print("테스트 종료")
         except InvalidSessionIdException:
             self.appium.stop()
-
-    @classmethod
-    def tearDownClass(cls):
-        close_plan(cls)
 
     def test_automation_iOS_bvt(self):
         # 메소드명과 일치하는 정보 받아오기

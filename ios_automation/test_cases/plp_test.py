@@ -1,19 +1,16 @@
 import os
 import sys
 import traceback
-import com_utils
 
 from time import time
-from com_utils import values_control, api_control
-from com_utils.db_connection import connect_db, insert_data, disconnect_db
+from com_utils import api_control
+from com_utils.code_optimization import exception_control, finally_opt
 from com_utils.deeplink_control import move_to_category
-from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import navigation_bar, category_page, best_product_list_page, product_detail_page, \
-    context_change
+from ios_automation.page_action import category_page, best_product_list_page, product_detail_page
 
 
 class Plp:
-    def test_product_listing_page(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_product_listing_page(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
         print(f'[{test_name}] 테스트 시작')
@@ -100,28 +97,9 @@ class Plp:
             best_product_list_page.click_back_btn(wd)
 
         except Exception:
-            test_result = 'FAIL'
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            error_text = traceback.format_exc().split('\n')
-            try:
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            com_utils.deeplink_control.move_to_home_iOS(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, 'PLP 기능 확인')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = 'PLP 기능 확인'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
