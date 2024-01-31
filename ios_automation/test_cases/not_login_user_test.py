@@ -7,15 +7,14 @@ from time import time, sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control, deeplink_control
-from com_utils.db_connection import connect_db, insert_data, disconnect_db
-from com_utils.testrail_api import send_test_result
+from com_utils.code_optimization import finally_opt, exception_control
 from ios_automation.page_action import navigation_bar, login_page, home_page, product_detail_page, \
     best_product_list_page, my_page, category_page, search_page, search_result_page
 
 
 class NotLoginUserTest:
 
-    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -34,41 +33,21 @@ class NotLoginUserTest:
             navigation_bar.move_to_home(wd)
 
         except Exception:
-            test_result = 'FAIL'
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            error_text = traceback.format_exc().split('\n')
-            try:
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            # 실패 시, 딥링크 home 탭으로 이동
-            com_utils.deeplink_control.move_to_home_iOS(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
-    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_not_login_user_possible(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            com_utils.deeplink_control.move_to_home_iOS(self, wd)
+            deeplink_control.move_to_home(self, wd)
 
             # 라이프 선택 닫기
             home_page.click_close_life_tab(wd)
@@ -114,31 +93,11 @@ class NotLoginUserTest:
             my_page.check_login_btn(wd)
 
         except Exception:
-            test_result = 'FAIL'
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            error_text = traceback.format_exc().split('\n')
-            try:
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            # 실패 시, 딥링크 home 탭으로 이동
-            com_utils.deeplink_control.move_to_home_iOS(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '비로그인 유저가 사용 가능한 기능 확인')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = '비로그인 유저가 사용 가능한 기능 확인'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
     def full_test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):

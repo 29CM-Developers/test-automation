@@ -3,17 +3,15 @@ import sys
 import traceback
 
 from time import time, sleep
-from com_utils import values_control
-from com_utils.db_connection import connect_db, insert_data, disconnect_db
+from com_utils.code_optimization import exception_control, finally_opt
 from com_utils.api_control import search_popular_keyword, search_result, product_detail, order_product_random_no
 from com_utils.element_control import tap_control
-from com_utils.testrail_api import send_test_result
 from ios_automation.page_action import product_detail_page, cart_page, order_page, context_change
-from com_utils.deeplink_control import move_to_home, move_to_pdp_iOS
+from com_utils.deeplink_control import move_to_pdp_iOS
 
 
 class Cart:
-    def test_cart_list(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_cart_list(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -92,39 +90,14 @@ class Cart:
             context_change.switch_context(wd, 'native')
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            context_change.switch_context(wd, 'native')
-            move_to_home(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '장바구니에 상품을 담고 장바구니 리스트 확인')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = '장바구니에 상품을 담고 장바구니 리스트 확인'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
-    def test_change_cart_items(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_change_cart_items(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -170,39 +143,14 @@ class Cart:
             context_change.switch_context(wd, 'native')
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            context_change.switch_context(wd, 'native')
-            move_to_home(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '장바구니에 담긴 상품을 변경')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = '장바구니에 담긴 상품을 변경'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
-    def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
@@ -232,34 +180,9 @@ class Cart:
             order_page.check_cart_purchase_price(wd, product_price)
 
         except Exception:
-            # 오류 발생 시 테스트 결과를 실패로 한다
-            test_result = 'FAIL'
-            # 스크린샷
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            # 스크린샷 경로 추출
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            # 에러 메시지 추출
-            error_text = traceback.format_exc().split('\n')
-            try:
-                # 에러메시지 분류 시 예외처리
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-                error_texts.append(values_control.find_next_value(error_text, 'Exception'))
-            except Exception:
-                pass
-            context_change.switch_context(wd, 'native')
-            move_to_home(self, wd)
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            send_test_result(self, test_result, '장바구니에서 구매 주문서 화면으로 이동')
-            if self.user == 'pipeline':
-                connection, cursor = connect_db(self)
-                insert_data(connection, cursor, self, result_data)
-                disconnect_db(connection, cursor)
+            testcase_title = '장바구니에서 구매 주문서 화면으로 이동'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
