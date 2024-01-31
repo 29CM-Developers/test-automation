@@ -1,10 +1,9 @@
 from time import sleep
 from selenium.common import NoSuchElementException
-
 import com_utils.element_control
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from com_utils.api_control import home_banner_info
 from com_utils.element_control import aal, aalc, aals, scroll_control, swipe_control
-from ios_automation.page_action.bottom_sheet import close_bottom_sheet
 
 
 def check_home_logo(wd):
@@ -219,8 +218,7 @@ def check_heartIcon_is_selected(wd):
 def save_contents_like_count(wd):
     before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
     if before_like_count_element == None:
-        com_utils.element_control.scroll_control(wd, 'D', 40)
-    com_utils.element_control.scroll_control(wd, 'D', 20)
+        com_utils.element_control.scroll_control(wd, 'D', 50)
     before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
     before_like_count = before_like_count_element.text
     print(f'하트갯수 확인 : {before_like_count}')
