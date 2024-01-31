@@ -33,7 +33,6 @@ class AndroidTestAutomation(unittest.TestCase):
 
         # report data
         cls.count = 0
-        cls.result_lists = []
         cls.total_time = ''
         cls.slack_result = ''
         cls.user = 'manual'
@@ -51,6 +50,7 @@ class AndroidTestAutomation(unittest.TestCase):
         # report data
         self.device_platform = self.and_cap.capabilities['platformName']
         self.device_name = self.and_cap.capabilities['appium:deviceName']
+        self.result_lists = []
 
     def tearDown(self):
         try:
