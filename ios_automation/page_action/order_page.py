@@ -158,6 +158,7 @@ def click_all_agreement(wd):
         try:
             element = ial(wd, 'c_동의합니다')
             if element.is_displayed():
+                scroll_control(wd, 'D', 20)
                 ialc(wd, element)
                 break
         except NoSuchElementException:
