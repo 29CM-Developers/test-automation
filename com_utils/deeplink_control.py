@@ -77,6 +77,7 @@ def move_to_pdp_Android(wd, product_item_no):
 
 
 def move_to_like_Android(wd):
+    sleep(5)
     wd.get('app29cm://like')
     sleep(1)
     # LIKE 탭 진입 후, 바텀시트, 노티 바텀시트, 브랜드 추천 페이지 노출 여부 순차적으로 확인
