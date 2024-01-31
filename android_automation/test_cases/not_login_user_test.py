@@ -4,7 +4,7 @@ import traceback
 from android_automation.page_action import navigation_bar, category_page, login_page, home_page, best_product_list_page, \
     product_detail_page, search_page, search_result_page, my_page, context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
-from time import time
+from time import time, sleep
 from com_utils.code_optimization import finally_opt, exception_control
 
 class NotLogin:
@@ -30,6 +30,7 @@ class NotLogin:
 
             # Home 탭으로 복귀
             navigation_bar.move_to_back(wd)
+            sleep(1)
             navigation_bar.move_to_back(wd)
             navigation_bar.move_to_home(wd)
 
