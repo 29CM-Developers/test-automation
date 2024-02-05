@@ -142,16 +142,9 @@ def save_delivery_price(wd):
     # 앱에서 웹뷰로 전환
     webview_contexts = wd.contexts  # 사용 가능한 모든 컨텍스트 가져오기
     wd.switch_to.context(webview_contexts[-1])  # 가장 최근의 웹뷰 컨텍스트로 전환
-    # 웹뷰에서 작업 수행 (예: 웹 요소 찾기, 클릭 등)
-    delivery_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[4]')
-    delivery_price_element = delivery_price_parents.find_elements(AppiumBy.XPATH, '*')
-    # delivery_price_element = aals(delivery_price_parents, '//*')
-    for i in range(len(delivery_price_element)):
-        print(f'delivery_price_element : {delivery_price_element[i].text}')
-        if delivery_price_element[i].text == '배송비':
-            delivery_price = delivery_price_element[i + 1].text
-            print(f'delivery_price : {delivery_price}')
-            break
+
+    delivery_price = aal(wd, '//span[text()="배송비"]/following-sibling::span').text
+
     # 배송비 문자열 숫자 변환
     delivery_price = re.sub(r'[^0-9]', '', delivery_price)
     delivery_price = int(delivery_price) if delivery_price else 0
@@ -159,17 +152,7 @@ def save_delivery_price(wd):
     return delivery_price
 
 def save_coupon_discount_price(wd):
-    coupon_discount_price_parents = aal(wd, '//div[@id="__next"]/div/div[2]/aside/section/div/ul/li[2]/div/div[1]')
-    coupon_discount_price_element = coupon_discount_price_parents.find_elements(By.XPATH, '*')
-    # coupon_discount_price_element = aals(coupon_discount_price_parents, '*')
-
-    for i in range(len(coupon_discount_price_element)):
-        print(f'coupon_discount_price_element : {coupon_discount_price_element[i].text}')
-        if coupon_discount_price_element[i].text == '쿠폰 할인 금액':
-            coupon_discount_price = coupon_discount_price_element[i + 1].text
-            print(f'coupon_discount_price : {coupon_discount_price}')
-            break
-
+    coupon_discount_price = aal(wd, '//span[text()="쿠폰 할인 금액"]/following-sibling::span').text
     # 쿠폰할인 문자열 숫자 변환
     coupon_discount_price = re.sub(r'[^0-9]', '', coupon_discount_price)
     coupon_discount_price = int(coupon_discount_price) if coupon_discount_price else 0
