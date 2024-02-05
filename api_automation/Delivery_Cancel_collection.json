@@ -55,14 +55,13 @@
 			"response": []
 		},
 		{
-			"name": "옵션있는 상품 마일리지 결제 주문건 생성",
+			"name": "옵션없는 상품 마일리지 결제 주문건 생성 (최신버전)",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"// ran_num = _.random(10000, 99999)",
-							"// pm.environment.set(\"random_num\", ran_num)"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -75,23 +74,49 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"var requestjsondata = JSON.parse(request.data)",
+							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
 							"});",
 							"",
-							"var requestjsondata = JSON.parse(request.data)",
-							"pm.environment.set(\"option_id\", requestjsondata.items[0].option_no)",
+							"pm.test(\"set request body test data \", function () {",
+							"    pm.environment.set(\"orderName\", requestjsondata.orderName);",
+							"    pm.environment.set(\"orderEmail\", requestjsondata.orderEmail);",
+							"    pm.environment.set(\"orderPhone\", requestjsondata.orderPhone);",
+							"    pm.environment.set(\"item_no\", requestjsondata.itemList[0].itemId);",
+							"    pm.environment.set(\"paymentAmount\", requestjsondata.paymentAmount);",
+							"    pm.environment.set(\"mileageUseAmount\", requestjsondata.mileageUseAmount);",
+							"});",
 							"",
-							"var jsonData = pm.response.json();",
+							"pm.test(\"set response body order_serial data\", function () {",
+							"    pm.environment.set(\"order_serial\", jsonData.data.orderSerial)",
+							"});",
 							"",
-							"pm.environment.set(\"order_serial\", jsonData.data.order_serial)",
-							"console.log(\"order_serial: \" + jsonData.data.order_serial)",
+							"pm.test(\"orderName value check\", function () {",
+							"    pm.expect(jsonData.data.orderName).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
 							"",
-							"pm.environment.set(\"pay_mileage_amount\", jsonData.data.pay_mileage_amount);",
-							"pm.environment.set(\"pay_amount\", jsonData.data.pay_amount);",
-							"console.log(\"pay_mileage_amount: \" + jsonData.data.pay_mileage_amount)",
-							"console.log(\"pay_amount: \" + jsonData.data.pay_amount)"
+							"pm.test(\"orderEmail value check\", function () {",
+							"    pm.expect(jsonData.data.orderEmail).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"orderPhone value check\", function () {",
+							"    pm.expect(jsonData.data.orderPhone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.data.items[0]).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"payamount value check\", function () {",
+							"    pm.expect(jsonData.data.payAmount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.data.payMileageAmount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -136,17 +161,18 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"pay_type\": 999,\n    \"pay_name\": \"auto 박현준\",\n    \"pay_amount\": 0,\n    \"total_sale_amount\": 900,\n    \"order_name\": \"박현준\",\n    \"order_email\": \"mpark@29cm.co.kr\",\n    \"order_phone\": \"010-3886-3149\",\n    \"address_name\": \"TEST\",\n    \"etc_message\": \"ETC MESSAGE\",\n    \"receiver_zipcode\": \"04797\",\n    \"receiver_name\": \"박현준 수령\",\n    \"receiver_address1\": \"서울특별시 성동구 아차산로 13길 11\",\n    \"receiver_address2\": \"1층 무신사랩\",\n    \"receiver_phone\": \"010-1111-2222\",\n    \"receiver_additional_phone\": \"\",\n    \"change_default_address\": true,\n    \"coupon_sale_amount\": 0,\n    \"coupon_save_amount\": 0,\n    \"pay_mileage_amount\": 900,\n    \"pg_site_no\": null,\n    \"items\": [\n        {\n            \"item_name\": \"Full data 기본정보 상품명 입니다\",\n            \"item_no\": 194752,\n            \"option_no\": 1106945,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        }\n    ],\n    \"is_providing_pcc\": false,\n    \"personal_clearance_code\": null,\n    \"is_gift\": false,\n    \"gift_info\": null,\n    \"get_path\": \"\"\n}"
+					"raw": "{\n    \"payCode\": 999,\n    \"payerName\": \"박현준\",\n    \"pgSiteId\": null,\n    \"paymentAmount\": 0,\n    \"orderName\": \"박현준\",\n    \"orderEmail\": \"mpark@29cm.co.kr\",\n    \"orderPhone\": \"010-3886-3149\",\n    \"totalPrice\": 100,\n    \"mileageUseAmount\": 100,\n    \"cartCoupon\": null,\n    \"itemList\": [\n        {\n            \"cartItemId\": 122337625,\n            \"itemId\": 2222895,\n            \"optionId\": null,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        }\n    ],\n    \"isProvidingPcc\": false,\n    \"personalClearanceCode\": null,\n    \"getPath\": \"\",\n    \"addressName\": \"배송지\",\n    \"etcMessage\": \"\",\n    \"receiverZipcode\": \"15386\",\n    \"receiverName\": \"박현준\",\n    \"receiverAddress1\": \"경기도 안산시 단원구 원초로 90\",\n    \"receiverAddress2\": \"파크단지\",\n    \"receiverPhone\": \"010-3886-3149\",\n    \"receiverAdditionalPhone\": \"\",\n    \"changeDefaultAddress\": true,\n    \"isGift\": false,\n    \"giftInfo\": null\n}"
 				},
 				"url": {
-					"raw": "{{29_host}}/api/v2/temp-orders/",
+					"raw": "{{29_host}}/api/v4/orders/temp-order/",
 					"host": [
 						"{{29_host}}"
 					],
 					"path": [
 						"api",
-						"v2",
-						"temp-orders",
+						"v4",
+						"orders",
+						"temp-order",
 						""
 					]
 				}
@@ -165,6 +191,7 @@
 							"});",
 							"",
 							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
 							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
 							"});",
@@ -178,13 +205,15 @@
 							"}",
 							"",
 							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"pm.test(\"order serial check\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
 							"});",
 							"",
 							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
-							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)"
 						],
 						"type": "text/javascript"
 					}
@@ -193,7 +222,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"setTimeout(function(){}, 2000);"
+							"setTimeout(function(){}, 2500);"
 						],
 						"type": "text/javascript"
 					}
@@ -273,25 +302,20 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
 							"});",
 							"",
 							"pm.test(\"Response has the correct schema\", function () {",
-							"    var response = pm.response.json();",
 							"",
-							"    pm.expect(response).to.be.an('object');",
-							"    pm.expect(response).to.have.property('result');",
-							"    pm.expect(response).to.have.property('data');",
-							"    pm.expect(response).to.have.property('message');",
-							"    pm.expect(response).to.have.property('errorCode');",
-							"",
-							"    pm.expect(response.data).to.be.an('object');",
-							"    pm.expect(response.data).to.have.property('orderAsNo');",
-							"});",
-							"",
-							""
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('orderAsNo');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -367,8 +391,37 @@
 							"});",
 							"",
 							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"cs_description 값 취소완료 확인\", function () {",
 							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소완료\");",
+							"});",
+							"",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.test(\"order_name value check\", function () {",
+							"    pm.expect(jsonData.order_name).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"order_email value check\", function () {",
+							"    pm.expect(jsonData.order_email).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"order_phone value check\", function () {",
+							"    pm.expect(jsonData.order_phone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].order_item_no.item_no).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_amount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_mileage_amount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
 							"});"
 						],
 						"type": "text/javascript"
@@ -430,14 +483,13 @@
 			"response": []
 		},
 		{
-			"name": "옵션있는 상품 마일리지 결제 주문건 생성",
+			"name": "옵션있는 상품 마일리지 결제 주문건 생성 (최신버전)",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"// ran_num = _.random(10000, 99999)",
-							"// pm.environment.set(\"random_num\", ran_num)"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -450,23 +502,49 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"var requestjsondata = JSON.parse(request.data)",
+							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
 							"});",
 							"",
-							"var requestjsondata = JSON.parse(request.data)",
-							"pm.environment.set(\"option_id\", requestjsondata.items[0].option_no)",
+							"pm.test(\"set request body test data \", function () {",
+							"    pm.environment.set(\"orderName\", requestjsondata.orderName);",
+							"    pm.environment.set(\"orderEmail\", requestjsondata.orderEmail);",
+							"    pm.environment.set(\"orderPhone\", requestjsondata.orderPhone);",
+							"    pm.environment.set(\"item_no\", requestjsondata.itemList[0].itemId);",
+							"    pm.environment.set(\"paymentAmount\", requestjsondata.paymentAmount);",
+							"    pm.environment.set(\"mileageUseAmount\", requestjsondata.mileageUseAmount);",
+							"});",
 							"",
-							"var jsonData = pm.response.json();",
+							"pm.test(\"set response body order_serial data\", function () {",
+							"    pm.environment.set(\"order_serial\", jsonData.data.orderSerial)",
+							"});",
 							"",
-							"pm.environment.set(\"order_serial\", jsonData.data.order_serial)",
-							"console.log(jsonData.data.order_serial)",
+							"pm.test(\"orderName value check\", function () {",
+							"    pm.expect(jsonData.data.orderName).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
 							"",
-							"pm.environment.set(\"pay_mileage_amount\", jsonData.data.pay_mileage_amount);",
-							"pm.environment.set(\"pay_amount\", jsonData.data.pay_amount);",
-							"console.log(\"pay_mileage_amount: \" + jsonData.data.pay_mileage_amount)",
-							"console.log(\"pay_amount: \" + jsonData.data.pay_amount)"
+							"pm.test(\"orderEmail value check\", function () {",
+							"    pm.expect(jsonData.data.orderEmail).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"orderPhone value check\", function () {",
+							"    pm.expect(jsonData.data.orderPhone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.data.items[0]).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"payamount value check\", function () {",
+							"    pm.expect(jsonData.data.payAmount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.data.payMileageAmount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -511,17 +589,18 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"pay_type\": 999,\n    \"pay_name\": \"auto 박현준\",\n    \"pay_amount\": 0,\n    \"total_sale_amount\": 900,\n    \"order_name\": \"박현준\",\n    \"order_email\": \"mpark@29cm.co.kr\",\n    \"order_phone\": \"010-3886-3149\",\n    \"address_name\": \"TEST\",\n    \"etc_message\": \"ETC MESSAGE\",\n    \"receiver_zipcode\": \"04797\",\n    \"receiver_name\": \"박현준 수령\",\n    \"receiver_address1\": \"서울특별시 성동구 아차산로 13길 11\",\n    \"receiver_address2\": \"1층 무신사랩\",\n    \"receiver_phone\": \"010-1111-2222\",\n    \"receiver_additional_phone\": \"\",\n    \"change_default_address\": true,\n    \"coupon_sale_amount\": 0,\n    \"coupon_save_amount\": 0,\n    \"pay_mileage_amount\": 900,\n    \"pg_site_no\": null,\n    \"items\": [\n        {\n            \"item_name\": \"Full data 기본정보 상품명 입니다\",\n            \"item_no\": 194752,\n            \"option_no\": 1106945,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        }\n    ],\n    \"is_providing_pcc\": false,\n    \"personal_clearance_code\": null,\n    \"is_gift\": false,\n    \"gift_info\": null,\n    \"get_path\": \"\"\n}"
+					"raw": "{\n    \"payCode\": 999,\n    \"payerName\": \"박현준\",\n    \"pgSiteId\": null,\n    \"paymentAmount\": 0,\n    \"orderName\": \"박현준\",\n    \"orderEmail\": \"mpark@29cm.co.kr\",\n    \"orderPhone\": \"010-3886-3149\",\n    \"totalPrice\": 200,\n    \"mileageUseAmount\": 200,\n    \"cartCoupon\": null,\n    \"itemList\": [\n        {\n            \"cartItemId\": 122339306,\n            \"itemId\": 2221707,\n            \"optionId\": 24691860,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        }\n    ],\n    \"isProvidingPcc\": false,\n    \"personalClearanceCode\": null,\n    \"getPath\": \"\",\n    \"addressName\": \"배송지\",\n    \"etcMessage\": \"\",\n    \"receiverZipcode\": \"15386\",\n    \"receiverName\": \"박현준\",\n    \"receiverAddress1\": \"경기도 안산시 단원구 원초로 90\",\n    \"receiverAddress2\": \"파크단지\",\n    \"receiverPhone\": \"010-3886-3149\",\n    \"receiverAdditionalPhone\": \"\",\n    \"changeDefaultAddress\": true,\n    \"isGift\": false,\n    \"giftInfo\": null\n}"
 				},
 				"url": {
-					"raw": "{{29_host}}/api/v2/temp-orders/",
+					"raw": "{{29_host}}/api/v4/orders/temp-order/",
 					"host": [
 						"{{29_host}}"
 					],
 					"path": [
 						"api",
-						"v2",
-						"temp-orders",
+						"v4",
+						"orders",
+						"temp-order",
 						""
 					]
 				}
@@ -553,7 +632,11 @@
 							"}",
 							"",
 							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"pm.test(\"order serial check\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
 							"});",
 							"",
 							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
@@ -568,7 +651,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"setTimeout(function(){}, 2000);"
+							"setTimeout(function(){}, 3000);"
 						],
 						"type": "text/javascript"
 					}
@@ -679,10 +762,13 @@
 							"}",
 							"",
 							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
 							"});",
 							"",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.data.resultList[0].orderItemManageId)",
+							"pm.test(\"orderItemManageId 확인\", function () {",
+							"    pm.expect(jsonData.data.resultList[0].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"",
 							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
 						],
 						"type": "text/javascript"
@@ -774,9 +860,1136 @@
 							"});",
 							"",
 							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"result 결과 SUCCESS 값 확인\", function () {    ",
 							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"pm.test(\"orderItemManageId 값 확인\", function () {    ",
+							"    pm.expect(jsonData.data.resultInfos[0].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('resultInfos');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"    pm.expect(jsonData).to.have.property('fail');",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "host",
+						"value": "qa-logistics-admin-api.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderItemManageIds\": [\n        {{order_item_manage_no}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v3/delivery-preparing",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v3",
+						"delivery-preparing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 상품준비중 취소처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect에서 취소처리 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_serial value check\", function () {",
+							"    pm.environment.set(\"cs_serial\", jsonData.data.orderAsSerial);",
+							"});",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('orderAsSerial');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderId\": {{order_no}},\n    \"brandId\": 10175,\n    \"cancelReasonCode\": \"SIMPLE_REMORSE\",\n    \"cancelReasonMessage\": null,\n    \"cancelItem\": {\n        \"orderItemManageId\": {{order_item_manage_no}},\n        \"cancelCount\": 1\n    },\n    \"refundBankAccount\": null\n}"
+				},
+				"url": {
+					"raw": "{{apihub_host}}/qa/api/v1/order-cancel/apply/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"api",
+						"v1",
+						"order-cancel",
+						"apply",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 취소접수 주문 조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_serial 값 유효성 확인\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].order_as_id).to.eql(pm.environment.get(\"cs_serial\"));",
+							"});",
+							"",
+							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소접수\");",
+							"});",
+							"",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.test(\"order_name value check\", function () {",
+							"    pm.expect(jsonData.order_name).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"order_email value check\", function () {",
+							"    pm.expect(jsonData.order_email).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"order_phone value check\", function () {",
+							"    pm.expect(jsonData.order_phone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].order_item_no.item_no).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_amount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_mileage_amount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						"{{order_no}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect에서 취소접수 승인처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"취소접수 승인처리 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"result 값 유효성 확인\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"pm.test(\"cs_serial 값 유효성 확인\", function () {",
+							"    pm.expect(jsonData.data.asSerial).to.eql(pm.environment.get(\"cs_serial\"));",
+							"});",
+							"",
+							"pm.test(\"asStatus 값 유효성 확인\", function () {",
+							"    pm.expect(jsonData.data.asStatus).to.eql(\"COMPLETE\");",
+							"});",
+							"",
+							"pm.test(\"asStatusDescription 값 유효성 확인\", function () {",
+							"    pm.expect(jsonData.data.asStatusDescription).to.eql(\"취소 완료\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, 1000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-claim-admin-api.29cm.co.kr"
+					}
+				],
+				"url": {
+					"raw": "{{claim_host}}/partner-admin/v3/order-cancel/order-as/{{cs_serial}}/approve",
+					"host": [
+						"{{claim_host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v3",
+						"order-cancel",
+						"order-as",
+						"{{cs_serial}}",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 취소완료 주문 조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_description 값 취소완료 확인\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소완료\");",
+							"});",
+							"",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.test(\"order_name value check\", function () {",
+							"    pm.expect(jsonData.order_name).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"order_email value check\", function () {",
+							"    pm.expect(jsonData.order_email).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"order_phone value check\", function () {",
+							"    pm.expect(jsonData.order_phone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].order_item_no.item_no).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_amount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_mileage_amount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						"{{order_no}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "옵션있는 상품 마일리지 결제 주문건 생성 (최신버전)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"주문완료 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var requestjsondata = JSON.parse(request.data)",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"set request body test data \", function () {",
+							"    pm.environment.set(\"orderName\", requestjsondata.orderName);",
+							"    pm.environment.set(\"orderEmail\", requestjsondata.orderEmail);",
+							"    pm.environment.set(\"orderPhone\", requestjsondata.orderPhone);",
+							"    pm.environment.set(\"item_no\", requestjsondata.itemList[0].itemId);",
+							"    pm.environment.set(\"paymentAmount\", requestjsondata.paymentAmount);",
+							"    pm.environment.set(\"mileageUseAmount\", requestjsondata.mileageUseAmount);",
+							"});",
+							"",
+							"pm.test(\"set response body order_serial data\", function () {",
+							"    pm.environment.set(\"order_serial\", jsonData.data.orderSerial)",
+							"});",
+							"",
+							"pm.test(\"orderName value check\", function () {",
+							"    pm.expect(jsonData.data.orderName).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"orderEmail value check\", function () {",
+							"    pm.expect(jsonData.data.orderEmail).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"orderPhone value check\", function () {",
+							"    pm.expect(jsonData.data.orderPhone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.data.items[0]).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"payamount value check\", function () {",
+							"    pm.expect(jsonData.data.payAmount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.data.payMileageAmount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-commerce-api.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payCode\": 999,\n    \"payerName\": \"박현준\",\n    \"pgSiteId\": null,\n    \"paymentAmount\": 0,\n    \"orderName\": \"박현준\",\n    \"orderEmail\": \"mpark@29cm.co.kr\",\n    \"orderPhone\": \"010-3886-3149\",\n    \"totalPrice\": 200,\n    \"mileageUseAmount\": 200,\n    \"cartCoupon\": null,\n    \"itemList\": [\n        {\n            \"cartItemId\": 122339306,\n            \"itemId\": 2221707,\n            \"optionId\": 24691860,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        }\n    ],\n    \"isProvidingPcc\": false,\n    \"personalClearanceCode\": null,\n    \"getPath\": \"\",\n    \"addressName\": \"배송지\",\n    \"etcMessage\": \"\",\n    \"receiverZipcode\": \"15386\",\n    \"receiverName\": \"박현준\",\n    \"receiverAddress1\": \"경기도 안산시 단원구 원초로 90\",\n    \"receiverAddress2\": \"파크단지\",\n    \"receiverPhone\": \"010-3886-3149\",\n    \"receiverAdditionalPhone\": \"\",\n    \"changeDefaultAddress\": true,\n    \"isGift\": false,\n    \"giftInfo\": null\n}"
+				},
+				"url": {
+					"raw": "{{29_host}}/api/v4/orders/temp-order/",
+					"host": [
+						"{{29_host}}"
+					],
+					"path": [
+						"api",
+						"v4",
+						"orders",
+						"temp-order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 주문배송조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문배송조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"var total_amount = 0",
+							"for (var i = 0; i < jsonData.results[0].manages.length; i++) {",
+							"    if (jsonData.results[0].manages[i].total_order_item_amount) {",
+							"        console.log(jsonData.results[0].manages[i].total_order_item_amount)",
+							"        total_amount =  total_amount + jsonData.results[0].manages[i].total_order_item_amount",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"pm.test(\"order serial check\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
+							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
+							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
+							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, 3000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/?limit=1&offset=0",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						""
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "1"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect 전체주문조회",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var today = new Date();",
+							"var year = today.getFullYear();",
+							"var month = String(today.getMonth() + 1).padStart(2, '0');",
+							"var day = String(today.getDate()).padStart(2, '0');",
+							"var formattedDate = year + '-' + month + '-' + day;",
+							"",
+							"pm.environment.set(\"currentDate\", formattedDate);",
+							"",
+							"setTimeout(function(){}, 1000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect 전체주문조회 메뉴에서 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"result 값 SUCCESS 확인\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"var total_amount = 0",
+							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
+							"    if (jsonData.data.resultList[i].sellPrice) {",
+							"        console.log(jsonData.data.resultList[i].sellPrice)",
+							"        total_amount =  total_amount + jsonData.data.resultList[i].sellPrice",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"pm.test(\"orderItemManageId 확인\", function () {",
+							"    pm.expect(jsonData.data.resultList[0].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"",
+							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"type": "text"
+					},
+					{
+						"key": "host",
+						"value": "qa-commerce-admin-api.29cm.co.kr"
+					}
+				],
+				"url": {
+					"raw": "{{commerce_host}}/partner-admin/v4/orders?page=1&size=50&dateConditionType=ORDERED_AT&fromDate={{currentDate}}&toDate={{currentDate}}&orderSerial={{order_serial}}",
+					"host": [
+						"{{commerce_host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "50"
+						},
+						{
+							"key": "dateConditionType",
+							"value": "ORDERED_AT"
+						},
+						{
+							"key": "fromDate",
+							"value": "{{currentDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{currentDate}}"
+						},
+						{
+							"key": "orderSerial",
+							"value": "{{order_serial}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect에서 상품준비처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"상품준비처리 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"result 결과 SUCCESS 값 확인\", function () {    ",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"pm.test(\"orderItemManageId 값 확인\", function () {    ",
+							"    pm.expect(jsonData.data.resultInfos[0].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('resultInfos');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"    pm.expect(jsonData).to.have.property('fail');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "host",
+						"value": "qa-logistics-admin-api.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderItemManageIds\": [\n        {{order_item_manage_no}}\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/partner-admin/v3/delivery-preparing",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v3",
+						"delivery-preparing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 상품준비중 취소처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect에서 취소처리 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_serial value check\", function () {",
+							"    pm.environment.set(\"cs_serial\", jsonData.data.orderAsSerial);",
+							"});",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('orderAsSerial');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderId\": {{order_no}},\n    \"brandId\": 10175,\n    \"cancelReasonCode\": \"SIMPLE_REMORSE\",\n    \"cancelReasonMessage\": null,\n    \"cancelItem\": {\n        \"orderItemManageId\": {{order_item_manage_no}},\n        \"cancelCount\": 1\n    },\n    \"refundBankAccount\": null\n}"
+				},
+				"url": {
+					"raw": "{{apihub_host}}/qa/api/v1/order-cancel/apply/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"api",
+						"v1",
+						"order-cancel",
+						"apply",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 취소접수 주문 조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_serial 값 유효성 확인\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].order_as_id).to.eql(pm.environment.get(\"cs_serial\"));",
+							"});",
+							"",
+							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소접수\");",
+							"});",
+							"",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.test(\"order_name value check\", function () {",
+							"    pm.expect(jsonData.order_name).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"order_email value check\", function () {",
+							"    pm.expect(jsonData.order_email).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"order_phone value check\", function () {",
+							"    pm.expect(jsonData.order_phone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.manage_settles[0].order_item_no.item_no).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_amount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_mileage_amount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						"{{order_no}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect 취소접수 거부처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect에서 취소접수 거부처리 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"result SUCCESS 값 확인\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"ran_num = _.random(100000000, 999999999)",
+							"delivery_num = '1' + String(ran_num)",
+							"pm.environment.set(\"delivery_num\", delivery_num)",
+							"console.log(\"delivery num: \" + delivery_num)",
+							"",
+							"setTimeout(function(){}, 1000);"
 						],
 						"type": "text/javascript"
 					}
@@ -815,7 +2028,1035 @@
 					},
 					{
 						"key": "host",
-						"value": "qa-logistics-api.29cm.co.kr"
+						"value": "qa-claim-admin-api.29cm.co.kr"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"rejectReason\": \"TO_BE_SHIP_BEGIN\",\n    \"deliveryCompanyId\": 101,\n    \"invoiceNo\": \"{{delivery_num}}\"\n}"
+				},
+				"url": {
+					"raw": "{{claim_host}}/partner-admin/v3/order-cancel/order-as/{{cs_serial}}/reject",
+					"host": [
+						"{{claim_host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v3",
+						"order-cancel",
+						"order-as",
+						"{{cs_serial}}",
+						"reject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 취소접수 거부 주문 조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
+							"    pm.expect(jsonData.manages[0].cs_description).to.eql(\"배송시작\");",
+							"});",
+							"",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.test(\"order_name value check\", function () {",
+							"    pm.expect(jsonData.order_name).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"order_email value check\", function () {",
+							"    pm.expect(jsonData.order_email).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"order_phone value check\", function () {",
+							"    pm.expect(jsonData.order_phone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.manages[0].order_item_no.item_no).to.eql(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_amount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"org_pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_mileage_amount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						"{{order_no}}",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "옵션있는 상품 마일리지 결제 복수 주문건 생성 (최신버전)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"주문완료 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var requestjsondata = JSON.parse(request.data)",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"set request body test data \", function () {",
+							"    pm.environment.set(\"orderName\", requestjsondata.orderName);",
+							"    pm.environment.set(\"orderEmail\", requestjsondata.orderEmail);",
+							"    pm.environment.set(\"orderPhone\", requestjsondata.orderPhone);",
+							"    pm.environment.set(\"item_no\", requestjsondata.itemList[0].itemId);",
+							"    pm.environment.set(\"item_no2\", jsonData.data.items[1]);",
+							"    pm.environment.set(\"paymentAmount\", requestjsondata.paymentAmount);",
+							"    pm.environment.set(\"mileageUseAmount\", requestjsondata.mileageUseAmount);",
+							"});",
+							"",
+							"pm.test(\"set response body order_serial data\", function () {",
+							"    pm.environment.set(\"order_serial\", jsonData.data.orderSerial)",
+							"});",
+							"",
+							"pm.test(\"orderName value check\", function () {",
+							"    pm.expect(jsonData.data.orderName).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"orderEmail value check\", function () {",
+							"    pm.expect(jsonData.data.orderEmail).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"orderPhone value check\", function () {",
+							"    pm.expect(jsonData.data.orderPhone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"Items array length is 2\", function () {",
+							"    pm.expect(jsonData.data.items).to.have.lengthOf(2);",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.data.items).to.include(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"item_no2 value check\", function () {",
+							"    pm.expect(jsonData.data.items).to.include(pm.environment.get(\"item_no2\"));",
+							"});",
+							"",
+							"pm.test(\"payamount value check\", function () {",
+							"    pm.expect(jsonData.data.payAmount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.data.payMileageAmount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-commerce-api.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payCode\": 999,\n    \"payerName\": \"박현준\",\n    \"pgSiteId\": null,\n    \"paymentAmount\": 0,\n    \"orderName\": \"박현준\",\n    \"orderEmail\": \"mpark@29cm.co.kr\",\n    \"orderPhone\": \"010-3886-3149\",\n    \"totalPrice\": 399,\n    \"mileageUseAmount\": 399,\n    \"cartCoupon\": null,\n    \"itemList\": [\n        {\n            \"cartItemId\": 122339622,\n            \"itemId\": 2221707,\n            \"optionId\": 24691861,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        },\n        {\n            \"cartItemId\": 122339621,\n            \"itemId\": 2221571,\n            \"optionId\": 24691780,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        }\n    ],\n    \"isProvidingPcc\": false,\n    \"personalClearanceCode\": null,\n    \"getPath\": \"\",\n    \"addressName\": \"배송지\",\n    \"etcMessage\": \"\",\n    \"receiverZipcode\": \"15386\",\n    \"receiverName\": \"박현준\",\n    \"receiverAddress1\": \"경기도 안산시 단원구 원초로 90\",\n    \"receiverAddress2\": \"파크단지\",\n    \"receiverPhone\": \"010-3886-3149\",\n    \"receiverAdditionalPhone\": \"\",\n    \"changeDefaultAddress\": true,\n    \"isGift\": false,\n    \"giftInfo\": null\n}"
+				},
+				"url": {
+					"raw": "{{29_host}}/api/v4/orders/temp-order/",
+					"host": [
+						"{{29_host}}"
+					],
+					"path": [
+						"api",
+						"v4",
+						"orders",
+						"temp-order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 주문배송조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문배송조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"var total_amount = 0",
+							"for (var i = 0; i < jsonData.results[0].manages.length; i++) {",
+							"    if (jsonData.results[0].manages[i].total_order_item_amount) {",
+							"        console.log(jsonData.results[0].manages[i].total_order_item_amount)",
+							"        total_amount =  total_amount + jsonData.results[0].manages[i].total_order_item_amount",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"pm.test(\"order serial check\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
+							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
+							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
+							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, 3000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/?limit=1&offset=0",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						""
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "1"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 취소처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect에서 취소처리 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('orderAsNo');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"orderNo\": {{order_no}},\n    \"cancelReasonCode\": \"SIMPLE_REMORSE\",\n    \"cancelReasonMessage\": null,\n    \"cancelItemList\": [\n        {\n            \"orderItemManageId\": {{order_item_manage_no}},\n            \"cancelCount\": 1\n        }\n    ],\n    \"refundBankAccount\": null\n}"
+				},
+				"url": {
+					"raw": "{{apihub_host}}/qa/api/v1/order-cancel/user-cancel/",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"api",
+						"v1",
+						"order-cancel",
+						"user-cancel",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect 전체주문조회",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var today = new Date();",
+							"var year = today.getFullYear();",
+							"var month = String(today.getMonth() + 1).padStart(2, '0');",
+							"var day = String(today.getDate()).padStart(2, '0');",
+							"var formattedDate = year + '-' + month + '-' + day;",
+							"",
+							"pm.environment.set(\"currentDate\", formattedDate);",
+							"",
+							"setTimeout(function(){}, 1000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect 전체주문조회 메뉴에서 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"result 값 SUCCESS 확인\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"var total_amount = 0",
+							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
+							"    if (jsonData.data.resultList[i].sellPrice) {",
+							"        console.log(jsonData.data.resultList[i].sellPrice)",
+							"        total_amount =  total_amount + jsonData.data.resultList[i].sellPrice",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
+							"    if (jsonData.data.resultList[i].orderStatusDescription === \"취소\") {",
+							"        pm.test(\"orderItemManageId 확인\", function () {",
+							"            pm.expect(jsonData.data.resultList[i].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"    }",
+							"}",
+							"",
+							"",
+							"",
+							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"type": "text"
+					},
+					{
+						"key": "host",
+						"value": "qa-commerce-admin-api.29cm.co.kr"
+					}
+				],
+				"url": {
+					"raw": "{{commerce_host}}/partner-admin/v4/orders?page=1&size=50&dateConditionType=ORDERED_AT&fromDate={{currentDate}}&toDate={{currentDate}}&orderSerial={{order_serial}}",
+					"host": [
+						"{{commerce_host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "50"
+						},
+						{
+							"key": "dateConditionType",
+							"value": "ORDERED_AT"
+						},
+						{
+							"key": "fromDate",
+							"value": "{{currentDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{currentDate}}"
+						},
+						{
+							"key": "orderSerial",
+							"value": "{{order_serial}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "옵션있는 상품 마일리지 결제 복수 주문건 생성",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"주문완료 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var requestjsondata = JSON.parse(request.data)",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"set request body test data \", function () {",
+							"    pm.environment.set(\"orderName\", requestjsondata.orderName);",
+							"    pm.environment.set(\"orderEmail\", requestjsondata.orderEmail);",
+							"    pm.environment.set(\"orderPhone\", requestjsondata.orderPhone);",
+							"    pm.environment.set(\"item_no\", requestjsondata.itemList[0].itemId);",
+							"    pm.environment.set(\"item_no2\", jsonData.data.items[1]);",
+							"    pm.environment.set(\"paymentAmount\", requestjsondata.paymentAmount);",
+							"    pm.environment.set(\"mileageUseAmount\", requestjsondata.mileageUseAmount);",
+							"});",
+							"",
+							"pm.test(\"set response body order_serial data\", function () {",
+							"    pm.environment.set(\"order_serial\", jsonData.data.orderSerial)",
+							"});",
+							"",
+							"pm.test(\"orderName value check\", function () {",
+							"    pm.expect(jsonData.data.orderName).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
+							"",
+							"pm.test(\"orderEmail value check\", function () {",
+							"    pm.expect(jsonData.data.orderEmail).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"orderPhone value check\", function () {",
+							"    pm.expect(jsonData.data.orderPhone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"Items array length is 2\", function () {",
+							"    pm.expect(jsonData.data.items).to.have.lengthOf(2);",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.data.items).to.include(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"item_no2 value check\", function () {",
+							"    pm.expect(jsonData.data.items).to.include(pm.environment.get(\"item_no2\"));",
+							"});",
+							"",
+							"pm.test(\"payamount value check\", function () {",
+							"    pm.expect(jsonData.data.payAmount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.data.payMileageAmount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "qa-commerce-api.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payCode\": 999,\n    \"payerName\": \"박현준\",\n    \"pgSiteId\": null,\n    \"paymentAmount\": 0,\n    \"orderName\": \"박현준\",\n    \"orderEmail\": \"mpark@29cm.co.kr\",\n    \"orderPhone\": \"010-3886-3149\",\n    \"totalPrice\": 399,\n    \"mileageUseAmount\": 399,\n    \"cartCoupon\": null,\n    \"itemList\": [\n        {\n            \"cartItemId\": 122339622,\n            \"itemId\": 2221707,\n            \"optionId\": 24691861,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        },\n        {\n            \"cartItemId\": 122339621,\n            \"itemId\": 2221571,\n            \"optionId\": 24691780,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        }\n    ],\n    \"isProvidingPcc\": false,\n    \"personalClearanceCode\": null,\n    \"getPath\": \"\",\n    \"addressName\": \"배송지\",\n    \"etcMessage\": \"\",\n    \"receiverZipcode\": \"15386\",\n    \"receiverName\": \"박현준\",\n    \"receiverAddress1\": \"경기도 안산시 단원구 원초로 90\",\n    \"receiverAddress2\": \"파크단지\",\n    \"receiverPhone\": \"010-3886-3149\",\n    \"receiverAdditionalPhone\": \"\",\n    \"changeDefaultAddress\": true,\n    \"isGift\": false,\n    \"giftInfo\": null\n}"
+				},
+				"url": {
+					"raw": "{{29_host}}/api/v4/orders/temp-order/",
+					"host": [
+						"{{29_host}}"
+					],
+					"path": [
+						"api",
+						"v4",
+						"orders",
+						"temp-order",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userfront에서 주문배송조회",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"userfront에서 주문배송조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"var total_amount = 0",
+							"for (var i = 0; i < jsonData.results[0].manages.length; i++) {",
+							"    if (jsonData.results[0].manages[i].total_order_item_amount) {",
+							"        console.log(jsonData.results[0].manages[i].total_order_item_amount)",
+							"        total_amount =  total_amount + jsonData.results[0].manages[i].total_order_item_amount",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"pm.test(\"order serial check\", function () {",
+							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"});",
+							"",
+							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
+							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
+							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
+							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, 3000);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "host",
+						"value": "apihub.29cm.co.kr"
+					},
+					{
+						"key": "Cookie",
+						"value": "{{user_cookie}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{apihub_host}}/qa/order/orders/my-order/?limit=1&offset=0",
+					"host": [
+						"{{apihub_host}}"
+					],
+					"path": [
+						"qa",
+						"order",
+						"orders",
+						"my-order",
+						""
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "1"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect 전체주문조회",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var today = new Date();",
+							"var year = today.getFullYear();",
+							"var month = String(today.getMonth() + 1).padStart(2, '0');",
+							"var day = String(today.getDate()).padStart(2, '0');",
+							"var formattedDate = year + '-' + month + '-' + day;",
+							"",
+							"pm.environment.set(\"currentDate\", formattedDate);",
+							"",
+							"setTimeout(function(){}, 1000);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"29connect 전체주문조회 메뉴에서 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"result 값 SUCCESS 확인\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"var total_amount = 0",
+							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
+							"    if (jsonData.data.resultList[i].sellPrice) {",
+							"        console.log(jsonData.data.resultList[i].sellPrice)",
+							"        total_amount =  total_amount + jsonData.data.resultList[i].sellPrice",
+							"    }",
+							"}",
+							"",
+							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
+							"});",
+							"",
+							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
+							"    if (jsonData.data.resultList[i].orderStatusDescription === \"취소\") {",
+							"        pm.test(\"orderItemManageId 확인\", function () {",
+							"            pm.expect(jsonData.data.resultList[i].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"type": "text"
+					},
+					{
+						"key": "host",
+						"value": "qa-commerce-admin-api.29cm.co.kr"
+					}
+				],
+				"url": {
+					"raw": "{{commerce_host}}/partner-admin/v4/orders?page=1&size=50&dateConditionType=ORDERED_AT&fromDate={{currentDate}}&toDate={{currentDate}}&orderSerial={{order_serial}}",
+					"host": [
+						"{{commerce_host}}"
+					],
+					"path": [
+						"partner-admin",
+						"v4",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "50"
+						},
+						{
+							"key": "dateConditionType",
+							"value": "ORDERED_AT"
+						},
+						{
+							"key": "fromDate",
+							"value": "{{currentDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{currentDate}}"
+						},
+						{
+							"key": "orderSerial",
+							"value": "{{order_serial}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29connect에서 상품준비처리",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"상품준비처리 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"result 결과 SUCCESS 값 확인\", function () {    ",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"pm.test(\"orderItemManageId 값 확인\", function () {    ",
+							"    pm.expect(jsonData.data.resultInfos[0].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('resultInfos');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"    pm.expect(jsonData).to.have.property('fail');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{partner_token}}"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "host",
+						"value": "qa-logistics-admin-api.29cm.co.kr"
 					}
 				],
 				"body": {
@@ -845,6 +3086,25 @@
 						"exec": [
 							"pm.test(\"29connect에서 취소처리 성공\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_serial value check\", function () {",
+							"    pm.environment.set(\"cs_serial\", jsonData.data.orderAsSerial);",
+							"});",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('orderAsSerial');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -924,6 +3184,15 @@
 							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
 							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소접수\");",
 							"});",
+							"",
+							"for (var i = 0; i < jsonData.manage_settles.length; i++) {",
+							"    if (jsonData.manage_settles[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
+							"        pm.test(\"취소접수 주문건 확인\", function () {",
+							"            pm.expect(jsonData.manage_settles[i].cs_description).to.eql(\"취소접수\");",
+							"        });",
+							"        break; ",
+							"    }",
+							"}",
 							"",
 							"pm.environment.set(\"cs_serial\", jsonData.manage_settles[0].order_as_id)"
 						],
@@ -994,7 +3263,38 @@
 						"exec": [
 							"pm.test(\"취소접수 승인처리 성공\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"result 값 SUCCESS 확인\", function () {",
+							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"취소 asSerial 확인\", function () {",
+							"    pm.expect(jsonData.data.asSerial).to.eql(pm.environment.get(\"cs_serial\"));",
+							"});",
+							"",
+							"pm.test(\"취소 asStatus 확인\", function () {",
+							"    pm.expect(jsonData.data.asStatus).to.eql(\"COMPLETE\");",
+							"});",
+							"",
+							"pm.test(\"취소 asStatusDescription 확인\", function () {",
+							"    pm.expect(jsonData.data.asStatusDescription).to.eql(\"취소 완료\");",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function(){}, 1000);"
 						],
 						"type": "text/javascript"
 					}
@@ -1063,7 +3363,16 @@
 							"var jsonData = pm.response.json();",
 							"pm.test(\"cs_description 값 취소완료 확인\", function () {",
 							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소완료\");",
-							"});"
+							"});",
+							"",
+							"for (var i = 0; i < jsonData.manage_settles.length; i++) {",
+							"    if (jsonData.manage_settles[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
+							"        pm.test(\"취소접수 주문건 확인\", function () {",
+							"            pm.expect(jsonData.manage_settles[i].cs_description).to.eql(\"취소완료\");",
+							"        });",
+							"        break; ",
+							"    }",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -1124,14 +3433,13 @@
 			"response": []
 		},
 		{
-			"name": "옵션있는 상품 마일리지 결제 주문건 생성",
+			"name": "옵션있는 상품 마일리지 결제 복수 주문건 생성",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"// ran_num = _.random(10000, 99999)",
-							"// pm.environment.set(\"random_num\", ran_num)"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1144,23 +3452,58 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"var requestjsondata = JSON.parse(request.data)",
+							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
 							"});",
 							"",
-							"var requestjsondata = JSON.parse(request.data)",
-							"pm.environment.set(\"option_id\", requestjsondata.items[0].option_no)",
+							"pm.test(\"set request body test data \", function () {",
+							"    pm.environment.set(\"orderName\", requestjsondata.orderName);",
+							"    pm.environment.set(\"orderEmail\", requestjsondata.orderEmail);",
+							"    pm.environment.set(\"orderPhone\", requestjsondata.orderPhone);",
+							"    pm.environment.set(\"item_no\", requestjsondata.itemList[0].itemId);",
+							"    pm.environment.set(\"item_no2\", jsonData.data.items[1]);",
+							"    pm.environment.set(\"paymentAmount\", requestjsondata.paymentAmount);",
+							"    pm.environment.set(\"mileageUseAmount\", requestjsondata.mileageUseAmount);",
+							"});",
 							"",
-							"var jsonData = pm.response.json();",
+							"pm.test(\"set response body order_serial data\", function () {",
+							"    pm.environment.set(\"order_serial\", jsonData.data.orderSerial)",
+							"});",
 							"",
-							"pm.environment.set(\"order_serial\", jsonData.data.order_serial)",
-							"console.log(jsonData.data.order_serial)",
+							"pm.test(\"orderName value check\", function () {",
+							"    pm.expect(jsonData.data.orderName).to.eql(pm.environment.get(\"orderName\"));",
+							"});",
 							"",
-							"pm.environment.set(\"pay_mileage_amount\", jsonData.data.pay_mileage_amount);",
-							"pm.environment.set(\"pay_amount\", jsonData.data.pay_amount);",
-							"console.log(\"pay_mileage_amount: \" + jsonData.data.pay_mileage_amount)",
-							"console.log(\"pay_amount: \" + jsonData.data.pay_amount)"
+							"pm.test(\"orderEmail value check\", function () {",
+							"    pm.expect(jsonData.data.orderEmail).to.eql(pm.environment.get(\"orderEmail\"));",
+							"});",
+							"",
+							"pm.test(\"orderPhone value check\", function () {",
+							"    pm.expect(jsonData.data.orderPhone).to.eql(pm.environment.get(\"orderPhone\"));",
+							"});",
+							"",
+							"pm.test(\"Items array length is 2\", function () {",
+							"    pm.expect(jsonData.data.items).to.have.lengthOf(2);",
+							"});",
+							"",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.data.items).to.include(pm.environment.get(\"item_no\"));",
+							"});",
+							"",
+							"pm.test(\"item_no2 value check\", function () {",
+							"    pm.expect(jsonData.data.items).to.include(pm.environment.get(\"item_no2\"));",
+							"});",
+							"",
+							"pm.test(\"payamount value check\", function () {",
+							"    pm.expect(jsonData.data.payAmount).to.eql(pm.environment.get(\"paymentAmount\"));",
+							"});",
+							"",
+							"pm.test(\"pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.data.payMileageAmount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1205,17 +3548,18 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"pay_type\": 999,\n    \"pay_name\": \"auto 박현준\",\n    \"pay_amount\": 0,\n    \"total_sale_amount\": 900,\n    \"order_name\": \"박현준\",\n    \"order_email\": \"mpark@29cm.co.kr\",\n    \"order_phone\": \"010-3886-3149\",\n    \"address_name\": \"TEST\",\n    \"etc_message\": \"ETC MESSAGE\",\n    \"receiver_zipcode\": \"04797\",\n    \"receiver_name\": \"박현준 수령\",\n    \"receiver_address1\": \"서울특별시 성동구 아차산로 13길 11\",\n    \"receiver_address2\": \"1층 무신사랩\",\n    \"receiver_phone\": \"010-1111-2222\",\n    \"receiver_additional_phone\": \"\",\n    \"change_default_address\": true,\n    \"coupon_sale_amount\": 0,\n    \"coupon_save_amount\": 0,\n    \"pay_mileage_amount\": 900,\n    \"pg_site_no\": null,\n    \"items\": [\n        {\n            \"item_name\": \"Full data 기본정보 상품명 입니다\",\n            \"item_no\": 194752,\n            \"option_no\": 1106945,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        }\n    ],\n    \"is_providing_pcc\": false,\n    \"personal_clearance_code\": null,\n    \"is_gift\": false,\n    \"gift_info\": null,\n    \"get_path\": \"\"\n}"
+					"raw": "{\n    \"payCode\": 999,\n    \"payerName\": \"박현준\",\n    \"pgSiteId\": null,\n    \"paymentAmount\": 0,\n    \"orderName\": \"박현준\",\n    \"orderEmail\": \"mpark@29cm.co.kr\",\n    \"orderPhone\": \"010-3886-3149\",\n    \"totalPrice\": 399,\n    \"mileageUseAmount\": 399,\n    \"cartCoupon\": null,\n    \"itemList\": [\n        {\n            \"cartItemId\": 122339622,\n            \"itemId\": 2221707,\n            \"optionId\": 24691861,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        },\n        {\n            \"cartItemId\": 122339621,\n            \"itemId\": 2221571,\n            \"optionId\": 24691780,\n            \"requestComment\": null,\n            \"orderCount\": 1,\n            \"coupon\": null,\n            \"useCartCoupon\": false\n        }\n    ],\n    \"isProvidingPcc\": false,\n    \"personalClearanceCode\": null,\n    \"getPath\": \"\",\n    \"addressName\": \"배송지\",\n    \"etcMessage\": \"\",\n    \"receiverZipcode\": \"15386\",\n    \"receiverName\": \"박현준\",\n    \"receiverAddress1\": \"경기도 안산시 단원구 원초로 90\",\n    \"receiverAddress2\": \"파크단지\",\n    \"receiverPhone\": \"010-3886-3149\",\n    \"receiverAdditionalPhone\": \"\",\n    \"changeDefaultAddress\": true,\n    \"isGift\": false,\n    \"giftInfo\": null\n}"
 				},
 				"url": {
-					"raw": "{{29_host}}/api/v2/temp-orders/",
+					"raw": "{{29_host}}/api/v4/orders/temp-order/",
 					"host": [
 						"{{29_host}}"
 					],
 					"path": [
 						"api",
-						"v2",
-						"temp-orders",
+						"v4",
+						"orders",
+						"temp-order",
 						""
 					]
 				}
@@ -1247,13 +3591,15 @@
 							"}",
 							"",
 							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
 							"});",
 							"",
 							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
 							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
 							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))",
+							"",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1262,7 +3608,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"setTimeout(function(){}, 2000);"
+							"setTimeout(function(){}, 3000);"
 						],
 						"type": "text/javascript"
 					}
@@ -1373,11 +3719,16 @@
 							"}",
 							"",
 							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
+							"    pm.expect(pm.environment.get(\"mileageUseAmount\")).to.eql(total_amount);",
 							"});",
 							"",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.data.resultList[0].orderItemManageId)",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
+							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
+							"    if (jsonData.data.resultList[i].orderStatusDescription === \"취소\") {",
+							"        pm.test(\"orderItemManageId 확인\", function () {",
+							"            pm.expect(jsonData.data.resultList[i].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"    }",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -1468,8 +3819,23 @@
 							"});",
 							"",
 							"var jsonData = pm.response.json();",
+							"",
 							"pm.test(\"result 결과 SUCCESS 값 확인\", function () {    ",
 							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"});",
+							"",
+							"pm.test(\"orderItemManageId 값 확인\", function () {    ",
+							"    pm.expect(jsonData.data.resultInfos[0].orderItemManageId).to.eql(pm.environment.get(\"order_item_manage_no\"));",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('resultInfos');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
+							"    pm.expect(jsonData).to.have.property('fail');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1480,20 +3846,12 @@
 				"method": "POST",
 				"header": [
 					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
 						"key": "Accept",
 						"value": "application/json, text/plain, */*"
 					},
 					{
 						"key": "Content-Type",
 						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
 					},
 					{
 						"key": "Authorization",
@@ -1504,12 +3862,8 @@
 						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 					},
 					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
 						"key": "host",
-						"value": "qa-logistics-api.29cm.co.kr"
+						"value": "qa-logistics-admin-api.29cm.co.kr"
 					}
 				],
 				"body": {
@@ -1539,6 +3893,25 @@
 						"exec": [
 							"pm.test(\"29connect에서 취소처리 성공\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"cs_serial value check\", function () {",
+							"    pm.environment.set(\"cs_serial\", jsonData.data.orderAsSerial);",
+							"});",
+							"",
+							"pm.test(\"A result property is present and is 'success'\", function () {",
+							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"});",
+							"",
+							"pm.test(\"Response has the correct schema\", function () {",
+							"",
+							"    pm.expect(jsonData).to.be.an('object');",
+							"    pm.expect(jsonData).to.have.property('result');",
+							"    pm.expect(jsonData.data).to.have.property('orderAsSerial');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('errorCode');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1618,6 +3991,15 @@
 							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
 							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소접수\");",
 							"});",
+							"",
+							"for (var i = 0; i < jsonData.manage_settles.length; i++) {",
+							"    if (jsonData.manage_settles[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
+							"        pm.test(\"취소접수 주문건 확인\", function () {",
+							"            pm.expect(jsonData.manage_settles[i].cs_description).to.eql(\"취소접수\");",
+							"        });",
+							"        break; ",
+							"    }",
+							"}",
 							"",
 							"pm.environment.set(\"cs_serial\", jsonData.manage_settles[0].order_as_id)"
 						],
@@ -1785,1865 +4167,35 @@
 							"var jsonData = pm.response.json();",
 							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
 							"    pm.expect(jsonData.manages[0].cs_description).to.eql(\"배송시작\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						"{{order_no}}",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "옵션있는 상품 마일리지 결제 복수 주문건 생성",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"주문완료 성공\", function () {",
-							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
-							"});",
-							"",
-							"var requestjsondata = JSON.parse(request.data)",
-							"pm.environment.set(\"option_id\", requestjsondata.items[0].option_no)",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.environment.set(\"order_serial\", jsonData.data.order_serial)",
-							"console.log(jsonData.data.order_serial)",
-							"",
-							"pm.environment.set(\"pay_mileage_amount\", jsonData.data.pay_mileage_amount);",
-							"pm.environment.set(\"pay_amount\", jsonData.data.pay_amount);",
-							"console.log(\"pay_mileage_amount: \" + jsonData.data.pay_mileage_amount)",
-							"console.log(\"pay_amount: \" + jsonData.data.pay_amount)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-commerce-api.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"pay_type\": 999,\n    \"pay_name\": \"박현준\",\n    \"pay_amount\": 0,\n    \"total_sale_amount\": 1182,\n    \"order_name\": \"박현준\",\n    \"order_email\": \"mpark@29cm.co.kr\",\n    \"order_phone\": \"010-3886-3149\",\n    \"address_name\": \"TEST\",\n    \"etc_message\": \"ETC MESSAGE\",\n    \"receiver_zipcode\": \"04797\",\n    \"receiver_name\": \"박현준 수령\",\n    \"receiver_address1\": \"서울특별시 성동구 아차산로 13길 11\",\n    \"receiver_address2\": \"1층 무신사랩\",\n    \"receiver_phone\": \"010-1111-2222\",\n    \"receiver_additional_phone\": \"\",\n    \"change_default_address\": true,\n    \"coupon_sale_amount\": 0,\n    \"coupon_save_amount\": 0,\n    \"pay_mileage_amount\": 1182,\n    \"pg_site_no\": null,\n    \"items\": [\n        {\n            \"item_name\": \"Full data 기본정보 상품명 입니다\",\n            \"item_no\": 194752,\n            \"option_no\": 1106946,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        },\n        {\n            \"item_name\": \"기본정보 상품명 적는 곳입니다 \",\n            \"item_no\": 194911,\n            \"option_no\": 1109005,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        }\n    ],\n    \"is_providing_pcc\": false,\n    \"personal_clearance_code\": null,\n    \"is_gift\": false,\n    \"gift_info\": null,\n    \"get_path\": \"\"\n}"
-				},
-				"url": {
-					"raw": "{{29_host}}/api/v2/temp-orders/",
-					"host": [
-						"{{29_host}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"temp-orders",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 주문배송조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문배송조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
 							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
-							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
+							"    pm.expect(jsonData.order_serial).to.eql(pm.environment.get(\"order_serial\"));",
 							"});",
 							"",
-							"var total_amount = 0",
-							"for (var i = 0; i < jsonData.results[0].manages.length; i++) {",
-							"    if (jsonData.results[0].manages[i].total_order_item_amount) {",
-							"        console.log(jsonData.results[0].manages[i].total_order_item_amount)",
-							"        total_amount =  total_amount + jsonData.results[0].manages[i].total_order_item_amount",
-							"    }",
-							"}",
-							"",
-							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
+							"pm.test(\"order_name value check\", function () {",
+							"    pm.expect(jsonData.order_name).to.eql(pm.environment.get(\"orderName\"));",
 							"});",
 							"",
-							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
-							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"setTimeout(function(){}, 2000);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/?limit=1&offset=0",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						""
-					],
-					"query": [
-						{
-							"key": "limit",
-							"value": "1"
-						},
-						{
-							"key": "offset",
-							"value": "0"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 취소처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect에서 취소처리 성공\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"order_email value check\", function () {",
+							"    pm.expect(jsonData.order_email).to.eql(pm.environment.get(\"orderEmail\"));",
 							"});",
 							"",
-							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
+							"pm.test(\"order_phone value check\", function () {",
+							"    pm.expect(jsonData.order_phone).to.eql(pm.environment.get(\"orderPhone\"));",
 							"});",
 							"",
-							"pm.test(\"Response has the correct schema\", function () {",
-							"    var response = pm.response.json();",
-							"",
-							"    pm.expect(response).to.be.an('object');",
-							"    pm.expect(response).to.have.property('result');",
-							"    pm.expect(response).to.have.property('data');",
-							"    pm.expect(response).to.have.property('message');",
-							"    pm.expect(response).to.have.property('errorCode');",
-							"",
-							"    pm.expect(response.data).to.be.an('object');",
-							"    pm.expect(response.data).to.have.property('orderAsNo');",
+							"pm.test(\"item_no value check\", function () {",
+							"    pm.expect(jsonData.manages[0].order_item_no.item_no).to.eql(pm.environment.get(\"item_no\"));",
 							"});",
 							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderNo\": {{order_no}},\n    \"cancelReasonCode\": \"SIMPLE_REMORSE\",\n    \"cancelReasonMessage\": null,\n    \"cancelItemList\": [\n        {\n            \"orderItemManageId\": {{order_item_manage_no}},\n            \"cancelCount\": 1\n        }\n    ],\n    \"refundBankAccount\": null\n}"
-				},
-				"url": {
-					"raw": "{{apihub_host}}/qa/api/v1/order-cancel/user-cancel/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"api",
-						"v1",
-						"order-cancel",
-						"user-cancel",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect 전체주문조회",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"var today = new Date();",
-							"var year = today.getFullYear();",
-							"var month = String(today.getMonth() + 1).padStart(2, '0');",
-							"var day = String(today.getDate()).padStart(2, '0');",
-							"var formattedDate = year + '-' + month + '-' + day;",
-							"",
-							"pm.environment.set(\"currentDate\", formattedDate);",
-							"",
-							"setTimeout(function(){}, 1000);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect 전체주문조회 메뉴에서 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"org_pay_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_amount).to.eql(pm.environment.get(\"paymentAmount\"));",
 							"});",
 							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"result 값 SUCCESS 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-							"});",
-							"",
-							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
-							"    if (jsonData.data.resultList[i].orderItemManageId === pm.environment.get(\"order_item_manage_no\")) {",
-							"        pm.test(\"취소된 주문건 orderStatusDescription 확인\", function () {",
-							"            pm.expect(jsonData.data.resultList[i].orderStatusDescription).to.eql(\"취소\");",
-							"        });",
-							"        break; ",
-							"    }",
-							"}",
-							"",
-							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
-							"    if (jsonData.data.resultList[i].orderItemManageId !== pm.environment.get(\"order_item_manage_no\")) {",
-							"        pm.test(\"취소되지 않은 주문건 확인\", function () {",
-							"            pm.environment.set(\"order_item_manage_no\", jsonData.data.resultList[i].orderItemManageId)",
-							"        });",
-							"        break; ",
-							"    }",
-							"}",
-							"",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0",
-						"type": "text"
-					},
-					{
-						"key": "host",
-						"value": "qa-commerce-admin-api.29cm.co.kr"
-					}
-				],
-				"url": {
-					"raw": "{{commerce_host}}/partner-admin/v4/orders?page=1&size=50&dateConditionType=ORDERED_AT&fromDate={{currentDate}}&toDate={{currentDate}}&orderSerial={{order_serial}}",
-					"host": [
-						"{{commerce_host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v4",
-						"orders"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "50"
-						},
-						{
-							"key": "dateConditionType",
-							"value": "ORDERED_AT"
-						},
-						{
-							"key": "fromDate",
-							"value": "{{currentDate}}"
-						},
-						{
-							"key": "toDate",
-							"value": "{{currentDate}}"
-						},
-						{
-							"key": "orderSerial",
-							"value": "{{order_serial}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "옵션있는 상품 마일리지 결제 복수 주문건 생성",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"주문완료 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
-							"});",
-							"",
-							"var requestjsondata = JSON.parse(request.data)",
-							"pm.environment.set(\"option_id\", requestjsondata.items[0].option_no)",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.environment.set(\"order_serial\", jsonData.data.order_serial)",
-							"console.log(jsonData.data.order_serial)",
-							"",
-							"pm.environment.set(\"pay_mileage_amount\", jsonData.data.pay_mileage_amount);",
-							"pm.environment.set(\"pay_amount\", jsonData.data.pay_amount);",
-							"console.log(\"pay_mileage_amount: \" + jsonData.data.pay_mileage_amount)",
-							"console.log(\"pay_amount: \" + jsonData.data.pay_amount)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-commerce-api.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"pay_type\": 999,\n    \"pay_name\": \"박현준\",\n    \"pay_amount\": 0,\n    \"total_sale_amount\": 1182,\n    \"order_name\": \"박현준\",\n    \"order_email\": \"mpark@29cm.co.kr\",\n    \"order_phone\": \"010-3886-3149\",\n    \"address_name\": \"TEST\",\n    \"etc_message\": \"ETC MESSAGE\",\n    \"receiver_zipcode\": \"04797\",\n    \"receiver_name\": \"박현준 수령\",\n    \"receiver_address1\": \"서울특별시 성동구 아차산로 13길 11\",\n    \"receiver_address2\": \"1층 무신사랩\",\n    \"receiver_phone\": \"010-1111-2222\",\n    \"receiver_additional_phone\": \"\",\n    \"change_default_address\": true,\n    \"coupon_sale_amount\": 0,\n    \"coupon_save_amount\": 0,\n    \"pay_mileage_amount\": 1182,\n    \"pg_site_no\": null,\n    \"items\": [\n        {\n            \"item_name\": \"Full data 기본정보 상품명 입니다\",\n            \"item_no\": 194752,\n            \"option_no\": 1106946,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        },\n        {\n            \"item_name\": \"기본정보 상품명 적는 곳입니다 \",\n            \"item_no\": 194911,\n            \"option_no\": 1109005,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        }\n    ],\n    \"is_providing_pcc\": false,\n    \"personal_clearance_code\": null,\n    \"is_gift\": false,\n    \"gift_info\": null,\n    \"get_path\": \"\"\n}"
-				},
-				"url": {
-					"raw": "{{29_host}}/api/v2/temp-orders/",
-					"host": [
-						"{{29_host}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"temp-orders",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 주문배송조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문배송조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
-							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
-							"});",
-							"",
-							"var total_amount = 0",
-							"for (var i = 0; i < jsonData.results[0].manages.length; i++) {",
-							"    if (jsonData.results[0].manages[i].total_order_item_amount) {",
-							"        console.log(jsonData.results[0].manages[i].total_order_item_amount)",
-							"        total_amount =  total_amount + jsonData.results[0].manages[i].total_order_item_amount",
-							"    }",
-							"}",
-							"",
-							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
-							"});",
-							"",
-							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
-							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"setTimeout(function(){}, 2000);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/?limit=1&offset=0",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						""
-					],
-					"query": [
-						{
-							"key": "limit",
-							"value": "1"
-						},
-						{
-							"key": "offset",
-							"value": "0"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect 전체주문조회",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"var today = new Date();",
-							"var year = today.getFullYear();",
-							"var month = String(today.getMonth() + 1).padStart(2, '0');",
-							"var day = String(today.getDate()).padStart(2, '0');",
-							"var formattedDate = year + '-' + month + '-' + day;",
-							"",
-							"pm.environment.set(\"currentDate\", formattedDate);",
-							"",
-							"setTimeout(function(){}, 1000);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect 전체주문조회 메뉴에서 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"result 값 SUCCESS 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-							"});",
-							"",
-							"var total_amount = 0",
-							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
-							"    if (jsonData.data.resultList[i].sellPrice) {",
-							"        console.log(jsonData.data.resultList[i].sellPrice)",
-							"        total_amount =  total_amount + jsonData.data.resultList[i].sellPrice",
-							"    }",
-							"}",
-							"",
-							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
-							"});",
-							"",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.data.resultList[0].orderItemManageId)",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0",
-						"type": "text"
-					},
-					{
-						"key": "host",
-						"value": "qa-commerce-admin-api.29cm.co.kr"
-					}
-				],
-				"url": {
-					"raw": "{{commerce_host}}/partner-admin/v4/orders?page=1&size=50&dateConditionType=ORDERED_AT&fromDate={{currentDate}}&toDate={{currentDate}}&orderSerial={{order_serial}}",
-					"host": [
-						"{{commerce_host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v4",
-						"orders"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "50"
-						},
-						{
-							"key": "dateConditionType",
-							"value": "ORDERED_AT"
-						},
-						{
-							"key": "fromDate",
-							"value": "{{currentDate}}"
-						},
-						{
-							"key": "toDate",
-							"value": "{{currentDate}}"
-						},
-						{
-							"key": "orderSerial",
-							"value": "{{order_serial}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect에서 상품준비처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"상품준비처리 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"result 결과 SUCCESS 값 확인\", function () {    ",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+							"pm.test(\"org_pay_mileage_amount value check\", function () {",
+							"    pm.expect(jsonData.org_pay_mileage_amount).to.eql(pm.environment.get(\"mileageUseAmount\"));",
 							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-logistics-api.29cm.co.kr"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderItemManageIds\": [\n        {{order_item_manage_no}}\n    ]\n}"
-				},
-				"url": {
-					"raw": "{{host}}/partner-admin/v3/delivery-preparing",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v3",
-						"delivery-preparing"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 상품준비중 취소처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect에서 취소처리 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderId\": {{order_no}},\n    \"brandId\": 10175,\n    \"cancelReasonCode\": \"SIMPLE_REMORSE\",\n    \"cancelReasonMessage\": null,\n    \"cancelItem\": {\n        \"orderItemManageId\": {{order_item_manage_no}},\n        \"cancelCount\": 1\n    },\n    \"refundBankAccount\": null\n}"
-				},
-				"url": {
-					"raw": "{{apihub_host}}/qa/api/v1/order-cancel/apply/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"api",
-						"v1",
-						"order-cancel",
-						"apply",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 취소접수 주문 조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
-							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소접수\");",
-							"});",
-							"",
-							"for (var i = 0; i < jsonData.manage_settles.length; i++) {",
-							"    if (jsonData.manage_settles[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
-							"        pm.test(\"취소접수 주문건 확인\", function () {",
-							"            pm.expect(jsonData.manage_settles[i].cs_description).to.eql(\"취소접수\");",
-							"        });",
-							"        break; ",
-							"    }",
-							"}",
-							"",
-							"pm.environment.set(\"cs_serial\", jsonData.manage_settles[0].order_as_id)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						"{{order_no}}",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect에서 취소접수 승인처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"취소접수 승인처리 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.test(\"result 값 SUCCESS 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-claim-admin-api.29cm.co.kr"
-					}
-				],
-				"url": {
-					"raw": "{{claim_host}}/partner-admin/v3/order-cancel/order-as/{{cs_serial}}/approve",
-					"host": [
-						"{{claim_host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v3",
-						"order-cancel",
-						"order-as",
-						"{{cs_serial}}",
-						"approve"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 취소완료 주문 조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"cs_description 값 취소완료 확인\", function () {",
-							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소완료\");",
-							"});",
-							"",
-							"for (var i = 0; i < jsonData.manage_settles.length; i++) {",
-							"    if (jsonData.manage_settles[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
-							"        pm.test(\"취소접수 주문건 확인\", function () {",
-							"            pm.expect(jsonData.manage_settles[i].cs_description).to.eql(\"취소완료\");",
-							"        });",
-							"        break; ",
-							"    }",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						"{{order_no}}",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "옵션있는 상품 마일리지 결제 복수 주문건 생성",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"주문완료 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"A result property is present and is 'success'\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.result).to.eql('SUCCESS');",
-							"});",
-							"",
-							"var requestjsondata = JSON.parse(request.data)",
-							"pm.environment.set(\"option_id\", requestjsondata.items[0].option_no)",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.environment.set(\"order_serial\", jsonData.data.order_serial)",
-							"console.log(jsonData.data.order_serial)",
-							"",
-							"pm.environment.set(\"pay_mileage_amount\", jsonData.data.pay_mileage_amount);",
-							"pm.environment.set(\"pay_amount\", jsonData.data.pay_amount);",
-							"console.log(\"pay_mileage_amount: \" + jsonData.data.pay_mileage_amount)",
-							"console.log(\"pay_amount: \" + jsonData.data.pay_amount)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-commerce-api.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"pay_type\": 999,\n    \"pay_name\": \"박현준\",\n    \"pay_amount\": 0,\n    \"total_sale_amount\": 1182,\n    \"order_name\": \"박현준\",\n    \"order_email\": \"mpark@29cm.co.kr\",\n    \"order_phone\": \"010-3886-3149\",\n    \"address_name\": \"TEST\",\n    \"etc_message\": \"ETC MESSAGE\",\n    \"receiver_zipcode\": \"04797\",\n    \"receiver_name\": \"박현준 수령\",\n    \"receiver_address1\": \"서울특별시 성동구 아차산로 13길 11\",\n    \"receiver_address2\": \"1층 무신사랩\",\n    \"receiver_phone\": \"010-1111-2222\",\n    \"receiver_additional_phone\": \"\",\n    \"change_default_address\": true,\n    \"coupon_sale_amount\": 0,\n    \"coupon_save_amount\": 0,\n    \"pay_mileage_amount\": 1182,\n    \"pg_site_no\": null,\n    \"items\": [\n        {\n            \"item_name\": \"Full data 기본정보 상품명 입니다\",\n            \"item_no\": 194752,\n            \"option_no\": 1106946,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        },\n        {\n            \"item_name\": \"기본정보 상품명 적는 곳입니다 \",\n            \"item_no\": 194911,\n            \"option_no\": 1109005,\n            \"order_count\": 1,\n            \"request_comment\": \"\",\n            \"is_allowed_gift_order\": true\n        }\n    ],\n    \"is_providing_pcc\": false,\n    \"personal_clearance_code\": null,\n    \"is_gift\": false,\n    \"gift_info\": null,\n    \"get_path\": \"\"\n}"
-				},
-				"url": {
-					"raw": "{{29_host}}/api/v2/temp-orders/",
-					"host": [
-						"{{29_host}}"
-					],
-					"path": [
-						"api",
-						"v2",
-						"temp-orders",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 주문배송조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문배송조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"주문한 order_serial 유효성 체크 성공\", function () {",
-							"    pm.expect(jsonData.results[0].order_serial).to.eql(pm.environment.get(\"order_serial\"));",
-							"});",
-							"",
-							"var total_amount = 0",
-							"for (var i = 0; i < jsonData.results[0].manages.length; i++) {",
-							"    if (jsonData.results[0].manages[i].total_order_item_amount) {",
-							"        console.log(jsonData.results[0].manages[i].total_order_item_amount)",
-							"        total_amount =  total_amount + jsonData.results[0].manages[i].total_order_item_amount",
-							"    }",
-							"}",
-							"",
-							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
-							"});",
-							"",
-							"pm.environment.set(\"order_no\", jsonData.results[0].order_no)",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.results[0].manages[0].order_item_manage_no)",
-							"console.log(\"order_no: \" + pm.environment.get(\"order_no\"))",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"setTimeout(function(){}, 2000);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/?limit=1&offset=0",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						""
-					],
-					"query": [
-						{
-							"key": "limit",
-							"value": "1"
-						},
-						{
-							"key": "offset",
-							"value": "0"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect 전체주문조회",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"var today = new Date();",
-							"var year = today.getFullYear();",
-							"var month = String(today.getMonth() + 1).padStart(2, '0');",
-							"var day = String(today.getDate()).padStart(2, '0');",
-							"var formattedDate = year + '-' + month + '-' + day;",
-							"",
-							"pm.environment.set(\"currentDate\", formattedDate);",
-							"",
-							"setTimeout(function(){}, 1000);"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect 전체주문조회 메뉴에서 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"result 값 SUCCESS 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-							"});",
-							"",
-							"var total_amount = 0",
-							"for (var i = 0; i < jsonData.data.resultList.length; i++) {",
-							"    if (jsonData.data.resultList[i].sellPrice) {",
-							"        console.log(jsonData.data.resultList[i].sellPrice)",
-							"        total_amount =  total_amount + jsonData.data.resultList[i].sellPrice",
-							"    }",
-							"}",
-							"",
-							"pm.test(\"복수 주문건 구매가격 합산이 총 구매가격과 일치한지 확인\", function () {",
-							"    pm.expect(pm.environment.get(\"pay_mileage_amount\")).to.eql(total_amount);",
-							"});",
-							"",
-							"pm.environment.set(\"order_item_manage_no\", jsonData.data.resultList[0].orderItemManageId)",
-							"console.log(\"order_item_manage_no: \" + pm.environment.get(\"order_item_manage_no\"))"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0",
-						"type": "text"
-					},
-					{
-						"key": "host",
-						"value": "qa-commerce-admin-api.29cm.co.kr"
-					}
-				],
-				"url": {
-					"raw": "{{commerce_host}}/partner-admin/v4/orders?page=1&size=50&dateConditionType=ORDERED_AT&fromDate={{currentDate}}&toDate={{currentDate}}&orderSerial={{order_serial}}",
-					"host": [
-						"{{commerce_host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v4",
-						"orders"
-					],
-					"query": [
-						{
-							"key": "page",
-							"value": "1"
-						},
-						{
-							"key": "size",
-							"value": "50"
-						},
-						{
-							"key": "dateConditionType",
-							"value": "ORDERED_AT"
-						},
-						{
-							"key": "fromDate",
-							"value": "{{currentDate}}"
-						},
-						{
-							"key": "toDate",
-							"value": "{{currentDate}}"
-						},
-						{
-							"key": "orderSerial",
-							"value": "{{order_serial}}"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect에서 상품준비처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"상품준비처리 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"result 결과 SUCCESS 값 확인\", function () {    ",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-logistics-api.29cm.co.kr"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderItemManageIds\": [\n        {{order_item_manage_no}}\n    ]\n}"
-				},
-				"url": {
-					"raw": "{{host}}/partner-admin/v3/delivery-preparing",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v3",
-						"delivery-preparing"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 상품준비중 취소처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect에서 취소처리 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"orderId\": {{order_no}},\n    \"brandId\": 10175,\n    \"cancelReasonCode\": \"SIMPLE_REMORSE\",\n    \"cancelReasonMessage\": null,\n    \"cancelItem\": {\n        \"orderItemManageId\": {{order_item_manage_no}},\n        \"cancelCount\": 1\n    },\n    \"refundBankAccount\": null\n}"
-				},
-				"url": {
-					"raw": "{{apihub_host}}/qa/api/v1/order-cancel/apply/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"api",
-						"v1",
-						"order-cancel",
-						"apply",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 취소접수 주문 조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"pm.test(\"cs_description 값 취소접수 확인\", function () {",
-							"    pm.expect(jsonData.manage_settles[0].cs_description).to.eql(\"취소접수\");",
-							"});",
-							"",
-							"for (var i = 0; i < jsonData.manage_settles.length; i++) {",
-							"    if (jsonData.manage_settles[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
-							"        pm.test(\"취소접수 주문건 확인\", function () {",
-							"            pm.expect(jsonData.manage_settles[i].cs_description).to.eql(\"취소접수\");",
-							"        });",
-							"        break; ",
-							"    }",
-							"}",
-							"",
-							"pm.environment.set(\"cs_serial\", jsonData.manage_settles[0].order_as_id)"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "apihub.29cm.co.kr"
-					},
-					{
-						"key": "Cookie",
-						"value": "{{user_cookie}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{apihub_host}}/qa/order/orders/my-order/{{order_no}}/",
-					"host": [
-						"{{apihub_host}}"
-					],
-					"path": [
-						"qa",
-						"order",
-						"orders",
-						"my-order",
-						"{{order_no}}",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "29connect 취소접수 거부처리",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"29connect에서 취소접수 거부처리 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.test(\"result SUCCESS 값 확인\", function () {",
-							"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"ran_num = _.random(100000000, 999999999)",
-							"delivery_num = '1' + String(ran_num)",
-							"pm.environment.set(\"delivery_num\", delivery_num)",
-							"console.log(\"delivery num: \" + delivery_num)",
-							"",
-							"setTimeout(function(){}, 1000);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
-					},
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer {{partner_token}}"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					},
-					{
-						"key": "host",
-						"value": "qa-claim-admin-api.29cm.co.kr"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"rejectReason\": \"TO_BE_SHIP_BEGIN\",\n    \"deliveryCompanyId\": 101,\n    \"invoiceNo\": \"{{delivery_num}}\"\n}"
-				},
-				"url": {
-					"raw": "{{claim_host}}/partner-admin/v3/order-cancel/order-as/{{cs_serial}}/reject",
-					"host": [
-						"{{claim_host}}"
-					],
-					"path": [
-						"partner-admin",
-						"v3",
-						"order-cancel",
-						"order-as",
-						"{{cs_serial}}",
-						"reject"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "userfront에서 취소접수 거부 주문 조회",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"userfront에서 주문 조회 성공\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"for (var i = 0; i < jsonData.manages.length; i++) {",
-							"    if (jsonData.manages[i].order_item_manage_no === pm.environment.get(\"order_item_manage_no\")) {",
-							"        pm.test(\"cs_description 값 배송시작 확인\", function () {",
-							"            pm.expect(jsonData.manages[i].cs_description).to.eql(\"배송시작\");",
-							"        });",
-							"        break; ",
-							"    }",
-							"}"
 						],
 						"type": "text/javascript"
 					}
