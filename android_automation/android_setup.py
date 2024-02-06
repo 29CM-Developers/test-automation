@@ -33,7 +33,7 @@ def mpark_setup():
     android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
-    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": False})
+    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": True})
 
     wd = webdriver.Remote('http://0.0.0.0:4723/wd/hub', options=android_options)
 
@@ -54,7 +54,7 @@ def hhj2008_setup():
     android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("goog:chromeOptions",
                                    {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True,
-                                    "w3c": False})
+                                    "w3c": True})
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
 
@@ -78,7 +78,7 @@ def note20_setup():
     android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
-    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": False})
+    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": True})
 
     wd = webdriver.Remote('http://0.0.0.0:4733/wd/hub', options=android_options)
 
@@ -99,7 +99,7 @@ def s22_setup():
     android_options.set_capability("appium:shouldTerminateApp", True)
     android_options.set_capability("unlockType", "pin")
     android_options.set_capability("unlockKey", "292929")
-    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": False})
+    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": True})
 
     wd = webdriver.Remote('http://0.0.0.0:4734/wd/hub', options=android_options)
 

@@ -121,18 +121,19 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+
     def test_automation_android_bvt1(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # 비로그인 유저 사용 불가
-        self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
+        # 비로그인 유저 사용 가능
+        self.result_data = NotLogin.test_not_login_user_possible(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 비로그인 유저 사용 가능
-        self.result_data = NotLogin.test_not_login_user_possible(self, self.wd)
+        # 비로그인 유저 사용 불가
+        self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
