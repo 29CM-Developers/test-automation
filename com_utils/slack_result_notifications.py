@@ -165,6 +165,14 @@ def slack_thread_notification(self):
     return self.count
 
 
+def slack_add_end_emoji(self):
+    attachment = {"channel": self.conf['slack_channel'], "thread_ts": self.response['ts'],
+                  "name": self.conf["done_emoji"], "timestamp": self.response['ts']}
+    headers = slack_headers_form(self.conf["slack_token"])
+    headers['Content-Type'] = 'application/x-www-form-urlencoded;'
+    response = requests.post(url=self.conf["slack_add_reaction_url"], headers=headers, data=attachment)
+
+
 def slack_noti_form(channel, color, emoji, test_result, def_name, count, total_time, device_platform, device_name,
                     pass_count=0, fail_count=0):
     attachment = {
