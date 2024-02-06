@@ -219,6 +219,7 @@ def save_contents_like_count(wd):
     before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
     if before_like_count_element == None:
         com_utils.element_control.scroll_control(wd, 'D', 50)
+        com_utils.element_control.scroll_control(wd, 'D', 40)
     before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
     before_like_count = before_like_count_element.text
     print(f'하트갯수 확인 : {before_like_count}')
