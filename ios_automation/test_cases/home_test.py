@@ -6,9 +6,9 @@ import com_utils.deeplink_control
 
 from com_utils.code_optimization import exception_control, finally_opt
 from time import time
-from com_utils.api_control import search_total_popular_brand_name, feed_contents_info
+from com_utils.api_control import search_total_popular_brand_name, home_feed_contents_info
 from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
-    search_page, category_page
+    search_page, category_page, login_page
 
 
 class Home:
@@ -42,13 +42,13 @@ class Home:
             home_page.click_tab_name(wd, '우먼')
 
             # 홈화면 배너 중복 여부 확인
-            home_page.check_for_duplicate_banner_contents(self)
+            home_page.check_for_duplicate_banner_contents(self, 'gender', '우먼')
 
             # 홈화면 배너 타이틀 3개 저장
             home_banner_title = home_page.save_banner_title(wd)
 
             # 홈화면 배너 api와 저장된 배너 타이틀 비교 확인
-            home_page.check_home_banner_title(self, home_banner_title)
+            home_page.check_home_banner_title(self, 'gender', '우먼', home_banner_title)
 
             # 다이나믹 게이트 -> 센스있는 선물하기 선택
             home_page.click_dynamic_gate(wd)
@@ -89,7 +89,7 @@ class Home:
             home_page.click_tab_name(wd, '우먼')
 
             # 피드 정보 불러오기
-            feed_title_list = feed_contents_info(self.pconf['id_29cm'], self.pconf['password_29cm'])
+            feed_title_list = home_feed_contents_info(self, self.pconf['id_29cm'], self.pconf['password_29cm'], '우먼')
             feed_title_1st = feed_title_list['first_feed_title']
             feed_contain_item = feed_title_list['first_title_with_item']
             feed_title_2nd = feed_title_list['second_feed_title']
@@ -202,5 +202,197 @@ class Home:
 
         finally:
             testcase_title = '홈화면에서 다른 탭으로 이동'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
+            return result_data
+
+    def test_not_login_move_tab_from_home(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = sys._getframe().f_code.co_name
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
+
+            # CATEGORY 탭 진입
+            navigation_bar.move_to_category(wd)
+
+            # 첫번째 대 카테고리 선택
+            category_page.click_first_large_category(wd)
+
+            # 중 카테고리 리스트 중 상단 4개의 카테고리명 확인
+            category_page.check_unique_medium_category(self, wd)
+
+            # HOME 탭으로 이동하여 29CM 로고 확인
+            navigation_bar.move_to_home(wd)
+            home_page.check_home_logo(wd)
+
+            # SEARCH 탭 진입
+            navigation_bar.move_to_search(wd)
+
+            # 첫번째 인기 브랜드 카테고리 타이틀 저장
+            first_brand_category = search_total_popular_brand_name()['category_name']
+
+            # 첫번째 인기 브랜드 카테고리 확인
+            search_page.check_first_popular_brand_category(wd, first_brand_category)
+
+            # 인기 브랜드 타이틀 확인
+            search_page.check_popular_keyword_title(wd)
+
+            # HOME으로 이동하여 29CM 로고 확인
+            search_page.click_back_btn(wd)
+            bottom_sheet.close_bottom_sheet(wd)
+            home_page.check_home_logo(wd)
+
+            # LIKE 탭 진입
+            navigation_bar.move_to_like(wd)
+
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
+
+            # HOME 탭으로 이동하여 29CM 로고 확인
+            home_page.check_home_logo(wd)
+
+            # MY 탭 진입하여 로그인 버튼 확인
+            navigation_bar.move_to_my(wd)
+            my_page.check_login_btn(wd)
+
+            # HOME 탭으로 이동하여 29CM 로고 확인
+            navigation_bar.move_to_home(wd)
+            home_page.check_home_logo(wd)
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+
+        finally:
+            testcase_title = '홈화면에서 다른 탭으로 이동'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
+            return result_data
+
+    def full_test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = sys._getframe().f_code.co_name
+        start_time = time()
+        print(f'[{test_name}] 테스트 시작')
+
+        try:
+            test_result, error_texts, img_src, _, _ = list(Home.test_home_banner(self, wd).values())
+
+            bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+
+            # 라이프 탭 선택
+            home_page.click_tab_name(wd, '라이프')
+
+            # 라이프 탭 선택
+            home_page.click_tab_name(wd, '테크')
+
+            # 테크 탭 중복 여부 확인
+            home_page.check_for_duplicate_banner_contents(self, 'life', '테크')
+
+            # 테크 탭 배너 타이틀 3개 저장
+            home_banner_title = home_page.save_banner_title(wd)
+
+            # 테크 탭 배너 api와 저장된 배너 타이틀 비교 확인
+            home_page.check_home_banner_title(self, 'life', '테크', home_banner_title)
+
+            # 라이프 선택 닫기
+            home_page.click_close_life_tab(wd)
+
+            # 홈 탭 선택
+            home_page.click_tab_name(wd, '홈')
+
+            # 홈 탭 중복 여부 확인
+            home_page.check_for_duplicate_banner_contents(self, 'life', '홈')
+
+            # 홈 탭 배너 타이틀 3개 저장
+            home_banner_title = home_page.save_banner_title(wd)
+
+            # 홈 탭 배너 api와 저장된 배너 타이틀 비교 확인
+            home_page.check_home_banner_title(self, 'life', '홈', home_banner_title)
+
+            # 맨 탭 선택
+            home_page.click_tab_name(wd, '맨')
+
+            # 맨 탭 중복 여부 확인
+            home_page.check_for_duplicate_banner_contents(self, 'gender', '맨')
+
+            # 맨 탭 배너 타이틀 3개 저장
+            home_banner_title = home_page.save_banner_title(wd)
+
+            # 맨 탭 배너 api와 저장된 배너 타이틀 비교 확인
+            home_page.check_home_banner_title(self, 'gender', '맨', home_banner_title)
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+
+        finally:
+            testcase_title = '홈화면의 배너, 다이나믹 게이트 확인'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
+            return result_data
+
+    def full_test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = sys._getframe().f_code.co_name
+        start_time = time()
+        print(f'[{test_name}] 테스트 시작')
+
+        try:
+            # 바텀시트 노출 여부 확인
+            bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+
+            # 라이프 탭 디폴트 선택 여부 확인 및 닫기
+            home_page.click_close_life_tab(wd)
+
+            # 라이프 탭 선택
+            home_page.click_tab_name(wd, '라이프')
+
+            # 뷰티 탭 선택
+            home_page.click_tab_name(wd, '뷰티')
+
+            # 피드 정보 불러오기
+            feed_title_list = home_feed_contents_info(self, self.pconf['id_29cm'], self.pconf['password_29cm'], '뷰티')
+            feed_title_1st = feed_title_list['first_feed_title']
+            feed_title_2nd = feed_title_list['second_feed_title']
+
+            # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
+            home_page.scroll_to_feed_contents(wd, feed_title_1st)
+
+            # 두번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
+            home_page.scroll_to_feed_contents(wd, feed_title_2nd)
+
+            # 라이프 탭 닫기
+            home_page.click_close_life_tab(wd)
+
+            # 홈 탭 선택
+            home_page.click_tab_name(wd, '홈')
+
+            # 피드 정보 불러오기
+            feed_title_list = home_feed_contents_info(self, self.pconf['id_29cm'], self.pconf['password_29cm'], '홈')
+            feed_title_1st = feed_title_list['first_feed_title']
+            feed_title_2nd = feed_title_list['second_feed_title']
+
+            # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
+            home_page.scroll_to_feed_contents(wd, feed_title_1st)
+
+            # 두번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
+            home_page.scroll_to_feed_contents(wd, feed_title_2nd)
+
+            # 맨 탭 선택
+            home_page.click_tab_name(wd, '맨')
+
+            # 피드 정보 불러오기
+            feed_title_list = home_feed_contents_info(self, self.pconf['id_29cm'], self.pconf['password_29cm'], '맨')
+            feed_title_1st = feed_title_list['first_feed_title']
+            feed_title_2nd = feed_title_list['second_feed_title']
+
+            # 저장한 첫번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
+            home_page.scroll_to_feed_contents(wd, feed_title_1st)
+
+            # 두번째 피드 정보와 동일한 피드 정보가 노출 될 때까지 스크롤
+            home_page.scroll_to_feed_contents(wd, feed_title_2nd)
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+
+        finally:
+            testcase_title = '홈화면의 컨텐츠(피드) 탐색'
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data

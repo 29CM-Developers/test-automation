@@ -80,41 +80,92 @@ def feed_contents_info(id, password):
     return feed_contents_titles
 
 
-def large_category_info(category, large_category_text):
-    large_category_code = ''
-    large_category_name = ''
+'''
+기존 배너, 피드 컨텐츠 정보 확장하도록 수정하여 아래 함수 권장
+'''
 
-    # 카테고리 그룹 API 호출
-    response = requests.get('https://recommend-api.29cm.co.kr/api/v4/best/category-groups')
+
+def home_banners_info(self, type, tab_name):
+    tab = self.conf['banner_data']
+    if type == 'gender':
+        response = requests.get(
+            f'https://content-api.29cm.co.kr/api/v4/banners?bannerDivision=HOME_MOBILE&gender={tab[tab_name]}')
+    elif type == 'life':
+        response = requests.get(
+            f'https://content-api.29cm.co.kr/api/v4/banners/home?bannerDivision=HOME_MOBILE&homeCategoryType={tab[tab_name]}')
+
+    banner_data = {}
     if response.status_code == 200:
-        category_group_data = response.json()
-        category_group = category_group_data['data']
+        banner_api_data = response.json()
+        banner_count = int(banner_api_data['data']['count'])
 
-        # 찾고자 하는 카테고리 그룹의 아이템 리스트 확인
-        for i in range(0, 2):
-            category_group_name = category_group[i]['categoryGroupName']
-            if category_group_name == category:
-                category_group_item_list = category_group[i]['categoryGroupItemList']
-                # 찾고자 하는 이름의 대 카테고리 코드 번호 저장
-                for v in range(0, 10):
-                    category_item_group_name = category_group_item_list[v]['categoryGroupItemName']
-                    if category_item_group_name == large_category_text:
-                        large_category_code = category_group_item_list[v]['categoryCode']
-                        large_category_name = category_group_item_list[v]['categoryName']
-                        break
-                    else:
-                        pass
-            else:
+        # 배너 ID, 컨텐츠, 타이틀 모두 저장
+        banner_ids = []
+        banner_contents = []
+        banner_titles = []
+        for i in range(0, banner_count):
+            banner_id_api = banner_api_data['data']['bannerList'][i]['bannerId']
+            banner_ids.append(banner_id_api)
+
+            banner_contents_api = banner_api_data['data']['bannerList'][i]['bannerContents']
+            banner_contents.append(banner_contents_api)
+
+            banner_title_api = banner_api_data['data']['bannerList'][i]['bannerTitle']
+            if banner_title_api == 'ㅤ':
                 pass
+            else:
+                banner_title_api = banner_title_api.replace('\n', ' ')
+                banner_titles.append(banner_title_api)
+
+        banner_data['banner_ids'] = banner_ids
+        banner_data['banner_contents'] = banner_contents
+        banner_data['banner_titles'] = banner_titles
     else:
-        print('카테고리 그룹 API 호출 실패')
+        print(f'{tab_name} 배너 API 불러오기 실패')
+    return banner_data
 
-    return large_category_code, large_category_name
 
+def home_feed_contents_info(self, id, password, tab_name):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+    tab = self.conf['feed_data']
+    feed_contents_titles = {}
+    # 우먼 탭 컨텐츠 API 호출
+    response = requests.get(
+        f'https://content-api.29cm.co.kr/api/v5/feeds?experiment=&feed_sort={tab[tab_name]}&home_type=APP_HOME&limit=20&offset=0',
+        cookies=cookies)
+    if response.status_code == 200:
+        contents_api_data = response.json()
+        feed_item_contents = contents_api_data['data']['results']
 
-'''
-기존 함수 Dict 타입으로 변경
-'''
+        first_feed_title = ''
+        second_feed_title = ''
+        first_title_with_item = ''
+
+        for i in range(0, 10):
+            feed_contents_type = feed_item_contents[i]['feedType']
+            related_feed_item = feed_item_contents[i]['relatedFeedItemList']
+
+            # feedType이 contents인 첫번째, 두번째 컨텐츠의 타이틀 저장
+            if feed_contents_type == 'contents':
+                if not first_feed_title:
+                    first_feed_title = feed_item_contents[i]['feedTitle']
+                    feed_contents_titles['first_feed_title'] = first_feed_title
+                elif not second_feed_title and first_title_with_item:
+                    second_feed_title = feed_item_contents[i]['feedTitle']
+                    feed_contents_titles['second_feed_title'] = second_feed_title
+
+            # 연결된 상품이 있는 첫번째 컨텐츠의 타이틀 저장
+            if related_feed_item and not first_title_with_item:
+                first_title_with_item = feed_item_contents[i]['feedTitle']
+                feed_contents_titles['first_title_with_item'] = first_title_with_item
+
+            # 모든 컨텐츠 타이틀명이 저장되었을 때, break
+            if first_feed_title and first_title_with_item and second_feed_title:
+                break
+    else:
+        print('피드 컨텐츠 API 불러오기 실패')
+
+    return feed_contents_titles
 
 
 def large_categories_info(category, large_category_name):

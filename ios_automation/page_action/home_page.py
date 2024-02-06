@@ -4,7 +4,7 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from com_utils.api_control import home_banner_info
+from com_utils.api_control import home_banners_info
 from com_utils.element_control import ial, ialc, ials, scroll_control, swipe_control
 from ios_automation.page_action import context_change
 from ios_automation.page_action.bottom_sheet import close_bottom_sheet
@@ -86,9 +86,9 @@ def check_dynamic_gate_gift_page(wd):
         raise Exception('다이나믹 게이트 타이틀 확인 실패')
 
 
-def check_for_duplicate_banner_contents(self):
+def check_for_duplicate_banner_contents(self, type, tab_name):
     # 홈화면 배너 API 호출
-    banner_data = home_banner_info(self)
+    banner_data = home_banners_info(self, type, tab_name)
     banner_ids = banner_data['banner_ids']
     banner_contents = banner_data['banner_contents']
 
@@ -98,12 +98,12 @@ def check_for_duplicate_banner_contents(self):
 
     if not check_id:
         if not check_contents:
-            print('중복된 홈 배너 id와 컨텐츠 없음 확인')
+            print(f'{tab_name} 탭에서 중복된 홈 배너 id와 컨텐츠 없음 확인')
         else:
-            print('중복된 홈 배너 id는 없으나, 동일한 컨텐츠 있음 확인')
+            print(f'{tab_name} 탭에서 중복된 홈 배너 id는 없으나, 동일한 컨텐츠 있음 확인')
     else:
-        print(f'중복된 홈 배너 없음 확인 실패')
-        raise Exception('중복된 홈 배너 없음 확인 실패')
+        print(f'{tab_name} 탭에서 중복된 홈 배너 없음 확인 실패')
+        raise Exception(f'{tab_name} 탭에서 중복된 홈 배너 없음 확인 실패')
 
 
 def save_banner_title(wd):
@@ -120,16 +120,16 @@ def save_banner_title(wd):
     return banner_titles
 
 
-def check_home_banner_title(self, home_banner_title):
+def check_home_banner_title(self, type, tab_name, home_banner_title):
     # 홈화면 배너 api 호출하여 타이틀 저장
-    api_banner_title = home_banner_info(self)['banner_titles']
+    api_banner_title = home_banners_info(self, type, tab_name)['banner_titles']
 
     # API 호출 배너 리스트와 저장된 홈 배너 리스트 비교 (저장한 홈 배너 리스트 안에 호출한 리스트가 포함되면 pass)
     if any(banner in api_banner_title for banner in home_banner_title):
-        print('홈 배너 확인')
+        print(f'{tab_name} 탭 배너 확인')
     else:
-        print(f'홈 배너 확인 실패: {set(home_banner_title).difference(set(api_banner_title))}')
-        raise Exception('홈 배너 확인 실패')
+        print(f'{tab_name} 탭 배너 확인 실패: {set(home_banner_title).difference(set(api_banner_title))}')
+        raise Exception(f'{tab_name} 탭 배너 확인 실패')
 
 
 def check_scroll_to_recommended_contents(wd):
