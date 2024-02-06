@@ -10,4 +10,4 @@
 - Xcode
 - Android Studio
 - Appium Inspector
-- Pycharm
+- Postman
