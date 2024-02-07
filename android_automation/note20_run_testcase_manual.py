@@ -80,8 +80,15 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        slack_result_notifications.slack_add_end_emoji(self)
+
+    def test_automation_android_bvt2(self):
+        # 메소드명과 일치하는 정보 받아오기
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
+
         # My -> 최근 본 컨텐츠 확인
         self.result_data = My.test_recently_viewed_content(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
@@ -90,12 +97,21 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        slack_result_notifications.slack_add_end_emoji(self)
+
+    def test_automation_android_bvt3(self):
+        # 메소드명과 일치하는 정보 받아오기
+        self.def_name = self.dconf[sys._getframe().f_code.co_name]
+
         # PDP에서 좋아요
         self.result_data = Pdp.test_like_on_pdp(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-    def test_automation_android_bvt2(self):
+        slack_result_notifications.slack_add_end_emoji(self)
+
+    def test_automation_android_bvt4(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
@@ -105,7 +121,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-    def test_automation_android_bvt3(self):
+        slack_result_notifications.slack_add_end_emoji(self)
+    def test_automation_android_bvt5(self):
 
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
@@ -126,7 +143,9 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-    def test_automation_android_bvt4(self):
+        slack_result_notifications.slack_add_end_emoji(self)
+
+    def test_automation_android_bvt6(self):
 
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
@@ -156,6 +175,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        slack_result_notifications.slack_add_end_emoji(self)
 
 
 if __name__ == '__main__':
