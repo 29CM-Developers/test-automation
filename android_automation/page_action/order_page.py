@@ -77,7 +77,7 @@ def click_hyundai_card(wd):
     virtual_account = False
     for i in range(0, 5):
         try:
-            element = aal(wd, 'c_현대카드 X PIN PAY')
+            element = aal(wd, 'c_혜택 현대카드 X PIN PAY')
             if element == None:
                 scroll_control(wd, 'U', 50)
                 sleep(1)
