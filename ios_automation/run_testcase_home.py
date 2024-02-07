@@ -92,6 +92,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        slack_result_notifications.slack_add_end_emoji(self)
+
     def test_automation_iOS_home(self):
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
@@ -128,6 +130,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        slack_result_notifications.slack_add_end_emoji(self)
 
 
 if __name__ == '__main__':
