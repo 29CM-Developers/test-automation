@@ -103,6 +103,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        slack_result_notifications.slack_add_end_emoji(self)
+
     def test_automation_android_bvt2(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
@@ -112,6 +114,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        slack_result_notifications.slack_add_end_emoji(self)
 
     def test_automation_android_bvt3(self):
 
@@ -133,6 +137,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = Payment.test_pay_with_credit_card(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        slack_result_notifications.slack_add_end_emoji(self)
 
     def test_automation_android_bvt4(self):
 
@@ -164,6 +170,8 @@ class AndroidTestAutomation(unittest.TestCase):
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        slack_result_notifications.slack_add_end_emoji(self)
 
 if __name__ == '__main__':
     unittest.main()
