@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc
+from com_utils.element_control import ial, ialc, ials
 
 import com_utils.element_control
 
@@ -53,8 +53,8 @@ def check_nickname(self, wd):
 
 
 def check_recent_title(wd, type, title):
-    recent_title = wd.find_element(AppiumBy.XPATH,
-                                   '//XCUIElementTypeCell/XCUIElementTypeTable/XCUIElementTypeCell[1]/XCUIElementTypeStaticText').text
+    recent = ial(wd, '//*[@name="나의 활동"]/../..')
+    recent_title = ials(recent, '//XCUIElementTypeStaticText')[1].text
     if recent_title in title:
         print(f'최근 본 {type} 확인')
     else:
@@ -72,10 +72,9 @@ def close_recent_contents(wd):
 
 def check_recent_history(wd, product_name, post_title):
     recent_history = []
-    recent = wd.find_elements(AppiumBy.XPATH,
-                              '//XCUIElementTypeCell/XCUIElementTypeTable/XCUIElementTypeCell')
-    for title in recent[:2]:
-        title = title.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText').text
+    recent = ials(wd, '//XCUIElementTypeCell/XCUIElementTypeTable/XCUIElementTypeCell')
+    for title in recent[:3]:
+        title = ial(title, '//XCUIElementTypeStaticText').text
         recent_history.append(title)
 
     if product_name in recent_history and post_title in recent_history:
