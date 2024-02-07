@@ -16,9 +16,10 @@ class Home:
     def test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
-        print(f'[{test_name}] 테스트 시작')
 
         try:
+            print(f'[{test_name}] 테스트 시작')
+
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
             # 라이프 탭 디폴트 선택 여부 확인 및 닫기
@@ -70,9 +71,10 @@ class Home:
     def test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
-        print(f'[{test_name}] 테스트 시작')
 
         try:
+            print(f'[{test_name}] 테스트 시작')
+
             # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
@@ -206,7 +208,7 @@ class Home:
             return result_data
 
     def test_not_login_move_tab_from_home(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
@@ -270,12 +272,17 @@ class Home:
             return result_data
 
     def full_test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
-        print(f'[{test_name}] 테스트 시작')
 
         try:
-            test_result, error_texts, img_src, _, _ = list(Home.test_home_banner(self, wd).values())
+            result_data = Home.test_home_banner(self, wd)
+        finally:
+            if result_data['test_result'] == 'FAIL':
+                return result_data
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
 
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
@@ -330,11 +337,18 @@ class Home:
             return result_data
 
     def full_test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src=''):
-        test_name = sys._getframe().f_code.co_name
+        test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
-        print(f'[{test_name}] 테스트 시작')
 
         try:
+            result_data = Home.test_home_contents(self, wd)
+        finally:
+            if result_data['test_result'] == 'FAIL':
+                return result_data
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
             # 바텀시트 노출 여부 확인
             bottom_sheet.find_icon_and_close_bottom_sheet(wd)
 
