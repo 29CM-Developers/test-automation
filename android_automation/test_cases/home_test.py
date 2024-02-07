@@ -232,3 +232,59 @@ class Home:
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '홈화면의 컨텐츠(피드) 탐색')
             return result_data
+
+    def full_test_home_contents(self, wd, test_result='PASS', error_texts=[], img_src=''):
+
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        try:
+            print(f'[{test_name}] 테스트 시작')
+            # 라이프 탭 선택
+            # 2. 뷰티 탭 선택
+            # 3. 첫번째로 노출되는 컨텐츠 비교 확인
+            # 4. 라이프 탭 닫기
+            # 5. 홈 탭 선택
+            # 6. 첫번째로 노출되는 컨텐츠 비교 확인
+            # 7. 맨 탭 선택
+            # 8. 첫번째로 노출되는 컨텐츠 비교 확인
+
+            print(f'[{test_name}] 테스트 종료')
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+        finally:
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, '홈화면의 컨텐츠(피드) 탐색')
+            return result_data
+
+    def full_test_home_banner(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        try:
+            print(f'[{test_name}] 테스트 시작')
+            # 1. 라이프 탭 선택
+            # 2. 테크 탭 선택
+            # 3. 홈 배너 API 호출해서 모두 저장
+            # 4. 저장한 배너들 중, 중복된 배너 여부 확인 → 배너id, 배너contents check
+            # - 중복된 홈 배너 없음 확인
+            # 5. 상단 배너 슬라이드 되는 시점마다 타이틀 저장 → 3개의 타이틀을 list로 저장
+            # 확인 : API로 호출한 배너 리스트 안에 저장한 3개의 타이틀이 포함되어 있는지 확인
+            # - 홈 배너 확인
+            # 6. 라이프 탭 닫기
+            # 7. 홈 탭 선택
+            # 8. 3~5 반복
+            # 9. 맨 탭 선택
+            # 10. 3~5 반복
+            
+            print(f'[{test_name}] 테스트 종료')
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+        finally:
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '홈화면의 배너, 다이나믹 게이트 확인')
+            return result_data

@@ -124,3 +124,60 @@ class NotLogin:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '비로그인 유저가 사용 가능한 기능 확인')
             return result_data
+
+    def full_test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        # slack noti에 사용되는 test_result, error_texts, ims_src를 매개변수로 받는다
+        # 현재 함수명 저장 - slack noti에 사용
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
+        start_time = time()
+        try:
+            # sleep(3)
+            print(f'[{test_name}] 테스트 시작')
+
+            close_bottom_sheet(self.wd)
+            # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
+            navigation_bar.move_to_category(wd)
+            category_page.click_category_top(wd)
+            category_page.click_not_login_user_product_like_btn(wd)
+
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
+
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
+            sleep(1)
+            navigation_bar.move_to_back(wd)
+            navigation_bar.move_to_home(wd)
+
+            # 우상단 알람 선택
+            navigation_bar.move_to_alarm(wd)
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
+
+            # 홈 > 우상단 장바구니 아이콘 선택
+            navigation_bar.move_to_top_cart(wd)
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
+
+            # 하단 like 아이콘 선택
+            navigation_bar.move_to_like(wd)
+            # 로그인 페이지 진입 및 확인
+            login_page.check_login_page(wd)
+            # Home 탭으로 복귀
+            navigation_bar.move_to_back(wd)
+
+            # 1-4. PDP > 상품 정보 영역 좋아요 버튼 선택 > 로그인 유도 팝업 > 확인 버튼 선택
+            # 1-5. PDP > CTA 영역 구매하기 버튼 선택 > 로그인 유도 팝업 > 확인 버튼 선택
+
+            print(f'[{test_name}] 테스트 종료')
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+        finally:
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
+                                      '비로그인 유저가 사용 불가한 기능 사용 시도 시, 로그인 페이지에 진입')
+            return result_data
