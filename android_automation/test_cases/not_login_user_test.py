@@ -67,6 +67,8 @@ class NotLogin:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            sleep(4)
+            close_bottom_sheet(self.wd)
             # 라이프 선택 닫기
             home_page.click_close_life_tab(wd)
 

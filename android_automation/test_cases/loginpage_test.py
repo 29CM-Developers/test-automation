@@ -22,7 +22,6 @@ class LoginLogout:
             print(f'[{test_name}] 테스트 시작')
 
             sleep(4)
-
             # 로그인 페이지 진입
             com_utils.deeplink_control.move_to_my_Android(wd)
             my_page.enter_login_page(wd)
