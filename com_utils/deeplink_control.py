@@ -61,6 +61,7 @@ def move_to_home_Android(wd):
 
 def move_to_my_Android(wd):
     sleep(2)
+    close_bottom_sheet(wd)
     wd.get('app29cm://mypage')
     sleep(1)
     print("홈 > 마이페이지 화면 진입")
