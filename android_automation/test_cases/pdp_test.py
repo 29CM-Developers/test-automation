@@ -6,7 +6,8 @@ from android_automation.page_action.bottom_sheet import close_bottom_sheet, clos
 from android_automation.page_action.context_change import change_native_contexts, switch_context
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
-from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet
+from android_automation.page_action import product_detail_page, order_page, like_page, navigation_bar, bottom_sheet, \
+    login_page
 from com_utils.deeplink_control import move_to_pdp
 from time import sleep, time
 from com_utils.code_optimization import finally_opt, exception_control
@@ -18,6 +19,8 @@ class Pdp:
         start_time = time()
 
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             sleep(2)
@@ -140,6 +143,8 @@ class Pdp:
         start_time = time()
 
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # 여성 인기 브랜드 1위 검색 결과 저장
