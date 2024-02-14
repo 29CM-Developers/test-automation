@@ -21,6 +21,7 @@ def click_search_btn(wd):
 
 def click_close_life_tab(wd):
     # 디폴트 선택 화면 확인
+    sleep(2)
     top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
     culture_tab = aal(top_tabs, '//android.view.View[@index=4]/android.widget.TextView')
     if culture_tab.text == '푸드':
