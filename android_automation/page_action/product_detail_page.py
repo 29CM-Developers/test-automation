@@ -35,6 +35,7 @@ def save_remove_prefix_product_name(product_name):
 def check_product_name(product_name, compare_name):
     product_name = product_name.replace('_', ' ')
     compare_name = compare_name.replace('_', ' ')
+    compare_name = ' '.join(compare_name.split())
     print(f'상품명 - pdp: {product_name} / 비교: {compare_name}')
     if compare_name in product_name:
         print('상품명 동일 확인')
