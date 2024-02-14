@@ -5,7 +5,7 @@ import com_utils.deeplink_control
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
     switch_context
 from com_utils.element_control import tap_control
-from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page
+from android_automation.page_action import product_detail_page, navigation_bar, cart_page, order_page, login_page
 from com_utils.deeplink_control import move_to_home_Android
 from com_utils.api_control import search_popular_keyword, search_result, product_detail, order_product_random_no
 from time import sleep, time
@@ -18,6 +18,8 @@ class Cart:
         start_time = time()
 
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
             sleep(3)
 
@@ -112,6 +114,8 @@ class Cart:
         start_time = time()
 
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
             navigation_bar.move_to_cart(wd)
             sleep(3)

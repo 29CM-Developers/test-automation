@@ -11,6 +11,7 @@ def move_to_home(wd):
 
 
 def move_to_category(wd):
+    sleep(3)
     aalc(wd, 'CATEGORY')
 
 

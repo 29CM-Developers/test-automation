@@ -1,7 +1,7 @@
 import os.path
 import sys
 import traceback
-from android_automation.page_action import category_page, best_product_list_page, product_detail_page
+from android_automation.page_action import category_page, best_product_list_page, product_detail_page, login_page
 from android_automation.page_action.best_product_list_page import check_app_evaluation_pop_up_exposure
 from android_automation.page_action.context_change import change_native_contexts
 from android_automation.page_action.navigation_bar import move_to_category
@@ -18,6 +18,8 @@ class Plp:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] 테스트 시작')
             # 카테고리 탭 > 여성 의류 BEST
             move_to_category(wd)

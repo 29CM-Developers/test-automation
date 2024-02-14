@@ -1,4 +1,7 @@
 from time import sleep
+from android_automation.page_action import my_page, navigation_bar
+from android_automation.page_action.select_category_page import test_select_category
+from com_utils.deeplink_control import move_to_my_Android
 from com_utils.element_control import aal, aalc, aalk
 
 
@@ -43,3 +46,21 @@ def click_simple_join_btn(wd):
     # 간편 회원가입하기 버튼 선택
     aalc(wd, 'c_간편 회원가입하기')
     print("간편 회원가입하기 버튼 선택")
+
+def check_login(self, wd, id):
+    sleep(2)
+    # 로그인 페이지 진입
+    move_to_my_Android(wd)
+
+    # 로그인 성공 진입 확인
+    login_name = aal(wd, 'com.the29cm.app29cm:id/txtUserName')
+    if login_name == None:
+        print("미로그인 상태 확인")
+        my_page.enter_login_page(wd)
+        input_id_password(wd, id, self.pconf['LOGIN_SUCCESS_PW'])
+    elif login_name.text == self.pconf['MASKING_NAME']:
+        print("로그인 상태 확인")
+    my_page.check_nickname(self, wd)
+    navigation_bar.move_to_home(wd)
+    # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
+    test_select_category(wd)

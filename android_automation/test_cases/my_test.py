@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from time import sleep, time
 from android_automation.page_action import welove_page, my_page, product_detail_page, delivery_order_page, \
-    context_change
+    context_change, login_page
 import com_utils
 from android_automation.page_action.context_change import change_native_contexts
 from com_utils import values_control, slack_result_notifications, element_control, deeplink_control
@@ -59,6 +59,8 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # 여성의류 베스트 1위 상품의 itemNo 확인
