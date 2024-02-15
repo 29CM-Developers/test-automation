@@ -220,6 +220,7 @@ def save_contents_like_count(wd):
     before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
     if before_like_count_element == None:
         com_utils.element_control.scroll_control(wd, 'D', 50)
+        sleep(2)
         com_utils.element_control.scroll_control(wd, 'D', 40)
     before_like_count_element = aal(wd, 'com.the29cm.app29cm:id/heartCount')
     before_like_count = before_like_count_element.text
@@ -232,6 +233,7 @@ def save_contents_like_count(wd):
 
 
 def click_contents_like_btn(wd):
+    sleep(1)
     aalc(wd, 'com.the29cm.app29cm:id/heartCount')
 
 
