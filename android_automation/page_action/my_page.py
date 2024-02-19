@@ -40,7 +40,7 @@ def check_recent_history(wd, product_name, post_title):
         recent_history.append(title)
     print(f'히스토리 : {recent_history}')
 
-    if product_name in recent_history and post_title in recent_history:
+    if recent_history[1] in product_name and post_title in recent_history[0]:
         print('최근 본 컨텐츠 히스토리 확인')
     else:
         print(f'최근 본 컨텐츠 히스토리 확인 실패 : {product_name} / {post_title}')
