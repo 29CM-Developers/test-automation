@@ -110,3 +110,73 @@ class UserLoginTest:
             testcase_title = '이메일 로그인 실패'
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
+
+    def test_sns_login_logout(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # My 탭 진입
+            com_utils.deeplink_control.move_to_my(self, wd)
+
+            # 카카오 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, '카카오')
+
+            # 카카오 로그인
+            login_page.kakao_input_id_password(wd, self.pconf['kakao_id'], self.pconf['kakao_password'])
+
+            # 프로필 이름 확인
+            my_page.check_nickname(self, wd)
+
+            # 로그아웃 후, 로그인 버튼 확인
+            my_page.check_logout_and_login_btn(self, wd)
+
+            # 네이버 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, '네이버')
+
+            # 네이버 로그인
+            login_page.naver_input_id_password(wd, self.pconf['naver_id'], self.pconf['naver_password'])
+
+            # 프로필 이름 확인
+            my_page.check_nickname(self, wd)
+
+            # 로그아웃 후, 로그인 버튼 확인
+            my_page.check_logout_and_login_btn(self, wd)
+
+            # 페이스북 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, '페이스북')
+
+            # 페이스북 로그인
+            login_page.facebook_login_confirm(wd, self.pconf['facebook_id'], self.pconf['facebook_password'])
+
+            # 프로필 이름 확인
+            my_page.check_nickname(self, wd)
+
+            # 로그아웃 후, 로그인 버튼 확인
+            my_page.check_logout_and_login_btn(self, wd)
+
+            # 애플 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, 'Apple')
+
+            # 애플 로그인
+            login_page.apple_input_password(wd, self.pconf['apple_password'])
+
+            # 프로필 이름 확인
+            my_page.check_nickname(self, wd)
+
+            # 로그아웃 후, 로그인 버튼 확인
+            my_page.check_logout_and_login_btn(self, wd)
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+
+        finally:
+            testcase_title = 'SNS 로그인 및 로그아웃'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
+            return result_data
