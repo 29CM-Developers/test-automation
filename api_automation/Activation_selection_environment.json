@@ -145,9 +145,15 @@
 			"value": "2221905",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "selections_list",
+			"value": "",
+			"type": "default",
+			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-02-20T02:22:36.586Z",
+	"_postman_exported_at": "2024-02-20T08:43:29.942Z",
 	"_postman_exported_using": "Postman/10.23.1"
 }
