@@ -196,6 +196,7 @@ def check_popular_keyword_title(wd):
 
 
 def save_popular_keyword(wd, keyword):
+    scroll_control(wd, "D", 50)
     for _ in range(10):
         element = aal(wd, f'c_{keyword}')
         if element == None:
