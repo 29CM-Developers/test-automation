@@ -1,0 +1,5221 @@
+{
+	"info": {
+		"_postman_id": "3d722537-8226-4838-8303-d2afd7722f52",
+		"name": "Activation_Squad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25986573"
+	},
+	"item": [
+		{
+			"name": "New_MySelection",
+			"item": [
+				{
+					"name": "내 like 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Set Item No\", function () {",
+									"    pm.environment.set(\"like_product_id\", jsonData.results[0].item_no);",
+									"});",
+									"",
+									"pm.test(\"Set Item No 2\", function () {",
+									"    pm.environment.set(\"like_product_id_2\", jsonData.results[1].item_no);",
+									"});",
+									"",
+									"pm.test(\"Set item_name\", function () {",
+									"    pm.environment.set(\"item_name\", jsonData.results[0].item_name);",
+									"});",
+									"",
+									"pm.test(\"Set item_name 2\", function () {",
+									"    pm.environment.set(\"item_name_2\", jsonData.results[1].item_name);",
+									"});",
+									"",
+									"pm.test(\"Set partner_brand_no\", function () {",
+									"    pm.environment.set(\"partner_brand_no\", jsonData.results[0].partner_brand_no);",
+									"});",
+									"",
+									"pm.test(\"Set front_brand_no\", function () {",
+									"    pm.environment.set(\"front_brand_no\", jsonData.results[0].front_brand_no);",
+									"});",
+									"",
+									"pm.test(\"Set brand_name_kor\", function () {",
+									"    pm.environment.set(\"brand_name_kor\", jsonData.results[0].brand_name_kor);",
+									"});",
+									"",
+									"pm.test(\"Set itemThumbnailUrls\", function () {",
+									"    pm.environment.set(\"itemThumbnailUrls\", jsonData.results[0].detail_image_url_1);",
+									"});",
+									"",
+									"pm.test(\"soldout value check\", function () {",
+									"    pm.expect(jsonData.results[0].is_soldout).to.eql(\"F\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apihub_host}}/qa/heart/product/?count=16&page=1",
+							"host": [
+								"{{apihub_host}}"
+							],
+							"path": [
+								"qa",
+								"heart",
+								"product",
+								""
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "16"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_MEDIA_TYPE\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가 쿠키없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가조건 26자",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_PARAMETER\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"타이틀 글자 수는 1자 이상 25자 이하여야 합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"12345678901234567890123456\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가조건 0자",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_PARAMETER\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"타이틀 글자 수는 1자 이상 25자 이하여야 합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가 title key 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "빈 셀렉션 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "빈 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages).to.eql([]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "빈 셀렉션 단건 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 1글자",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"일\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 25글자",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 복수 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId_2\", jsonData.data.resultList[1].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 id 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 id 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId_2}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId_2}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "삭제된 셀렉션 삭제 시도 id 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).have.include(pm.environment.get(\"selectionId_2\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId_2}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId_2}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회 성공 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회 실패 쿠키없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 상품 목록 조회 성공 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"itemName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemName).to.eql(pm.environment.get(\"item_name\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNo value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNo).to.eql(pm.environment.get(\"front_brand_no\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNameKor value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 상품 목록 조회 실패 쿠키없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 상품 목록 조회 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 상품 목록 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"itemName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemName).to.eql(pm.environment.get(\"item_name\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNo value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNo).to.eql(pm.environment.get(\"front_brand_no\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNameKor value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 성공 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 실패 쿠키없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 실패 selection id 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"selection id include message check\", function () {   ",
+									"    pm.expect(jsonData.message).have.include([]);",
+									"});",
+									"",
+									"pm.test(\"result value is Fail check\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check\", function () {",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_PARAMETER\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								":delete"
+							],
+							"variable": [
+								{
+									"key": "delete",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 삭제된 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"selections array value is empty check\", function () {",
+									"    // Check if jsonData.data is not empty",
+									"    pm.expect(jsonData.data.resultList).to.eql([]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "삭제된 셀렉션 상세 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"selection id include message check\", function () {   ",
+									"    pm.expect(jsonData.message).to.include(pm.environment.get(\"selectionId\"));",
+									"});",
+									"",
+									"pm.test(\"result value is Fail check\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 단건 셀렉션에 추가 실패 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_MEDIA_TYPE\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{like_product_id}}, {{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 단건 셀렉션에 추가 실패 쿠키 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{like_product_id}}, {{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 단건 셀렉션에 추가 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{like_product_id}}, {{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 단건 셀렉션에 추가 실패 selection id 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"selection id include message check\", function () {   ",
+									"    pm.expect(jsonData.message).have.include([]);",
+									"});",
+									"",
+									"pm.test(\"result value is Fail check\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{like_product_id}}, {{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections//items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 단건 셀렉션에 추가",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{like_product_id}}, {{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 복수 상품 목록 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"resultList length check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList.length).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"itemName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].itemName).to.eql(pm.environment.get(\"item_name\"));",
+									"});",
+									"",
+									"pm.test(\"itemName 2 value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemName).to.eql(pm.environment.get(\"item_name_2\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNo value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNo).to.eql(pm.environment.get(\"front_brand_no\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNo 2 value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].frontBrandNo).to.eql(pm.environment.get(\"front_brand_no\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNameKor value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNameKor 2 value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회 상품카운트 증가 확인",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"itemCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemCount).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션내에 아이템 삭제 실패 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_MEDIA_TYPE\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"[삭제 수정]{{section_title}}\",\n    \"removeItemIds\": [{{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:modify",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션내에 아이템 삭제 실패 쿠키 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"[삭제 수정]{{section_title}}\",\n    \"removeItemIds\": [{{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:modify",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션내에 아이템 삭제 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"[삭제 수정]{{section_title}}\",\n    \"removeItemIds\": [{{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:modify",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션내에 아이템 삭제 실패 selection id 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"selection id include message check\", function () {   ",
+									"    pm.expect(jsonData.message).have.include([]);",
+									"});",
+									"",
+									"pm.test(\"result value is Fail check\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check\", function () {",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_PARAMETER\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"[삭제 수정]{{section_title}}\",\n    \"removeItemIds\": [{{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/ :modify",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								" :modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션내에 아이템 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"[삭제 수정]{{section_title}}\",\n    \"removeItemIds\": [{{like_product_id_2}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:modify",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(\"[삭제 수정]\" + pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"itemCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemCount).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 추가 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 복수 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"set selectionAltKey 2\", function () {    ",
+									"    pm.environment.set(\"selectionId_2\", jsonData.data.resultList[1].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"selectionTitle 2 changed value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].title).to.eql(\"[삭제 수정]\" + pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품을 복수 셀렉션에 추가 실패 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_MEDIA_TYPE\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/{{like_product_id_2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								"{{like_product_id_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품을 복수 셀렉션에 추가 실패 쿠키 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/{{like_product_id_2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								"{{like_product_id_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품을 복수 셀렉션에 추가 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/{{like_product_id_2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								"{{like_product_id_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품을 복수 셀렉션에 추가 실패 product id 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_PARAMETER\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"요청한 값이 올바르지 않습니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품을 복수 셀렉션에 추가",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"removeSelectionIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/{{like_product_id_2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								"{{like_product_id_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 복수 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"itemCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemCount).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"itemCount 2 value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].itemCount).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"selectionTitle 2 changed value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].title).to.eql(\"[삭제 수정]\" + pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품 복수 셀렉션 변경 없는 수정",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_PARAMETER\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"상품을 추가 또는 제거할 셀렉션 정보가 유효하지 않습니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [],\n    \"removeSelectionIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/{{like_product_id_2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								"{{like_product_id_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "단건 상품을 복수 셀렉션에서 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [],\n    \"removeSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items/{{like_product_id_2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items",
+								"{{like_product_id_2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 복수 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"itemCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemCount).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"itemCount 2 value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].itemCount).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"selectionTitle 2 changed value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].title).to.eql(\"[삭제 수정]\" + pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 복수 셀렉션에 실패 content-type 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"COMMON_INVALID_MEDIA_TYPE\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"itemIds\": [\"{{like_product_id_3}}\", \"{{like_product_id_4}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 복수 셀렉션에 실패 쿠키 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"itemIds\": [\"{{like_product_id_3}}\", \"{{like_product_id_4}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 복수 셀렉션에 실패 Null 쿠키",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"error_code value check in result\", function () {    ",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"itemIds\": [\"{{like_product_id_3}}\", \"{{like_product_id_4}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 복수 셀렉션에 추가",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"itemIds\": [\"{{like_product_id_3}}\", \"{{like_product_id_4}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 복수 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"itemCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemCount).to.eql(3);",
+									"});",
+									"",
+									"pm.test(\"itemCount 2 value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].itemCount).to.eql(3);",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"selectionTitle 2 changed value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].title).to.eql(\"[삭제 수정]\" + pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 id 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제 id 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId_2}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId_2}}:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "삭제된 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"selections array value is empty check\", function () {",
+									"    // Check if jsonData.data is not empty",
+									"    pm.expect(jsonData.data.resultList).to.eql([]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 생성 불가 like에 없는 상품",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{not_like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "All Delete Selections",
+			"item": [
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LIKE control",
+			"item": [
+				{
+					"name": "get likes list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData.length)",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.environment.set(\"likes_list\", jsonData)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apihub_host}}/qa/heart/product/items/",
+							"host": [
+								"{{apihub_host}}"
+							],
+							"path": [
+								"qa",
+								"heart",
+								"product",
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product lists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var item_lists = []",
+									"var like_list = pm.environment.get(\"likes_list\")",
+									"pm.test(\"get pure product list\", function () {    ",
+									"    // 모든 product id 가져오기",
+									"    for (var i =0; i < (jsonData.data.products).length;i++){",
+									"        item_lists.push(jsonData.data.products[i].itemNo)",
+									"    }",
+									"    console.log(item_lists.length);",
+									"    pure_item_lists = item_lists.filter(value => !like_list.includes(value))",
+									"    console.log(pure_item_lists.length);",
+									"    pm.environment.set(\"products_list\", pure_item_lists)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=100&page=2&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
+							"protocol": "https",
+							"host": [
+								"qa-search-api",
+								"29cm",
+								"co",
+								"kr"
+							],
+							"path": [
+								"api",
+								"v4",
+								"products",
+								"category",
+								""
+							],
+							"query": [
+								{
+									"key": "categoryLargeCode",
+									"value": "268100100"
+								},
+								{
+									"key": "categoryMediumCode",
+									"value": ""
+								},
+								{
+									"key": "categorySmallCode",
+									"value": ""
+								},
+								{
+									"key": "count",
+									"value": "100"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "minPrice",
+									"value": ""
+								},
+								{
+									"key": "maxPrice",
+									"value": ""
+								},
+								{
+									"key": "isFreeShipping",
+									"value": ""
+								},
+								{
+									"key": "isDiscount",
+									"value": ""
+								},
+								{
+									"key": "sort",
+									"value": "latest"
+								},
+								{
+									"key": "init",
+									"value": "T"
+								},
+								{
+									"key": "colors",
+									"value": ""
+								},
+								{
+									"key": "excludeSoldOut",
+									"value": "true"
+								},
+								{
+									"key": "brands",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product like",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var products_list = pm.environment.get(\"products_list\");",
+									"var pure_products_list = Object.values(products_list)",
+									"var baseUrl = pm.request.url.toString();",
+									"",
+									"function sendRequest(value) {",
+									"    var url = baseUrl.replace('{{product_id}}', value);",
+									"    ",
+									"    pm.sendRequest({",
+									"        url:url,",
+									"        method: pm.request.method,",
+									"        header: {",
+									"            'Cookie': pm.environment.get(\"cookie\"),",
+									"            'Content-Type': 'application/json'",
+									"        }",
+									"    }, function(err, res) {",
+									"        console.log(res);",
+									"    });",
+									"}",
+									"",
+									"pure_products_list.forEach(sendRequest);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://apihub.29cm.co.kr/qa/heart/product/{{product_id}}/set/",
+							"protocol": "https",
+							"host": [
+								"apihub",
+								"29cm",
+								"co",
+								"kr"
+							],
+							"path": [
+								"qa",
+								"heart",
+								"product",
+								"{{product_id}}",
+								"set",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product unlike",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var likes_list = pm.environment.get(\"likes_list\");",
+									"var pure_likes_list = Object.values(likes_list)",
+									"var baseUrl = pm.request.url.toString();",
+									"var baseUrl = baseUrl.replace('{{apihub_host}}', pm.environment.get(\"apihub_host\"));",
+									"",
+									"function sendRequest(value) {",
+									"    var url = baseUrl.replace('{{product_id}}', value);",
+									"    ",
+									"    pm.sendRequest({",
+									"        url:url,",
+									"        method: pm.request.method,",
+									"        header: {",
+									"            'Cookie': pm.environment.get(\"cookie\"),",
+									"            'Content-Type': 'application/json'",
+									"        }",
+									"    }, function(err, res) {",
+									"        console.log(res);",
+									"    });",
+									"}",
+									"",
+									"pure_likes_list.forEach(sendRequest);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apihub_host}}/qa/heart/product/{{product_id}}/unset/",
+							"host": [
+								"{{apihub_host}}"
+							],
+							"path": [
+								"qa",
+								"heart",
+								"product",
+								"{{product_id}}",
+								"unset",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
