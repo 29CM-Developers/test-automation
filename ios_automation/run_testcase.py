@@ -175,6 +175,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        slack_result_notifications.slack_add_end_emoji(self)
+
     # Pro 14 케이스
     def test_iOS_BVT(self):
         self.def_name = sys._getframe().f_code.co_name
@@ -262,6 +264,8 @@ class IOSTestAutomation(unittest.TestCase):
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        slack_result_notifications.slack_add_end_emoji(self)
 
 
 if __name__ == '__main__':
