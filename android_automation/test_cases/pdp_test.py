@@ -85,6 +85,8 @@ class Pdp:
         start_time = time()
 
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # 네이티브 변경
