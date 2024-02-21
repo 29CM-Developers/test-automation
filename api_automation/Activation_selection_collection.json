@@ -3560,7 +3560,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"removeSelectionIds\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3623,7 +3623,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"removeSelectionIds\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3691,7 +3691,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"removeSelectionIds\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3759,7 +3759,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"addSelectionIds\": [{{selectionId}}, {{selectionId_2}}],\n    \"removeSelectionIds\": []\n}",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"removeSelectionIds\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4728,6 +4728,119 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"try {",
+									"    if (jsonData.data.resultList[0].hasOwnProperty('id')) {",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"    console.log(jsonData.data.resultList[0].id);",
+									"    }",
+									"} catch (e) {",
+									"    console.log(\"셀렉션 없음\")",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -4985,7 +5098,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=100&page=2&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
+							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=350&page=7&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
 							"protocol": "https",
 							"host": [
 								"qa-search-api",
@@ -5015,11 +5128,11 @@
 								},
 								{
 									"key": "count",
-									"value": "100"
+									"value": "350"
 								},
 								{
 									"key": "page",
-									"value": "2"
+									"value": "7"
 								},
 								{
 									"key": "minPrice",
@@ -5210,6 +5323,648 @@
 								"{{product_id}}",
 								"unset",
 								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "create_selections",
+			"item": [
+				{
+					"name": "셀렉션 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "add_products",
+			"item": [
+				{
+					"name": "get likes list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"console.log(jsonData.length)",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.environment.set(\"likes_list\", jsonData)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apihub_host}}/qa/heart/product/items/",
+							"host": [
+								"{{apihub_host}}"
+							],
+							"path": [
+								"qa",
+								"heart",
+								"product",
+								"items",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 단건 셀렉션에 추가",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var likes_list = pm.environment.get(\"likes_list\")",
+									"var pure_list = Object.values(likes_list)",
+									"var lists = pure_list.slice(430,431)",
+									"",
+									"pm.environment.set(\"likes_list\", lists)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemIds\": [{{likes_list}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// set data area",
+									"pm.test(\"set selectionAltKey\", function () {    ",
+									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
+									"});",
+									"",
+									"pm.test(\"totalCount value check in result\", function () {    ",
+									"    pm.expect(jsonData.data.totalCount).to.eql(1);",
+									"});",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"selectionTitle value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
+									"});",
+									"",
+									"pm.test(\"userName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
+									"});",
+									"",
+									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 복수 상품 목록 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"// test area",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});",
+									"",
+									"pm.test(\"resultList length check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList.length).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"itemName value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].itemName).to.eql(pm.environment.get(\"item_name\"));",
+									"});",
+									"",
+									"pm.test(\"itemName 2 value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].itemName).to.eql(pm.environment.get(\"item_name_2\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNo value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNo).to.eql(pm.environment.get(\"front_brand_no\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNo 2 value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].frontBrandNo).to.eql(pm.environment.get(\"front_brand_no\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNameKor value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[0].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
+									"});",
+									"",
+									"pm.test(\"frontBrandNameKor 2 value check\", function () {    ",
+									"    pm.expect(jsonData.data.resultList[1].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "delete_selections",
+			"item": [
+				{
+					"name": "내 셀렉션 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"var selection_lists = []",
+									"",
+									"pm.test(\"get pure product list\", function () {    ",
+									"    // 모든 product id 가져오기",
+									"    for (var i =0; i < (jsonData.data.resultList).length;i++){",
+									"        selection_lists.push(jsonData.data.resultList[i].id)",
+									"    }",
+									"    pm.environment.set(\"selections_list\", selection_lists)",
+									"    console.log(selection_lists.length)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/me?page=1&size=50",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"me"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "셀렉션 단건 삭제",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var selection_lists = pm.environment.get(\"selections_list\");",
+									"var pure_selections_list = Object.values(selection_lists)",
+									"var baseUrl = pm.request.url.toString();",
+									"var baseUrl = baseUrl.replace('{{host}}', pm.environment.get(\"host\"));",
+									"",
+									"function sendRequest(value) {",
+									"    var url = baseUrl.replace('{{selectionId}}', value);",
+									"    ",
+									"    pm.sendRequest({",
+									"        url:url,",
+									"        method: pm.request.method,",
+									"        header: {",
+									"            'Cookie': pm.environment.get(\"cookie\"),",
+									"            'Content-Type': 'application/json'",
+									"        }",
+									"    }, function(err, res) {",
+									"        console.log(res);",
+									"    });",
+									"}",
+									"",
+									"pure_selections_list.forEach(sendRequest);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"{{selectionId}}:delete"
 							]
 						}
 					},

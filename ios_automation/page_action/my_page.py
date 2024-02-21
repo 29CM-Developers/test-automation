@@ -2,6 +2,7 @@ from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials
+from com_utils.deeplink_control import move_to_my
 
 import com_utils.element_control
 
@@ -23,7 +24,7 @@ def find_login_btn(wd):
                 break
         except NoSuchElementException:
             pass
-        com_utils.element_control.scroll_control(wd, "U", 40)
+        com_utils.element_control.scroll_control(wd, "U", 50)
 
 
 def check_login_btn(wd):
@@ -146,3 +147,14 @@ def find_logout_btn(wd):
 
 def click_logout_btn(wd):
     ialc(wd, 'c_LOGOUT')
+
+
+def check_logout_and_login_btn(self, wd):
+    # 로그아웃 버튼 선택
+    find_logout_btn(wd)
+    click_logout_btn(wd)
+
+    # 로그아웃 완료 > 로그인,회원가입 문구 확인
+    move_to_my(self, wd)
+    find_login_btn(wd)
+    check_login_btn(wd)
