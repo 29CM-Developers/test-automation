@@ -195,14 +195,18 @@ def check_popular_keyword_title(wd):
         raise Exception('인기 검색어 타이틀 확인 실패')
 
 
-def save_popular_keyword(wd, keyword):
+def save_popular_keyword(wd, ranking, keyword):
+    scroll_control(wd, "D", 30)
     for _ in range(10):
-        element = aal(wd, f'c_{keyword}')
+        element = aal(wd, f'//*[@text="{keyword}"]')
         if element == None:
             pass
-        else:
-            print(f"element : {element.text}")
-            if element.is_displayed():
+        elif element.is_displayed():
+            parent = aal(wd, f'//*[@text="{keyword}"]/../..')
+            ranking_element = aal(parent, f'//*[@text="{ranking}"]')
+            if ranking_element == None:
+                pass
+            else:
                 return element.text
         # 요소를 찾지 못하면 아래로 스크롤
         scroll_control(wd, "D", 50)

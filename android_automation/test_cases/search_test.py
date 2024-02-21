@@ -135,7 +135,7 @@ class Search:
             search_page.check_popular_keyword_title(wd)
 
             # 첫번째 인기 검색어 저장
-            keyword_1st = search_page.save_popular_keyword(wd, api_keyword_1st)
+            keyword_1st = search_page.save_popular_keyword(wd, '1', api_keyword_1st)
 
             # API에서 호출한 1위 검색어와 노출되는 검색어가 동일한지 비교 확인
             search_page.check_popular_keyword(keyword_1st, api_keyword_1st)
@@ -157,7 +157,7 @@ class Search:
             search_page.clear_recent_keyword(wd)
 
             # 인기 검색어 25위 저장
-            keyword_25th = search_page.save_popular_keyword(wd, api_keyword_25th)
+            keyword_25th = search_page.save_popular_keyword(wd, '25', api_keyword_25th)
 
             # API에서 호출한 25위 검색어와 노출되는 검색어가 동일한지 비교 확인
             search_page.check_popular_keyword(keyword_25th, api_keyword_25th)
