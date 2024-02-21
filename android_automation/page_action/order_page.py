@@ -18,7 +18,7 @@ def click_virtual_account(wd):
     virtual_account = False
     for i in range(0, 5):
         try:
-            element = aal(wd, 'c_무통장입금')
+            element = aal(wd, f'//*[@text="무통장입금"]')
             if element == None:
                 scroll_control(wd, 'U', 50)
             elif element.is_displayed():
@@ -197,20 +197,27 @@ def check_receiver_info(wd):
 
 
 def check_order_product_name(wd, product_name):
-    print(f'product_name : {product_name}')
+
     result_string = re.sub('\[29CM 단독\]_', '', product_name)
-    print(f'result_string : {result_string}')
+    index = product_name.find(']_')
+    if index == -1:
+        no_prefix_order_name = result_string
+    else:
+        start_index = index + 2
+        end_index = len(result_string)
+        no_prefix_order_name = result_string[start_index:end_index]
+
     sleep(5)
     name_break = False
     order_name = ''
     for i in range(0, 5):
         try:
-            element = aal(wd, f'c_{result_string}')
+            element = aal(wd, f'c_{no_prefix_order_name}')
             if element == None:
                 scroll_control(wd, 'D', 50)
             else:
                 order_name = element.text
-                if element.is_displayed() and order_name == result_string:
+                if element.is_displayed() and order_name == no_prefix_order_name:
                     print('주문서 상품명 확인')
                     name_break = True
                     break
@@ -256,6 +263,7 @@ def check_pdp_purchase_price(wd, pdp_price):
 
 def check_inipay_page(wd):
     try:
+        sleep(5)
         aal(wd, 'c_KG이니시스')
         print('이니시스 페이지 진입')
     except NoSuchElementException:

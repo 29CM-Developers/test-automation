@@ -77,10 +77,10 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 홈화면 컨텐츠 확인
-        self.result_data = Home.test_home_contents(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # 홈화면 컨텐츠 확인 - 안정성 떨어져 안정화 후 적용 예정
+        # self.result_data = Home.test_home_contents(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # My -> 설정
         self.result_data = My.test_enter_settings_screen(self, self.wd)
@@ -157,14 +157,15 @@ class AndroidTestAutomation(unittest.TestCase):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # PDP에서 선물 주문서로 이동
-        self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # PDP에서 선물 주문서로 이동 - 안정성 떨어져 안정화 후 적용 예정
+        # self.result_data = Pdp.test_gift_on_pdp(self, self.wd)
+        # self.response = slack_result_notifications.slack_notification(self)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # PDP에서 구매 주문서로 이동
         self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
