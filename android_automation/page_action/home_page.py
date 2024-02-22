@@ -121,6 +121,7 @@ def save_banner_title(wd):
                 print("타이틀 없는 배너")
             else:
                 home_banner_title = home_banner_title.text
+                home_banner_title = home_banner_title.replace("\n", " ")
             banner_title_set.append(home_banner_title)
     except NoSuchElementException:
         print("타이틀 없는 배너")
