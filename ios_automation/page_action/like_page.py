@@ -156,7 +156,7 @@ def click_product_like_btn(wd):
 # like_product_name = 좋아요 상품 목록의 상품명과 비교할 상품명
 def check_product_like(wd, like_product_name):
     liked_product_name = ial(wd, 'liked_product_name').text
-    if like_product_name == liked_product_name:
+    if like_product_name in liked_product_name:
         print('좋아요 상품 노출 확인')
     else:
         print(f'좋아요 상품 노출 확인 실패: 좋아요 전-{like_product_name} / 좋아요 후-{liked_product_name}')

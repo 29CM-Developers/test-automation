@@ -3,14 +3,11 @@ import sys
 import traceback
 from time import time
 
-from com_utils import values_control
 from com_utils.code_optimization import exception_control, finally_opt
-from com_utils.db_connection import connect_db, insert_data, disconnect_db
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
-from com_utils.testrail_api import send_test_result
-from ios_automation.page_action import context_change, product_detail_page, order_page, like_page, navigation_bar
-from com_utils.deeplink_control import move_to_pdp_iOS, move_to_like, move_to_home_iOS
+from ios_automation.page_action import product_detail_page, order_page, like_page
+from com_utils.deeplink_control import move_to_pdp_iOS, move_to_like
 
 
 class Pdp:
