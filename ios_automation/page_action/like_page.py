@@ -1,3 +1,5 @@
+import com_utils
+
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
@@ -49,6 +51,16 @@ def set_like_zero(self, wd):
         click_to_unlike_post(wd)
         # 좋아요 해제 후 새로고침
         refresh_post_like_tab(wd)
+
+
+def set_product_like_zero(self, wd):
+    my_heart = my_heart_count(self.pconf['id_29cm'], self.pconf['password_29cm'])
+    product_count = my_heart['product_count']
+
+    if product_count != 0:
+        com_utils.deeplink_control.move_to_like(self, wd)
+        click_product_tab(wd)
+        click_to_unlike_product(wd)
 
 
 def check_like_phases(wd):

@@ -18,6 +18,9 @@ class Pdp:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 좋아요 상품 있을 경우 해제
+            like_page.set_product_like_zero(self, wd)
+
             # 여성 인기 브랜드 1위 검색 결과 저장
             brand_name = search_woman_popular_brand_name()
 
