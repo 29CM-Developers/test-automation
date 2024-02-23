@@ -3,6 +3,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials
 from com_utils.deeplink_control import move_to_my
+from ios_automation.page_action import bottom_sheet
 
 import com_utils.element_control
 
@@ -37,6 +38,7 @@ def check_login_btn(wd):
 
 
 def check_nickname(self, wd):
+    bottom_sheet.close_bottom_sheet(wd)
     nickname_break = False
     for i in range(0, 5):
         try:

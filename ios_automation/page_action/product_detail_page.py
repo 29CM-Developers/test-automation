@@ -33,9 +33,21 @@ def save_remove_prefix_product_name(wd):
     return no_prefix_product_name
 
 
+def remove_prefix_product_name(product_name):
+    index = product_name.find(']_')
+    if index == -1:
+        no_prefix_product_name = product_name
+    else:
+        start_index = index + 2
+        end_index = len(product_name)
+        no_prefix_product_name = product_name[start_index:end_index]
+    return no_prefix_product_name
+
+
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
 def check_product_name(product_name, compare_name):
+    compare_name = remove_prefix_product_name(compare_name)
     compare_name = ' '.join(compare_name.split())
     if compare_name in product_name:
         print('PDP 진입 확인 - 상품명')
@@ -115,6 +127,7 @@ def click_like_btn(wd):
     context_change.switch_context(wd, 'webview')
     ialc(wd, '//*[@id="cta_heart_button"]')
     context_change.switch_context(wd, 'native')
+    sleep(1)
 
 
 # 옵션 존재 여부와 개수에 따라 옵션 선택

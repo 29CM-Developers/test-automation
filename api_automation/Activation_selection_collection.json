@@ -2262,8 +2262,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
 									"var jsonData = pm.response.json();",
@@ -2274,6 +2274,10 @@
 									"",
 									"pm.test(\"result value is Fail check\", function () {",
 									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"message check\", function () {   ",
+									"    pm.expect(jsonData.message).have.include(\"셀렉션을 찾을 수 없습니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2674,8 +2678,8 @@
 									"",
 									"var jsonData = pm.response.json();",
 									"",
-									"pm.test(\"selection id include message check\", function () {   ",
-									"    pm.expect(jsonData.message).have.include([]);",
+									"pm.test(\"message check\", function () {   ",
+									"    pm.expect(jsonData.message).have.include(\"셀렉션 정보가 유효하지 않습니다\");",
 									"});",
 									"",
 									"pm.test(\"result value is Fail check\", function () {",
@@ -3736,7 +3740,7 @@
 									"});",
 									"",
 									"pm.test(\"message value check in result\", function () {    ",
-									"    pm.expect(jsonData.message).to.include(\"요청한 값이 올바르지 않습니다\");",
+									"    pm.expect(jsonData.message).to.include(\"상품 정보가 유효하지 않습니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -3753,7 +3757,7 @@
 							},
 							{
 								"key": "Cookie",
-								"value": "",
+								"value": "{{cookie}}",
 								"type": "text"
 							}
 						],
@@ -4338,6 +4342,132 @@
 					"response": []
 				},
 				{
+					"name": "복수 상품을 복수 셀렉션에 추가 실패 product id 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL check\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"상품 정보가 유효하지 않습니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [\"{{selectionId}}\", \"{{selectionId_2}}\"],\n    \"itemIds\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "복수 상품을 복수 셀렉션에 추가 실패 selection id 없음",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"FAIL check\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"});",
+									"",
+									"pm.test(\"message value check in result\", function () {    ",
+									"    pm.expect(jsonData.message).to.include(\"셀렉션 정보가 유효하지 않습니다\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"addSelectionIds\": [],\n    \"itemIds\": [\"{{like_product_id_3}}\", \"{{like_product_id_4}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v4/selections/items",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"selections",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "복수 상품을 복수 셀렉션에 추가",
 					"event": [
 						{
@@ -4667,7 +4797,7 @@
 					"response": []
 				},
 				{
-					"name": "셀렉션 생성 불가 like에 없는 상품",
+					"name": "셀렉션 생성 가능 like에 없는 상품",
 					"event": [
 						{
 							"listen": "test",
@@ -4679,8 +4809,8 @@
 									"",
 									"var jsonData = pm.response.json();",
 									"",
-									"pm.test(\"FAIL value check in result\", function () {    ",
-									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
+									"pm.test(\"SUCCESS value check in result\", function () {    ",
+									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -5858,7 +5988,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/v4/selections/me?page=1&size=50",
+							"raw": "{{host}}/api/v4/selections/me?page=1&size=90",
 							"host": [
 								"{{host}}"
 							],
@@ -5875,7 +6005,7 @@
 								},
 								{
 									"key": "size",
-									"value": "50"
+									"value": "90"
 								}
 							]
 						}
