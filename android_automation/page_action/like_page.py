@@ -4,6 +4,7 @@ from selenium.common import NoSuchElementException
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
 from com_utils.element_control import aal, aalc, element_scroll_control
 from com_utils.api_control import my_heart_count
+from android_automation.page_action import bottom_sheet
 
 
 def close_brand_recommended_page(wd):
@@ -16,6 +17,7 @@ def close_brand_recommended_page(wd):
         else:
             print('관심 브랜드 선택 팝업 발생')
             aalc(wd, 'com.the29cm.app29cm:id/iconClose')
+        bottom_sheet.close_bottom_sheet(wd)
     except NoSuchElementException:
         pass
 
