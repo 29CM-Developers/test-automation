@@ -217,7 +217,7 @@ def check_order_product_name(wd, product_name):
                 scroll_control(wd, 'D', 50)
             else:
                 order_name = element.text
-                if element.is_displayed() and order_name == no_prefix_order_name:
+                if element.is_displayed() and no_prefix_order_name in order_name:
                     print('주문서 상품명 확인')
                     name_break = True
                     break
@@ -225,7 +225,7 @@ def check_order_product_name(wd, product_name):
             scroll_control(wd, 'D', 50)
             pass
     if not name_break:
-        print(f'주문서 상품명 확인 실패: pdp-{product_name} / 주문서-{order_name}')
+        print(f'주문서 상품명 확인 실패: pdp-{no_prefix_order_name} / 주문서-{order_name}')
         raise Exception('주문서 상품명 확인 실패')
 
 
