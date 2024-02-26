@@ -469,7 +469,7 @@ def product_no_soldout_option(product_item_no):
             else:
                 for option in option_item_list:
                     option_name = option["title"].strip()
-                    if option['limited_qty'] > 0:
+                    if option['limited_qty'] > 5:
                         option_break = True
                         option_list[f'option{i}'] = option_name
                         break
