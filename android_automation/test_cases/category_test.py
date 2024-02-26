@@ -69,6 +69,7 @@ class Category:
 
             # 카테고리 전체 리스트의 첫번째 상품명이 api에서 호출한 상품명과 동일한지 확인
             plp_name = category_page.save_webview_category_product_name(wd, api_name)
+            plp_name = product_detail_page.save_remove_prefix_product_name(plp_name)
             category_page.check_category_product_name(plp_name, api_name)
 
             # 중 카테고리 : 샌들 선택
