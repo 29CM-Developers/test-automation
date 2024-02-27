@@ -26,8 +26,7 @@ def clear_id_password(wd):
 
 
 def check_login_error_text(self, wd):
-    error_text = wd.find_element(AppiumBy.XPATH,
-                                 '//XCUIElementTypeOther[@name="로그인 - 감도 깊은 취향 셀렉트샵 29CM"]/XCUIElementTypeOther[1]/XCUIElementTypeStaticText').text
+    error_text = ial(wd, '//*[contains(@name, "실패") or contains(@name, "시도")]').text
     if self.conf['login_error_text'] in error_text or self.conf['login_exceeded_text'] in error_text:
         print("이메일 로그인 실패 확인")
     else:
@@ -54,7 +53,10 @@ def click_simple_join_btn(wd):
 
 def kakao_input_id_password(wd, id, password):
     try:
-        ialc(wd, '다른 카카오계정으로 로그인')
+        try:
+            ialc(wd, '다른 카카오계정으로 로그인')
+        except NoSuchElementException:
+            pass
         ialc(wd, '//XCUIElementTypeLink[@name="새로운 계정으로 로그인"]')
     except:
         pass
@@ -66,13 +68,25 @@ def kakao_input_id_password(wd, id, password):
 
 def naver_input_id_password(wd, id, password):
     try:
-        ialc(wd, id)
-    except:
-        ialk(wd, '//XCUIElementTypeOther[@name="네이버 : 로그인"]/XCUIElementTypeTextField', id)
-        ialk(wd, '//XCUIElementTypeOther[@name="네이버 : 로그인"]/XCUIElementTypeSecureTextField', password)
-        ialc(wd, '//XCUIElementTypeOther[@name="로그인 상태 유지"]')
-        ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
-        pass
+        ial(wd, 'c_29CM 서비스 이용약관')
+        print('미가입 네이버 계정 선택 상태 확인')
+    except NoSuchElementException:
+        try:
+            ialc(wd, id)
+        except NoSuchElementException:
+            try:
+                ialc(wd, '다른 아이디로')
+            except NoSuchElementException:
+                pass
+            ialk(wd, '//XCUIElementTypeTextField', id)
+            ialk(wd, '//XCUIElementTypeSecureTextField', password)
+            ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
+
+        try:
+            ialc(wd, '전체 동의하기')
+            ialc(wd, '//XCUIElementTypeButton[@name="동의하기"]')
+        except NoSuchElementException:
+            pass
     sleep(1)
 
 
@@ -82,14 +96,14 @@ def facebook_input_id_password(wd, id, password):
         ialk(wd, '//XCUIElementTypeOther[@name="주요"]/XCUIElementTypeTextField', id)
         ialk(wd, '//XCUIElementTypeOther[@name="주요"]/XCUIElementTypeSecureTextField', password)
         ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
-    except:
+    except NoSuchElementException:
         pass
 
 
 def facebook_login_confirm(wd, id, password):
     try:
         ialc(wd, 'c_님으로 계속')
-    except:
+    except NoSuchElementException:
         facebook_input_id_password(wd, id, password)
         sleep(2)
         ialc(wd, 'c_님으로 계속')
@@ -109,7 +123,7 @@ def apple_input_password(wd, password):
 # sns_name : '카카오', '네이버', '페이스북', 'Apple'
 def click_sns_login_btn(wd, sns_name):
     context_change.switch_context(wd, 'webview')
-    print(f'{sns_name} 로그인 확인')
+    print(f'"{sns_name}" 로그인 확인')
     ialc(wd, f'//span[contains(text(), "{sns_name}")]/..')
     context_change.switch_context(wd, 'native')
 

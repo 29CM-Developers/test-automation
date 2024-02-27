@@ -7,6 +7,15 @@ def click_back_btn(wd):
     ialc(wd, 'common back icon black')
 
 
+def check_required_terms_page(wd):
+    try:
+        ial(wd, 'c_29CM 서비스 이용약관')
+        print('회원가입 페이지 진입 확인')
+    except NoSuchElementException:
+        print('회원가입 페이지 진입 확인 실패')
+        raise Exception('회원가입 페이지 진입 확인 실패')
+
+
 def click_required_terms(wd):
     sleep(2)
     terms = ials(wd, '//label')
@@ -30,3 +39,12 @@ def check_same_email_join_error(wd):
     except NoSuchElementException:
         print('기가입된 계정으로 회원가입 실패 확인 실패')
         raise Exception('기가입된 계정으로 회원가입 실패 확인 실패')
+
+
+def check_auth_page(wd):
+    try:
+        ial(wd, 'c_본인인증하고 가입완료하기')
+        print('본인 인증 페이지 진입 확인')
+    except NoSuchElementException:
+        print('본인 인증 페이지 진입 확인 실패')
+        raise Exception('본인 인증 페이지 진입 확인 실패')
