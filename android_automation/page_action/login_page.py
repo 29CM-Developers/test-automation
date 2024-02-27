@@ -6,6 +6,7 @@ from com_utils.element_control import aal, aalc, aalk
 
 
 def input_id_password(wd, id, password):
+    sleep(2)
     aalk(wd, '//android.widget.EditText[1]', id)
     aalk(wd, '//android.widget.EditText[2]', password)
     aalc(wd, '//android.widget.Button')
@@ -42,7 +43,7 @@ def check_login_page(wd):
 
 
 def click_simple_join_btn(wd):
-    sleep(2)
+    sleep(5)
     # 간편 회원가입하기 버튼 선택
     aalc(wd, 'c_간편 회원가입하기')
     print("간편 회원가입하기 버튼 선택")
