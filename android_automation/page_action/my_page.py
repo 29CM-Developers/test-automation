@@ -7,7 +7,7 @@ import com_utils.element_control
 def enter_login_page(wd):
     # 로그인 회원가입 버튼 선택
     aalc(wd, 'com.the29cm.app29cm:id/txtLogin')
-    sleep(3)
+    sleep(5)
     print("로그인 버튼 선택")
 
 
