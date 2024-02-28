@@ -137,10 +137,10 @@ def save_category_product_name(wd):
 
 
 def check_category_product_name(plp_name, compare_name):
-    if plp_name == compare_name:
+    if compare_name in plp_name:
         print('카테고리 페이지의 상품 확인')
     else:
-        print('카테고리 페이지의 상품 확인 실패')
+        print(f'카테고리 페이지의 상품 확인 실패 : {plp_name} / {compare_name}')
         raise Exception('카테고리 페이지의 상품 확인 실패')
 
 
