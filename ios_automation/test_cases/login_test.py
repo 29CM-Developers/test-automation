@@ -237,6 +237,6 @@ class UserLoginTest:
             test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
 
         finally:
-            testcase_title = 'SNS 로그인 및 로그아웃'
+            testcase_title = '미가입 SNS 계정 가입 화면 진입'
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
