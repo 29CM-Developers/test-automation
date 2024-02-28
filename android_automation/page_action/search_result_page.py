@@ -135,9 +135,9 @@ def click_sort_filter_btn(wd, sort):
 
 
 def click_color_filter(self, wd, color):
-    print(f'color : {color}')
     selector_layer = aal(wd, 'com.the29cm.app29cm:id/facetGroup')
     aalc(selector_layer, f'c_{self.conf["search_filter"]["color"]}')
+    sleep(1)
     aalc(wd, f"c_{color}")
     print(f'color : {color} 선택')
 
