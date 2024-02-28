@@ -2493,6 +2493,15 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"protocolProfileBehavior": {
@@ -2561,6 +2570,15 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -2621,6 +2639,15 @@
 									"pm.test(\"message value check in result\", function () {    ",
 									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
 								],
 								"type": "text/javascript"
 							}
@@ -2685,6 +2712,15 @@
 									"pm.test(\"result value is Fail check\", function () {",
 									"    pm.expect(jsonData.result).to.eql(\"FAIL\");",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
 								],
 								"type": "text/javascript"
 							}
@@ -3546,6 +3582,15 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"protocolProfileBehavior": {
@@ -3614,6 +3659,15 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -3674,6 +3728,15 @@
 									"pm.test(\"message value check in result\", function () {    ",
 									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
 								],
 								"type": "text/javascript"
 							}
@@ -3745,6 +3808,15 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -3802,6 +3874,15 @@
 									"pm.test(\"SUCCESS value check in result\", function () {    ",
 									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"setTimeout(function(){}, 500);"
 								],
 								"type": "text/javascript"
 							}
