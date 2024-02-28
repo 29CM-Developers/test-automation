@@ -5,7 +5,7 @@ import com_utils.deeplink_control
 
 from time import time
 from com_utils.code_optimization import exception_control, finally_opt
-from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page
+from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page, join_page
 from ios_automation.page_action.select_category_page import test_select_category
 
 
@@ -178,5 +178,65 @@ class UserLoginTest:
 
         finally:
             testcase_title = 'SNS 로그인 및 로그아웃'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
+            return result_data
+
+    def test_enter_the_sns_account_sign_up_page(self, wd, test_result='PASS', error_texts=[], img_src=''):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # My 탭 진입
+            com_utils.deeplink_control.move_to_my(self, wd)
+
+            # 카카오 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, '카카오')
+
+            # 카카오 로그인
+            login_page.kakao_input_id_password(wd, self.pconf['kakao_id2'], self.pconf['kakao_password2'])
+
+            # 회원가입 페이지 진입 확인
+            join_page.check_auth_page(wd)
+
+            # 마이페이지 > 로그인 버튼 확인
+            join_page.click_back_btn(wd)
+            login_page.check_login_page(wd)
+
+            # 네이버 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, '네이버')
+
+            # 네이버 로그인
+            login_page.naver_input_id_password(wd, self.pconf['naver_id2'], self.pconf['naver_password2'])
+
+            # 회원가입 페이지 진입 확인
+            join_page.check_required_terms_page(wd)
+
+            # 마이페이지 > 로그인 버튼 확인
+            join_page.click_back_btn(wd)
+            login_page.check_login_page(wd)
+
+            # 페이스북 로그인 페이지 진입
+            my_page.enter_login_page(wd)
+            login_page.click_sns_login_btn(wd, '페이스북')
+
+            # 페이스북 로그인
+            login_page.facebook_login_confirm(wd, self.pconf['facebook_id2'], self.pconf['facebook_password2'])
+
+            # 회원가입 페이지 진입 확인
+            join_page.check_required_terms_page(wd)
+
+            # 마이페이지 > 로그인 버튼 확인
+            join_page.click_back_btn(wd)
+            login_page.check_login_page(wd)
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+
+        finally:
+            testcase_title = '미가입 SNS 계정 가입 화면 진입'
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
