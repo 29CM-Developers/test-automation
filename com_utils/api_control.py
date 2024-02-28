@@ -472,6 +472,7 @@ def product_no_soldout_option(product_item_no):
                     if option['limited_qty'] > 3:
                         option_break = True
                         option_list[f'option{i}'] = option_name
+                        option_list['id'] = option["option_no"]
                         break
         if option_break:
             break
