@@ -1,5 +1,6 @@
+from time import sleep
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, tap_control
+from com_utils.element_control import ial, tap_control
 
 
 def close_bottom_sheet(wd):
@@ -27,4 +28,5 @@ def find_icon_and_close_bottom_sheet(wd):
 
 def pdp_close_bottom_sheet(wd):
     ial(wd, 'common cart icon black')
+    sleep(1)
     close_bottom_sheet(wd)
