@@ -159,7 +159,8 @@ def click_product_info_filter(wd, product_info):
 
 
 def click_apply_filter_btn(wd):
-    aalc(wd, 'com.the29cm.app29cm:id/confirm')
+    # aalc(wd, 'com.the29cm.app29cm:id/confirm')
+    aalc(wd, f'c_개의 상품보기')
 
 
 def save_filter_info(wd, filter_list):
