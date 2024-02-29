@@ -39,6 +39,7 @@ def check_product_brand_name(wd, compare_brand_name):
 
 
 def check_search_product_name(wd, compare_name):
+    sleep(1)
     product_name = ''
     for i in range(0, 3):
         try:
@@ -143,6 +144,7 @@ def click_color_filter(self, wd, color):
 
 
 def click_category_filter(wd, category):
+    sleep(1)
     aalc(wd, 'category_filter_layer')
     aalc(wd, f"c_{category}")
     print(f'필터 - 카테고리 : {category} 선택')
@@ -159,7 +161,8 @@ def click_product_info_filter(wd, product_info):
 
 
 def click_apply_filter_btn(wd):
-    aalc(wd, 'com.the29cm.app29cm:id/confirm')
+    # aalc(wd, 'com.the29cm.app29cm:id/confirm')
+    aalc(wd, f'c_개의 상품보기')
 
 
 def save_filter_info(wd, filter_list):
