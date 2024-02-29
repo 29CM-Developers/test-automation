@@ -4,6 +4,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 
 from android_automation.page_action import context_change
+from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
     switch_context
 from com_utils.element_control import aal, aalc, aals, aalk, scroll_control
@@ -13,6 +14,7 @@ from com_utils.api_control import product_detail, best_plp_women_clothes, produc
 def click_pdp_back_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print('뒤로가기 선택')
+    close_bottom_sheet(wd)
 
 
 def click_home_btn(wd):
