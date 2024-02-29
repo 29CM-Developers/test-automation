@@ -50,7 +50,8 @@ def save_tab_names(wd):
 # tab : 탭을 보여주는 카테고리 / 전체 : 'home' / 라이프 선택 상태 : 'life'
 # tab_list : 비교할 탭 이름 리스트
 def check_tab_names(self, tab, tab_list):
-    if self.conf['compare_home_tab'][tab] in tab_list:
+    compare_tab = self.conf['compare_home_tab'][tab]
+    if all(tab_name in tab_list for tab_name in compare_tab):
         print(f'홈 상단 {tab} 탭 확인')
     else:
         print(f'홈 상단 {tab} 탭 확인 실패 - {tab_list}')
