@@ -34,6 +34,11 @@ def click_close_life_tab(wd):
 
 # click_tab_name : 선택하려는 상단 탭 이름 입력
 def click_tab_name(wd, click_tab_name):
+    # 이구데이 등 베스트 탭 미노출 조건 확인
+    top_tabs = aal(wd, 'com.the29cm.app29cm:id/tabs')
+    click_tab = aal(top_tabs, click_tab_name)
+    if click_tab == None:
+        swipe_control(wd, top_tabs, 'left', 40)
     aalc(wd, click_tab_name)
     print(f'{click_tab_name} 탭 선택')
 
