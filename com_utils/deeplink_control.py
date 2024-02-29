@@ -73,7 +73,7 @@ def move_to_pdp_Android(wd, product_item_no):
     #sleep(1)
     print(f'product_item_no : {product_item_no}')
     wd.get(f'app29cm://product/{product_item_no}')
-    #sleep(3)
+    sleep(3)
     bottom_sheet.close_bottom_sheet(wd)
 
 

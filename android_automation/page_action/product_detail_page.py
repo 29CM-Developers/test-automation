@@ -111,7 +111,7 @@ def select_options(wd, product_item_no):
             if list.startswith('layout'):
                 aalc(wd, f'//input[@placeholder="{value}"]/..')
             elif list.startswith('option'):
-                aalc(wd, f'//li[contains(text(), "{value}")]')
+                aalc(wd, f'//li[text()="{value}"]')
     sleep(1)
 
     # 텍스트 입력 영역 있을 경우, 텍스트 입력
