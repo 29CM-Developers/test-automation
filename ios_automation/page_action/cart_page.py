@@ -1,6 +1,8 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
+from com_utils.api_control import cart_product_count, add_product_to_cart
+from com_utils.deeplink_control import move_to_cart
 from com_utils.element_control import ialc, ial, ials
 from ios_automation.page_action import context_change
 
@@ -9,9 +11,8 @@ def click_back_btn(wd):
     ialc(wd, 'common back icon black')
 
 
-def clear_cart_list(wd):
-    wd.get('app29cm://order/cart')
-    sleep(3)
+def clear_cart_list(self, wd):
+    move_to_cart(self, wd)
     try:
         ial(wd, '//XCUIElementTypeLink[@name="CONTINUE SHOPPING"]')
         pass
@@ -104,3 +105,12 @@ def check_add_product(before_count, after_count, before_price, after_price, prod
 def click_check_out_btn(wd):
     ialc(wd, '//button[contains(text(), "CHECK OUT")]')
     sleep(3)
+
+
+def check_need_to_add_product_to_cart(self, wd, id, password):
+    cart_count = cart_product_count(id, password)
+    if cart_count < 2:
+        while cart_count < 2:
+            add_product_to_cart(id, password)
+            cart_count = cart_product_count(id, password)
+        move_to_cart(self, wd)
