@@ -52,6 +52,11 @@ def move_to_pdp_iOS(wd, product_item_no):
     pdp_close_bottom_sheet(wd)
 
 
+def move_to_cart(self, wd):
+    wd.get(self.conf['deeplink']['cart'])
+    sleep(3)
+
+
 # Home 탭으로 이동 딥링크
 def move_to_home_Android(wd):
     sleep(1)

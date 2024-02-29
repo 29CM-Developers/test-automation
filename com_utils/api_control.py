@@ -453,6 +453,19 @@ def product_detail(product_item_no):
         print('PDP 상세 정보 API 불러오기 실패')
 
 
+def product_item_option_no(product_item_no):
+    option_id = ''
+    option = product_detail(product_item_no)['option_items_list']
+    if not option:
+        option_id = None
+    else:
+        option_list = product_no_soldout_option(product_item_no)
+        for list, value in option_list.items():
+            if list.startswith('id'):
+                option_id = value
+    return option_id
+
+
 def product_no_soldout_option(product_item_no):
     option_layout = product_detail(product_item_no)['option_items_layout']
     option_item_list = product_detail(product_item_no)['option_items_list']
@@ -472,6 +485,7 @@ def product_no_soldout_option(product_item_no):
                     if option['limited_qty'] > 3:
                         option_break = True
                         option_list[f'option{i}'] = option_name
+                        option_list['id'] = option["option_no"]
                         break
         if option_break:
             break
@@ -571,3 +585,45 @@ def my_order_cancel(id, password, order_serial_no):
     else:
         print(response.status_code)
         print('주문 취소 API 불러오기 실패')
+
+
+def cart_product_count(id, password):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+    response = requests.get('https://commerce-api.29cm.co.kr/api/v4/cart-item/item-count', cookies=cookies)
+    if response.status_code == 200:
+        cart_data = response.json()
+        cart_count = cart_data['data']['count']
+        return cart_count
+    else:
+        print('장바구니 상품 개수 조회 API 불러오기 실패')
+
+
+def add_product_to_cart(id, password):
+    item_id = order_product_random_no()
+    option_id = product_item_option_no(item_id)
+
+    headers = {'Content-Type': 'application/json'}
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+    data = json.dumps({
+        "cartItemList": [
+            {
+                "itemId": item_id,
+                "optionId": option_id,
+                "orderCount": 1,
+                "requestComment": None,
+                "isOrderCheck": False,
+                "isNaverAccess": False
+            }
+        ]
+    })
+
+    response = requests.post('https://commerce-api.29cm.co.kr/api/v4/cart-item/',
+                             headers=headers, cookies=cookies, data=data)
+    if response.status_code == 200:
+        cart_data = response.json()
+        if cart_data['result'] == 'SUCCESS':
+            print('장바구니에 상품 담기 성공 확인')
+        else:
+            print('장바구니에 상품 담기 실패 확인')
+    else:
+        print('장바구니 상품 담기 API 불러오기 실패')

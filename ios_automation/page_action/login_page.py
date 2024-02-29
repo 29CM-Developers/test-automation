@@ -134,6 +134,6 @@ def click_sns_login_btn(wd, sns_name):
             pass
         ialc(wd, 'AUTHORIZE_BUTTON_TITLE')
     elif sns_name == '네이버':
-        pass
+        sleep(2)
     else:
         ialc(wd, '계속')

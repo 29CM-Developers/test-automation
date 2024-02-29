@@ -19,7 +19,7 @@ class Cart:
             print(f'[{test_name}] 테스트 시작')
 
             # 테스트 시작 전, 장바구니 비우기
-            cart_page.clear_cart_list(wd)
+            cart_page.clear_cart_list(self, wd)
 
             # 필터를 건 검색 결과 화면에서 랜덤으로 상품번호 저장
             product_item_no = order_product_random_no()
@@ -103,6 +103,9 @@ class Cart:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            # 장바구니 상품 추가 필요 여부 확인
+            cart_page.check_need_to_add_product_to_cart(self, wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
 
             # 웹뷰로 전환
             context_change.switch_context(wd, 'webview')

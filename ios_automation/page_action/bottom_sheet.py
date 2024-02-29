@@ -10,6 +10,13 @@ def close_bottom_sheet(wd):
         print('바텀 시트 노출되어 닫기 동작')
     except NoSuchElementException:
         pass
+    try:
+        ial(wd, '//XCUIElementTypeButton[@name="다음"]')
+        ial(wd, '확인하세요')
+        tap_control(wd)
+        print('바텀 시트 노출되어 닫기 동작')
+    except NoSuchElementException:
+        pass
     wd.implicitly_wait(3)
 
 
