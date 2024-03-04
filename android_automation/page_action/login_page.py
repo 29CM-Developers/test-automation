@@ -31,8 +31,10 @@ def check_login_error_text(self, wd):
 
 
 def check_login_page(wd):
+    sleep(3)
     # 로그인 화면 진입 확인
-    login_page_title = aal(wd, '//*[@resource-id="__next"]/android.widget.TextView[1]')
+    login_page_title = aal(wd, '//*[@resource-id="__next"]/android.view.View[1]/android.widget.Button')
+    print(f'login_page_title :{login_page_title.text}')
     print("홈 > 마이페이지 > 로그인 화면 진입")
     if '로그인' in login_page_title.text:
         print("로그인 문구 확인")
