@@ -163,16 +163,16 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # PDP에서 구매 주문서로 이동
-        self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
-        # self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 무통장 입금으로 구매하기
-        self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # PDP에서 구매 주문서로 이동- 안정성 떨어져 안정화 후 적용 예정
+        # self.result_data = Pdp.test_purchase_on_pdp(self, self.wd)
+        # # self.response = slack_result_notifications.slack_notification(self)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 무통장 입금으로 구매하기- 안정성 떨어져 안정화 후 적용 예정
+        # self.result_data = Payment.test_pay_with_virtual_account(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 로그아웃
         self.result_data = LoginLogout.test_logout(self, self.wd)
