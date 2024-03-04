@@ -17,7 +17,7 @@ def close_brand_recommended_page(wd):
         else:
             print('관심 브랜드 선택 팝업 발생')
             aalc(wd, 'com.the29cm.app29cm:id/iconClose')
-        bottom_sheet.close_bottom_sheet(wd)
+        bottom_sheet.close_like_bottom_sheet(wd)
     except NoSuchElementException:
         pass
 
