@@ -20,7 +20,8 @@ def clear_id_password(wd):
 
 def check_login_error_text(self, wd):
     # 로그인 실패 문구 확인
-    guide_text = aal(wd, '//*[@resource-id="__next"]/android.view.View[1]/android.widget.TextView')
+    guide_text_layer = aal(wd, 'com.the29cm.app29cm:id/webContainer')
+    guide_text = aal(guide_text_layer, 'c_5회 로그인 실패 시')
 
     if "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다." in guide_text.text:
         print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 확인")
