@@ -1,6 +1,7 @@
 from time import sleep
 from selenium.common import NoSuchElementException
 from com_utils import element_control
+from com_utils.api_control import cart_product_count, add_product_to_cart
 from com_utils.element_control import aal, aalc, aals
 
 
@@ -206,3 +207,10 @@ def check_change_total_order_amount(first_product_price, after_delete_total_pric
     else:
         print(f'총 주문금액 변경 확인 실패 :{after_delete_total_price}/ {first_product_price}')
         raise Exception('총 주문금액 변경 확인 실패')
+
+def check_need_to_add_product_to_cart(self, wd, id, password):
+    cart_count = cart_product_count(id, password)
+    if cart_count < 2:
+        while cart_count < 2:
+            add_product_to_cart(id, password)
+            cart_count = cart_product_count(id, password)

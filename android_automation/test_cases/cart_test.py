@@ -117,6 +117,9 @@ class Cart:
             login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
 
             print(f'[{test_name}] 테스트 시작')
+            # 장바구니 상품 추가 필요 여부 확인
+            cart_page.check_need_to_add_product_to_cart(self, wd, self.pconf['LOGIN_SUCCESS_ID'], self.pconf['LOGIN_SUCCESS_PW'])
+
             navigation_bar.move_to_cart(wd)
             sleep(3)
 
