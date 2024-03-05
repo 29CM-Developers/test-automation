@@ -325,7 +325,7 @@
 									"});",
 									"",
 									"pm.test(\"message value check in result\", function () {    ",
-									"    pm.expect(jsonData.message).to.include(\"타이틀 글자 수는 1자 이상 25자 이하여야 합니다\");",
+									"    pm.expect(jsonData.message).to.include(\"셀렉션 이름은 1자 이상 25자 이하여야 합니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -391,7 +391,7 @@
 									"});",
 									"",
 									"pm.test(\"message value check in result\", function () {    ",
-									"    pm.expect(jsonData.message).to.include(\"타이틀 글자 수는 1자 이상 25자 이하여야 합니다\");",
+									"    pm.expect(jsonData.message).to.include(\"셀렉션 이름은 1자 이상 25자 이하여야 합니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1527,11 +1527,11 @@
 									"});",
 									"",
 									"pm.test(\"error_code value check in result\", function () {    ",
-									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_OPEN_SELECTION\");",
 									"});",
 									"",
 									"pm.test(\"message value check in result\", function () {    ",
-									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"    pm.expect(jsonData.message).to.include(\"해당 위시리스트는 비공개 상태입니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1593,11 +1593,11 @@
 									"});",
 									"",
 									"pm.test(\"error_code value check in result\", function () {    ",
-									"    pm.expect(jsonData.error_code).to.eql(\"NOT_AUTHENTICATED\");",
+									"    pm.expect(jsonData.error_code).to.eql(\"NOT_OPEN_SELECTION\");",
 									"});",
 									"",
 									"pm.test(\"message value check in result\", function () {    ",
-									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
+									"    pm.expect(jsonData.message).to.include(\"해당 위시리스트는 비공개 상태입니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2277,7 +2277,7 @@
 									"});",
 									"",
 									"pm.test(\"message check\", function () {   ",
-									"    pm.expect(jsonData.message).have.include(\"셀렉션을 찾을 수 없습니다\");",
+									"    pm.expect(jsonData.message).have.include(\"해당하는 Row를 찾을 수 없습니다\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -5056,152 +5056,6 @@
 			]
 		},
 		{
-			"name": "All Delete Selections",
-			"item": [
-				{
-					"name": "내 셀렉션 조회",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"",
-									"// set data area",
-									"pm.test(\"set selectionAltKey\", function () {    ",
-									"    pm.environment.set(\"selectionId\", jsonData.data.resultList[0].id);",
-									"});",
-									"",
-									"// test area",
-									"pm.test(\"SUCCESS value check in result\", function () {    ",
-									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-									"});",
-									"",
-									"pm.test(\"selectionTitle value check\", function () {    ",
-									"    pm.expect(jsonData.data.resultList[0].title).to.eql(pm.environment.get(\"section_title\"));",
-									"});",
-									"",
-									"pm.test(\"userName value check\", function () {    ",
-									"    pm.expect(jsonData.data.resultList[0].userName).to.eql(pm.environment.get(\"userName\"));",
-									"});",
-									"",
-									"pm.test(\"itemThumbnailUrls value check\", function () {    ",
-									"    pm.expect(jsonData.data.resultList[0].thumbnailImages[0]).to.eql(pm.environment.get(\"itemThumbnailUrls\"));",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Cookie",
-								"value": "{{cookie}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/v4/selections/me",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"v4",
-								"selections",
-								"me"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "셀렉션 단건 삭제",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"SUCCESS value check in result\", function () {    ",
-									"    pm.expect(jsonData.result).to.eql(\"SUCCESS\");",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Cookie",
-								"value": "{{cookie}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/v4/selections/{{selectionId}}:delete",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"v4",
-								"selections",
-								"{{selectionId}}:delete"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "LIKE control",
 			"item": [
 				{
@@ -5309,7 +5163,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=350&page=7&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
+							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=50&page=1&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
 							"protocol": "https",
 							"host": [
 								"qa-search-api",
@@ -5339,11 +5193,11 @@
 								},
 								{
 									"key": "count",
-									"value": "350"
+									"value": "50"
 								},
 								{
 									"key": "page",
-									"value": "7"
+									"value": "1"
 								},
 								{
 									"key": "minPrice",
@@ -5563,6 +5417,16 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"ran_num = _.random(100000, 999999)",
+									"pm.environment.set(\"ran_num\", ran_num)"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"protocolProfileBehavior": {
@@ -5586,7 +5450,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"{{section_title}}\",\n    \"itemIds\": [{{like_product_id}}]\n}",
+							"raw": "{\n    \"title\": \"[{{ran_num}}]{{section_title}}\",\n    \"itemIds\": [\n        {{like_product_id}}\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5785,7 +5649,7 @@
 								"exec": [
 									"var likes_list = pm.environment.get(\"likes_list\")",
 									"var pure_list = Object.values(likes_list)",
-									"var lists = pure_list.slice(430,431)",
+									"var lists = pure_list.slice(824,825)",
 									"",
 									"pm.environment.set(\"likes_list\", lists)"
 								],
