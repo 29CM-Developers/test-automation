@@ -2,11 +2,10 @@ import os
 import sys
 import traceback
 from time import time
-
 from com_utils.code_optimization import exception_control, finally_opt
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
-from ios_automation.page_action import product_detail_page, order_page, like_page
+from ios_automation.page_action import product_detail_page, order_page, like_page, mobile_memo_page
 from com_utils.deeplink_control import move_to_pdp_iOS, move_to_like
 
 
@@ -161,5 +160,59 @@ class Pdp:
 
         finally:
             testcase_title = 'PDP에서 구매 주문서 화면으로 이동'
+            result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
+            return result_data
+
+    def test_share_on_pdp(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+        test_name = self.dconf[sys._getframe().f_code.co_name]
+        start_time = time()
+
+        try:
+            print(f'[{test_name}] 테스트 시작')
+
+            # 메모장 앱 종료
+            mobile_memo_page.terminate_memo_app(wd)
+
+            # 여성 인기 브랜드 1위 검색 결과 저장
+            brand_name = search_woman_popular_brand_name()
+
+            # 1위 인기 검색어 검색 결과의 첫번째 상품 정보 불러오기
+            search_product_item_no = search_result(brand_name, 1)['product_item_no']
+
+            # 딥링크로 검색 상품 진입
+            move_to_pdp_iOS(wd, search_product_item_no)
+
+            # PDP의 상품명 저장
+            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+
+            # CTA의 공유하기 > 링크 복사 버튼 선택
+            product_detail_page.click_share_btn(wd)
+            product_detail_page.click_link_copy_btn(wd)
+
+            # 이전 화면으로 이동
+            product_detail_page.click_pdp_back_btn(wd)
+
+            # 메모장 앱 실행하여 링크 붙여넣기
+            mobile_memo_page.active_memo_app(wd)
+            mobile_memo_page.click_add_memo_btn(wd)
+            mobile_memo_page.paste_link(wd)
+
+            # 붙여넣은 링크 선택
+            mobile_memo_page.click_link(wd)
+
+            # 링크로 이동한 PDP의 상품명 저장
+            link_pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+
+            # 공유한 PDP의 상품명과 공유받은 PDP의 상품명이 동일한지 확인
+            product_detail_page.check_product_name(link_pdp_name, pdp_name)
+
+            # 이전 화면으로 이동
+            product_detail_page.click_pdp_back_btn(wd)
+
+        except Exception:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+
+        finally:
+            testcase_title = 'PDP에서 공유하기'
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
