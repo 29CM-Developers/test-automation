@@ -33,6 +33,7 @@ class Like:
             like_page.check_like_total_count(wd, '0')
 
             # Product 선택 및 탭 확인
+            like_page.click_brand_tab(wd)
             like_page.click_product_tab(wd)
             like_page.check_no_product_like(wd)
 
