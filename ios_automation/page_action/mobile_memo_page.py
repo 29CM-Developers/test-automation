@@ -1,5 +1,5 @@
+from time import sleep
 from selenium.common import NoSuchElementException
-
 from com_utils.element_control import ial, ialc
 
 
@@ -38,3 +38,4 @@ def click_complete_btn(wd):
 
 def click_link(wd):
     ialc(wd, 'c_product.29cm.co.kr')
+    sleep(2)
