@@ -169,7 +169,7 @@ class Cart:
             test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
-                                      '장바구니에 상품을 담고 장바구니 리스트 확인')
+                                      '장바구니에 담긴 상품을 변경')
             return result_data
 
     def test_purchase_on_cart(self, wd, test_result='PASS', error_texts=[], img_src=''):
@@ -208,5 +208,5 @@ class Cart:
             test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
-                                      '장바구니에 상품을 담고 장바구니 리스트 확인')
+                                      '장바구니에서 구매 주문서 화면으로 이동')
             return result_data
