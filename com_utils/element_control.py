@@ -105,6 +105,9 @@ def aal(webdriver, element_value):
             element = wd.find_element(AppiumBy.CLASS_NAME, element_value)
         elif element_value.startswith("com."):
             element = wd.find_element(AppiumBy.ID, element_value)
+        elif element_value.startswith("id_"):
+            element_value = element_value.lstrip("id_")
+            element = wd.find_element(AppiumBy.ID, element_value)
         else:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, element_value)
     except Exception:

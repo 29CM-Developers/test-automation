@@ -197,7 +197,7 @@ def check_open_to_purchase_modal(wd, like_productItem):
     # like_productItem = aal(like_layer, 'com.the29cm.app29cm:id/txtBody').text
     # item_name = aal(wd, 'com.the29cm.app29cm:id/txtItemName').text
     sleep(3)
-    item_name = wd.find_element(AppiumBy.ID, 'pdp_product_name').text
+    item_name = aal(wd, 'id_pdp_product_name').text
     print(f'item_name :{item_name}, like_productItem : {like_productItem}')
     if item_name in like_productItem:
         print('좋아요 상품명 장바구니 모달 확인')
