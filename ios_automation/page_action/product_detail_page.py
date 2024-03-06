@@ -130,6 +130,13 @@ def click_like_btn(wd):
     sleep(1)
 
 
+def click_share_btn(wd):
+    context_change.switch_context(wd, 'webview')
+    ialc(wd, '//*[@id="cta_shared_button"]')
+    context_change.switch_context(wd, 'native')
+    sleep(1)
+
+
 # 옵션 존재 여부와 개수에 따라 옵션 선택
 def select_options(wd, product_item_no):
     context_change.switch_context(wd, 'webview')
@@ -202,3 +209,7 @@ def check_like_bottom_sheet(wd):
     except NoSuchElementException:
         print('추천 상품 바텀 시트 노출 확인 실패')
         raise Exception('추천 상품 바텀 시트 노출 확인 실패')
+
+
+def click_link_copy_btn(wd):
+    ialc(wd, 'c_Copy')

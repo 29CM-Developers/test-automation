@@ -92,7 +92,6 @@ def naver_input_id_password(wd, id, password):
 
 def facebook_input_id_password(wd, id, password):
     try:
-        ial(wd, '29CM에 연결하려면 Facebook 계정에 로그인하세요')
         ialk(wd, '//XCUIElementTypeOther[@name="주요"]/XCUIElementTypeTextField', id)
         ialk(wd, '//XCUIElementTypeOther[@name="주요"]/XCUIElementTypeSecureTextField', password)
         ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
@@ -130,10 +129,32 @@ def click_sns_login_btn(wd, sns_name):
     if sns_name == 'Apple':
         try:
             ialc(wd, "//XCUIElementTypeCell[contains(@label, '나의 이메일 가리기')]")
-        except:
+        except NoSuchElementException:
             pass
         ialc(wd, 'AUTHORIZE_BUTTON_TITLE')
     elif sns_name == '네이버':
         sleep(2)
     else:
-        ialc(wd, '계속')
+        try:
+            ialc(wd, '계속')
+        except NoSuchElementException:
+            pass
+
+
+def check_duplicate_account(wd):
+    try:
+        ial(wd, 'c_존재합니다')
+        print("SNS 계정 회원가입 실패 확인 - 팝업")
+        ialc(wd, '확인')
+    except NoSuchElementException:
+        print("SNS 계정 회원가입 실패 확인 실패 - 팝업")
+        raise Exception('SNS 계정 회원가입 실패 확인 실패 - 팝업')
+
+
+def check_id_input_field_test(wd, id):
+    input_field_test = ial(wd, '//XCUIElementTypeTextField').text
+    if id == input_field_test:
+        print("SNS 계정 회원가입 실패 확인 - 입력란")
+    else:
+        print("SNS 계정 회원가입 실패 확인 실패 - 입력란")
+        raise Exception('SNS 계정 회원가입 실패 확인 실패 - 입력란')

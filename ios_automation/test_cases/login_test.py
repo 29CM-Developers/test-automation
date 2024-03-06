@@ -5,7 +5,8 @@ import com_utils.deeplink_control
 
 from time import time
 from com_utils.code_optimization import exception_control, finally_opt
-from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page, join_page
+from ios_automation.page_action import login_page, my_page, navigation_bar, my_edit_user_info_page, join_page, \
+    mobile_setting_page
 from ios_automation.page_action.select_category_page import test_select_category
 
 
@@ -187,6 +188,10 @@ class UserLoginTest:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            # 설정 앱에서 사파리 데이터 지우기
+            mobile_setting_page.click_safari_menu(wd)
+            mobile_setting_page.click_safari_clean_data(wd)
 
             # My 탭 진입
             com_utils.deeplink_control.move_to_my(self, wd)
