@@ -2,7 +2,7 @@ from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
-from com_utils.element_control import aal, aalc, element_scroll_control
+from com_utils.element_control import aal, aalc, element_scroll_control, tap_control
 from com_utils.api_control import my_heart_count
 from android_automation.page_action import bottom_sheet
 
@@ -207,8 +207,7 @@ def check_open_to_purchase_modal(wd, like_productItem):
 
 
 def close_purchase_modal(wd):
-    sleep(1)
-    aalc(wd, 'android:id/content')
+    tap_control(wd)
     print('모달 닫기 선택')
 
 

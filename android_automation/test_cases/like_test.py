@@ -98,8 +98,17 @@ class Like:
             like_page.click_liked_product_cart_btn(wd)
 
             # PDP의 구매하기 모달 확인 후 닫기
-            like_page.check_open_to_purchase_modal(wd, pdp_product_name)
+            product_detail_page.check_open_to_purchase_modal(wd)
             like_page.close_purchase_modal(wd)
+
+            # PDP 상품 이름 저장
+            pdp_product_name = product_detail_page.save_product_name(wd)
+
+            # 좋아요 한 상품명과 PDP의 상품명 비교
+            product_detail_page.check_product_name(pdp_product_name, like_product_name)
+
+            # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
+            product_detail_page.click_pdp_back_btn(wd)
 
             # 그리드 뷰 상태에서 이미지 사이즈 저장
             grid_size = like_page.save_grid_image_size(wd)
