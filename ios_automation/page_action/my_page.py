@@ -38,7 +38,7 @@ def check_login_btn(wd):
 
 
 def check_nickname(self, wd):
-    bottom_sheet.close_bottom_sheet(wd)
+    bottom_sheet.find_icon_and_close_bottom_sheet(wd)
     nickname_break = False
     for i in range(0, 5):
         try:
