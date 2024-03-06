@@ -164,8 +164,8 @@ def save_coupon_discount_price(wd):
 
 
 def save_order_no(wd):
-    order_no = aal(wd, 'c_주문번호 ORD').text
-    order_no = re.sub(re.escape('주문번호 '), "", order_no)
+    sleep(3)
+    order_no = aal(wd, 'c_ORD').text
     print(f'주문번호 문구 제거 후: {order_no}')
     return order_no
 
