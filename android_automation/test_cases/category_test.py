@@ -15,7 +15,7 @@ from com_utils.api_control import large_category_list, large_categories_info, me
 from com_utils.element_control import aal, aalk, aalc, scroll_control, \
     swipe_control, swipe_control, element_scroll_control
 from android_automation.page_action import category_page, welove_page, navigation_bar, product_detail_page, \
-    context_change
+    context_change, login_page
 from com_utils.testrail_api import send_test_result
 from com_utils.code_optimization import finally_opt, exception_control
 
@@ -28,6 +28,8 @@ class Category:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] 테스트 시작')
             # 딥링크로 카테고리 탭 이동
             navigation_bar.move_to_category(wd)
