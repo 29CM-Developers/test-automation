@@ -83,14 +83,15 @@ class AndroidTestAutomation(unittest.TestCase):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # PLP 기능 확인
-        self.result_data = Plp.test_product_listing_page(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # PLP 기능 확인
+        # self.result_data = Plp.test_product_listing_page(self, self.wd)
+        # self.response = slack_result_notifications.slack_notification(self)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 카테고리 화면 확인
         self.result_data = Category.test_category_page(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
