@@ -180,17 +180,14 @@ class Like:
 
             # 포스트 좋아요 해제
             like_page.click_to_unlike_post(wd)
-            like_page.refresh_post_like_tab(wd)
 
             # 브랜드 좋아요 해제
             like_page.click_brand_tab(wd)
             like_page.click_to_unlike_brand(wd)
-            like_page.refresh_brand_like_tab(wd)
 
             # 상품 좋아요 해제
             like_page.click_product_tab(wd)
             like_page.click_to_unlike_product(wd)
-            like_page.refresh_product_like_tab(wd)
 
             # 상단 Like 개수 확인
             like_page.check_like_total_count(wd, "0")

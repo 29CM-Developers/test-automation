@@ -38,4 +38,4 @@ def click_complete_btn(wd):
 
 def click_link(wd):
     ialc(wd, 'c_product.29cm.co.kr')
-    sleep(2)
+    sleep(3)

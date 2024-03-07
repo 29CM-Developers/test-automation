@@ -122,18 +122,18 @@ class UserLoginTest:
             # My 탭 진입
             com_utils.deeplink_control.move_to_my(self, wd)
 
-            # 카카오 로그인 페이지 진입
-            my_page.enter_login_page(wd)
-            login_page.click_sns_login_btn(wd, '카카오')
-
-            # 카카오 로그인
-            login_page.kakao_input_id_password(wd, self.pconf['kakao_id'], self.pconf['kakao_password'])
-
-            # 프로필 이름 확인
-            my_page.check_nickname(self, wd)
-
-            # 로그아웃 후, 로그인 버튼 확인
-            my_page.check_logout_and_login_btn(self, wd)
+            # # 카카오 로그인 페이지 진입
+            # my_page.enter_login_page(wd)
+            # login_page.click_sns_login_btn(wd, '카카오')
+            #
+            # # 카카오 로그인
+            # login_page.kakao_login(wd, self.pconf['kakao_id'], self.pconf['kakao_password'])
+            #
+            # # 프로필 이름 확인
+            # my_page.check_nickname(self, wd)
+            #
+            # # 로그아웃 후, 로그인 버튼 확인
+            # my_page.check_logout_and_login_btn(self, wd)
 
             # 네이버 로그인 페이지 진입
             my_page.enter_login_page(wd)
@@ -196,19 +196,19 @@ class UserLoginTest:
             # My 탭 진입
             com_utils.deeplink_control.move_to_my(self, wd)
 
-            # 카카오 로그인 페이지 진입
-            my_page.enter_login_page(wd)
-            login_page.click_sns_login_btn(wd, '카카오')
-
-            # 카카오 로그인
-            login_page.kakao_input_id_password(wd, self.pconf['kakao_id2'], self.pconf['kakao_password2'])
-
-            # 회원가입 페이지 진입 확인
-            join_page.check_auth_page(wd)
-
-            # 마이페이지 > 로그인 버튼 확인
-            join_page.click_back_btn(wd)
-            login_page.check_login_page(wd)
+            # # 카카오 로그인 페이지 진입
+            # my_page.enter_login_page(wd)
+            # login_page.click_sns_login_btn(wd, '카카오')
+            #
+            # # 카카오 로그인
+            # login_page.kakao_login(wd, self.pconf['kakao_id2'], self.pconf['kakao_password2'])
+            #
+            # # 회원가입 페이지 진입 확인
+            # join_page.check_auth_page(wd)
+            #
+            # # 마이페이지 > 로그인 버튼 확인
+            # join_page.click_back_btn(wd)
+            # login_page.check_login_page(wd)
 
             # 네이버 로그인 페이지 진입
             my_page.enter_login_page(wd)

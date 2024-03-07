@@ -17,6 +17,7 @@ from ios_automation.test_cases.my_test import My
 from ios_automation.test_cases.category_test import Category
 from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.like_test import Like
+from ios_automation.test_cases.join_test import Join
 from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet
 from com_utils.testrail_api import *
 from time import sleep
@@ -147,6 +148,16 @@ class IOSTestAutomation(unittest.TestCase):
 
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 미가입 SNS 계정 로그인 시도
+        self.result_data = UserLoginTest.test_enter_the_sns_account_sign_up_page(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # SNS 계정 가입 실패
+        self.result_data = Join.test_sns_account_registration_failure(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
