@@ -2,8 +2,6 @@ import unittest
 import os
 import sys
 
-from ios_automation.test_cases.join_test import Join
-
 iOS_path = os.path.join(os.path.dirname(__file__), '..')
 sys.path.append(iOS_path)
 
@@ -19,6 +17,7 @@ from ios_automation.test_cases.my_test import My
 from ios_automation.test_cases.category_test import Category
 from ios_automation.test_cases.home_test import Home
 from ios_automation.test_cases.like_test import Like
+from ios_automation.test_cases.join_test import Join
 from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet
 from com_utils.testrail_api import *
 from time import sleep
