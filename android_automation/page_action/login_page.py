@@ -20,15 +20,16 @@ def clear_id_password(wd):
 
 def check_login_error_text(self, wd):
     # 로그인 실패 문구 확인
-    guide_text_layer = aal(wd, 'com.the29cm.app29cm:id/webContainer')
-    guide_text = aal(guide_text_layer, 'c_5회 로그인 실패 시')
-
-    if "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다." in guide_text.text:
+    guide_text = aal(wd, 'c_5회 로그인 실패 시')
+    if guide_text == None:
+        print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 실패")
+        raise Exception('이메일 로그인 실패 확인 실패')
+    elif "5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다." in guide_text.text:
+        print(f"가이드 문구 : {guide_text.text} 확인")
         print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 확인")
     else:
         print("'5회 로그인 실패 시, 로그인이 10분 동안 제한됩니다.’ 가이드 문구 노출 실패")
         raise Exception('이메일 로그인 실패 확인 실패')
-    print(f"가이드 문구 : {guide_text.text} 확인")
 
 
 def check_login_page(wd):
