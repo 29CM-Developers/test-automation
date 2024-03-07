@@ -70,7 +70,7 @@ def kakao_login(wd, id, password):
         ialc(wd, f'c_{id}')
     except NoSuchElementException:
         kakao_input_id_password(wd, id, password)
-    sleep(2)
+    sleep(3)
 
 
 def naver_input_id_password(wd, id, password):
@@ -94,7 +94,7 @@ def naver_input_id_password(wd, id, password):
             ialc(wd, '//XCUIElementTypeButton[@name="동의하기"]')
         except NoSuchElementException:
             pass
-    sleep(2)
+    sleep(3)
 
 
 def facebook_input_id_password(wd, id, password):
@@ -123,7 +123,7 @@ def facebook_login_confirm(wd, id, password):
         facebook_login_error_check(wd)
         sleep(2)
         ialc(wd, 'c_님으로 계속')
-    sleep(2)
+    sleep(3)
 
 
 def apple_input_password(wd, password):
@@ -133,7 +133,7 @@ def apple_input_password(wd, password):
         ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
     except:
         pass
-    sleep(2)
+    sleep(3)
 
 
 # sns_name : '카카오', '네이버', '페이스북', 'Apple'
