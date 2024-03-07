@@ -1,6 +1,5 @@
 from time import sleep
 from selenium.common import NoSuchElementException
-
 from com_utils.element_control import ial, ialc, scroll_control
 
 
@@ -24,7 +23,7 @@ def click_safari_clean_data(wd):
             if element.is_displayed():
                 ialc(wd, element)
                 ialc(wd, 'c_방문 기록 및 데이터 지우기')
-                ialc(wd, 'c_닫기')
+                ialc(wd, 'c_탭 유지')
                 break
         except NoSuchElementException:
             pass
