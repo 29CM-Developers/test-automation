@@ -64,7 +64,6 @@ def check_tab_names(wd):
 
 def click_dynamic_gate(wd):
     # 큐레이션 확인
-    #sleep(1)
     curation = aal(wd, 'com.the29cm.app29cm:id/frontItems')
     if curation == None:
         pass
@@ -72,15 +71,16 @@ def click_dynamic_gate(wd):
         swipe_control(wd, curation, 'left', 50)
 
     # 4. 다이나믹 게이트 2번째 줄, 2번째 선택
-    #sleep(1)
     dynamic_layer = aal(wd, 'com.the29cm.app29cm:id/dynamicItems')
-    dynamic_button_title = aal(wd, 'dynamic_button_gift')
-    if dynamic_button_title == None:
-        swipe_control(wd, dynamic_layer, 'left', 50)
+
+    for i in range(0, 5):
         dynamic_button_title = aal(wd, 'dynamic_button_gift')
-    button_title = dynamic_button_title.text
+        if dynamic_button_title == None:
+            swipe_control(wd, dynamic_layer, 'left', 50)
+        else :
+            button_title = dynamic_button_title.text
+            break
     dynamic_button_title.click()
-    #sleep(3)
     return button_title
 
 
