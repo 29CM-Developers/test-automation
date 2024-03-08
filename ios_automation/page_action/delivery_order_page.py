@@ -37,7 +37,7 @@ def check_order_detail_price(wd, payment_type, order_price):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
 
     find_element = wd.find_elements(AppiumBy.XPATH, f'//*[contains(@label, "{payment_type}")]/../..')
     price = find_element[0].find_element(AppiumBy.XPATH, '//XCUIElementTypeOther[2]/XCUIElementTypeStaticText').text

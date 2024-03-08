@@ -162,9 +162,9 @@ def scroll_to_feed_contents(wd, feed_title):
                     print('피드 컨텐츠 노출 확인')
                     break
             else:
-                scroll_control(wd, 'D', 40)
+                scroll_control(wd, 'D', 30)
         except NoSuchElementException:
-            scroll_control(wd, 'D', 60)
+            scroll_control(wd, 'D', 40)
         if find_contents:
             break
     if not find_contents:

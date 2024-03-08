@@ -17,7 +17,7 @@ def find_recent_keyword(wd):
             else:
                 scroll_control(wd, 'U', 30)
         except NoSuchElementException:
-            scroll_control(wd, 'U', 50)
+            scroll_control(wd, 'U', 45)
 
 
 def clear_recent_keyword(wd):
@@ -105,9 +105,9 @@ def check_popular_keyword_title(wd):
                 print('인기 검색어 타이틀 확인')
                 break
             else:
-                scroll_control(wd, 'D', 50)
+                scroll_control(wd, 'D', 45)
         except NoSuchElementException:
-            scroll_control(wd, 'D', 50)
+            scroll_control(wd, 'D', 45)
     else:
         print('인기 검색어 타이틀 확인 실패')
         raise Exception('인기 검색어 타이틀 확인 실패')
@@ -131,7 +131,7 @@ def save_popular_keyword(wd, ranking):
                 i += 1
             if rank_break:
                 break
-            scroll_control(wd, "D", 60)
+            scroll_control(wd, "D", 45)
         except NoSuchElementException:
             pass
     return keyword

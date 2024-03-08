@@ -31,7 +31,7 @@ def check_receiver_info(wd):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
     if not info_break:
         print('선물하기 결제 화면 진입 확인 실패')
         raise Exception('선물하기 결제 화면 진입 확인 실패')
@@ -50,7 +50,7 @@ def check_order_product_name(wd, product_name):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
     if not name_break:
         print(f'주문서 상품명 확인 실패: pdp-{product_name} / 주문서-{order_name}')
         raise Exception('주문서 상품명 확인 실패')
@@ -67,7 +67,7 @@ def save_purchase_price(wd):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
     return price
 
 
@@ -132,7 +132,7 @@ def click_virtual_account(wd):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'U', 50)
+        scroll_control(wd, 'U', 40)
     if not virtual_account:
         print('무통장 입금 옵션 미노출')
 
@@ -148,7 +148,7 @@ def click_hyundai_card(wd):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'U', 50)
+        scroll_control(wd, 'U', 40)
     if not virtual_account:
         print('현대카드 X PIN PAY 옵션 미노출')
 
@@ -163,7 +163,7 @@ def click_all_agreement(wd):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
 
 
 def click_payment(wd):
@@ -191,7 +191,7 @@ def click_virtual_account_payment(wd):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
     sleep(3)
 
 
@@ -238,7 +238,7 @@ def check_payment_type(wd, payment_type):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 50)
+        scroll_control(wd, 'D', 40)
 
     if payment_info == payment_type:
         print('주문 완료 페이지 확인 - 결제방법')

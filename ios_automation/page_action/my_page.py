@@ -97,7 +97,7 @@ def click_delivery_order_menu(wd):
                 break
         except NoSuchElementException:
             pass
-        com_utils.element_control.scroll_control(wd, "U", 50)
+        com_utils.element_control.scroll_control(wd, "U", 40)
 
 
 def click_review_menu(wd):
@@ -109,7 +109,7 @@ def click_review_menu(wd):
                 break
         except NoSuchElementException:
             pass
-        com_utils.element_control.scroll_control(wd, "D", 50)
+        com_utils.element_control.scroll_control(wd, "D", 40)
 
 
 def click_edit_user_info_menu(wd):
@@ -121,7 +121,7 @@ def click_edit_user_info_menu(wd):
                 break
         except NoSuchElementException:
             pass
-        com_utils.element_control.scroll_control(wd, "D", 50)
+        com_utils.element_control.scroll_control(wd, "D", 40)
 
 
 def click_coupon_menu(wd):
@@ -133,7 +133,7 @@ def click_coupon_menu(wd):
                 break
         except NoSuchElementException:
             pass
-        com_utils.element_control.scroll_control(wd, "D", 50)
+        com_utils.element_control.scroll_control(wd, "D", 45)
 
 
 def find_logout_btn(wd):
