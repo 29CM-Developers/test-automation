@@ -53,17 +53,24 @@ def click_simple_join_btn(wd):
 
 def kakao_input_id_password(wd, id, password):
     try:
-        try:
-            ialc(wd, '다른 카카오계정으로 로그인')
-        except NoSuchElementException:
-            pass
         ialc(wd, '//XCUIElementTypeLink[@name="새로운 계정으로 로그인"]')
-    except:
+    except NoSuchElementException:
         pass
     ialk(wd, '//XCUIElementTypeOther[@name="기사"]/XCUIElementTypeTextField', id)
     ialk(wd, '//XCUIElementTypeOther[@name="기사"]/XCUIElementTypeSecureTextField', password)
     ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
-    sleep(1)
+
+
+def kakao_login(wd, id, password):
+    try:
+        ialc(wd, '다른 카카오계정으로 로그인')
+    except NoSuchElementException:
+        pass
+    try:
+        ialc(wd, f'c_{id}')
+    except NoSuchElementException:
+        kakao_input_id_password(wd, id, password)
+    sleep(3)
 
 
 def naver_input_id_password(wd, id, password):
@@ -87,7 +94,7 @@ def naver_input_id_password(wd, id, password):
             ialc(wd, '//XCUIElementTypeButton[@name="동의하기"]')
         except NoSuchElementException:
             pass
-    sleep(1)
+    sleep(3)
 
 
 def facebook_input_id_password(wd, id, password):
@@ -99,14 +106,24 @@ def facebook_input_id_password(wd, id, password):
         pass
 
 
+def facebook_login_error_check(wd):
+    try:
+        ial(wd, 'c_Back to Home')
+        ialc(wd, '//XCUIElementTypeButton[@name="취소"]')
+        click_sns_login_btn(wd, '페이스북')
+    except NoSuchElementException:
+        pass
+
+
 def facebook_login_confirm(wd, id, password):
     try:
         ialc(wd, 'c_님으로 계속')
     except NoSuchElementException:
         facebook_input_id_password(wd, id, password)
+        facebook_login_error_check(wd)
         sleep(2)
         ialc(wd, 'c_님으로 계속')
-    sleep(1)
+    sleep(3)
 
 
 def apple_input_password(wd, password):
@@ -116,14 +133,17 @@ def apple_input_password(wd, password):
         ialc(wd, '//XCUIElementTypeButton[@name="로그인"]')
     except:
         pass
-    sleep(1)
+    sleep(3)
 
 
 # sns_name : '카카오', '네이버', '페이스북', 'Apple'
 def click_sns_login_btn(wd, sns_name):
     context_change.switch_context(wd, 'webview')
     print(f'"{sns_name}" 로그인 확인')
-    ialc(wd, f'//span[contains(text(), "{sns_name}")]/..')
+    try:
+        ialc(wd, f'//span[contains(text(), "{sns_name}")]/..')
+    except NoSuchElementException:
+        pass
     context_change.switch_context(wd, 'native')
 
     if sns_name == 'Apple':

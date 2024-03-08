@@ -65,16 +65,16 @@ class Join:
             # 로그인 페이지 진입
             my_page.enter_login_page(wd)
 
-            # 카카오 로그인 페이지 진입
-            login_page.click_sns_login_btn(wd, '카카오')
-
-            # 카카오 로그인
-            login_page.kakao_input_id_password(wd, self.pconf['sns_error_id'], self.pconf['sns_error_password'])
-
-            # 중복 계정 팝업 확인 및 이메일 입력란 확인
-            login_page.check_duplicate_account(wd)
-            login_page.check_id_input_field_test(wd, self.pconf['sns_error_id'])
-            login_page.clear_id_password(wd)
+            # # 카카오 로그인 페이지 진입
+            # login_page.click_sns_login_btn(wd, '카카오')
+            #
+            # # 카카오 로그인
+            # login_page.kakao_login(wd, self.pconf['sns_error_id'], self.pconf['sns_error_password'])
+            #
+            # # 중복 계정 팝업 확인 및 이메일 입력란 확인
+            # login_page.check_duplicate_account(wd)
+            # login_page.check_id_input_field_test(wd, self.pconf['sns_error_id'])
+            # login_page.clear_id_password(wd)
 
             # 페이스북 로그인 페이지 진입
             login_page.click_sns_login_btn(wd, '페이스북')
