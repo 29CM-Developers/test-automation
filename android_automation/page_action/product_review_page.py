@@ -19,6 +19,7 @@ def check_no_reviews_available(wd):
 
 
 def click_my_review_tab(wd):
+    sleep(3)
     aalc(wd, 'c_내 리뷰 (')
 
 
