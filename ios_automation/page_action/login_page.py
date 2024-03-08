@@ -1,6 +1,9 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
 from selenium.common import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from com_utils.element_control import ialk, ialc, ial
 from ios_automation.page_action import context_change
 
@@ -116,6 +119,7 @@ def facebook_login_error_check(wd):
 
 
 def facebook_login_confirm(wd, id, password):
+    WebDriverWait(wd, 10).until(EC.presence_of_element_located((By.XPATH, '//XCUIElementTypeButton[@name="로그인"]')))
     try:
         ialc(wd, 'c_님으로 계속')
     except NoSuchElementException:
