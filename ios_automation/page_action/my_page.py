@@ -17,7 +17,8 @@ def enter_login_page(wd):
     sleep(3)
 
 
-def find_login_btn(wd):
+def find_login_btn(self, wd):
+    com_utils.deeplink_control.move_to_my(self, wd)
     for i in range(0, 5):
         try:
             element = wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'login_btn')
@@ -158,5 +159,5 @@ def check_logout_and_login_btn(self, wd):
 
     # 로그아웃 완료 > 로그인,회원가입 문구 확인
     move_to_my(self, wd)
-    find_login_btn(wd)
+    find_login_btn(self, wd)
     check_login_btn(wd)
