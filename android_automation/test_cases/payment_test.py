@@ -55,7 +55,7 @@ class Payment:
             delivery_order_page.check_delivery_order(wd, order_no)
 
             # 주문 상세 내역의 가격과 주문서 결제 가격 비교
-            delivery_order_page.check_order_detail_price(wd, '무통장입금', oder_page_price)
+            delivery_order_page.check_order_detail_price(wd, '무통장입금 (가상계좌)', oder_page_price)
 
             # 주문 조회 페이지로 뒤로가기
             delivery_order_page.click_back_btn(wd)

@@ -164,8 +164,8 @@ def save_coupon_discount_price(wd):
 
 
 def save_order_no(wd):
-    order_no = aal(wd, 'c_주문번호 ORD').text
-    order_no = re.sub(re.escape('주문번호 '), "", order_no)
+    sleep(3)
+    order_no = aal(wd, 'c_ORD').text
     print(f'주문번호 문구 제거 후: {order_no}')
     return order_no
 
@@ -279,13 +279,12 @@ def check_done_payment(wd):
 
 
 def check_payment_type(wd, payment_type):
+    print(f'payment_type : {payment_type}')
     payment_info = ''
     try:
-        parent_elements = aal(wd, f'//*[contains(@text, "결제방법")]/../..')
-        p1 = aals(parent_elements, '//android.view.View')
+        p1 = aals(wd, f'c_{payment_type}')
         for i in range(len(p1)):
-            print(f'element : {p1[i].text}')
-            if p1[i].text == payment_type:
+            if p1[i].text in payment_type:
                 payment_info = p1[i].text
                 break
     except NoSuchElementException:

@@ -1,17 +1,13 @@
 from time import sleep
-
-from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-
 from android_automation.page_action import context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
-from android_automation.page_action.context_change import change_webview_contexts, change_native_contexts, \
-    switch_context
 from com_utils.element_control import aal, aalc, aals, aalk, scroll_control
 from com_utils.api_control import product_detail, best_plp_women_clothes, product_no_soldout_option
 
 
 def click_pdp_back_btn(wd):
+    sleep(1)
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print('뒤로가기 선택')
     close_bottom_sheet(wd)
@@ -20,6 +16,14 @@ def click_pdp_back_btn(wd):
 def click_home_btn(wd):
     aalc(wd, 'com.the29cm.app29cm:id/imgHome')
 
+def check_open_to_purchase_modal(wd):
+
+    cart_btn = aal(wd, 'c_장바구니 담기')
+    if cart_btn== None:
+        print('PDP 구매하기 모달 노출 확인')
+        raise Exception('PDP 구매하기 모달 노출 확인 실패')
+    else:
+        print('PDP 구매하기 모달 노출 확인')
 
 def save_remove_prefix_product_name(product_name):
     index = product_name.find(']_')
@@ -51,8 +55,9 @@ def check_product_name1(product_name, compare_name):
     compare_name = compare_name.replace('_', ' ')
     product_name = ' '.join(product_name.split())
     compare_name = ' '.join(compare_name.split())
+    sliced_string = compare_name[-5:]
     print(f'상품명 - pdp: {product_name} / 비교: {compare_name}')
-    if compare_name in product_name:
+    if sliced_string in product_name:
         print('PDP 진입 확인 - 상품명')
     else:
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')

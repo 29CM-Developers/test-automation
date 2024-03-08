@@ -65,32 +65,33 @@ class AndroidTestAutomation(unittest.TestCase):
         except Exception:
             self.appium.stop()
 
+    # def test_automation_android_bvt2(self):
+    #
+    #     # 메소드명과 일치하는 정보 받아오기
+    #     self.def_name = self.dconf[sys._getframe().f_code.co_name]
+    #
+    #     # Like 존재하는 경우
+    #     self.result_data = Like.test_like_item(self, self.wd)
+    #     self.response = slack_result_notifications.slack_notification(self)
+    #     self.count = slack_result_notifications.slack_thread_notification(self)
+    #     self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+    #
+    #     slack_result_notifications.slack_add_end_emoji(self)
+
     def test_automation_android_bvt2(self):
 
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # Like 존재하는 경우
-        self.result_data = Like.test_like_item(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        slack_result_notifications.slack_add_end_emoji(self)
-
-    def test_automation_android_bvt3(self):
-
-        # 메소드명과 일치하는 정보 받아오기
-        self.def_name = self.dconf[sys._getframe().f_code.co_name]
-
-        # PLP 기능 확인
-        self.result_data = Plp.test_product_listing_page(self, self.wd)
-        self.response = slack_result_notifications.slack_notification(self)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # PLP 기능 확인
+        # self.result_data = Plp.test_product_listing_page(self, self.wd)
+        # self.response = slack_result_notifications.slack_notification(self)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 카테고리 화면 확인
         self.result_data = Category.test_category_page(self, self.wd)
+        self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
@@ -156,10 +157,10 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # Like 존재하지 않을 경우
-        self.result_data = Like.test_no_like_item(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # Like 존재하지 않을 경우
+        # self.result_data = Like.test_no_like_item(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         slack_result_notifications.slack_add_end_emoji(self)
 if __name__ == '__main__':

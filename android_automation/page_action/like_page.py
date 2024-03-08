@@ -2,7 +2,7 @@ from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_pdp_bottom_sheet
-from com_utils.element_control import aal, aalc, element_scroll_control
+from com_utils.element_control import aal, aalc, element_scroll_control, tap_control
 from com_utils.api_control import my_heart_count
 from android_automation.page_action import bottom_sheet
 
@@ -35,14 +35,14 @@ def set_like_zero(self, wd):
         click_product_tab(wd)
         click_to_unlike_product(wd)
         # 좋아요 해제 후 새로고침
-        refresh_product_like_tab(wd)
+        #refresh_product_like_tab(wd)
 
     if brand_count != 0:
         print(f'좋아요 브랜드 수 : {brand_count}')
         click_brand_tab(wd)
         click_to_unlike_brand(wd)
         # 좋아요 해제 후 새로고침
-        refresh_brand_like_tab(wd)
+        #refresh_brand_like_tab(wd)
 
     # if post_count != 0:
     #     print(f'좋아요 포스트 수 : {post_count}')
@@ -195,7 +195,10 @@ def click_liked_product_cart_btn(wd):
 def check_open_to_purchase_modal(wd, like_productItem):
     # like_layer = aal(wd, 'com.the29cm.app29cm:id/likeRecyclerView')
     # like_productItem = aal(like_layer, 'com.the29cm.app29cm:id/txtBody').text
-    item_name = aal(wd, 'com.the29cm.app29cm:id/txtItemName').text
+    # item_name = aal(wd, 'com.the29cm.app29cm:id/txtItemName').text
+    sleep(3)
+    item_name = aal(wd, 'id_pdp_product_name').text
+    print(f'item_name :{item_name}, like_productItem : {like_productItem}')
     if item_name in like_productItem:
         print('좋아요 상품명 장바구니 모달 확인')
     else:
@@ -204,10 +207,9 @@ def check_open_to_purchase_modal(wd, like_productItem):
 
 
 def close_purchase_modal(wd):
-    # sleep(1)
-    # aalc(wd, 'android:id/content')
-    wd.find_element(AppiumBy.ID, 'android:id/content').click()
+    tap_control(wd)
     print('모달 닫기 선택')
+
 
 
 def save_like_brand_name(wd):
