@@ -119,7 +119,7 @@ def facebook_login_error_check(wd):
 
 
 def facebook_login_confirm(wd, id, password):
-    WebDriverWait(wd, 10).until(EC.presence_of_element_located((By.XPATH, '//XCUIElementTypeButton[@name="로그인"]')))
+    WebDriverWait(wd, 10).until(EC.presence_of_element_located((By.XPATH, "//*[contains(@label, '29CM')]")))
     try:
         ialc(wd, 'c_님으로 계속')
     except NoSuchElementException:
