@@ -69,7 +69,7 @@ class UserLoginTest:
             my_page.click_logout_btn(wd)
 
             # 로그아웃 완료 > 로그인,회원가입 문구 확인
-            my_page.find_login_btn(wd)
+            my_page.find_login_btn(self, wd)
             my_page.check_login_btn(wd)
 
         except Exception:

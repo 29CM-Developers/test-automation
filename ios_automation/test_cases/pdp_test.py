@@ -2,6 +2,7 @@ import os
 import sys
 import traceback
 from time import time
+import com_utils.element_control
 from com_utils.code_optimization import exception_control, finally_opt
 from com_utils.api_control import product_detail, search_woman_popular_brand_name, search_result, \
     order_product_random_no
@@ -36,10 +37,8 @@ class Pdp:
             product_detail_page.click_like_btn(wd)
 
             # 바텀시트 최대로 확장하여 바텀시트 내 타이틀 확인 > 바텀 시트 닫기
-            product_detail_page.move_like_bottom_sheet(wd, 'D')
             product_detail_page.check_like_bottom_sheet(wd)
-            product_detail_page.move_like_bottom_sheet(wd, 'U')
-            product_detail_page.move_like_bottom_sheet(wd, 'U')
+            com_utils.element_control.tap_control(wd)
 
             # 딥링크로 Like 탭 이동
             move_to_like(self, wd)
