@@ -55,7 +55,7 @@ def check_product_name1(product_name, compare_name):
     compare_name = compare_name.replace('_', ' ')
     product_name = ' '.join(product_name.split())
     compare_name = ' '.join(compare_name.split())
-    sliced_string = compare_name[-5:]
+    sliced_string = compare_name[-8:]
     print(f'상품명 - pdp: {product_name} / 비교: {compare_name}')
     if sliced_string in product_name:
         print('PDP 진입 확인 - 상품명')
