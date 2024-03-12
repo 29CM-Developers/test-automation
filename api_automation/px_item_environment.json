@@ -105,7 +105,7 @@
 			"enabled": true
 		},
 		{
-			"key": "purchasePrice",
+			"key": "supplyPrice",
 			"value": "",
 			"type": "default",
 			"enabled": true
@@ -424,6 +424,6 @@
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-01-22T03:24:08.155Z",
-	"_postman_exported_using": "Postman/10.22.3"
+	"_postman_exported_at": "2024-03-12T01:16:28.788Z",
+	"_postman_exported_using": "Postman/10.23.12"
 }
