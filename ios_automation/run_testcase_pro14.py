@@ -153,10 +153,20 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
+        # PDP에서 공유하기
+        self.result_data = Pdp.test_share_on_pdp(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
         # 로그아웃
         self.result_data = UserLoginTest.test_logout(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # # SNS 계정 로그인 및 로그아웃
+        # self.result_data = UserLoginTest.test_sns_login_logout(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # 간편 회원가입 실패
         self.result_data = Join.test_simple_membership_registration_failure(self, self.wd)
