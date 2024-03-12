@@ -1,6 +1,9 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from time import sleep
 from selenium.common import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from com_utils.element_control import ialk, ialc, ial
 from ios_automation.page_action import context_change
 
@@ -108,7 +111,7 @@ def facebook_input_id_password(wd, id, password):
 
 def facebook_login_error_check(wd):
     try:
-        ial(wd, 'c_Back to Home')
+        ial(wd, 'c_Sorry')
         ialc(wd, '//XCUIElementTypeButton[@name="취소"]')
         click_sns_login_btn(wd, '페이스북')
     except NoSuchElementException:
@@ -116,10 +119,12 @@ def facebook_login_error_check(wd):
 
 
 def facebook_login_confirm(wd, id, password):
+    WebDriverWait(wd, 10).until(EC.presence_of_element_located((By.XPATH, "//*[contains(@label, '29CM')]")))
     try:
         ialc(wd, 'c_님으로 계속')
     except NoSuchElementException:
         facebook_input_id_password(wd, id, password)
+        sleep(2)
         facebook_login_error_check(wd)
         sleep(2)
         ialc(wd, 'c_님으로 계속')

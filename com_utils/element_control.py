@@ -206,7 +206,7 @@ Android, iOS에서 공통으로 사용하는 스크롤 동작
 def scroll_control(wd, direction, percent):
     size = wd.get_window_size()
     start_x = size["width"] / 2
-    duration_ms = 1000  # 스크롤 동작 시간 (밀리초)
+    duration_ms = 700  # 스크롤 동작 시간 (밀리초)
 
     # x축 기준 시작점에서 디바이스 사이즈의 30%만큼 좌측으로 이동
     if direction == 'U':
@@ -233,7 +233,7 @@ def element_scroll_control(wd, element, direction, percent):
     window_size = wd.get_window_size()
     move_y = window_size['height'] * (percent / 100)
 
-    duration_ms = 1000
+    duration_ms = 700
 
     if direction == 'U':
         end_y = start_y + move_y
