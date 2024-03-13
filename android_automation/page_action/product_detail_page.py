@@ -47,7 +47,19 @@ def remove_prefix_product_name(product_name):
 
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
+
 def check_product_name(product_name, compare_name):
+    product_name = product_name.replace("_", " ")
+    compare_name = compare_name.replace("_", " ")
+    product_name = ' '.join(product_name.split())
+    compare_name = ' '.join(compare_name.split())
+    if compare_name in product_name:
+        print('PDP 진입 확인 - 상품명')
+    else:
+        print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
+        raise Exception('PDP 진입 확인 실패 - 상품명')
+
+def check_prefix_product_name(product_name, compare_name):
     compare_name = remove_prefix_product_name(compare_name)
     compare_name = ' '.join(compare_name.split())
     if product_name in compare_name:
@@ -55,7 +67,6 @@ def check_product_name(product_name, compare_name):
     else:
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
         raise Exception('PDP 진입 확인 실패 - 상품명')
-
 
 def click_purchase_btn(wd):
     aalc(wd, 'c_구매하기')
