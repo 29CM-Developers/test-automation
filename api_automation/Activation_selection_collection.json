@@ -2262,8 +2262,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});",
 									"",
 									"var jsonData = pm.response.json();",
@@ -5163,7 +5163,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=50&page=1&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
+							"raw": "https://qa-search-api.29cm.co.kr/api/v4/products/category/?categoryLargeCode=268100100&categoryMediumCode=&categorySmallCode=&count=350&page=5&minPrice=&maxPrice=&isFreeShipping=&isDiscount=&sort=latest&init=T&colors=&excludeSoldOut=true&brands=",
 							"protocol": "https",
 							"host": [
 								"qa-search-api",
@@ -5193,11 +5193,11 @@
 								},
 								{
 									"key": "count",
-									"value": "50"
+									"value": "350"
 								},
 								{
 									"key": "page",
-									"value": "1"
+									"value": "5"
 								},
 								{
 									"key": "minPrice",
@@ -5649,7 +5649,7 @@
 								"exec": [
 									"var likes_list = pm.environment.get(\"likes_list\")",
 									"var pure_list = Object.values(likes_list)",
-									"var lists = pure_list.slice(824,825)",
+									"var lists = pure_list.slice(461,462)",
 									"",
 									"pm.environment.set(\"likes_list\", lists)"
 								],
@@ -5933,7 +5933,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/v4/selections/me?page=1&size=90",
+							"raw": "{{host}}/api/v4/selections/me?page=1&size=100",
 							"host": [
 								"{{host}}"
 							],
@@ -5950,7 +5950,7 @@
 								},
 								{
 									"key": "size",
-									"value": "90"
+									"value": "100"
 								}
 							]
 						}
@@ -6040,6 +6040,61 @@
 								"v4",
 								"selections",
 								"{{selectionId}}:delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CIDI",
+			"item": [
+				{
+					"name": "delete CI only",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://user-api.29cm.co.kr/inhouse-admin/v1/users/6283076/ci:delete",
+							"protocol": "https",
+							"host": [
+								"user-api",
+								"29cm",
+								"co",
+								"kr"
+							],
+							"path": [
+								"inhouse-admin",
+								"v1",
+								"users",
+								"6283076",
+								"ci:delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete DI Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://user-api.29cm.co.kr/inhouse-admin/v1/users/6283076/di:delete",
+							"protocol": "https",
+							"host": [
+								"user-api",
+								"29cm",
+								"co",
+								"kr"
+							],
+							"path": [
+								"inhouse-admin",
+								"v1",
+								"users",
+								"6283076",
+								"di:delete"
 							]
 						}
 					},
