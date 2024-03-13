@@ -49,7 +49,7 @@ def remove_prefix_product_name(product_name):
 def check_product_name(product_name, compare_name):
     compare_name = remove_prefix_product_name(compare_name)
     compare_name = ' '.join(compare_name.split())
-    if compare_name in product_name:
+    if product_name in compare_name:
         print('PDP 진입 확인 - 상품명')
     else:
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
