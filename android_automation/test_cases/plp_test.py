@@ -82,7 +82,7 @@ class Plp:
 
             # PDP 상품명 비교
             pdp_name = product_detail_page.save_product_name(wd)
-            product_detail_page.check_product_name1(pdp_name, now_1st_product)
+            product_detail_page.check_product_name(pdp_name, now_1st_product)
 
             # context_change.switch_context(wd, 'webveiw')
             #

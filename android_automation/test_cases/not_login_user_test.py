@@ -82,7 +82,7 @@ class NotLogin:
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             pdp_name = product_detail_page.save_product_name(wd)
-            product_detail_page.check_product_name1(pdp_name, plp_name)
+            product_detail_page.check_product_name(pdp_name, plp_name)
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             product_detail_page.click_pdp_back_btn(wd)
