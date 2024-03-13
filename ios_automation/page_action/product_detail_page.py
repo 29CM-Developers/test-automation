@@ -1,7 +1,7 @@
 from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
-from com_utils.element_control import ial, ialc, ialk, ials, element_scroll_control, tap_control
+from com_utils.element_control import ial, ialc, ialk, element_scroll_control, tap_control
 from com_utils.api_control import best_plp_women_clothes, product_no_soldout_option
 from ios_automation.page_action import context_change
 
@@ -47,9 +47,22 @@ def remove_prefix_product_name(product_name):
 # product_name : pdp 상품명
 # compare_name: pdp 상품명과 비교한 상품명
 def check_product_name(product_name, compare_name):
-    compare_name = remove_prefix_product_name(compare_name)
+    product_name = ' '.join(product_name.split())
     compare_name = ' '.join(compare_name.split())
     if compare_name in product_name:
+        print('PDP 진입 확인 - 상품명')
+    else:
+        print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')
+        raise Exception('PDP 진입 확인 실패 - 상품명')
+
+
+# product_name : pdp 상품명
+# compare_name: pdp 상품명과 비교한 상품명
+# 말머리 제외하고 상품명 비교 필요 (베스트 plp와 비교)
+def check_prefix_product_name(product_name, compare_name):
+    compare_name = remove_prefix_product_name(compare_name)
+    compare_name = ' '.join(compare_name.split())
+    if product_name in compare_name:
         print('PDP 진입 확인 - 상품명')
     else:
         print(f'PDP 진입 확인 실패 - pdp: {product_name} / 비교: {compare_name}')

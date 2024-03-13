@@ -74,8 +74,12 @@ class Like:
             # PDP 상품 이름 저장
             pdp_product_name = product_detail_page.save_product_name(wd)
 
+            # 종아요 한 상품명 API 호출
+            liked_product_name = com_utils.api_control.my_heart_item(self.pconf['id2_29cm'],
+                                                                     self.pconf['password_29cm'])
+
             # 좋아요 한 상품명과 PDP의 상품명 비교
-            product_detail_page.check_product_name(pdp_product_name, like_product_name)
+            product_detail_page.check_product_name(pdp_product_name, liked_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
@@ -91,7 +95,7 @@ class Like:
             pdp_product_name = product_detail_page.save_product_name(wd)
 
             # 좋아요 한 상품명과 PDP의 상품명 비교
-            product_detail_page.check_product_name(pdp_product_name, like_product_name)
+            product_detail_page.check_product_name(pdp_product_name, liked_product_name)
 
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
