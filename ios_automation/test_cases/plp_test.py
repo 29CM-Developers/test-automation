@@ -73,7 +73,7 @@ class Plp:
             best_product_list_page.click_best_first_product(wd)
 
             # PDP 상품명 비교
-            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+            pdp_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_name, now_1st_product)
 
             # PDP 상품가격 비교
