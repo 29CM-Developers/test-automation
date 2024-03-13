@@ -146,18 +146,26 @@ def click_color_filter(self, wd, color):
 def click_category_filter(wd, category):
     sleep(1)
     aalc(wd, 'category_filter_layer')
-    aalc(wd, f"c_{category}")
+    sleep(1)
+    bottom_sheet = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
+    aalc(bottom_sheet, f"c_{category}")
     print(f'필터 - 카테고리 : {category} 선택')
 
 
 def click_price_range_filter(wd, price_range):
+    sleep(1)
     aalc(wd, 'price_range')
-    aalc(wd, f"c_{price_range}")
+    sleep(1)
+    bottom_sheet = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
+    aalc(bottom_sheet, f"c_{price_range}")
 
 
 def click_product_info_filter(wd, product_info):
+    sleep(1)
     aalc(wd, 'product_information')
-    aalc(wd, f"c_{product_info}")
+    sleep(1)
+    bottom_sheet = aal(wd, 'com.the29cm.app29cm:id/design_bottom_sheet')
+    aalc(bottom_sheet, f"c_{product_info}")
 
 
 def click_apply_filter_btn(wd):
