@@ -8,6 +8,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common.exceptions import NoSuchElementException
 from com_utils import values_control, deeplink_control
 from com_utils.code_optimization import finally_opt, exception_control
+from com_utils.api_control import best_plp_women_clothes
 from ios_automation.page_action import navigation_bar, login_page, home_page, product_detail_page, \
     best_product_list_page, my_page, category_page, search_page, search_result_page
 
@@ -54,14 +55,21 @@ class NotLoginUserTest:
 
             # Home > 베스트 탭 선택하여 베스트 PLP 진입
             home_page.click_tab_name(wd, '베스트')
+            home_page.click_best_tab(wd)
 
-            # 베스트 탭에서 첫번째 상품명 저장하고 PDP 진입
+            # 여성의류 실시간 1위 상품명 api 호출하여 저장
+            best_product_name = best_plp_women_clothes(1, 'NOW')['item_name']
+
+            # 베스트 탭에서 첫번째 상품명 비교
             plp_name = best_product_list_page.save_best_first_product_name(wd)
+            best_product_list_page.check_best_product_name(best_product_name, plp_name)
+
+            # 베스트 상품 PDP 진입
             best_product_list_page.click_best_first_product(wd)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
-            product_detail_page.check_prefix_product_name(pdp_name, plp_name)
+            pdp_name = product_detail_page.save_product_name(wd)
+            product_detail_page.check_product_name(pdp_name, best_product_name)
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             product_detail_page.click_pdp_back_btn(wd)
