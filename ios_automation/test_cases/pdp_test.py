@@ -77,7 +77,7 @@ class Pdp:
             search_product = product_detail(search_product_item_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+            pdp_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             # 선물하기 버튼 선택
@@ -130,7 +130,7 @@ class Pdp:
             search_product = product_detail(random_product_no)['item_name']
 
             # PDP 상품명과 API 호출된 상품명 동일한 지 확인
-            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+            pdp_name = product_detail_page.save_product_name(wd)
             product_detail_page.check_product_name(pdp_name, search_product)
 
             # 구매하기 버튼 선택
@@ -182,7 +182,7 @@ class Pdp:
             move_to_pdp_iOS(wd, search_product_item_no)
 
             # PDP의 상품명 저장
-            pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+            pdp_name = product_detail_page.save_product_name(wd)
 
             # CTA의 공유하기 > 링크 복사 버튼 선택
             product_detail_page.click_share_btn(wd)
@@ -200,7 +200,7 @@ class Pdp:
             mobile_memo_page.click_link(wd)
 
             # 링크로 이동한 PDP의 상품명 저장
-            link_pdp_name = product_detail_page.save_remove_prefix_product_name(wd)
+            link_pdp_name = product_detail_page.save_product_name(wd)
 
             # 공유한 PDP의 상품명과 공유받은 PDP의 상품명이 동일한지 확인
             product_detail_page.check_product_name(link_pdp_name, pdp_name)

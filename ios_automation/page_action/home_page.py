@@ -58,6 +58,12 @@ def check_tab_names(self, tab, tab_list):
         raise Exception(f'홈 상단 {tab} 탭 확인 실패')
 
 
+def click_best_tab(wd):
+    ialc(wd, 'c_여성의류')
+    ialc(wd, 'c_전체')
+    ialc(wd, 'c_실시간')
+
+
 def click_dynamic_gate(wd):
     # 다이나믹 게이트 -> 센스있는 선물하기 선택
     for i in range(0, 3):

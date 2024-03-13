@@ -280,6 +280,18 @@ def my_heart_count(id, password):
         print('좋아요 수 불러오기 실패')
 
 
+def my_heart_item(id, password):
+    cookies = com_utils.cookies_control.cookie_29cm(id, password)
+
+    like_response = requests.get('https://front-api.29cm.co.kr/api/v2/heart/my-heart/product', cookies=cookies)
+    if like_response.status_code == 200:
+        like = like_response.json()
+        like_item = like['data']['content'][0]['item_name']
+        return like_item
+    else:
+        print('좋아요 상품 불러오기 실패')
+
+
 # 테스트 하는 id, password 입력
 def my_coupon_list(id, password, coupon_type):
     cookies = com_utils.cookies_control.cookie_29cm(id, password)
