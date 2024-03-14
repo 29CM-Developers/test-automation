@@ -130,15 +130,15 @@ def save_webview_category_product_name(wd, first_product_name):
         scroll_control(wd, "D", 50)
 
 
-def check_category_product_name(plp_name, compare_name):
+def check_category_product_name(plp_name, api_name):
     plp_name = plp_name.replace('_', ' ')
-    compare_name = compare_name.replace('_', ' ')
+    api_name = api_name.replace('_', ' ')
     plp_name = ' '.join(plp_name.split())
-    compare_name = ' '.join(compare_name.split())
-    if plp_name in compare_name:
+    api_name = ' '.join(api_name.split())
+    if api_name in plp_name:
         print('카테고리 페이지의 상품 확인')
     else:
-        print(f'카테고리 페이지의 상품 확인 실패 :{compare_name}/{plp_name}')
+        print(f'카테고리 페이지의 상품 확인 실패 :{api_name}/{plp_name}')
         raise Exception('카테고리 페이지의 상품 확인 실패')
 
 
