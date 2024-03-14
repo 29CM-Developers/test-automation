@@ -282,6 +282,7 @@ def click_contents_product(wd):
     first_product_title = aals(wd, '//*[@resource-id="com.the29cm.app29cm:id/productName"]')
     print(f'첫번째 상품명 : {first_product_title[0].text}')
     first_product_title[0].click()
+    sleep(1)
     close_bottom_sheet(wd)
 
 
