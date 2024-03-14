@@ -342,7 +342,7 @@ def search_total_popular_brand_name():
     else:
         print('베스트 PLP API 불러오기 실패')
 
-def common_search_results( id=None, password=None, keyword=None, largeId=None, middleId=None, smallId=None, brandFacetInputs=None, colorFacetInputs=None, attributeInputs=None, priceFacetInput=None, deliveryFacetInputs=None, stockFacetInputs=None, discountFacetInputs=None, conciergeFacetInputs=None,eventFacetInputs=None, styleTagFacetInputs=None, sortFacetInput=None):
+def common_search_results( id=None, password=None, keyword=None, largeId=None, middleId=None, smallId=None, brand=None, color=None, attribute=None, price=None, delivery=None, stock=None, discount=None, concierge=None,event=None, styleTag=None, sort=None):
     headers = {'Content-Type': 'application/json'}
     request_body = {}
     request_body["keyword"]=keyword
@@ -351,28 +351,28 @@ def common_search_results( id=None, password=None, keyword=None, largeId=None, m
 
     if largeId != None:
         facetGroupInput['categoryFacetInputs'] = [{"largeId": largeId, "middleId": middleId, "smallId": smallId}]
-    if brandFacetInputs != None:
-        facetGroupInput['brandFacetInputs'] = [{"frontBrandNo": brandFacetInputs}]
-    if colorFacetInputs != None:
-        facetGroupInput['colorFacetInputs'] = [{"hex": colorFacetInputs}]
-    if attributeInputs != None:
-        facetGroupInput['attributeInputs'] = [{"typeId": attributeInputs["typeId"], "valueId": attributeInputs["valueId"]}]
-    if priceFacetInput != None:
-        facetGroupInput['priceFacetInput'] = {"max": priceFacetInput["max"], "min": priceFacetInput["min"]}
-    if deliveryFacetInputs != None:
+    if brand != None:
+        facetGroupInput['brandFacetInputs'] = [{"frontBrandNo": brand}]
+    if color != None:
+        facetGroupInput['colorFacetInputs'] = [{"hex": color}]
+    if attribute != None:
+        facetGroupInput['attributeInputs'] = [{"typeId": attribute["typeId"], "valueId": attribute["valueId"]}]
+    if price != None:
+        facetGroupInput['priceFacetInput'] = {"max": price["max"], "min": price["min"]}
+    if delivery != None:
         facetGroupInput['deliveryFacetInputs'] = [{"type": "FREE_SHIPPING"}]
-    if stockFacetInputs != None:
+    if stock != None:
         facetGroupInput['stockFacetInputs'] = [{"type": "IN_STOCK"}]
-    if discountFacetInputs != None:
+    if discount != None:
         facetGroupInput['discountFacetInputs'] = [{"type": "ONLY_DISCOUNT"}]
-    if conciergeFacetInputs != None:
+    if concierge != None:
         facetGroupInput['conciergeFacetInputs'] = [{"type": "ONLY_CONCIERGE"}]
-    if eventFacetInputs != None:
-        facetGroupInput['eventFacetInputs'] = [{"tag": eventFacetInputs}]
-    if styleTagFacetInputs != None:
-        facetGroupInput['styleTagFacetInputs'] = [{"tagId": styleTagFacetInputs}]
-    if sortFacetInput != None:
-        facetGroupInput['sortFacetInput'] = {"type": sortFacetInput["type"], "order": sortFacetInput["order"]}
+    if event != None:
+        facetGroupInput['eventFacetInputs'] = [{"tag": event}]
+    if styleTag != None:
+        facetGroupInput['styleTagFacetInputs'] = [{"tagId": styleTag}]
+    if sort != None:
+        facetGroupInput['sortFacetInput'] = {"type": sort["type"], "order": sort["order"]}
     else:
         facetGroupInput['sortFacetInput'] = {"type": "RECOMMEND", "order": "DESC"}
 
@@ -478,7 +478,6 @@ def search_brand_category_info(keyword):
 def filter_brand_search_results_by_category(id, password, keyword):
     categories = com_utils.api_control.search_brand_category_info(keyword)
     filter_result = {}
-    print(f'categories:{categories}')
     search_result_data = common_search_results(id, password, keyword, categories["large_code"], categories["medium_code"], categories["small_code"] )
     filter_brand = search_result_data['data']['products']
     filter_result['item_name'] = filter_brand[0]['itemName']
@@ -540,12 +539,11 @@ def product_no_soldout_option(product_item_no):
 
 
 def order_product_random_no():
-    priceFacetInput={}
-    priceFacetInput["max"] = 1500
-    priceFacetInput["min"] = 0
+    price={}
+    price["max"] = 1500
+    price["min"] = 0
 
-    product_data = common_search_results(keyword="양말",stockFacetInputs=True,priceFacetInput=priceFacetInput)
-    print(f'product_data :{product_data}')
+    product_data = common_search_results(keyword="양말",stock=True,price=price)
     while True:
         item_count = product_data['data']['products']
         random_no = random.randint(0, len(item_count) - 1)
