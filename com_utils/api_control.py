@@ -431,22 +431,40 @@ def search_brand_category_info(keyword):
         print('검색 결과 브랜드 정보 API 불러오기 실패')
 
 
-def filter_brand_search_results_by_category(self, id, password, keyword):
+def filter_brand_search_results_by_category(id, password, keyword):
     categories = com_utils.api_control.search_brand_category_info(keyword)
     cookies = com_utils.cookies_control.cookie_29cm(id, password)
-
     filter_result = {}
-    search_response = requests.get(
-        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}&sort=personalizerc'
-        f'&categoryLargeCode={categories["large_code"]}&categoryMediumCode={categories["medium_code"]}'
-        f'&categorySmallCode={categories["small_code"]}&gender={self.pconf["gender_first"]}',
-        cookies=cookies)
+    headers = {'Content-Type': 'application/json'}
+    data = json.dumps({
+      "keyword": keyword,
+      "facetGroupInput": {
+        "categoryFacetInputs": [
+          {
+            "largeId": categories["large_code"],
+            "middleId": categories["medium_code"],
+            "smallId": categories["small_code"]
+          }
+        ],
+      "sortFacetInput": {
+       "type": "RECOMMEND",
+       "order": "DESC"
+      }
+      },
+    "pagination": {
+        "page": 0,
+        "size": 30
+      }
+})
+    search_response = requests.post('https://search-api.29cm.co.kr/api/v4/srp/:search',
+                             headers=headers, cookies=cookies, data=data)
     if search_response.status_code == 200:
         search_result_data = search_response.json()
         filter_brand = search_result_data['data']['products']
         filter_result['item_name'] = filter_brand[0]['itemName']
         return filter_result
     else:
+        print(search_response.status_code)
         print('검색 결과 API 불러오기 실패')
 
 
