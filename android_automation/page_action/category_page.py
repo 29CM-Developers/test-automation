@@ -131,6 +131,10 @@ def save_webview_category_product_name(wd, first_product_name):
 
 
 def check_category_product_name(plp_name, compare_name):
+    plp_name = plp_name.replace('_', ' ')
+    compare_name = compare_name.replace('_', ' ')
+    plp_name = ' '.join(plp_name.split())
+    compare_name = ' '.join(compare_name.split())
     if plp_name in compare_name:
         print('카테고리 페이지의 상품 확인')
     else:

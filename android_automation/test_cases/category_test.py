@@ -98,7 +98,7 @@ class Category:
             pdp_name = product_detail_page.save_product_name(wd)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
-            product_detail_page.check_product_name1(pdp_name, plp_name)
+            product_detail_page.check_product_name(pdp_name, api_name)
 
             # # pdp 가격 저장 후, 카테고리 plp의 가격과 비교 확인
             # pdp_price = product_detail_page.save_product_price(wd)

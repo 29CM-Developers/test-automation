@@ -5,6 +5,7 @@ from android_automation.page_action import navigation_bar, category_page, login_
     product_detail_page, search_page, search_result_page, my_page, context_change
 from android_automation.page_action.bottom_sheet import close_bottom_sheet
 from time import time, sleep
+from com_utils.api_control import best_plp_women_clothes
 from com_utils.code_optimization import finally_opt, exception_control
 
 class NotLogin:
@@ -75,14 +76,18 @@ class NotLogin:
             # Home > 베스트 탭 선택하여 베스트 PLP 진입
             home_page.click_tab_name(wd, 'best_tab')
 
+            # 여성의류 실시간 1위 상품명 api 호출하여 저장
+            best_product_name = best_plp_women_clothes(1, 'NOW')['item_name']
+
             # 베스트 탭에서 첫번째 상품명 저장하고 PDP 진입
             plp_name = best_product_list_page.save_best_plp_first_product_name(wd)
             plp_price = best_product_list_page.save_best_first_product_price(wd)
             best_product_list_page.click_home_tap_best_first_product(wd)
+            best_product_list_page.check_best_product_name(best_product_name, plp_name)
 
             # 선택한 상품의 PDP에서 상품 이름 비교
             pdp_name = product_detail_page.save_product_name(wd)
-            product_detail_page.check_product_name1(pdp_name, plp_name)
+            product_detail_page.check_product_name(pdp_name, best_product_name)
 
             # PDP 상단 네비게이션의 Home 아이콘 선택하여 Home 복귀
             product_detail_page.click_pdp_back_btn(wd)
