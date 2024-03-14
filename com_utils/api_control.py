@@ -342,24 +342,73 @@ def search_total_popular_brand_name():
     else:
         print('베스트 PLP API 불러오기 실패')
 
+def common_search_results( id=None, password=None, keyword=None, largeId=None, middleId=None, smallId=None, brandFacetInputs=None, colorFacetInputs=None, attributeInputs=None, priceFacetInput=None, deliveryFacetInputs=None, stockFacetInputs=None, discountFacetInputs=None, conciergeFacetInputs=None,eventFacetInputs=None, styleTagFacetInputs=None, sortFacetInput=None):
+    headers = {'Content-Type': 'application/json'}
+    request_body = {}
+    request_body["keyword"]=keyword
+    request_body["pagination"] = {"page": 0,"size": 30}
+    facetGroupInput = {}
+
+    if largeId != None:
+        facetGroupInput['categoryFacetInputs'] = [{"largeId": largeId, "middleId": middleId, "smallId": smallId}]
+    if brandFacetInputs != None:
+        facetGroupInput['brandFacetInputs'] = [{"frontBrandNo": brandFacetInputs}]
+    if colorFacetInputs != None:
+        facetGroupInput['colorFacetInputs'] = [{"hex": colorFacetInputs}]
+    if attributeInputs != None:
+        facetGroupInput['attributeInputs'] = [{"typeId": attributeInputs["typeId"], "valueId": attributeInputs["valueId"]}]
+    if priceFacetInput != None:
+        facetGroupInput['priceFacetInput'] = {"max": priceFacetInput["max"], "min": priceFacetInput["min"]}
+    if deliveryFacetInputs != None:
+        facetGroupInput['deliveryFacetInputs'] = [{"type": "FREE_SHIPPING"}]
+    if stockFacetInputs != None:
+        facetGroupInput['stockFacetInputs'] = [{"type": "IN_STOCK"}]
+    if discountFacetInputs != None:
+        facetGroupInput['discountFacetInputs'] = [{"type": "ONLY_DISCOUNT"}]
+    if conciergeFacetInputs != None:
+        facetGroupInput['conciergeFacetInputs'] = [{"type": "ONLY_CONCIERGE"}]
+    if eventFacetInputs != None:
+        facetGroupInput['eventFacetInputs'] = [{"tag": eventFacetInputs}]
+    if styleTagFacetInputs != None:
+        facetGroupInput['styleTagFacetInputs'] = [{"tagId": styleTagFacetInputs}]
+    if sortFacetInput != None:
+        facetGroupInput['sortFacetInput'] = {"type": sortFacetInput["type"], "order": sortFacetInput["order"]}
+    else:
+        facetGroupInput['sortFacetInput'] = {"type": "RECOMMEND", "order": "DESC"}
+
+    request_body['facetGroupInput'] = facetGroupInput
+    data = json.dumps(request_body)
+
+    if id != None and password != None:
+        cookies = com_utils.cookies_control.cookie_29cm(id, password)
+        search_response = requests.post('https://search-api.29cm.co.kr/api/v4/srp/:search',
+                                        data=data,headers=headers,cookies=cookies)
+    else:
+        search_response = requests.post('https://search-api.29cm.co.kr/api/v4/srp/:search',
+                                    headers=headers, data=data)
+    if search_response.status_code == 200:
+        search_result_data = search_response.json()
+        return search_result_data
+    else:
+        print(f'검색 결과 API 불러오기 실패 : {search_response.status_code} 에러)')
 
 # 연관 브랜드가 1개인 브랜드명
 def search_brand_by_related_brand():
     brand_list = search_total_popular_brand_name()['brand_names']
-
     brand_name = ''
     for brand_name in brand_list:
+
         brand_response = requests.get(
             f'https://search-api.29cm.co.kr/api/v4/products/brand/keyword/?keyword={brand_name}')
-        search_response = requests.get(f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={brand_name}')
-        if brand_response.status_code == 200 and search_response.status_code == 200:
+
+        if brand_response.status_code == 200:
             brand_data = brand_response.json()
-            search_data = search_response.json()
+            search_data = common_search_results(keyword=brand_name)
             keyword_type = search_data['data']['keywordTypes']
             if len(brand_data['data']) == 1 and keyword_type == ['brand']:
                 break
         else:
-            print('검색 브랜드 정보 API 불러오기 실패')
+            print(f'검색 브랜드 정보 API 불러오기 실패 : {brand_response.status_code} 에러)')
     return brand_name
 
 
@@ -404,14 +453,9 @@ def search_relate_keyword(api_keyword_1st):
 # keyword : 검색어 / order : 노출 순서
 def search_result(keyword, order):
     result = {}
-    search_response = requests.get(
-        f'https://search-api.29cm.co.kr/api/v4/products/search?keyword={keyword}&excludeSoldOut=true')
-    if search_response.status_code == 200:
-        search_result_data = search_response.json()
-        result['product_item_no'] = search_result_data['data']['products'][order - 1]['itemNo']
-        return result
-    else:
-        print('검색 결과 API 불러오기 실패')
+    search_result_data = common_search_results(keyword=keyword)
+    result['product_item_no'] = search_result_data['data']['products'][order - 1]['itemNo']
+    return result
 
 
 def search_brand_category_info(keyword):
@@ -433,38 +477,12 @@ def search_brand_category_info(keyword):
 
 def filter_brand_search_results_by_category(id, password, keyword):
     categories = com_utils.api_control.search_brand_category_info(keyword)
-    cookies = com_utils.cookies_control.cookie_29cm(id, password)
     filter_result = {}
-    headers = {'Content-Type': 'application/json'}
-    data = json.dumps({
-      "keyword": keyword,
-      "facetGroupInput": {
-        "categoryFacetInputs": [
-          {
-            "largeId": categories["large_code"],
-            "middleId": categories["medium_code"],
-            "smallId": categories["small_code"]
-          }
-        ],
-      "sortFacetInput": {
-       "type": "RECOMMEND",
-       "order": "DESC"
-      }
-      },
-    "pagination": {
-        "page": 0,
-        "size": 1
-      }
-})
-    search_response = requests.post('https://search-api.29cm.co.kr/api/v4/srp/:search',
-                             headers=headers, cookies=cookies, data=data)
-    if search_response.status_code == 200:
-        search_result_data = search_response.json()
-        filter_brand = search_result_data['data']['products']
-        filter_result['item_name'] = filter_brand[0]['itemName']
-        return filter_result
-    else:
-        print(f'검색 결과 API 불러오기 실패 : {search_response.status_code} 에러)')
+    print(f'categories:{categories}')
+    search_result_data = common_search_results(id, password, keyword, categories["large_code"], categories["medium_code"], categories["small_code"] )
+    filter_brand = search_result_data['data']['products']
+    filter_result['item_name'] = filter_brand[0]['itemName']
+    return filter_result
 
 
 # product_item_no : 상품의 item_no
@@ -522,19 +540,19 @@ def product_no_soldout_option(product_item_no):
 
 
 def order_product_random_no():
-    response = requests.get(
-        'https://search-api.29cm.co.kr/api/v4/products/search?keyword=양말&excludeSoldOut=true&minPrice=0&maxPrice=1500')
-    if response.status_code == 200:
-        product_data = response.json()
-        while True:
-            item_count = product_data['data']['products']
-            random_no = random.randint(0, len(item_count) - 1)
-            item_no = product_data['data']['products'][random_no]['itemNo']
-            item_soldout = product_data['data']['products'][random_no]['isSoldOut']
-            if not item_soldout:
-                return item_no
-    else:
-        print('검색 결과 API 불러오기 실패')
+    priceFacetInput={}
+    priceFacetInput["max"] = 1500
+    priceFacetInput["min"] = 0
+
+    product_data = common_search_results(keyword="양말",stockFacetInputs=True,priceFacetInput=priceFacetInput)
+    print(f'product_data :{product_data}')
+    while True:
+        item_count = product_data['data']['products']
+        random_no = random.randint(0, len(item_count) - 1)
+        item_no = product_data['data']['products'][random_no]['itemNo']
+        item_soldout = product_data['data']['products'][random_no]['isSoldOut']
+        if not item_soldout:
+            return item_no
 
 
 def my_order_status(id, password, order_serial_no):
