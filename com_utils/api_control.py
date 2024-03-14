@@ -453,7 +453,7 @@ def filter_brand_search_results_by_category(id, password, keyword):
       },
     "pagination": {
         "page": 0,
-        "size": 30
+        "size": 1
       }
 })
     search_response = requests.post('https://search-api.29cm.co.kr/api/v4/srp/:search',
@@ -464,8 +464,7 @@ def filter_brand_search_results_by_category(id, password, keyword):
         filter_result['item_name'] = filter_brand[0]['itemName']
         return filter_result
     else:
-        print(search_response.status_code)
-        print('검색 결과 API 불러오기 실패')
+        print(f'검색 결과 API 불러오기 실패 : {search_response.status_code} 에러)')
 
 
 # product_item_no : 상품의 item_no
