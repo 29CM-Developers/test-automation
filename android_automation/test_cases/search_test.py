@@ -238,7 +238,7 @@ class Search:
 
             # 선택한 필터링으로 검색 결과 1위 상품명 비교
             api_product_name = \
-            filter_brand_search_results_by_category(self, self.pconf['LOGIN_SUCCESS_ID_1'],
+            filter_brand_search_results_by_category(self.pconf['LOGIN_SUCCESS_ID_1'],
                                                     self.pconf['LOGIN_SUCCESS_PW'],
                                                     brand_keyword)['item_name']
             search_result_page.check_search_product_name(wd, api_product_name)
