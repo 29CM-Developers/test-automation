@@ -74,7 +74,7 @@ def find_scroll_and_find_product_rank(wd, find_rank):
 
 def check_additional_product(wd, product_name):
     try:
-        wd.find_element(AppiumBy.IOS_PREDICATE, f'label == "{product_name}"')
+        ial(wd, f'c_{product_name}')
         print('베스트 PLP 상품 추가 노출 확인')
     except NoSuchElementException:
         print('베스트 PLP 상품 추가 노출 확인 실패')
