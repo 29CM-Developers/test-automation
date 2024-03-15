@@ -6,7 +6,7 @@ from time import time
 from com_utils import api_control
 from com_utils.code_optimization import exception_control, finally_opt
 from com_utils.deeplink_control import move_to_category
-from ios_automation.page_action import category_page, best_product_list_page, product_detail_page
+from ios_automation.page_action import category_page, best_product_list_page, product_detail_page, selection_page
 
 
 class Plp:
@@ -55,6 +55,7 @@ class Plp:
 
             # 좋아요 버튼 선택 -> 찜하기 등록
             best_product_list_page.click_best_product_like_btn(wd)
+            selection_page.click_close_selection_pop_up(wd)
             heart_select = best_product_list_page.save_best_product_like_count(wd)
 
             # 좋아요 수 증가 확인

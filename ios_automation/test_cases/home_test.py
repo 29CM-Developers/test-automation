@@ -8,7 +8,7 @@ from com_utils.code_optimization import exception_control, finally_opt
 from time import time
 from com_utils.api_control import search_total_popular_brand_name, home_feed_contents_info
 from ios_automation.page_action import navigation_bar, bottom_sheet, home_page, like_page, my_page, product_detail_page, \
-    search_page, category_page, login_page
+    search_page, category_page, login_page, selection_page
 
 
 class Home:
@@ -107,6 +107,7 @@ class Home:
 
             # 좋아요 버튼 선택하여 좋아요 후, 카운트 확인
             home_page.click_contents_like_btn(wd)
+            selection_page.click_close_selection_pop_up(wd)
             content_like_select = home_page.save_contents_like_count(wd)
             home_page.check_increase_like_count(content_like_count, content_like_select)
 
