@@ -85,10 +85,7 @@ class Plp:
             product_detail_page.click_pdp_back_btn(wd)
 
             # API에서 호출한 상품명 저장
-            now_10th_product_prefix = api_control.best_plp_women_clothes(10, 'NOW')['item_prefix']
-            now_10th_product = api_control.best_plp_women_clothes(10, 'NOW')['item_name']
-            now_10th_product_name = best_product_list_page.save_api_product_name(now_10th_product_prefix,
-                                                                                 now_10th_product)
+            now_10th_product_name = api_control.best_plp_women_clothes(10, 'NOW')['item_name']
 
             # 실시간 10위 상품 노출 확인
             best_product_list_page.find_scroll_and_find_product_rank(wd, '10')
