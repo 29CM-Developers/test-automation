@@ -358,6 +358,8 @@ def common_search_results( id=None, password=None, keyword=None, largeId=None, m
     request_body["pagination"] = {"page": 0,"size": 30}
     facetGroupInput = {}
 
+    if id != None and password != None:
+        cookies = com_utils.cookies_control.cookie_29cm(id, password)
     if largeId != None:
         facetGroupInput['categoryFacetInputs'] = [{"largeId": largeId, "middleId": middleId, "smallId": smallId}]
     if brand != None:
@@ -389,7 +391,6 @@ def common_search_results( id=None, password=None, keyword=None, largeId=None, m
     data = json.dumps(request_body)
 
     if id != None and password != None:
-        cookies = com_utils.cookies_control.cookie_29cm(id, password)
         search_response = requests.post('https://search-api.29cm.co.kr/api/v4/srp/:search',
                                         data=data,headers=headers,cookies=cookies)
     else:
