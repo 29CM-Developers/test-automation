@@ -552,15 +552,16 @@ def order_product_random_no():
     price={}
     price["max"] = 1500
     price["min"] = 0
-
-    product_data = common_search_results(keyword="양말",stock=True,price=price)
-    while True:
-        item_count = product_data['data']['products']
-        random_no = random.randint(0, len(item_count) - 1)
-        item_no = product_data['data']['products'][random_no]['itemNo']
-        item_soldout = product_data['data']['products'][random_no]['isSoldOut']
-        if not item_soldout:
-            return item_no
+    product_data = common_search_results(keyword="양말", stock=True, price=price)
+    item_count = product_data['data']['products']
+    random_no = random.randint(0, len(item_count) - 1)
+    item_no = None
+    for _ in range(len(item_count)):
+        if not product_data['data']['products'][random_no]['isSoldOut']:
+            item_no = product_data['data']['products'][random_no]['itemNo']
+            break
+        random_no = (random_no + 1) % len(item_count)
+    return item_no
 
 
 def my_order_status(id, password, order_serial_no):
