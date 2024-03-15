@@ -342,6 +342,15 @@ def search_total_popular_brand_name():
     else:
         print('베스트 PLP API 불러오기 실패')
 
+"""
+common_search_results 메스드 파라미터 중 price,attribute,sort 항목은 메소드 호출하는 부분에서 사전에 세팅 후 파라미터로 넘겨줘야 함
+price,attribute,sort = {} -> dict 타입으로 선언 후 
+price["max"] ="value", price["min"]="value" -> key값에 value 선언
+attribute["typeId"]="value",, attribute["valueId"]="value",-> key값에 value 선언
+sort["type"]="value",, sort["order"]="value",-> key값에 value 선언
+하여 price,attribute,sort 를 파라미터로 넘겨줌
+"""
+# 검색 공용 api 조회
 def common_search_results( id=None, password=None, keyword=None, largeId=None, middleId=None, smallId=None, brand=None, color=None, attribute=None, price=None, delivery=None, stock=None, discount=None, concierge=None,event=None, styleTag=None, sort=None):
     headers = {'Content-Type': 'application/json'}
     request_body = {}
