@@ -50,7 +50,7 @@ def check_order_product_name(wd, product_name):
                 break
         except NoSuchElementException:
             pass
-        scroll_control(wd, 'D', 40)
+        scroll_control(wd, 'D', 35)
     if not name_break:
         print(f'주문서 상품명 확인 실패: pdp-{product_name} / 주문서-{order_name}')
         raise Exception('주문서 상품명 확인 실패')
