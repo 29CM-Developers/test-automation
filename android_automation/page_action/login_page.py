@@ -68,3 +68,25 @@ def check_login(self, wd, id):
     navigation_bar.move_to_home(wd)
     # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
     test_select_category(wd)
+
+def check_logout(self, wd):
+    sleep(2)
+    # 로그인 페이지 진입
+    move_to_my_Android(wd)
+
+    # 로그인 성공 진입 확인
+    login_name = aal(wd, 'com.the29cm.app29cm:id/txtUserName')
+    if login_name == None:
+        print("미로그인 상태 확인")
+    elif login_name.text == self.pconf['MASKING_NAME']:
+        # 로그아웃 버튼 선택
+        my_page.find_logout_btn(wd)
+        my_page.click_logout_btn(wd)
+
+        # 로그아웃 완료 > 로그인,회원가입 문구 확인
+        my_page.find_login_btn(wd)
+        my_page.check_login_btn(wd)
+
+    navigation_bar.move_to_home(wd)
+    # 복귀 후, 홈 탭 진입 전 노출 화면 있는지 확인
+    test_select_category(wd)
