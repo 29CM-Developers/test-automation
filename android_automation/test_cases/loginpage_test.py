@@ -19,6 +19,8 @@ class LoginLogout:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_logout(self, wd)
+
             print(f'[{test_name}] 테스트 시작')
 
             sleep(4)

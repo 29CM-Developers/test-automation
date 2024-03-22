@@ -30,6 +30,8 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # My 탭으로 이동
@@ -187,6 +189,8 @@ class My:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # My 탭으로 이동

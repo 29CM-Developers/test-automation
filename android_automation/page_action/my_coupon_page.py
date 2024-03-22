@@ -8,7 +8,7 @@ def click_back_btn(wd):
 
 
 def click_coupon_type(wd):
-    sleep(5)
+    sleep(4)
     aalc(wd, 'c_전체 쿠폰')
     print('전체쿠폰 선택')
 
