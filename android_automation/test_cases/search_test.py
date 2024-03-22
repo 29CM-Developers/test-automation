@@ -13,7 +13,7 @@ from com_utils.api_control import search_total_popular_brand_name, search_woman_
     search_popular_keyword, filter_brand_search_results_by_category
 from com_utils.element_control import aalc, aal, aals
 from com_utils.testrail_api import send_test_result
-from android_automation.page_action import search_page, search_result_page, navigation_bar
+from android_automation.page_action import search_page, search_result_page, navigation_bar, login_page
 from com_utils.code_optimization import finally_opt, exception_control
 
 class Search:
@@ -25,6 +25,8 @@ class Search:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # SEARCH 탭 진입
@@ -120,6 +122,8 @@ class Search:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # SEARCH 탭 진입
@@ -180,6 +184,8 @@ class Search:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # SEARCH 탭 진입

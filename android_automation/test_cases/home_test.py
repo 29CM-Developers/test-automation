@@ -16,7 +16,7 @@ from selenium.webdriver.common.by import By
 
 import com_utils
 from android_automation.page_action import navigation_bar, category_page, home_page, search_page, bottom_sheet, \
-    like_page, my_page, product_detail_page
+    like_page, my_page, product_detail_page, login_page
 from android_automation.page_action.bottom_sheet import close_bottom_sheet, close_like_bottom_sheet
 from android_automation.page_action.context_change import change_native_contexts
 from android_automation.page_action.like_page import close_brand_recommended_page
@@ -37,6 +37,8 @@ class Home:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # CATEGORY 탭 진입
@@ -102,6 +104,8 @@ class Home:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
             bottom_sheet.close_bottom_sheet(wd)
 
@@ -158,6 +162,8 @@ class Home:
         # slack noti에 사용하는 테스트 소요시간을 위해 함수 시작 시 시간 체크
         start_time = time()
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID'])
+
             print(f'[{test_name}] 테스트 시작')
 
             # 바텀시트 노출 여부 확인

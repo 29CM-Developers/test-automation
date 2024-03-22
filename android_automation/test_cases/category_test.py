@@ -121,6 +121,8 @@ class Category:
         start_time = time()
 
         try:
+            login_page.check_login(self, wd, self.pconf['LOGIN_SUCCESS_ID_1'])
+
             print(f'[{test_name}] CASE 시작')
 
             # 카테고리 탭 선택
