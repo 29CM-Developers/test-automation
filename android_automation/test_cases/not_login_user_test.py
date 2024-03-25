@@ -129,8 +129,8 @@ class NotLogin:
 
             print(f'[{test_name}] 테스트 종료')
 
-        except Exception:
-            test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
+        except Exception as e:
+            test_result, img_src, error_texts = exception_control(self, wd, sys, os, str(traceback), error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
                                       '비로그인 유저가 사용 가능한 기능 확인')
