@@ -130,6 +130,7 @@ class NotLogin:
             print(f'[{test_name}] 테스트 종료')
 
         except Exception:
+            print(f'str(traceback) : {str(traceback)}')
             test_result, img_src, error_texts = exception_control(self, wd, sys, os, traceback, error_texts)
         finally:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name,
