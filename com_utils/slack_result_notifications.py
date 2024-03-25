@@ -20,7 +20,14 @@ def slack_notification(self):
     else: device_emoji = self.device_platform
 
     # slack noti 양식 가져오기
-    attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
+    if self.device_platform == "iOS" and self.user == "pipeline":
+        slack_channel = self.conf['ios_slack_channel']
+    # Android는 알림 길이가 길어 기존 내용 파악에 영향을 줄 수 있어 알림 채널 변동은 하지 않도록 한다.
+    # elif self.device_platform == "Android" and self.user == "pipeline":
+    #     slack_channel = self.conf['android_slack_channel']
+    else:
+        slack_channel = self.conf['slack_channel']
+    attachment = slack_noti_form(channel=slack_channel, color=color, emoji=emoji,
                                  test_result=self.result_data.get('test_result'), def_name=self.def_name,
                                  count='-', total_time='-', device_platform=device_emoji, device_name=self.device_name)
 

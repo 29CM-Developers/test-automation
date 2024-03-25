@@ -161,3 +161,12 @@ def check_logout_and_login_btn(self, wd):
     move_to_my(self, wd)
     find_login_btn(self, wd)
     check_login_btn(wd)
+
+
+def check_logout_status(self, wd):
+    com_utils.deeplink_control.move_to_my(self, wd)
+    try:
+        ial(wd, 'login_btn')
+    except NoSuchElementException:
+        find_logout_btn(wd)
+        click_logout_btn(wd)

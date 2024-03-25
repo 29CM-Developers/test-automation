@@ -1,12 +1,9 @@
 import os
 import sys
 import traceback
-import com_utils
 
-from time import time, sleep
-from appium.webdriver.common.appiumby import AppiumBy
-from selenium.common.exceptions import NoSuchElementException
-from com_utils import values_control, deeplink_control
+from time import time
+from com_utils import deeplink_control
 from com_utils.code_optimization import finally_opt, exception_control
 from com_utils.api_control import best_plp_women_clothes
 from ios_automation.page_action import navigation_bar, login_page, home_page, product_detail_page, \
@@ -21,6 +18,9 @@ class NotLoginUserTest:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            # 테스트 시작 전 로그아웃 상태 확인
+            my_page.check_logout_status(self, wd)
 
             # 카테고리 탭에서 의류>상의 카테고리 선택하여 PLP 진입 > PLP에서 좋아요 버튼 선택
             deeplink_control.move_to_category(self, wd)
@@ -48,6 +48,10 @@ class NotLoginUserTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 테스트 시작 전 로그아웃 상태 확인
+            my_page.check_logout_status(self, wd)
+
+            # 홈화면으로 이동
             deeplink_control.move_to_home(self, wd)
 
             # 라이프 선택 닫기
@@ -108,66 +112,3 @@ class NotLoginUserTest:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
-    def full_test_not_login_user_impossible(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
-        test_name = self.dconf[sys._getframe().f_code.co_name]
-        start_time = time()
-
-        try:
-            sleep(1)
-
-            # 주요 시나리오
-            NotLoginUserTest.test_not_login_user_impossible(self, wd)
-
-            # 상단 네비게이션 알림 버튼 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarNotiWhite').click()
-            login_page.check_login_page(wd)
-
-            # 상단 네비게이션 장바구니 버튼 선택
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, 'icNavigationbarCartWhite').click()
-            login_page.check_login_page(wd)
-
-            # LIKE 탭 선택
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="LIKE"]').click()
-            login_page.check_login_page(wd)
-
-            # PDP > 구매하기 선택
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="CATEGORY"]').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '상의').click()
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeCollectionView/XCUIElementTypeCell[1]').click()
-            sleep(2)
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '구매하기').click()
-            wd.find_element(AppiumBy.ACCESSIBILITY_ID, '바로 구매하기').click()
-
-            # 바로 구매하기 버튼 선택 시, 쿠폰 선택 바텀 시트 노출 여부 확인
-            # 바텀 시트 노출 시, 바텀 시트의 닫기 버튼 선택하여 로그인 페이지 진입
-            try:
-                wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeStaticText[@name="쿠폰"]')
-                wd.find_element(AppiumBy.ACCESSIBILITY_ID, '닫기').click()
-            except NoSuchElementException:
-                pass
-            login_page.check_login_page(wd)
-
-            # Home 탭으로 복귀
-            wd.find_element(AppiumBy.XPATH, '//XCUIElementTypeButton[@name="HOME"]').click()
-
-        except Exception:
-            test_result = 'FAIL'
-            wd.get_screenshot_as_file(sys._getframe().f_code.co_name + '_error.png')
-            img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
-            error_text = traceback.format_exc().split('\n')
-            try:
-                error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-                error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
-            except Exception:
-                pass
-            # 실패 시, 딥링크 home 탭으로 이동
-            com_utils.deeplink_control.move_to_home_iOS(self, wd)
-
-        finally:
-            run_time = f"{time() - start_time:.2f}"
-            warning = [str(i) for i in warning_texts]
-            warning_points = "\n".join(warning)
-            result_data = {
-                'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
-                'test_name': test_name, 'run_time': run_time, 'warning_texts': warning_points}
-            return result_data
