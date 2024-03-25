@@ -122,7 +122,10 @@ def check_no_post_like(wd):
 
 
 def refresh_product_like_tab(wd):
-    product_list = ial(wd, 'like_product_list')
+    try:
+        product_list = ial(wd, 'like_product_list')
+    except NoSuchElementException:
+        product_list = ial(wd, '//*[@name="like_product_item" or @name="product_info"]/..')
     element_scroll_control(wd, product_list, 'U', 30)
 
 
