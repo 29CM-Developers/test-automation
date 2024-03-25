@@ -70,10 +70,10 @@ class AndroidTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # # 홈화면 컨텐츠 확인 - 안정성 떨어져 안정화 후 적용 예정
-        # self.result_data = Home.test_home_contents(self, self.wd)
-        # self.count = slack_result_notifications.slack_thread_notification(self)
-        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # 홈화면 컨텐츠 확인 - 안정성 떨어져 안정화 후 적용 예정
+        self.result_data = Home.test_home_contents(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         # My -> 설정
         self.result_data = My.test_enter_settings_screen(self, self.wd)
