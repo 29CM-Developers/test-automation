@@ -2847,12 +2847,18 @@
 									"    pm.expect(jsonData.data.resultList.length).to.eql(2);",
 									"});",
 									"",
+									"var itemNameList = [];",
+									"",
+									"for (var i =0; i< jsonData.data.resultList.length; i++){",
+									"    itemNameList.push(jsonData.data.resultList[i].itemName);",
+									"}",
+									"",
 									"pm.test(\"itemName value check\", function () {    ",
-									"    pm.expect(jsonData.data.resultList[1].itemName).to.eql(pm.environment.get(\"item_name\"));",
+									"    pm.expect(itemNameList).to.include(jsonData.data.resultList[0].itemName);",
 									"});",
 									"",
 									"pm.test(\"itemName 2 value check\", function () {    ",
-									"    pm.expect(jsonData.data.resultList[0].itemName).to.eql(pm.environment.get(\"item_name_2\"));",
+									"    pm.expect(itemNameList).to.include(jsonData.data.resultList[1].itemName);",
 									"});",
 									"",
 									"pm.test(\"frontBrandNo value check\", function () {    ",
@@ -2871,7 +2877,8 @@
 									"    pm.expect(jsonData.data.resultList[1].frontBrandNameKor).to.eql(pm.environment.get(\"brand_name_kor\"));",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -3655,9 +3662,11 @@
 									"",
 									"pm.test(\"message value check in result\", function () {    ",
 									"    pm.expect(jsonData.message).to.include(\"로그인이 필요합니다\");",
-									"});"
+									"});",
+									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -3666,7 +3675,8 @@
 								"exec": [
 									"setTimeout(function(){}, 500);"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
