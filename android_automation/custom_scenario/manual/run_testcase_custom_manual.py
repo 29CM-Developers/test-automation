@@ -1,7 +1,7 @@
 import unittest
 import os
 import sys
-and_path = os.path.join(os.path.dirname(__file__), '..')
+and_path = os.path.join(os.path.dirname(__file__), '../../..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.not_login_user_test import NotLogin
