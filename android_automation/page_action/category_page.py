@@ -5,7 +5,7 @@ from com_utils.element_control import aal, aalc, aals, swipe_control, element_sc
 
 
 def click_pin_menu(wd, find_menu):
-    sleep(3)
+    sleep(5)
     pin_menu_layer = aal(wd, 'com.the29cm.app29cm:id/shopComposeView')
     pin_menu_list = aal(pin_menu_layer, '//android.view.View/android.view.View[1]')
     click_break = False

@@ -7,7 +7,7 @@ from com_utils.api_control import product_detail, best_plp_women_clothes, produc
 
 
 def click_pdp_back_btn(wd):
-    sleep(1)
+    sleep(3)
     aalc(wd, 'com.the29cm.app29cm:id/imgBack')
     print('뒤로가기 선택')
     close_bottom_sheet(wd)
