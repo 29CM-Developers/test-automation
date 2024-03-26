@@ -42,7 +42,7 @@ class IOSTestAutomation(unittest.TestCase):
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
         self.device_name = self.iOS_cap.capabilities['appium:deviceName']
-        self.user = 'pipeline'
+        self.user = 'local'
 
         context = self.wd.contexts
         print(f'context 최초 확인 : {context}')
