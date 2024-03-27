@@ -187,7 +187,7 @@ def check_id_input_field_test(wd, id):
 
 
 def direct_login(self, wd, id, password):
-    sleep(3)
+    sleep(1)
     move_to_login(self, wd)
     sleep(1)
     input_id_password(wd, id, password)

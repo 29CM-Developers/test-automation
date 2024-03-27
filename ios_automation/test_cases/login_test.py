@@ -64,6 +64,9 @@ class UserLoginTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id_29cm'], self.pconf['password_29cm'])
+
             # My 탭 딥링크로 진입
             com_utils.deeplink_control.move_to_my(self, wd)
 
