@@ -16,7 +16,7 @@ def finally_opt(self, start_time, test_result, error_texts, img_src, test_name, 
     result_data = {
         'test_result': test_result, 'error_texts': error_texts, 'img_src': img_src,
         'test_name': test_name, 'run_time': run_time}
-    if self.user == 'pipeline':
+    if self.user == 'pipeline' or self.user == 'custom':
         send_test_result(self, test_result, testcase_title)
         connection, cursor = connect_db(self)
         insert_data(connection, cursor, self, result_data)
@@ -30,7 +30,9 @@ def exception_control(self, wd, sys, os, traceback, error_texts=[]):
     img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
     error_text = traceback.format_exc().split('\n')
     try:
-        error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+        error_code = error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
+        if error_code is None:
+            stacktrace_index = error_text.find("Stacktrace")
         error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
         error_texts.append(values_control.find_next_value(error_text, 'Exception'))
     except Exception:
