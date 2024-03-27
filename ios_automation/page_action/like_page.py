@@ -32,6 +32,7 @@ def check_restart_app(self, wd):
         ial(wd, 'like_post_tab')
     except NoSuchElementException:
         wd.terminate_app('kr.co.29cm.App29CM')
+        sleep(2)
         wd.activate_app('kr.co.29cm.App29CM')
         sleep(1)
         com_utils.deeplink_control.move_to_like(self, wd)
