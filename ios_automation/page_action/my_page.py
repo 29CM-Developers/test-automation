@@ -172,7 +172,11 @@ def check_logout_status(self, wd):
         click_logout_btn(wd)
 
 
-def check_login_status(self, wd, id, password):
+def check_login_status(self, wd, id):
+    if 'custom' in self.user:
+        id = self.pconf['id_custom_29cm']
+    password = self.pconf['password_29cm']
+
     com_utils.deeplink_control.move_to_my(self, wd)
     try:
         ial(wd, 'login_btn')
