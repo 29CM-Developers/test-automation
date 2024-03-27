@@ -4,10 +4,10 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from com_utils.api_control import home_banners_info
+from com_utils.api_control import home_banners_info, home_feed_contents_info
 from com_utils.element_control import ial, ialc, ials, scroll_control, swipe_control
 from ios_automation.page_action import context_change
-from ios_automation.page_action.bottom_sheet import close_bottom_sheet
+from ios_automation.page_action.bottom_sheet import pdp_close_bottom_sheet
 
 
 def check_home_logo(wd):
@@ -157,6 +157,15 @@ def check_scroll_to_recommended_contents(wd):
         raise Exception('홈화면 추천 타이틀 확인 실패')
 
 
+def save_feed_contents_data(self, id, tab_name):
+    if 'custom' in self.user:
+        id = self.pconf['id_custom_29cm']
+    password = self.pconf['password_29cm']
+
+    data = home_feed_contents_info(self, id, password, tab_name)
+    return data
+
+
 def scroll_to_feed_contents(wd, feed_title):
     find_contents = False
     for i in range(0, 10):
@@ -234,4 +243,4 @@ def save_contents_product_price(wd):
 def click_contents_product(wd):
     ialc(wd, '//XCUIElementTypeOther[@name="home_content_product"]')
     sleep(1)
-    close_bottom_sheet(wd)
+    pdp_close_bottom_sheet(wd)

@@ -20,7 +20,11 @@ class Home:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id_29cm'])
+
+            # 홈화면으로 이동
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
             # 라이프 탭 디폴트 선택 여부 확인 및 닫기
             home_page.click_close_life_tab(wd)
@@ -75,8 +79,11 @@ class Home:
         try:
             print(f'[{test_name}] 테스트 시작')
 
-            # 바텀시트 노출 여부 확인
-            bottom_sheet.find_icon_and_close_bottom_sheet(wd)
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id_29cm'])
+
+            # 홈화면으로 이동
+            com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
             # 라이프 탭 디폴트 선택 여부 확인 및 닫기
             home_page.click_close_life_tab(wd)
@@ -91,7 +98,7 @@ class Home:
             home_page.click_tab_name(wd, '우먼')
 
             # 피드 정보 불러오기
-            feed_title_list = home_feed_contents_info(self, self.pconf['id_29cm'], self.pconf['password_29cm'], '우먼')
+            feed_title_list = home_page.save_feed_contents_data(self, self.pconf['id_29cm'], '우먼')
             feed_title_1st = feed_title_list['first_feed_title']
             feed_contain_item = feed_title_list['first_title_with_item']
             feed_title_2nd = feed_title_list['second_feed_title']
@@ -149,6 +156,9 @@ class Home:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id2_29cm'])
 
             com_utils.deeplink_control.move_to_home_iOS(self, wd)
 
