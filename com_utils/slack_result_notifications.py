@@ -86,7 +86,14 @@ def slack_update_notification(self):
 
     if self.result_data['test_result'] in {'PASS', 'FAIL'}:
         # slack noti 양식 가져오기
-        attachment = slack_noti_form(channel=self.conf['slack_channel'], color=color, emoji=emoji,
+        if self.device_platform == "iOS" and self.user == "pipeline":
+            slack_channel = self.conf['ios_slack_channel']
+        # Android는 알림 길이가 길어 기존 내용 파악에 영향을 줄 수 있어 알림 채널 변동은 하지 않도록 한다.
+        # elif self.device_platform == "Android" and self.user == "pipeline":
+        #     slack_channel = self.conf['android_slack_channel']
+        else:
+            slack_channel = self.conf['slack_channel']
+        attachment = slack_noti_form(channel=slack_channel, color=color, emoji=emoji,
                                      test_result=test_result, def_name=self.def_name,
                                      count=self.count, total_time=str_total_time,
                                      device_platform=device_emoji, device_name=self.device_name, pass_count=pass_count,
@@ -102,7 +109,15 @@ def slack_thread_notification(self):
     headers = slack_headers_form(self.conf["slack_token"])
     self.count += 1
     # attachment 양식 가져오기
-    attachment = slack_thread_form(self.conf['slack_channel'], self.response['ts'])
+    if self.device_platform == "iOS" and self.user == "pipeline":
+        slack_channel = self.conf['ios_slack_channel']
+    # Android는 알림 길이가 길어 기존 내용 파악에 영향을 줄 수 있어 알림 채널 변동은 하지 않도록 한다.
+    # elif self.device_platform == "Android" and self.user == "pipeline":
+    #     slack_channel = self.conf['android_slack_channel']
+    else:
+        slack_channel = self.conf['slack_channel']
+
+    attachment = slack_thread_form(slack_channel, self.response['ts'])
 
     if self.result_data['test_result'] == 'PASS':
         color = self.conf['pass_color']
@@ -161,7 +176,8 @@ def slack_thread_notification(self):
             except FileNotFoundError:
                 content = None
             if content is not None:
-                attachment = {"channels": self.conf['slack_channel'], "thread_ts": self.response['ts'],
+
+                attachment = {"channels": slack_channel, "thread_ts": self.response['ts'],
                               "title": formatted_datetime, "content": content}
                 headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'
                 requests.post(url=self.conf['slack_file_upload_url'], headers=headers, data=attachment)
@@ -173,7 +189,14 @@ def slack_thread_notification(self):
 
 
 def slack_add_end_emoji(self):
-    attachment = {"channel": self.conf['slack_channel'], "thread_ts": self.response['ts'],
+    if self.device_platform == "iOS" and self.user == "pipeline":
+        slack_channel = self.conf['ios_slack_channel']
+    # Android는 알림 길이가 길어 기존 내용 파악에 영향을 줄 수 있어 알림 채널 변동은 하지 않도록 한다.
+    # elif self.device_platform == "Android" and self.user == "pipeline":
+    #     slack_channel = self.conf['android_slack_channel']
+    else:
+        slack_channel = self.conf['slack_channel']
+    attachment = {"channel": slack_channel, "thread_ts": self.response['ts'],
                   "name": self.conf["done_emoji"], "timestamp": self.response['ts']}
     headers = slack_headers_form(self.conf["slack_token"])
     headers['Content-Type'] = 'application/x-www-form-urlencoded;'
