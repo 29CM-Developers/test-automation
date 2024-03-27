@@ -4,6 +4,7 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from com_utils.deeplink_control import move_to_login
 from com_utils.element_control import ialk, ialc, ial
 from ios_automation.page_action import context_change
 
@@ -183,3 +184,10 @@ def check_id_input_field_test(wd, id):
     else:
         print("SNS 계정 회원가입 실패 확인 실패 - 입력란")
         raise Exception('SNS 계정 회원가입 실패 확인 실패 - 입력란')
+
+
+def direct_login(self, wd, id, password):
+    sleep(1)
+    move_to_login(self, wd)
+    sleep(1)
+    input_id_password(wd, id, password)

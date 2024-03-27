@@ -57,6 +57,11 @@ def move_to_cart(self, wd):
     sleep(3)
 
 
+def move_to_login(self, wd):
+    wd.get(self.conf['deeplink']['login'])
+    sleep(2)
+
+
 # Home 탭으로 이동 딥링크
 def move_to_home_Android(wd):
     sleep(1)

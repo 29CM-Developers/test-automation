@@ -18,6 +18,9 @@ class UserLoginTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 테스트 시작 전 로그아웃 상태 확인
+            my_page.check_logout_status(self, wd)
+
             # 로그인 페이지 진입
             com_utils.deeplink_control.move_to_my(self, wd)
             my_page.enter_login_page(wd)
@@ -61,6 +64,9 @@ class UserLoginTest:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id_29cm'])
+
             # My 탭 딥링크로 진입
             com_utils.deeplink_control.move_to_my(self, wd)
 
@@ -86,6 +92,9 @@ class UserLoginTest:
 
         try:
             print(f'[{test_name}] 테스트 시작')
+
+            # 테스트 시작 전 로그아웃 상태 확인
+            my_page.check_logout_status(self, wd)
 
             # 로그인 페이지 진입
             com_utils.deeplink_control.move_to_my(self, wd)

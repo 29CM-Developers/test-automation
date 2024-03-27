@@ -3,7 +3,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from com_utils.element_control import ial, ialc, ials
 from com_utils.deeplink_control import move_to_my
-from ios_automation.page_action import bottom_sheet
+from ios_automation.page_action import bottom_sheet, login_page
 
 import com_utils.element_control
 
@@ -170,3 +170,16 @@ def check_logout_status(self, wd):
     except NoSuchElementException:
         find_logout_btn(wd)
         click_logout_btn(wd)
+
+
+def check_login_status(self, wd, id):
+    if 'custom' in self.user:
+        id = self.pconf['id_custom_29cm']
+    password = self.pconf['password_29cm']
+
+    com_utils.deeplink_control.move_to_my(self, wd)
+    try:
+        ial(wd, 'login_btn')
+        login_page.direct_login(self, wd, id, password)
+    except NoSuchElementException:
+        pass

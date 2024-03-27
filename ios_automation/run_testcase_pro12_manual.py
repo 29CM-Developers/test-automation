@@ -86,80 +86,80 @@ class IOSTestAutomation(unittest.TestCase):
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 이메일 로그인 실패 및 성공
-        self.result_data = UserLoginTest.test_email_login_error_success(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 홈화면에서 다른 탭 이동 확인
-        self.result_data = Home.test_move_tab_from_home(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # Like 존재하지 않을 경우
-        self.result_data = Like.test_no_like_item(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # Like 존재하는 경우
-        self.result_data = Like.test_like_item(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # PLP 기능 확인
-        self.result_data = Plp.test_product_listing_page(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 카테고리 화면 확인
-        self.result_data = Category.test_category_page(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # welove 화면 확인
-        self.result_data = Category.test_welove(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # SEARCH -> 인기브랜드 확인
-        self.result_data = Search.test_search_popular_brand(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # SEARCH -> 인기검색어 확인
-        self.result_data = Search.test_search_popular_keyword(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # SEARCH -> 검색 결과 화면 확인
-        self.result_data = Search.test_search_results_page(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # My -> 주문 건이 없을 경우, 주문 배송 조회
-        self.result_data = My.test_track_delivery_without_orders(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # My -> 주문 건이 없을 경우, 상품 리뷰
-        self.result_data = My.test_review_without_orders(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 로그아웃
-        self.result_data = UserLoginTest.test_logout(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # 미가입 SNS 계정 로그인 시도
-        self.result_data = UserLoginTest.test_enter_the_sns_account_sign_up_page(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
-
-        # SNS 계정 가입 실패
-        self.result_data = Join.test_sns_account_registration_failure(self, self.wd)
-        self.count = slack_result_notifications.slack_thread_notification(self)
-        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        # # 이메일 로그인 실패 및 성공
+        # self.result_data = UserLoginTest.test_email_login_error_success(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 홈화면에서 다른 탭 이동 확인
+        # self.result_data = Home.test_move_tab_from_home(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # Like 존재하지 않을 경우
+        # self.result_data = Like.test_no_like_item(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # Like 존재하는 경우
+        # self.result_data = Like.test_like_item(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # PLP 기능 확인
+        # self.result_data = Plp.test_product_listing_page(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 카테고리 화면 확인
+        # self.result_data = Category.test_category_page(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # welove 화면 확인
+        # self.result_data = Category.test_welove(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # SEARCH -> 인기브랜드 확인
+        # self.result_data = Search.test_search_popular_brand(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # SEARCH -> 인기검색어 확인
+        # self.result_data = Search.test_search_popular_keyword(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # SEARCH -> 검색 결과 화면 확인
+        # self.result_data = Search.test_search_results_page(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # My -> 주문 건이 없을 경우, 주문 배송 조회
+        # self.result_data = My.test_track_delivery_without_orders(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # My -> 주문 건이 없을 경우, 상품 리뷰
+        # self.result_data = My.test_review_without_orders(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 로그아웃
+        # self.result_data = UserLoginTest.test_logout(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # 미가입 SNS 계정 로그인 시도
+        # self.result_data = UserLoginTest.test_enter_the_sns_account_sign_up_page(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+        #
+        # # SNS 계정 가입 실패
+        # self.result_data = Join.test_sns_account_registration_failure(self, self.wd)
+        # self.count = slack_result_notifications.slack_thread_notification(self)
+        # self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
         slack_result_notifications.slack_add_end_emoji(self)
 

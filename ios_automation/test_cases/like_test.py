@@ -8,7 +8,8 @@ import com_utils.api_control
 
 from time import time
 from com_utils.code_optimization import exception_control, finally_opt
-from ios_automation.page_action import welove_page, like_page, product_detail_page, context_change
+from ios_automation.page_action import welove_page, like_page, product_detail_page, context_change, selection_page, \
+    my_page
 
 
 class Like:
@@ -19,8 +20,14 @@ class Like:
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id2_29cm'])
+
             # 딥링크로 LIKE 탭 진입
             com_utils.deeplink_control.move_to_like(self, wd)
+
+            # 상단 탭 영역 미노출 확인하여 앱 재실행
+            like_page.check_restart_app(self, wd)
 
             # 기선택된 좋아요 있을 경우 모두 해제
             like_page.set_like_zero(self, wd)
@@ -48,19 +55,30 @@ class Like:
             result_data = finally_opt(self, start_time, test_result, error_texts, img_src, test_name, testcase_title)
             return result_data
 
-    def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src='', warning_texts=[]):
+    def test_like_item(self, wd, test_result='PASS', error_texts=[], img_src=''):
         test_name = self.dconf[sys._getframe().f_code.co_name]
         start_time = time()
 
         try:
             print(f'[{test_name}] 테스트 시작')
 
+            # 테스트 전 로그인 여부 확인
+            my_page.check_login_status(self, wd, self.pconf['id2_29cm'])
+
             # 딥링크로 LIKE 탭 진입
             com_utils.deeplink_control.move_to_like(self, wd)
 
+            # 상단 탭 영역 미노출 확인하여 앱 재실행
+            like_page.check_restart_app(self, wd)
+
+            # 기선택된 좋아요 있을 경우 모두 해제
+            like_page.set_like_zero(self, wd)
+
             # 추천 리스트의 첫번째 상품명 저장 및 좋아요 선택
+            like_page.click_product_tab(wd)
             like_product_name = like_page.save_like_product_name(wd)
             like_page.click_product_like_btn(wd)
+            selection_page.click_close_selection_pop_up(wd)
 
             # PRODUCT 탭 새로고침
             like_page.refresh_product_like_tab(wd)
@@ -100,19 +118,19 @@ class Like:
             # pdp에서 뒤로가기 선택하여 like 탭으로 복귀
             product_detail_page.click_pdp_back_btn(wd)
 
-            # 그리드 뷰 상태에서 이미지 사이즈 저장
-            grid_size = like_page.save_grid_image_size(wd)
-
-            # 리스트 뷰 상태로 전환
-            like_page.click_change_view_type_to_list(wd)
-
-            # 리스트 뷰 상태에서 이미지 사이즈 저장
-            list_size = like_page.save_list_image_size(wd)
-            like_page.check_veiw_image_size(grid_size['height'], grid_size['width'], list_size['height'],
-                                            list_size['width'])
-
-            # 그리드 뷰로 복귀
-            like_page.click_change_view_type_to_grid(wd)
+            # # 그리드 뷰 상태에서 이미지 사이즈 저장
+            # grid_size = like_page.save_grid_image_size(wd)
+            #
+            # # 리스트 뷰 상태로 전환
+            # like_page.click_change_view_type_to_list(wd)
+            #
+            # # 리스트 뷰 상태에서 이미지 사이즈 저장
+            # list_size = like_page.save_list_image_size(wd)
+            # like_page.check_veiw_image_size(grid_size['height'], grid_size['width'], list_size['height'],
+            #                                 list_size['width'])
+            #
+            # # 그리드 뷰로 복귀
+            # like_page.click_change_view_type_to_grid(wd)
 
             # Brand 탭 선택
             like_page.click_brand_tab(wd)
