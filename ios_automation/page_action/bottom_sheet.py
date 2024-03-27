@@ -11,13 +11,6 @@ def close_bottom_sheet(wd):
         print('바텀 시트 노출되어 닫기 동작')
     except NoSuchElementException:
         pass
-    try:
-        ial(wd, '//XCUIElementTypeButton[@name="다음"]')
-        ial(wd, '확인하세요')
-        tap_control(wd)
-        print('바텀 시트 노출되어 닫기 동작')
-    except NoSuchElementException:
-        pass
     wd.implicitly_wait(3)
 
 
@@ -27,6 +20,14 @@ def find_icon_and_close_bottom_sheet(wd):
 
 
 def pdp_close_bottom_sheet(wd):
+    try:
+        sleep(1)
+        ial(wd, '//XCUIElementTypeButton[@name="다음"]')
+        ial(wd, 'c_확인하세요')
+        tap_control(wd)
+        print('바텀 시트 노출되어 닫기 동작')
+    except NoSuchElementException:
+        pass
     ial(wd, 'common cart icon black')
     sleep(1)
     close_bottom_sheet(wd)
