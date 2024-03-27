@@ -54,6 +54,9 @@ class Cart:
             # 상품 장바구니에 담기
             product_detail_page.click_put_in_cart_btn(wd)
 
+            #셀렉션 팝업 닫기
+            selection_page.click_close_selection_pop_up(wd)
+
             # 상품 장바구니에 담기 완료 바텀시트 노출 확인
             product_detail_page.check_add_product_to_cart(wd)
 
