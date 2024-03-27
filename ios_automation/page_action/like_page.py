@@ -19,11 +19,22 @@ def close_brand_recommended_page(wd):
 
 def close_noti_bottom_sheet(wd):
     try:
+        sleep(1)
         ial(wd, 'liked_item_sale_notification_guide')
         ialc(wd, '닫기')
         print('알림 바텀시트 노출 확인')
     except NoSuchElementException:
         pass
+
+
+def check_restart_app(self, wd):
+    try:
+        ial(wd, 'like_post_tab')
+    except NoSuchElementException:
+        wd.terminate_app('kr.co.29cm.App29CM')
+        wd.activate_app('kr.co.29cm.App29CM')
+        sleep(1)
+        com_utils.deeplink_control.move_to_like(self, wd)
 
 
 def set_like_zero(self, wd):
@@ -121,11 +132,16 @@ def check_no_post_like(wd):
         raise Exception('POST 좋아요 없음 문구 노출 확인')
 
 
-def refresh_product_like_tab(wd):
+def like_product_list(wd):
     try:
         product_list = ial(wd, 'like_product_list')
     except NoSuchElementException:
         product_list = ial(wd, '//*[@name="like_product_item" or @name="product_info"]/..')
+    return product_list
+
+
+def refresh_product_like_tab(wd):
+    product_list = like_product_list(wd)
     element_scroll_control(wd, product_list, 'U', 30)
 
 
@@ -163,7 +179,7 @@ def save_like_product_name(wd):
 
 
 def click_product_like_btn(wd):
-    product_list = ial(wd, 'like_product_list')
+    product_list = like_product_list(wd)
     element_scroll_control(wd, product_list, 'D', 5)
     ialc(wd, '//XCUIElementTypeButton[@name="like_btn"]')
 
@@ -185,7 +201,7 @@ def click_product_name(wd):
 
 
 def click_liked_product_cart_btn(wd):
-    product_list = ial(wd, 'like_product_list')
+    product_list = like_product_list(wd)
     element_scroll_control(wd, product_list, 'D', 5)
     ialc(wd, 'liked_product_cart_btn')
 
