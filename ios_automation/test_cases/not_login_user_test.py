@@ -31,6 +31,7 @@ class NotLoginUserTest:
             login_page.check_login_page(wd)
 
             # Home 탭으로 복귀
+            category_page.click_back_btn(wd)
             navigation_bar.move_to_home(wd)
 
         except Exception:
