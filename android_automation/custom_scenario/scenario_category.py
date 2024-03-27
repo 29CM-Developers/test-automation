@@ -23,7 +23,7 @@ class AndroidTestAutomation(unittest.TestCase):
         cls.count = 0
         cls.total_time = ''
         cls.slack_result = ''
-        cls.user = 'manual'
+        cls.user = 'custom'
 
     def setUp(self):
 
