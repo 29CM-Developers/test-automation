@@ -5,7 +5,7 @@ and_path = os.path.join(os.path.dirname(__file__), '../..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
 from android_automation.test_cases.home_test import Home
-from android_automation.android_setup import s22_setup
+from android_automation.android_setup import s22_setup, s21_setup
 from com_utils import slack_result_notifications
 from com_utils.testrail_api import *
 
@@ -33,7 +33,7 @@ class AndroidTestAutomation(unittest.TestCase):
                                 '{"appium:chromedriverExecutable": "/usr/local/bin/chromedriver"}'])
 
         # webdriver
-        self.wd, self.and_cap = s22_setup()
+        self.wd, self.and_cap = s21_setup()
         self.wd.implicitly_wait(5)
         # report data
         self.device_platform = self.and_cap.capabilities['platformName']
