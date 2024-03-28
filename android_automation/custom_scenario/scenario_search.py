@@ -4,7 +4,7 @@ import sys
 and_path = os.path.join(os.path.dirname(__file__), '../..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
-from android_automation.test_cases.not_login_user_test import NotLogin
+from android_automation.test_cases.search_test import Search
 from android_automation.android_setup import s22_setup, s21_setup
 from com_utils import slack_result_notifications
 from com_utils.testrail_api import *
@@ -48,18 +48,23 @@ class AndroidTestAutomation(unittest.TestCase):
         except Exception:
             self.appium.stop()
 
-    def test_scenario_not_login_user(self):
+    def test_scenario_search(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # 비로그인 유저 사용 가능
-        self.result_data = NotLogin.test_not_login_user_possible(self, self.wd)
+        # SEARCH -> 인기브랜드 확인
+        self.result_data = Search.test_search_popular_brand(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 비로그인 유저 사용 불가
-        self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
+        # SEARCH -> 인기검색어 확인
+        self.result_data = Search.test_search_popular_keyword(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # # SEARCH -> 검색 결과 화면 확인
+        self.result_data = Search.test_search_results_page(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 

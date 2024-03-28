@@ -4,7 +4,7 @@ import sys
 and_path = os.path.join(os.path.dirname(__file__), '../..')
 sys.path.append(and_path)
 from appium.webdriver.appium_service import AppiumService
-from android_automation.test_cases.not_login_user_test import NotLogin
+from android_automation.test_cases.my_test import My
 from android_automation.android_setup import s22_setup, s21_setup
 from com_utils import slack_result_notifications
 from com_utils.testrail_api import *
@@ -47,19 +47,33 @@ class AndroidTestAutomation(unittest.TestCase):
             self.appium.stop()
         except Exception:
             self.appium.stop()
-
-    def test_scenario_not_login_user(self):
+    def test_scenario_my(self):
         # 메소드명과 일치하는 정보 받아오기
         self.def_name = self.dconf[sys._getframe().f_code.co_name]
 
-        # 비로그인 유저 사용 가능
-        self.result_data = NotLogin.test_not_login_user_possible(self, self.wd)
+        # My -> 주문 건이 없을 경우, 주문 배송 조회
+        self.result_data = My.test_track_delivery_without_orders(self, self.wd)
         self.response = slack_result_notifications.slack_notification(self)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
-        # 비로그인 유저 사용 불가
-        self.result_data = NotLogin.test_not_login_user_impossible(self, self.wd)
+        # My -> 주문 건이 없을 경우, 상품 리뷰
+        self.result_data = My.test_review_without_orders(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 설정
+        self.result_data = My.test_enter_settings_screen(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # My -> 최근 본 컨텐츠 확인
+        self.result_data = My.test_recently_viewed_content(self, self.wd)
+        self.count = slack_result_notifications.slack_thread_notification(self)
+        self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
+
+        # 쿠폰함
+        self.result_data = My.test_coupons_list(self, self.wd)
         self.count = slack_result_notifications.slack_thread_notification(self)
         self.total_time, self.slack_result = slack_result_notifications.slack_update_notification(self)
 
