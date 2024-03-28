@@ -34,15 +34,16 @@ class IOSTestAutomation(unittest.TestCase):
 
     def setUp(self):
         # device data
-        device_info = self.pconf.get('manual_test_device')
+        device_info = self.pconf.get('ios_test_device')
 
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', device_info['test_port'], '--base-path', '/wd/hub', '--default-capabilities',
-                                '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
+        self.appium.start(
+            args=['-p', device_info['ios_manual_port'], '--base-path', '/wd/hub', '--default-capabilities',
+                  '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
-        self.wd, self.iOS_cap = getattr(ios_setup, device_info['test_device'])()
+        self.wd, self.iOS_cap = getattr(ios_setup, device_info['ios_manual_device'])()
         self.wd.implicitly_wait(3)
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
