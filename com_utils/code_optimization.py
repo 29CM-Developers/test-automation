@@ -30,9 +30,7 @@ def exception_control(self, wd, sys, os, traceback, error_texts=[]):
     img_src = os.path.abspath(sys._getframe().f_code.co_name + '_error.png')
     error_text = traceback.format_exc().split('\n')
     try:
-        error_code = error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
-        if error_code is None:
-            stacktrace_index = error_text.find("Stacktrace")
+        error_texts.append(values_control.find_next_double_value(error_text, 'Traceback'))
         error_texts.append(values_control.find_next_value(error_text, 'Stacktrace'))
         error_texts.append(values_control.find_next_value(error_text, 'Exception'))
     except Exception:
