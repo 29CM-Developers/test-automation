@@ -7,7 +7,7 @@ sys.path.append(iOS_path)
 
 from appium.webdriver.appium_service import AppiumService
 from com_utils import slack_result_notifications
-from ios_automation.ios_setup import pro12_setup
+from ios_automation.ios_setup import iphone14_setup
 from selenium.common.exceptions import InvalidSessionIdException
 from ios_automation.test_cases.login_test import UserLoginTest
 from ios_automation.page_action.bottom_sheet import find_icon_and_close_bottom_sheet
@@ -33,11 +33,11 @@ class IOSTestAutomation(unittest.TestCase):
     def setUp(self):
         # Appium Service
         self.appium = AppiumService()
-        self.appium.start(args=['-p', '4744', '--base-path', '/wd/hub', '--default-capabilities',
+        self.appium.start(args=['-p', '4745', '--base-path', '/wd/hub', '--default-capabilities',
                                 '{"appium:chromedriverExecutable": "/usr/local/bin"}'])
 
         # webdriver
-        self.wd, self.iOS_cap = pro12_setup()
+        self.wd, self.iOS_cap = iphone14_setup()
         self.wd.implicitly_wait(3)
 
         self.device_platform = self.iOS_cap.capabilities['platformName']
