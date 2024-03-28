@@ -104,3 +104,24 @@ def s22_setup():
     wd = webdriver.Remote('http://0.0.0.0:4734/wd/hub', options=android_options)
 
     return wd, android_options
+
+def s21_setup():
+    android_options = AppiumOptions()
+    android_options.set_capability("platformName", "Android")
+    android_options.set_capability("platformVersion", "14")
+    android_options.set_capability("deviceName", "Galaxy S21 5G")
+    android_options.set_capability("automationName", "UIAutomator2")
+    android_options.set_capability("systemPort", "8203")
+    android_options.set_capability("appPackage", "com.the29cm.app29cm")
+    android_options.set_capability("appActivity", "com.the29cm.app29cm.intro.IntroActivity")
+    android_options.set_capability("udid", "R3CRC0NFQEZ")
+    android_options.set_capability("newCommandTimeout", 300)
+    android_options.set_capability("noReset", True)
+    android_options.set_capability("appium:shouldTerminateApp", True)
+    android_options.set_capability("unlockType", "pin")
+    android_options.set_capability("unlockKey", "292929")
+    android_options.set_capability("goog:chromeOptions", {"androidPackage": "com.the29cm.app29cm", "androidUseRunningApp": True, "w3c": True})
+
+    wd = webdriver.Remote('http://0.0.0.0:4734/wd/hub', options=android_options)
+
+    return wd, android_options
